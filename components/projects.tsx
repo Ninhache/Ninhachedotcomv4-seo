@@ -13,7 +13,7 @@ export default function Projects() {
 				<div className={styles.sort_choices}>
 					<span className={`${styles.label} ${ralewaySemiBold.className}`}>Sort by</span>
 					{/* <div className="choice">Default</div> */}
-					<div className={`${styles.choice} ${styles.selected}`}>Date</div>
+					<div className={`${styles.choice} ${styles.selected} ${ralewaySemiBold.className}`}>Date</div>
 					<div className={`${styles.choice} ${ralewaySemiBold.className}`}>School</div>
 					<div className={`${styles.choice} ${ralewaySemiBold.className}`}>Personal</div>
 					<div className={`${styles.choice} ${ralewaySemiBold.className}`}>Web</div>
