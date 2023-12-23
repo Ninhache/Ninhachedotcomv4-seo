@@ -8,3 +8,11 @@ export function isInViewport(el: HTMLElement): Boolean {
 
 	return rect.bottom >= 0 && rect.top <= (window.innerHeight || document.documentElement.clientHeight);
 }
+
+export function shuffleArray<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
