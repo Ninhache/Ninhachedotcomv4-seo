@@ -1,0 +1,310 @@
+[
+  {
+    "date": "March 2021",
+    "type": "School Project",
+    "title": "Sokoban",
+    "description": "A game of Sokoban, a puzzle game where you need to push boxes to the goal.",
+    "tags": [
+      {
+        "name": "C",
+        "url": "https://fr.wikipedia.org/wiki/C_(langage)"
+      },
+      {
+        "name": "Ncurses",
+        "url": "https://fr.wikipedia.org/wiki/Ncurses"
+      }
+    ],
+    "links": {
+		"redirect": "https://github.com/Ninhache/Sokoban",
+		"git": "https://github.com/Ninhache/Sokoban",
+		"play": "https://onlinegdb.com/ay4ieWjm7"
+	},
+    "videoUrl": "none",
+    "image": "/images/projects/sokobangif1.gif",
+    "logo": "/svg/projects/Sokoban.svg",
+    "sortCategories": ["School"]
+  },
+  {
+    "date": "May 2022",
+    "type": "Personal Project",
+    "title": "Maze Things",
+    "description": "Currently, it is only a maze generator, but I intend to add additional features such as solvers.",
+    "tags": [
+      {
+        "name": "JS",
+        "url": "https://developer.mozilla.org/fr/docs/Web/JavaScript"
+      }
+    ],
+    "links": {
+      "redirect": "https://ninhache.fr/MazeThings/",
+      "git": "https://github.com/Ninhache/MazeThings",
+      "play": "https://ninhache.fr/MazeThings/"
+    },
+    "videoUrl": "none",
+    "image": "/images/projects/MazeThings.gif",
+    "logo": "/svg/projects/MazeThings.svg",
+    "sortCategories": ["Web", "Personal"]
+  },
+  {
+    "date": "April 2021",
+    "type": "School Project",
+    "title": "ColorFx",
+    "description": "This is a tool designed to assist you in selecting the optimal color for printing.",
+    "tags": [
+      {
+        "name": "Java",
+        "url": "https://www.java.com/en/"
+      },
+      {
+        "name": "JavaFX",
+        "url": "https://openjfx.io/"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/ColorFx",
+      "git": "https://github.com/Ninhache/ColorFx",
+      "play": "none"
+    },
+    "videoUrl": "none",
+    "image": "/images/projects/ColorFx.png",
+    "logo": "/svg/projects/ColorFxDropper.svg",
+    "sortCategories": ["School"]
+  },
+  {
+    "date": "December 2021",
+    "type": "School Project",
+    "title": "3D Modelisation Tool (Only for .ply)",
+    "description": "This is a 3D modeling tool that allows you to open .ply files and view them in a visual format.",
+    "tags": [
+      {
+        "name": "Java",
+        "url": "https://www.java.com/en/"
+      },
+      {
+        "name": "JavaFX",
+        "url": "https://openjfx.io/"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/Projet-Mod-lisation-S3",
+      "git": "https://github.com/Ninhache/Projet-Mod-lisation-S3",
+      "play": "none"
+    },
+    "videoUrl": "none",
+    "image": "/images/projects/Modelisation.gif",
+    "logo": "/svg/projects/ProjetMode.svg",
+    "sortCategories": ["School"]
+  },
+  {
+    "date": "February 2022",
+    "type": "Personal Project",
+    "title": "Windows's Notepad copy",
+    "description": "This project is a replica of Windows' Notepad, with additional features. It provided me with the opportunity to explore C# and .NET.",
+    "tags": [
+      {
+        "name": "C#",
+        "url": "https://docs.microsoft.com/en-us/dotnet/csharp/"
+      },
+      {
+        "name": ".NET",
+        "url": "https://docs.microsoft.com/en-us/dotnet/"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/Notepad-Copy",
+      "git": "https://github.com/Ninhache/Notepad-Copy",
+      "play": "none"
+	},
+    "videoUrl": "none",
+    "image": "/images/projects/Notepad.gif",
+    "logo": "/svg/projects/NotepadCopy.svg",
+    "sortCategories": ["Personal"]
+  },
+  {
+    "date": "April 2022",
+    "type": "School Project",
+    "title": "JustSeries",
+    "description": "This is a website that enables you to search for TV series and access their relevant information.",
+    "tags": [
+      {
+        "name": "JS",
+        "url": "https://developer.mozilla.org/fr/docs/Web/JavaScript"
+      },
+      {
+        "name": "TvMazeAPI",
+        "url": "https://www.tvmaze.com/"
+      }
+    ],
+    "links": {
+      "redirect": "https://ninhache.fr/JustSeries",
+      "git": "https://github.com/Ninhache/JustSeries",
+      "play": "https://ninhache.fr/JustSeries"
+	},
+    "videoUrl": "none",
+    "image": "/images/projects/JustSeries.gif",
+    "logo": "/svg/projects/JustSeries.svg",
+    "sortCategories": ["School", "Web"]
+  },
+  {
+    "date": "April 2022",
+    "type": "Practical work",
+    "title": "Image Processing",
+    "description": "This is a Python project aimed at facilitating the learning of image processing techniques.",
+    "tags": [
+      {
+        "name": "Python",
+        "url": "https://www.python.org/"
+      },
+      {
+        "name": "OpenCV",
+        "url": "https://docs.opencv.org/4.x/"
+      },
+      {
+        "name": "Numpy",
+        "url": "https://numpy.org/"
+      },
+      {
+        "name": "Matplotlib",
+        "url": "https://matplotlib.org/"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/Image-Processing",
+      "git": "https://github.com/Ninhache/Image-Processing",
+      "play": "none"
+	},
+    "videoUrl": "/videos/projects/PythonImageProcessing.mp4",
+    "image": "/images/projects/ImageProcessing.png",
+    "logo": "/svg/projects/ImageProcessing.svg",
+    "sortCategories": ["School"]
+  },
+  {
+    "date": "October 2021",
+    "type": "Personal Project",
+    "title": "Ch-hess",
+    "description": "It is a chess game called Ch-hess, inspired by the term \"Hess\" frequently used by young people to denote being in a state of financial difficulty.",
+    "tags": [
+      {
+        "name": "Java",
+        "url": "https://fr.wikipedia.org/wiki/Java_(langage)"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/Ch-Hess",
+      "git": "https://github.com/Ninhache/Ch-Hess",
+      "play": "none"
+	},
+    "videoUrl": "none",
+    "image": "/images/projects/Chess.png",
+    "logo": "/svg/projects/Ch-hess.svg",
+    "sortCategories": ["Personal"]
+  },
+  {
+    "date": "April 2022",
+    "type": "School Project",
+    "title": "Client SSH",
+    "description": "This is an SSH client, implemented using the Java programming language.",
+    "tags": [
+      {
+        "name": "Java",
+        "url": "https://fr.wikipedia.org/wiki/Java_(langage)"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/Client-SSH-Java",
+      "git": "https://github.com/Ninhache/Client-SSH-Java",
+      "play": "none"
+	},
+    "videoUrl": "/videos/projects/ClientSSH.mp4",
+    "image": "/images/projects/ClientSSH.png",
+    "logo": "/svg/projects/ClientSSH.svg",
+    "sortCategories": ["School"]
+  },
+  {
+    "date": "March 2022",
+    "type": "School Project",
+    "title": "Netcast",
+    "description": "This is a web server that has been implemented using the C programming language.",
+    "tags": [
+      {
+        "name": "C",
+        "url": "https://fr.wikipedia.org/wiki/C_(langage)"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/Netcast",
+      "git": "https://github.com/Ninhache/Netcast",
+      "play": "none"
+	},
+    "videoUrl": "/videos/projects/ServeurWebC.mp4",
+    "image": "/images/projects/ServeurWebC.png",
+    "logo": "/svg/projects/Netcast.svg",
+    "sortCategories": ["School", "Web"]
+  },
+  {
+    "date": "June 2022",
+    "type": "Personal Project",
+    "title": "FractalDisplayer",
+    "description": "This project is a basic fractal viewer that is currently capable of displaying the Mandelbrot fractal. Its purpose is to help me learn and explore the use of shaders.",
+    "tags": [
+      {
+        "name": "CPP",
+        "url": "https://fr.wikipedia.org/wiki/C%2B%2B"
+      },
+      {
+        "name": "GLSL",
+        "url": "https://fr.wikipedia.org/wiki/GLSL"
+      },
+      {
+        "name": "SFML",
+        "url": "https://fr.wikipedia.org/wiki/Simple_and_Fast_Multimedia_Library"
+      },
+      {
+        "name": "ImGui",
+        "url": "https://github.com/ocornut/imgui"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/Fractal-Displayer",
+      "git": "https://github.com/Ninhache/Fractal-Displayer",
+      "play": "none"
+	},
+    "videoUrl": "none",
+    "image": "/images/projects/FractalDisplayer.png",
+    "logo": "/svg/projects/FractalDisplayer.svg",
+    "sortCategories": ["Personal", "Simulations"]
+  },
+  {
+    "date": "January 2023",
+    "type": "School Project",
+    "title": "3D Engine (old)",
+    "description": "This is a \"simple\" implementation of a 3D engine that I refer to as \"old\" because I plan to re-implement it in a different way.",
+    "tags": [
+      {
+        "name": "CPP",
+        "url": "https://fr.wikipedia.org/wiki/C%2B%2B"
+      },
+      {
+        "name": "OPENGL",
+        "url": "https://fr.wikipedia.org/wiki/GLSL"
+      },
+      {
+        "name": "GLFW",
+        "url": "https://fr.wikipedia.org/wiki/GLFW"
+      },
+      {
+        "name": "ImGui",
+        "url": "https://github.com/ocornut/imgui"
+      }
+    ],
+    "links": {
+      "redirect": "https://github.com/Ninhache/3d-engine-old",
+      "git": "https://github.com/Ninhache/3d-engine-old",
+      "play": "none"
+    },
+    "videoUrl": "none",
+    "image": "/images/projects/3DEngine-Old.png",
+    "logo": "/svg/projects/3DEngine-Old.svg",
+    "sortCategories": ["School", "Simulations"]
+  }
+]

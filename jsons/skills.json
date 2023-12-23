@@ -1,0 +1,152 @@
+{
+	"skills_categories":
+	[
+		{
+			"name" : "Raw Programming Language",
+			"skills" :
+			[
+				{
+					"name": "Java",
+					"logo": "resources/svg/skills/Java.svg",
+					"link": "https://en.wikipedia.org/wiki/Java_(programming_language)"
+				},
+				{
+					"name": "JavaScript",
+					"logo": "resources/svg/skills/JavaScript.svg",
+					"link": "https://en.wikipedia.org/wiki/JavaScript"
+				},
+				{
+					"name": "Rust",
+					"logo": "resources/svg/skills/Rust.svg",
+					"link": "https://www.rust-lang.org/"
+				},
+				{
+					"name": "C",
+					"logo": "resources/svg/skills/C.svg",
+					"link": "https://en.wikipedia.org/wiki/C_(programming_language)"
+				},
+				{
+					"name": "C++",
+					"logo": "resources/svg/skills/Cpp.svg",
+					"link": "https://en.wikipedia.org/wiki/C%2B%2B"
+				},
+				
+				{
+					"name": "Python",
+					"logo": "resources/svg/skills/Python.svg",
+					"link": "https://www.python.org/"
+				}
+			]
+		},
+		
+		{
+			"name" : "Front-end",
+			"skills" :
+			[
+				{
+					"name": "Vanilla CSS.",
+					"logo": "resources/svg/skills/Css.svg",
+					"link": "https://en.wikipedia.org/wiki/CSS"
+				},
+				{
+					"name": "Vanilla JS",
+					"logo": "resources/svg/skills/JavaScript.svg",
+					"link": "https://en.wikipedia.org/wiki/JavaScript"
+				},
+				{
+					"name": "React",
+					"logo": "resources/svg/skills/React.svg",
+					"link": "https://react.dev/"
+				},
+				{
+					"name": "React Native",
+					"logo": "resources/svg/skills/React.svg",
+					"link": "https://reactnative.dev/"
+				},
+				{
+					"name": "NextJS",
+					"logo": "resources/svg/skills/NextJS.svg",
+					"link": "https://nextjs.org/"
+				},
+				{
+					"name": "Angular",
+					"logo": "resources/svg/skills/Angular.svg",
+					"link": "https://angular.io/"
+				}
+			]
+		},
+		{
+			"name" : "Back-end",
+			"skills" :
+			[
+				{
+					"name": "Quarkus",
+					"logo": "resources/svg/skills/Quarkus.svg",
+					"link": "https://quarkus.io/"
+				},
+				{
+					"name": "NodeJS",
+					"logo": "resources/svg/skills/NodeJS.svg",
+					"link": "https://nodejs.org/en/"
+				},
+				{
+					"name": "ExpressJS",
+					"logo": "resources/svg/skills/Expressjs.svg",
+					"link": "https://expressjs.com/fr/"
+				}
+			]
+		},
+		{
+			"name" : "More?",
+			"skills" :
+			[
+				{
+					"name": "Git",
+					"logo": "resources/svg/skills/Git.svg",
+					"link": "https://git-scm.com/"
+				},
+				{
+					"name": "Docker",
+					"logo": "resources/svg/skills/Docker.svg",
+					"link": "https://www.docker.com/"
+				},
+				{
+					"name": "Kubernetes",
+					"logo": "resources/svg/skills/Kubernetes.svg",
+					"link": "https://kubernetes.io/fr/"
+				},
+				{
+					"name": "Unix",
+					"logo": "resources/svg/skills/Unix.svg",
+					"link": "https://fr.wikipedia.org/wiki/Unix"
+				}
+			]
+		},
+		{
+			"name" : "Design",
+			"skills" :
+			[
+				{
+					"name": "After Effects",
+					"logo": "resources/svg/skills/After_effects.svg",
+					"link": "https://www.adobe.com/products/aftereffects.html"
+				},
+				{
+					"name": "Illustrator",
+					"logo": "resources/svg/skills/Illustrator.svg",
+					"link": "https://www.adobe.com/products/illustrator.html"
+				},
+				{
+					"name": "Photoshop",
+					"logo": "resources/svg/skills/Photoshop.svg",
+					"link": "https://www.adobe.com/products/photoshop.html"
+				},
+				{
+					"name": "Figma",
+					"logo": "resources/svg/skills/Figma.svg",
+					"link": "https://www.figma.com/"
+				}
+			]
+		}
+	]
+}
