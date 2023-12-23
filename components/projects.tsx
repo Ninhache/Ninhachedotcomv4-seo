@@ -93,7 +93,7 @@ const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) => {
 				<div className={`${styles.tags}`}>
 					{
 						project.tags.map(tag =>
-							<Link href={`${tag.url}`} target="_blank">{tag.name}</Link>
+							<Link key={tag.name} href={`${tag.url}`} target="_blank">{tag.name}</Link>
 						)
 					}
 				</div>
@@ -256,6 +256,7 @@ export default function Projects() {
 						{
 							sortedData.slice(0, 7).map((item, index) =>
 								<BigProject
+									key={index}
 									project={item}
 									isInverted={index % 2 !== 0}
 								/>
