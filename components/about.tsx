@@ -47,8 +47,7 @@ export default function About() {
 
 	return (
 		<>
-			<a id="about"></a>
-			<section className={`section ${styles.about_section}`}>
+			<section id="about" className={`section ${styles.about_section}`}>
 				<div className={`content ${styles.content}`}>
 					<span className={`section_title ${proximaNovaBold.className}`}>Who am I?</span>
 					<div className={styles.about_content}>
