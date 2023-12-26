@@ -78,7 +78,7 @@ ol {
 	margin-left: auto;
 }
 
-.content .leaning {
+.content.leaning {
 	margin-top: calc(clamp(100px, 7vw, 140px) + 3.3vw);
 	margin-bottom: calc(clamp(100px, 7vw, 140px) - 3.3vw);
 }
