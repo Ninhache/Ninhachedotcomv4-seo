@@ -1,4 +1,4 @@
-import { SortType } from "@/components/projects";
+import { SortType } from "@/components/project/projects";
 
 export interface Tag {
     name: string;
