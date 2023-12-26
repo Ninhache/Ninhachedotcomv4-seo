@@ -1,9 +1,9 @@
 "use client"
 
-import styles from '@/styles/header.module.css'
-import { ralewaySemiBold } from "@/app/fonts"
-import { useEffect } from 'react';
+import { ralewaySemiBold } from "@/app/fonts";
+import styles from '@/styles/header.module.css';
 import { sleep } from '@/utils';
+import { useEffect, useState } from 'react';
 
 async function inAnimation() {
 	let elements = document.querySelectorAll("#header .in_animation");
@@ -18,12 +18,48 @@ async function inAnimation() {
 
 export default function Header() {
 
+	const [isVisible, setIsVisible] = useState(true);
+	const [isTop, setIsTop] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    const controlHeader = () => {
+        if (typeof window !== 'undefined') {
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                // Scrolling down
+                setIsVisible(false);
+            } else {
+				// Scrolling up
+                setIsVisible(true);
+            }
+            setLastScrollY(window.scrollY);
+			setIsTop(window.scrollY <= 50);
+        }
+    };
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', controlHeader);
+            return () => {
+                window.removeEventListener('scroll', controlHeader);
+            };
+        }
+    }, [lastScrollY]);
+
+    const headerStyle = {
+        transition: 'all 0.5s ease-in-out',
+        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
+
+		backgroundColor: isTop ? 'unset' : 'var(--fade_dark_blue)',
+		backdropFilter: isTop ? 'unset' : 'blur(8px)',
+		boxShadow: isTop ? 'unset' : 'rgba(0, 0, 0, 0.8) 0px 5px 20px',
+    };
+
 	useEffect(() => {
 		inAnimation();
 	}, []);
 
 	return (
-		<div className={`${styles.header_div}`}>
+		<div className={`${styles.content}`} style={headerStyle}>
 			<header id="header" className={`${styles.header} ${ralewaySemiBold.className}`}>
 				<nav className={styles.nav}>
 					<div className={styles.logo}>
