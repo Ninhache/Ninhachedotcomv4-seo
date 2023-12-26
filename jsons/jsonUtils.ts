@@ -8,7 +8,7 @@ export interface Tag {
 export interface outLink {
     redirect: string;
     git: string;
-    play: string;
+    play: string; // String can be "none" since we're loading them using a JSON
 }
 
 export interface Project {
