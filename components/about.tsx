@@ -24,26 +24,24 @@ export default function About() {
 
 	useEffect(() => {
 		const handleScroll = () => {
-		  inAnimationCheck();
+			inAnimationCheck();
 		};
-	
+
 		const handleResize = () => {
-		  inAnimationCheck();
+			inAnimationCheck();
 		};
-	
+
 		window.addEventListener("scroll", handleScroll);
 		window.addEventListener("resize", handleResize);
-	
+
 		// Initial check
 		inAnimationCheck();
-	
-		return () => {
-		  window.removeEventListener("scroll", handleScroll);
-		  window.removeEventListener("resize", handleResize);
-		};
-	  }, [isAnimationDone]);
-	
 
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+			window.removeEventListener("resize", handleResize);
+		};
+	}, [isAnimationDone]);
 
 	return (
 		<>
