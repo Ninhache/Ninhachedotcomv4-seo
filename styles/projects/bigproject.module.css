@@ -86,7 +86,6 @@
   width: 100%;
   flex-wrap: wrap;
   gap: 7px;
-  /* font-family: raleway_medium; */
   font-size: 16px;
   white-space: nowrap;
   color: var(--light_blue);
