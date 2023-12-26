@@ -53,7 +53,7 @@ export default function Contact() {
                                 return (<>
                                     <div className={styles.social_line}>
                                         <a className={styles.social_link} href={item.redirectLink} target="_blank" style={style}>
-                                            <img src={item.imageUrl} />
+                                            <img src={item.imageUrl} alt='Image for the social media where you can reach me !'/>
 
                                             <div className={styles.social_text}>
                                                 <span>{item.text}</span>

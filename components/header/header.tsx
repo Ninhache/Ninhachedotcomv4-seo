@@ -22,21 +22,23 @@ export default function Header() {
 	const [isTop, setIsTop] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
 
-    const controlHeader = () => {
-        if (typeof window !== 'undefined') {
-            if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                // Scrolling down
-                setIsVisible(false);
-            } else {
-				// Scrolling up
-                setIsVisible(true);
-            }
-            setLastScrollY(window.scrollY);
-			setIsTop(window.scrollY <= 50);
-        }
-    };
+    
 
     useEffect(() => {
+		const controlHeader = () => {
+			if (typeof window !== 'undefined') {
+				if (window.scrollY > lastScrollY && window.scrollY > 100) {
+					// Scrolling down
+					setIsVisible(false);
+				} else {
+					// Scrolling up
+					setIsVisible(true);
+				}
+				setLastScrollY(window.scrollY);
+				setIsTop(window.scrollY <= 50);
+			}
+		};
+
         if (typeof window !== 'undefined') {
             window.addEventListener('scroll', controlHeader);
             return () => {
