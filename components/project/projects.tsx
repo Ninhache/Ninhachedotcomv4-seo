@@ -1,12 +1,15 @@
 "use client"
 
-import { calibreRegular, calibreSemibold, proximaNovaBold, ralewayBold, ralewayMedium, ralewaySemiBold } from '@/app/fonts'
+import { proximaNovaBold, ralewaySemiBold } from '@/app/fonts'
 import { Project } from '@/jsons/jsonUtils'
 import rawData from '@/jsons/projects.json'
-import styles from '@/styles/projects.module.css'
-import { isInViewport, shuffleArray, sleep } from '@/utils'
-import Link from 'next/link'
+
+import styles from '@/styles/projects/project.module.css'
+
+import { shuffleArray } from '@/utils'
 import { useEffect, useState } from 'react'
+import { BigProject } from './BigProject'
+import { SmallProject } from './SmallProject'
 
 interface SortButtonData {
 	label: string;
@@ -19,11 +22,6 @@ interface SortButtonProps {
 	onClick: () => void;
 };
 
-interface BigProjectProps {
-	project: Project;
-	isInverted: boolean;
-};
-
 const SortButton: React.FC<SortButtonProps> = ({ label, isSelected, onClick }) => (
 	<button
 		className={`${styles.choice} ${ralewaySemiBold.className} ${isSelected ? styles.selected : ''}`}
@@ -32,95 +30,6 @@ const SortButton: React.FC<SortButtonProps> = ({ label, isSelected, onClick }) =
 		{label}
 	</button>
 );
-
-const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) => {
-
-	// aniations
-	const [isAnimationDone, setAnimationDone] = useState(false);
-	const inAnimationCheck = async () => {
-		if (!isAnimationDone) {
-			const elements = document.querySelectorAll("#projects .in_animation") as NodeListOf<HTMLElement>;
-
-			if (elements.length === 0) return;
-
-			if (isInViewport(elements[0])) {
-				for (let i of elements) {
-					const element = i as HTMLElement;
-					element.style.opacity = "1";
-					element.style.transform = "translateY(0)";
-					await sleep(100);
-				}
-				setAnimationDone(true);
-			}
-		}
-	}
-	useEffect(() => {
-		const handleScroll = () => {
-			inAnimationCheck();
-		};
-
-		const handleResize = () => {
-			inAnimationCheck();
-		};
-
-		window.addEventListener("scroll", handleScroll);
-		window.addEventListener("resize", handleResize);
-
-		// Initial check
-		inAnimationCheck();
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-			window.removeEventListener("resize", handleResize);
-		};
-	}, [isAnimationDone]);
-
-	return (
-		<>
-			<div className={`in_animation ${styles.in_animation} project ${styles.project} ${isInverted ? `inverted ${styles.inverted}` : ""}`}>
-				<div className={`${styles.project_text}`}>
-					<div className={`${styles.type} ${ralewayMedium.className}`}>
-						<span>{project.date}</span>
-						<span>•</span>
-						<span>{project.type}</span>
-					</div>
-					<Link className={`${styles.project_title} ${calibreSemibold.className}`} href={`${project.links.redirect}`} target="_blank">{project.title}</Link>
-					<div className={`${styles.text} ${calibreRegular.className}`}>
-						<p>{project.description}</p>
-					</div>
-					<div className={`${styles.tags} ${ralewaySemiBold.className}`}>
-						{
-							project.tags.map(tag =>
-								<Link key={tag.name} href={`${tag.url}`} target="_blank">{tag.name}</Link>
-							)
-						}
-					</div>
-					<div className={`${styles.links}`}>
-						{
-							project.links.git &&
-							<a className={`github ${styles.github}`} href={`${project.links.git}`} target='_blank'>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.05 20.31"><g><path d="M7.26 16.34c-4.11 1.23-4.11-2.06-5.76-2.47M13 18.81V15.62a2.78 2.78 0 0 0-.77-2.15c2.59-.28 5.3-1.26 5.3-5.76a4.46 4.46 0 0 0-1.23-3.08 4.18 4.18 0 0 0-.08-3.11s-1-.29-3.22 1.22a11 11 0 0 0-5.76 0C5 1.23 4 1.52 4 1.52A4.18 4.18 0 0 0 4 4.63 4.48 4.48 0 0 0 2.73 7.74c0 4.46 2.72 5.44 5.31 5.76a2.8 2.8 0 0 0-.78 2.12v3.19" /></g></svg>
-								<span className={`${styles.bubble} ${ralewayBold.className}`}>See the code</span>
-							</a>
-						}
-						{
-							project.links.play !== "none" &&
-							<a className={`${styles.test}`} href={`${project.links.play}`} target="_blank">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.09 18.64"><g><path d="M14.55 7.52 4.62 1.78A2.08 2.08 0 0 0 1.5 3.58V15.05a2.08 2.08 0 0 0 3.12 1.8l9.93-5.73A2.08 2.08 0 0 0 14.55 7.52Z" /></g></svg>
-								<span className={`${styles.bubble} ${ralewayBold.className}`}>Test the program</span>
-							</a>
-						}
-					</div>
-				</div>
-				<div className={`${styles.project_view}`}>
-					<a href={`${project.links.redirect}`} target="_blank">
-						<img src={project.image} alt={`Image of the project ${project.title}`} />
-					</a>
-				</div>
-			</div >
-		</>
-	);
-}
 
 export enum SortType {
 	DATE = "Date",
@@ -207,7 +116,6 @@ const jsonData = rawData.map(item => ({
 	sortCategories: parseSortTypes(item.sortCategories)
 }));
 
-
 export default function Projects() {
 
 	const [selectedSort, setSelectedSort] = useState<SortType>(SortType.DATE);
@@ -255,7 +163,7 @@ export default function Projects() {
 						{
 							sortedData.slice(0, 7).map((item, index) =>
 								<BigProject
-									key={index}
+									key={item.title}
 									project={item}
 									isInverted={index % 2 !== 0}
 								/>
@@ -265,9 +173,7 @@ export default function Projects() {
 
 					<div className={styles.other_projects_content}>
 						{sortedData.slice(7, 21).map((item, index) => {
-							return <div key={index}>
-								Mini-{index} - {item.title}
-							</div>
+							return <SmallProject key={item.title} project={item} />
 						})}
 					</div>
 				</div>

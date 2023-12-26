@@ -1,0 +1,142 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: var(--purple);
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.2));
+  border-radius: 15px;
+  overflow: hidden;
+  transition: opacity 0.5s ease-in-out, filter 0.4s ease, transform 0.4s ease !important;
+}
+
+.content:hover {
+  filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.4));
+  transform: translate(0px, -10px) !important;
+}
+
+.content.in_animation {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  height: calc(100% - 80px);
+  padding: 40px 35px 40px 35px;
+}
+
+@media screen and (max-width: 500px) {
+  .content {
+    padding: 40px 25px 40px 25px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 28px;
+  color: var(--white);
+  text-decoration: none;
+  margin-bottom: 12px;
+  transition: color 0.2s ease;
+}
+
+.title::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 5;
+  /* width: 100%;
+  height: 100%; */
+  top: 0px;
+  left: 0px;
+}
+
+.title:hover {
+  color: var(--light_blue);
+}
+
+.logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.logos img {
+  width: 45px;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.links a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.links svg {
+  z-index: 10;
+  width: 21px;
+  fill: none;
+  stroke-width: 1.9px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: var(--fade_white);
+  opacity: 0.8;
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+
+.links .github svg:hover {
+  opacity: 1;
+  stroke: var(--light_blue);
+}
+
+.links .play svg:hover {
+  opacity: 1;
+  stroke: var(--light_blue);
+}
+
+
+
+.text {
+  font-size: 20px;
+  text-align: start;
+  color: var(--fade_white);
+  margin-bottom: 25px;
+}
+
+.tags {
+  font-size: 15px;
+  white-space: nowrap;
+  opacity: 0.8;
+  text-decoration: none;
+  display: flex;
+  gap: 15px;
+}
+
+.tag {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 15px;
+  color: var(--light_blue);
+  text-decoration: none;
+}
