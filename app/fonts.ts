@@ -15,6 +15,15 @@ export const ralewaySemiBold = localFont({
     display: 'swap'
 })
 
+export const ralewayBold = localFont({
+    src: '../fonts/raleway/Raleway-Bold.ttf',
+    display: 'swap'
+})
+
+export const ralewayMedium = localFont({
+    src: '../fonts/raleway/Raleway-Medium.ttf',
+    display: 'swap'
+})
 
 export const proximaNovaBold = localFont({
     src: '../fonts/proxima_nova/ProximaNovaBold.otf',
