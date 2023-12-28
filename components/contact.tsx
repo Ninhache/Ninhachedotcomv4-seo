@@ -1,71 +1,82 @@
 "use client"
 
-// import Linkedin from "@/public/svg/contact/Linkedin.svg"
-// import Github from "@/public/svg/contact/Github.svg"
-// import Mail from "@/public/svg/contact/Mail.svg"
+import { proximaNovaBold } from "@/app/fonts";
+import styles from '@/styles/contact.module.css';
+import React from 'react';
 
-import styles from '@/styles/contact.module.css'
-import { proximaNovaBold } from "@/app/fonts"
-
-interface socialProps {
-    text: string;
-    imageUrl: string;
-    redirectLink: string;
-    cssSize: string; // This could probably be improved
+interface SocialProps {
+	text: string;
+	imageUrl: string;
+	redirectLink: string;
+	cssSize: string; // This could probably be improved
 }
 
 export default function Contact() {
 
-    const socialArray: socialProps[] = [
-        {
-            text: "in/néo-almeida",
-            imageUrl: "svg/contact/Linkedin.svg",
-            redirectLink: "https://www.linkedin.com/in/n%C3%A9o-almeida/",
-            cssSize: "135px"
-        },
-        {
-            text: "Ninhache",
-            imageUrl: "svg/contact/GitHub.svg",
-            redirectLink: "https://github.com/ninhache",
-            cssSize: "90px"
-        },
-        {
-            text: "neo.almeida2706@gmail.com",
-            imageUrl: "svg/contact/Mail.svg",
-            redirectLink: "mailto: neo.almeida2706@gmail.com",
-            cssSize: "268px"
-        }
-    ];
+	const socialArray: SocialProps[] = [
+		{
+			text: "in/néo-almeida",
+			imageUrl: "svg/contact/Linkedin.svg",
+			redirectLink: "https://www.linkedin.com/in/n%C3%A9o-almeida/",
+			cssSize: "135px"
+		},
+		{
+			text: "Ninhache",
+			imageUrl: "svg/contact/GitHub.svg",
+			redirectLink: "https://github.com/ninhache",
+			cssSize: "90px"
+		},
+		{
+			text: "neo.almeida2706@gmail.com",
+			imageUrl: "svg/contact/Mail.svg",
+			redirectLink: "mailto: neo.almeida2706@gmail.com",
+			cssSize: "268px"
+		}
+	];
 
-    return (
-        <>
-            <section id="contact" className={`section ${styles.section} ${styles.contact_section} ${proximaNovaBold.className}`}>
-                <div className={`content leaning ${styles.content} ${styles.leaning}`}>
-                    <span className={`section_title ${styles.section_title}`}>How to contact me?</span>
+	return (
+		<>
+			<section id="contact" className={`section ${styles.section} ${styles.contact_section} ${proximaNovaBold.className}`}>
+				<div className={`content leaning ${styles.content} ${styles.leaning}`}>
+					<span className={`section_title ${styles.section_title}`}>How to contact me?</span>
 
-                    <div className={styles.contact_content}>
-                        {
-                            socialArray.map(item => {
-                                const style = {
-                                    '--size': item.cssSize
-                                } as React.CSSProperties;
+					<div className={styles.contact_content}>
+						{
+							socialArray.map((test, index) => {
+								const key = `${index}${test.text}`;
 
-                                return (<>
-                                    <div className={styles.social_line}>
-                                        <a className={styles.social_link} href={item.redirectLink} target="_blank" style={style}>
-                                            <img src={item.imageUrl} alt='Image for the social media where you can reach me !'/>
+								const style = {
+									'--size': test.cssSize,
+								} as React.CSSProperties;
 
-                                            <div className={styles.social_text}>
-                                                <span>{item.text}</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </>);
-                            })
-                        }
-                    </div>
-                </div>
-            </section>
-        </>
-    )
+								const renderSocialLink = (item: SocialProps) => {
+
+									return (
+										<a
+											className={styles.social_link}
+											href={item.redirectLink}
+											target="_blank"
+											rel="noopener noreferrer"
+											style={style}
+										>
+											<img src={item.imageUrl} alt={`Social media link to ${item.text}`} />
+											<div className={styles.social_text}>
+												<span>{item.text}</span>
+											</div>
+										</a>
+									);
+								};
+
+								return (
+									<div key={key} className={styles.social_line}>
+										{renderSocialLink(test)}
+									</div>
+								);
+							})
+						}
+					</div>
+				</div>
+			</section>
+		</>
+	)
 }
