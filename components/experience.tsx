@@ -56,7 +56,7 @@ export default function Experience() {
 					{
 						rawData.map((item, index) => {
 							return (
-								<AnimatedComponent delay={100}>
+								<AnimatedComponent delay={100} key={index}>
 									<ExperienceItem key={index} experience={item} inverted={index % 2 === 0} />
 								</AnimatedComponent>
 							)

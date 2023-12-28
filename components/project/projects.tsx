@@ -163,7 +163,7 @@ export default function Projects() {
 					<div className={styles.projects_content}>
 						{
 							sortedData.slice(0, 7).map((item, index) => (
-								<AnimatedComponent delay={100}>
+								<AnimatedComponent delay={100} key={index}>
 									<BigProject
 										key={item.title}
 										project={item}
@@ -177,7 +177,7 @@ export default function Projects() {
 
 					<div className={styles.other_projects_content}>
 						{sortedData.slice(7, 21).map((item, index) => (
-							<AnimatedComponent delay={100}>
+							<AnimatedComponent delay={100} key={index}>
 								<SmallProject key={item.title} project={item} />
 							</AnimatedComponent>
 						))}
