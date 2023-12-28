@@ -10,6 +10,7 @@ import { shuffleArray } from '@/utils'
 import { useEffect, useState } from 'react'
 import { BigProject } from './BigProject'
 import { SmallProject } from './SmallProject'
+import AnimatedComponent from '../AnimatedComponent'
 
 interface SortButtonData {
 	label: string;
@@ -161,20 +162,25 @@ export default function Projects() {
 
 					<div className={styles.projects_content}>
 						{
-							sortedData.slice(0, 7).map((item, index) =>
-								<BigProject
-									key={item.title}
-									project={item}
-									isInverted={index % 2 !== 0}
-								/>
+							sortedData.slice(0, 7).map((item, index) => (
+								<AnimatedComponent delay={100}>
+									<BigProject
+										key={item.title}
+										project={item}
+										isInverted={index % 2 !== 0}
+									/>
+								</AnimatedComponent>
+							)
 							)
 						}
 					</div>
 
 					<div className={styles.other_projects_content}>
-						{sortedData.slice(7, 21).map((item, index) => {
-							return <SmallProject key={item.title} project={item} />
-						})}
+						{sortedData.slice(7, 21).map((item, index) => (
+							<AnimatedComponent delay={100}>
+								<SmallProject key={item.title} project={item} />
+							</AnimatedComponent>
+						))}
 					</div>
 				</div>
 			</section>
