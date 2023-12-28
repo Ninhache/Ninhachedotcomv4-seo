@@ -30,9 +30,9 @@ export interface Experience {
     title: string;
     description: string;
     tags: Tag[];
-    website: string;
+    link: string;
     videoUrl?: string;
-    imagePath: string;
+    image: string;
 }
 
 export interface Skill {
