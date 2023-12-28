@@ -35,8 +35,6 @@ interface SkillCategoryProps {
 
 const SkillCategory: React.FC<SkillCategoryProps> = ({ category, selectioned, onClick }) => {
 
-	const [isSelectioned, setSelectioned] = useState(selectioned);
-
 	const style = {
 		'backgroundColor': selectioned ? 'rgb(255, 255, 255)' : 'unset',
 		'cursor': selectioned ? 'default' : 'pointer',
