@@ -34,3 +34,14 @@ export interface Experience {
     videoUrl?: string;
     imagePath: string;
 }
+
+export interface Skill {
+    name: string;
+    logo: string;
+    link: string;
+}
+
+export interface SkillCategory {
+    name: string;
+    skills: Skill[];
+}
