@@ -111,7 +111,7 @@ const parseSortTypes = (categories: string[]): SortType[] => {
 	});
 }
 
-const jsonData = rawData.map(item => ({
+const jsonData: Project[] = rawData.map((item) => ({
 	...item,
 	sortCategories: parseSortTypes(item.sortCategories)
 }));
