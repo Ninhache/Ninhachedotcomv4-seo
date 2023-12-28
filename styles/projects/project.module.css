@@ -93,3 +93,7 @@
 .sort_choices .choice.selected:hover {
   background-color: var(--light_blue);
 }
+
+.projects_end {
+  background-color: var(--dark_purple);
+}
