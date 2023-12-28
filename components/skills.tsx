@@ -38,7 +38,7 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ category, selectioned, on
 	const [isSelectioned, setSelectioned] = useState(selectioned);
 
 	const style = {
-		'background-color': selectioned ? 'rgb(255, 255, 255)' : 'unset',
+		'backgroundColor': selectioned ? 'rgb(255, 255, 255)' : 'unset',
 		'cursor': selectioned ? 'default' : 'pointer',
 	}
 
@@ -67,6 +67,7 @@ export default function Skills() {
 							<div className={`${styles.menu}`}>
 								{rawData.map((category, index) => (
 									<SkillCategory
+										key={index}
 										category={category}
 										selectioned={category.name === selectedCategory}
 										onClick={() => setSelectedCategory(category.name)}
