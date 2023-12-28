@@ -1,18 +1,20 @@
 "use client"
 
-import styles from '@/styles/home.module.css'
+import styles from '@/styles/home.module.css';
 
-import { calibreSemibold, calibreRegular, ralewaySemiBold } from '@/app/fonts'
-import { useEffect, useMemo, useState } from 'react';
+import { calibreSemibold, ralewaySemiBold } from '@/app/fonts';
 import { isInViewport, sleep } from '@/utils';
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { Container, ISourceOptions, MoveDirection, OutMode } from '@tsparticles/engine';
-import { loadFull } from 'tsparticles';
-
+import { useEffect, useMemo, useState } from 'react';
+import ParticlesComponent from './ParticlesComponent';
 
 export default function Home() {
 
-	// aniations
+	// Needed or it will be rendered twice
+	const memoizedParticlesComponent = useMemo(() => {
+		return <ParticlesComponent />;
+	  }, []);
+	
+	// animations
 	const [isAnimationDone, setAnimationDone] = useState(false);
 	const inAnimationCheck = async () => {
 		if (!isAnimationDone) {
@@ -31,6 +33,7 @@ export default function Home() {
 			}
 		}
 	}
+
 	useEffect(() => {
 		const handleScroll = () => {
 			inAnimationCheck();
@@ -52,81 +55,12 @@ export default function Home() {
 		};
 	}, [isAnimationDone]);
 
-	// particlesJS
-	const [init, setInit] = useState(false);
-	useEffect(() => {
-		initParticlesEngine(async (engine) => {
-			await loadFull(engine);
-		}).then(() => {
-			setInit(true);
-		});
-	}, []);
-
-	const particlesLoaded = async (container?: Container): Promise<void> => {
-		console.log(container);
-	};
-
-	
-
-	const options: ISourceOptions = useMemo(
-		() => ({
-			particles: {
-				number: {
-					value: 400,
-					density: {
-						enable: true,
-					},
-				},
-				color: {
-					value: "#fff",
-				},
-				shape: {
-					type: "circle",
-				},
-				opacity: {
-					value: 1,
-				},
-				size: {
-					value: 10,
-				},
-				move: {
-					enable: true,
-					speed: 2,
-					direction: "bottom",
-					straight: true,
-				},
-				wobble: {
-					enable: true,
-					distance: 10,
-					speed: 10,
-				},
-				zIndex: {
-					value: {
-						min: 0,
-						max: 100,
-					},
-					opacityRate: 10,
-					sizeRate: 10,
-					velocityRate: 10,
-				},
-			},
-			
-		}),
-		[],
-	);
-
 	return (
 		<>
+			
 			<section id="home" className={`section ${styles.home_section}`}>
-				{
-					init && <Particles
-						id="tsparticles"
-						particlesLoaded={particlesLoaded}
-						className={styles.particles}
-						// url='http://localhost:3000/particles.json'
-						options={options}
-					/>
-				}
+				{/* <ParticlesComponent /> */}
+				{memoizedParticlesComponent}
 				<div className={`content ${styles.content}`}>
 					<span className={`${styles.hi} ${ralewaySemiBold.className} in_animation ${styles.in_animation}`}>Hi, my name is</span>
 					<span className={`${styles.name} ${calibreSemibold.className} in_animation ${styles.in_animation}`}>Almeida Neo.</span>
