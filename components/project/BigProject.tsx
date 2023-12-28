@@ -14,49 +14,9 @@ export interface BigProjectProps {
 
 export const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) => {
 
-	// aniations
-	const [isAnimationDone, setAnimationDone] = useState(false);
-	const inAnimationCheck = async () => {
-		if (!isAnimationDone) {
-			const elements = document.querySelectorAll("#projects .in_animation") as NodeListOf<HTMLElement>;
-
-			if (elements.length === 0) return;
-
-			if (isInViewport(elements[0])) {
-				for (let i of elements) {
-					const element = i as HTMLElement;
-					element.style.opacity = "1";
-					element.style.transform = "translateY(0)";
-					await sleep(100);
-				}
-				setAnimationDone(true);
-			}
-		}
-	};
-	useEffect(() => {
-		const handleScroll = () => {
-			inAnimationCheck();
-		};
-
-		const handleResize = () => {
-			inAnimationCheck();
-		};
-
-		window.addEventListener("scroll", handleScroll);
-		window.addEventListener("resize", handleResize);
-
-		// Initial check
-		inAnimationCheck();
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-			window.removeEventListener("resize", handleResize);
-		};
-	}, [isAnimationDone]);
-
 	return (
 		<>
-			<div className={`in_animation ${styles.in_animation} project ${styles.project} ${isInverted ? `inverted ${styles.inverted}` : ""}`}>
+			<div className={`project ${styles.project} ${isInverted ? `inverted ${styles.inverted}` : ""}`}>
 				<div className={`${styles.project_text}`}>
 					<div className={`${styles.type} ${ralewayMedium.className}`}>
 						<span>{project.date}</span>
