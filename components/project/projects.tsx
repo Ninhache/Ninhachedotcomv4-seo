@@ -177,8 +177,17 @@ export default function Projects() {
 
 					<div className={styles.other_projects_content}>
 						{sortedData.slice(7, 21).map((item, index) => (
-							<AnimatedComponent delay={100} key={index}>
-								<SmallProject key={item.title} project={item} />
+							<AnimatedComponent 
+								delay={100}
+								key={index}
+								customCss={{
+									height: '100%'
+								}}	
+							>
+								<SmallProject
+									key={item.title}
+									project={item}
+								/>
 							</AnimatedComponent>
 						))}
 					</div>

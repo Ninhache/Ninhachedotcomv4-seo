@@ -5,7 +5,6 @@ import { Project } from '@/jsons/jsonUtils';
 import Link from 'next/link';
 
 import styles from '@/styles/projects/smallproject.module.css';
-import '@/styles/globals.css'
 
 export interface SmallProjectProps {
 	project: Project;
