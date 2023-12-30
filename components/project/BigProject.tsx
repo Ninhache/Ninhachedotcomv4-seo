@@ -16,7 +16,12 @@ export const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) =
 
 	return (
 		<>
-			<div className={`project ${styles.project} ${isInverted ? `inverted ${styles.inverted}` : ""}`}>
+			<div
+				className={`project ${styles.project} ${isInverted ? `inverted ${styles.inverted}` : ""}`}
+				style={{
+					backgroundImage: window.innerWidth < 780 ? `url(${project.image})` : 'unset'
+				}}
+			>
 				<div className={`${styles.project_text}`}>
 					<div className={`${styles.type} ${ralewayMedium.className}`}>
 						<span>{project.date}</span>
@@ -43,11 +48,15 @@ export const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) =
 							</a>}
 					</div>
 				</div>
-				<div className={`${styles.project_view}`}>
-					<a href={`${project.links.redirect}`} target="_blank">
-						<img src={project.image} alt={`Image of the project ${project.title}`} />
-					</a>
-				</div>
+				{
+					window.innerWidth > 780 && (
+						<div className={`${styles.project_view}`}>
+							<a href={`${project.links.redirect}`} target="_blank">
+								<img src={project.image} alt={`Image of the project ${project.title}`} />
+							</a>
+						</div>
+					)
+				}
 			</div>
 		</>
 	);

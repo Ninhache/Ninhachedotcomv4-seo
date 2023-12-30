@@ -1,3 +1,42 @@
+@media screen and (min-width: 780px) {
+  .project.inverted {
+    flex-direction: row-reverse;
+    padding-left: clamp(0px, calc(18vw - 234px), 60px);
+    padding-right: 0px;
+  }
+
+  .inverted .project_text .links {
+    margin-left: 0px;
+    margin-right: 15px;
+  }
+
+  .inverted .project_text .tags {
+    justify-content: flex-end;
+    margin-left: 0px;
+    margin-right: 9px;
+  }
+
+  .inverted .project_text .text p {
+    text-align: end;
+  }
+
+  .inverted .project_text .type {
+    margin-left: 0px;
+    margin-right: 15px;
+    flex-direction: row-reverse;
+  }
+
+  .inverted .project_text {
+    align-items: flex-end;
+    margin-left: -100px;
+    margin-right: 0px;
+  }
+
+  .inverted .project_text .title {
+    margin-left: 0px;
+    margin-right: 15px;
+  }
+}
 
 
 .other_projects_content {
@@ -23,11 +62,7 @@
   padding-right: clamp(0px, calc(18vw - 234px), 60px);
 }
 
-.project.inverted {
-  flex-direction: row-reverse;
-  padding-left: clamp(0px, calc(18vw - 234px), 60px);
-  padding-right: 0px;
-}
+
 
 .project_view {
   z-index: 5;
@@ -73,11 +108,7 @@
   margin-right: -100px;
 }
 
-.inverted .project_text {
-  align-items: flex-end;
-  margin-left: -100px;
-  margin-right: 0px;
-}
+
 
 .project_text .type {
   display: flex;
@@ -91,11 +122,7 @@
   margin-bottom: 10px;
 }
 
-.inverted .project_text .type {
-  margin-left: 0px;
-  margin-right: 15px;
-  flex-direction: row-reverse;
-}
+
 
 .project_text .title {
   font-size: 32px;
@@ -106,10 +133,7 @@
   transition: color 0.2s ease;
 }
 
-.inverted .project_text .title {
-  margin-left: 0px;
-  margin-right: 15px;
-}
+
 
 .project_text .title:hover {
   color: var(--light_blue);
@@ -134,9 +158,7 @@
   color: var(--fade_white);
 }
 
-.inverted .project_text .text p {
-  text-align: end;
-}
+
 
 .project_text .tags {
   display: flex;
@@ -149,11 +171,6 @@
   gap: 8px;
 }
 
-.inverted .project_text .tags {
-  justify-content: flex-end;
-  margin-left: 0px;
-  margin-right: 9px;
-}
 
 .project_text .tags a {
   font-size: 16px;
@@ -183,11 +200,6 @@
   align-items: center;
   margin-left: 15px;
   gap: 20px;
-}
-
-.inverted .project_text .links {
-  margin-left: 0px;
-  margin-right: 15px;
 }
 
 .project_text .links .github {
@@ -268,6 +280,7 @@
     border-radius: 15px;
     filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.5));
     transition: filter 0.3s ease;
+    gap: clamp(20px, 5vw, 100px);
   }
 
   .project:hover {
@@ -275,8 +288,6 @@
   }
 
   .project_text {
-    -webkit-box-align: start;
-    -ms-flex-align: start;
     align-items: flex-start;
     margin-left: 0px;
     margin-right: 0px;
