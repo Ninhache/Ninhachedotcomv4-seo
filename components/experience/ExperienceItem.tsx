@@ -1,7 +1,10 @@
 "use client";
 import { calibreRegular, calibreSemibold, ralewayMedium, ralewaySemiBold } from '@/app/fonts';
 import { Experience } from '@/jsons/jsonUtils';
+
 import styles from '@/styles/experience/experienceItem.module.css';
+import '@/styles/globals.css'
+
 import Link from 'next/link';
 import { Fragment } from 'react';
 

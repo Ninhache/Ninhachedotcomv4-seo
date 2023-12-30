@@ -8,6 +8,7 @@ import AnimatedComponent from '../AnimatedComponent';
 import { ExperienceItem } from './ExperienceItem';
 
 import styles from '@/styles/experience/experience.module.css';
+import '@/styles/globals.css'
 
 export default function Experience() {
 
