@@ -45,12 +45,6 @@
   }
 }
 
-.project.in_animation {
-  opacity: 0;
-  transform: translateY(70px);
-  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
-}
-
 .sort_choices {
   display: flex;
   justify-content: center;
@@ -61,12 +55,12 @@
   gap: 20px;
 }
 
-.sort_choices .label {
+.label {
   color: var(--white);
   font-size: 17px;
 }
 
-.sort_choices .choice {
+.choice {
   color: var(--light_blue);
   font-size: 15px;
   cursor: pointer;
@@ -79,18 +73,18 @@
   background-color: transparent;
 }
 
-.sort_choices .choice:hover {
+.choice:hover {
   background-color: var(--fade_light_blue);
 }
 
-.sort_choices .choice.selected {
+.choice.selected {
   color: var(--dark_purple);
   background-color: var(--light_blue);
   cursor: default;
   pointer-events: none;
 }
 
-.sort_choices .choice.selected:hover {
+.choice.selected:hover {
   background-color: var(--light_blue);
 }
 
