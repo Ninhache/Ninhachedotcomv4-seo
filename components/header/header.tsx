@@ -9,6 +9,8 @@ import useIsMobileView from '../hooks/useMobileView';
 
 export default function Header() {
 
+	const menuItems = ['Home', 'About', 'Projects', 'Skills', 'Experience'];
+
 	const isMobile = useIsMobileView();
 	const menuDivRef = useRef<HTMLDivElement>(null);
 
@@ -32,20 +34,20 @@ export default function Header() {
 
 	useEffect(() => {
 		const controlHeader = () => {
-		  if (typeof window !== 'undefined') {
-			const currentScrollY = window.scrollY;
-			setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50);
-			lastScrollY.current = currentScrollY;
-			setIsTop(currentScrollY <= 50);
-		  }
+			if (typeof window !== 'undefined') {
+				const currentScrollY = window.scrollY;
+				setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50);
+				lastScrollY.current = currentScrollY;
+				setIsTop(currentScrollY <= 50);
+			}
 		};
-	  
+
 		if (typeof window !== 'undefined') {
-		  window.addEventListener('scroll', controlHeader);
-		  return () => window.removeEventListener('scroll', controlHeader);
+			window.addEventListener('scroll', controlHeader);
+			return () => window.removeEventListener('scroll', controlHeader);
 		}
-	  }, []);
-	  
+	}, []);
+
 
 	const headerStyle = {
 		transition: 'all 0.5s ease-in-out',
@@ -71,14 +73,8 @@ export default function Header() {
 							!isMobile && (<AnimatedComponent delay={100}>
 								<div className={styles.menu}>
 									<ol>
-										{['Home', 'About', 'Projects', 'Skills', 'Experience'].map((item, index) => (
-											<AnimatedComponent key={item} delay={calculateDelay(index)}>
-												<li className={styles[item.toLowerCase()]}>
-													<a className={styles.not_button} href={`#${item.toLowerCase()}`}>
-														{item}
-													</a>
-												</li>
-											</AnimatedComponent>
+										{menuItems.map((item, index) => (
+											<HeaderItem key={item} name={item} delay={calculateDelay(index)} />
 										))}
 										<li className={`${styles.contact} `}>
 											<a className={`button ${styles.button} `} href="#contact">
@@ -116,14 +112,8 @@ export default function Header() {
 				</svg>
 				<div className={`${styles.menu}`}>
 					<ol>
-						{['Home', 'About', 'Projects', 'Skills', 'Experience'].map((item, index) => (
-							<AnimatedComponent key={item} delay={calculateDelay(index)}>
-								<li onClick={closeMobileMenu} className={styles[item.toLowerCase()]}>
-									<a className={styles.not_button} href={`#${item.toLowerCase()}`}>
-										{item}
-									</a>
-								</li>
-							</AnimatedComponent>
+						{menuItems.map((item, index) => (
+							<HeaderItem key={item} name={item} delay={calculateDelay(index)} onClick={closeMobileMenu} />
 						))}
 						<li className={`${styles.contact} `}>
 							<a className={`button ${styles.button} `} href="#contact">
@@ -144,4 +134,25 @@ export default function Header() {
 
 
 	);
+}
+
+
+// <HeaderItem key={item} name={item} delay={calculateDelay(index)} onClick={handleClickClose} />
+
+interface HeaderItemProps {
+	name: string;
+	delay: number;
+	onClick?: () => void;
+}
+
+
+const HeaderItem: React.FC<HeaderItemProps> = ({ name, delay, onClick }) => {
+	const lowerName = name.toLowerCase();
+	return (<AnimatedComponent delay={delay}>
+		<li onClick={onClick} className={styles[lowerName]}>
+			<a className={styles.not_button} href={`#${lowerName}`}>
+				{name}
+			</a>
+		</li>
+	</AnimatedComponent>)
 }
