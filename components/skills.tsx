@@ -6,13 +6,13 @@ import React, { useState } from 'react';
 
 import { proximaNovaBold, proximaNovaSemiBold } from '@/app/fonts';
 import styles from '@/styles/skills.module.css';
-import isMobileView from '@/components/hooks/useMobileView';
+import useMobileView from '@/components/hooks/useMobileView';
 
 interface SkillsComponentProps { }
 
 const SkillsComponent: React.FC<SkillsComponentProps> = () => {
 	
-	const isMobile = isMobileView();
+	const isMobile = useMobileView();
 
 	return (
 		<section id={`skills`} className={`section ${styles.skills_section}`}>

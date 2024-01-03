@@ -16,25 +16,26 @@ export default function Home() {
 	
 	// animations
 	const [isAnimationDone, setAnimationDone] = useState(false);
-	const inAnimationCheck = async () => {
-		if (!isAnimationDone) {
-			const elements = document.querySelectorAll("#home .in_animation") as NodeListOf<HTMLElement>;
-
-			if (elements.length === 0) return;
-
-			if (isInViewport(elements[0])) {
-				for (let i of elements) {
-					const element = i as HTMLElement;
-					element.style.opacity = "1";
-					element.style.transform = "translateY(0)";
-					await sleep(100);
-				}
-				setAnimationDone(true);
-			}
-		}
-	}
 
 	useEffect(() => {
+		const inAnimationCheck = async () => {
+			if (!isAnimationDone) {
+				const elements = document.querySelectorAll("#home .in_animation") as NodeListOf<HTMLElement>;
+	
+				if (elements.length === 0) return;
+	
+				if (isInViewport(elements[0])) {
+					for (let i of elements) {
+						const element = i as HTMLElement;
+						element.style.opacity = "1";
+						element.style.transform = "translateY(0)";
+						await sleep(100);
+					}
+					setAnimationDone(true);
+				}
+			}
+		}
+
 		const handleScroll = () => {
 			inAnimationCheck();
 		};
