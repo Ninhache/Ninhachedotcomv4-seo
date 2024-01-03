@@ -123,11 +123,7 @@ export default function Projects() {
 	const [originalData, _] = useState<Project[]>(jsonData);
 	const [sortedData, setSortedData] = useState<Project[]>(sortFunctions[SortType.DATE](jsonData));
 
-	const sortData = (sortType: SortType) => {
-		const sorted = sortFunctions[sortType]([...originalData]);
-
-		setSortedData(sorted);
-	};
+	
 
 	const sortButtons: SortButtonData[] = [
 		{ label: 'Date', value: SortType.DATE },
@@ -139,6 +135,11 @@ export default function Projects() {
 	];
 
 	useEffect(() => {
+		const sortData = (sortType: SortType) => {
+			const sorted = sortFunctions[sortType]([...originalData]);
+			setSortedData(sorted);
+		};
+
 		sortData(selectedSort);
 	}, [selectedSort, originalData]);
 
