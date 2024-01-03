@@ -2,25 +2,17 @@
 
 import { Skill, SkillCategory } from '@/jsons/jsonUtils';
 import rawData from '@/jsons/skills.json';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { proximaNovaBold, proximaNovaSemiBold } from '@/app/fonts';
 import styles from '@/styles/skills.module.css';
+import isMobileView from '@/components/hooks/useMobileView';
 
 interface SkillsComponentProps { }
 
 const SkillsComponent: React.FC<SkillsComponentProps> = () => {
-
-	const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 930);
-
-	useEffect(() => {
-		const handleResize = () => {
-			setIsWideScreen(window.innerWidth > 930);
-		};
-
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-	}, []);
+	
+	const isMobile = isMobileView();
 
 	return (
 		<section id={`skills`} className={`section ${styles.skills_section}`}>
@@ -28,7 +20,7 @@ const SkillsComponent: React.FC<SkillsComponentProps> = () => {
 				<span className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}>What are my Skills?</span>
 				<div className={styles.skills_content}>
 					<div className={`${styles.box}`}>
-						{isWideScreen ? <WideScreenView data={rawData} /> : <NarrowScreenView data={rawData} />}
+						{!isMobile ? <WideScreenView data={rawData} /> : <NarrowScreenView data={rawData} />}
 					</div>
 				</div>
 			</div>
@@ -91,7 +83,7 @@ interface NarrowScreenViewProps {
 const NarrowScreenView: React.FC<NarrowScreenViewProps> = ({ data }) => {
 	return (
 		<>
-			{data.map((category, index) => (
+			{data.map((category) => (
 				<>
 					<div className={`${styles.category_title} ${proximaNovaBold.className}`}>{category.name}</div>
 					<div className={`${styles.box_content}`}>

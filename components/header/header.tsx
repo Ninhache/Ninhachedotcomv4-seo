@@ -5,7 +5,7 @@ import styles from '@/styles/header.module.css';
 import { useEffect, useRef, useState } from 'react';
 import AnimatedComponent from '@/components/AnimatedComponent';
 import { ralewaySemiBold } from '@/app/fonts';
-import useIsMobileView from '../hooks/useMobileView';
+import isMobileView from '../hooks/useMobileView';
 
 import throttle from 'lodash.throttle'; // lodash throttle function
 
@@ -13,7 +13,7 @@ export default function Header() {
 
 	const menuItems = ['Home', 'About', 'Projects', 'Skills', 'Experience'];
 
-	const isMobile = useIsMobileView();
+	const isMobile = isMobileView();
 	const menuDivRef = useRef<HTMLDivElement>(null);
 
 	const openMobileMenu = () => {

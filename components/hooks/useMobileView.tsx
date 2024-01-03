@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useIsMobileView = (): boolean => {
+const isMobileView = (): boolean => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -18,4 +18,4 @@ const useIsMobileView = (): boolean => {
   return isMobile;
 };
 
-export default useIsMobileView;
+export default isMobileView;

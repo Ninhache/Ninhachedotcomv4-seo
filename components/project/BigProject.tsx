@@ -1,7 +1,7 @@
 "use client";
 
 import { calibreRegular, calibreSemibold, ralewayBold, ralewayMedium, ralewaySemiBold } from '@/app/fonts';
-import useIsMobileView from '@/components/hooks/useMobileView';
+import isMobileView from '@/components/hooks/useMobileView';
 import { Project } from '@/jsons/jsonUtils';
 import styles from '@/styles/projects/bigproject.module.css';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ export interface BigProjectProps {
 
 export const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) => {
 
-	const isMobile = useIsMobileView();
+	const isMobile = isMobileView();
 
 	return (
 		<>
