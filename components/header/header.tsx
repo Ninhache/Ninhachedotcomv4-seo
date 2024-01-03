@@ -12,17 +12,17 @@ export default function Header() {
 	const isMobile = useIsMobileView();
 	const menuDivRef = useRef<HTMLDivElement>(null);
 
-	const handleClickOpen = () => {
+	const openMobileMenu = () => {
 		if (menuDivRef.current) {
-			menuDivRef.current.style.transform = "translateX(0px)";
-			menuDivRef.current.style.boxShadow = "-10px 0px 30px rgba(0, 0, 0, 0.7)";
+			menuDivRef.current.classList.add(styles.menuOpen);
+			menuDivRef.current.classList.remove(styles.menuClosed);
 		}
 	};
 
-	const handleClickClose = () => {
+	const closeMobileMenu = () => {
 		if (menuDivRef.current) {
-			menuDivRef.current.style.transform = "translateX(clamp(0px, 100%, 400px))";
-			menuDivRef.current.style.boxShadow = "none";
+			menuDivRef.current.classList.add(styles.menuClosed);
+			menuDivRef.current.classList.remove(styles.menuOpen);
 		}
 	};
 
@@ -83,7 +83,7 @@ export default function Header() {
 										<li className={`${styles.contact} `}>
 											<a className={`button ${styles.button} `} href="#contact">
 												<p>Contact</p>
-												<svg className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
+												<svg role='button' aria-label='open header' className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
 													<g>
 														<path className="path_1" d="M8.9 12.4 L8.9 12.4" />
 														<path className="path_2" d="M16.2 5 8.9 12.4 1.5 5" />
@@ -98,7 +98,7 @@ export default function Header() {
 
 						{
 							isMobile && (
-								<svg onClick={handleClickOpen} className={`${styles.menu_icon}`} viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+								<svg onClick={openMobileMenu} className={`${styles.menu_icon}`} viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
 									<line x1="10" y1="10" x2="130" y2="10" />
 									<line x1="30" y1="50" x2="130" y2="50" />
 									<line x1="50" y1="90" x2="130" y2="90" />
@@ -110,7 +110,7 @@ export default function Header() {
 			</div>
 
 			<div id="menu_div" className={`${styles.menu_div} ${ralewaySemiBold.className}`} ref={menuDivRef}>
-				<svg onClick={handleClickClose} className={`${styles.menu_icon}`} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+				<svg role='button' aria-label='close header' onClick={closeMobileMenu} className={`${styles.menu_icon}`} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
 					<line x1="10" y1="10" x2="90" y2="90" />
 					<line x1="10" y1="90" x2="90" y2="10" />
 				</svg>
@@ -118,7 +118,7 @@ export default function Header() {
 					<ol>
 						{['Home', 'About', 'Projects', 'Skills', 'Experience'].map((item, index) => (
 							<AnimatedComponent key={item} delay={calculateDelay(index)}>
-								<li onClick={handleClickClose} className={styles[item.toLowerCase()]}>
+								<li onClick={closeMobileMenu} className={styles[item.toLowerCase()]}>
 									<a className={styles.not_button} href={`#${item.toLowerCase()}`}>
 										{item}
 									</a>
