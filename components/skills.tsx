@@ -1,31 +1,64 @@
 "use client"
 
-import { proximaNovaBold } from '@/app/fonts'
-
-import styles from '@/styles/skills.module.css'
-
-import rawData from '@/jsons/skills.json'
 import { Skill, SkillCategory } from '@/jsons/jsonUtils';
-import { useState } from 'react';
+import rawData from '@/jsons/skills.json';
+import React, { useEffect, useState } from 'react';
 
-interface SkillsListProps {
-	skills: Skill[];
-	isVisible: boolean;
+import { proximaNovaBold, proximaNovaSemiBold } from '@/app/fonts';
+import styles from '@/styles/skills.module.css';
+
+interface SkillsComponentProps { }
+
+const SkillsComponent: React.FC<SkillsComponentProps> = () => {
+
+	const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 930);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsWideScreen(window.innerWidth > 930);
+		};
+
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	return (
+		<section id={`skills`} className={`section ${styles.skills_section}`}>
+			<div className={`content leaning`}>
+				<span className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}>What are my Skills?</span>
+				<div className={styles.skills_content}>
+					<div className={`${styles.box}`}>
+						{isWideScreen ? <WideScreenView data={rawData} /> : <NarrowScreenView data={rawData} />}
+					</div>
+				</div>
+			</div>
+		</section>
+	);
+};
+
+interface WideScreenViewProps {
+	data: SkillCategory[];
 }
 
-const SkillsList: React.FC<SkillsListProps> = ({ skills, isVisible }) => (
-	<div
-		className={`${styles.skills_list}`}
-		style={{ display: isVisible ? 'grid' : 'none' }}
-	>
-		{skills.map(skill => (
-			<a key={skill.name} className={`${styles.skill} ${proximaNovaBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
-				<img src={skill.logo} alt={skill.name} />
-				<span>{skill.name}</span>
-			</a>
-		))}
-	</div>
-);
+const WideScreenView: React.FC<WideScreenViewProps> = ({ data }) => {
+
+	const [selectedCategory, setSelectedCategory] = useState(rawData[0].name);
+
+
+	return (
+		<>
+			<div className={`${styles.menu}`}>
+				{data.map((category, index) => (
+					<SkillCategoryView key={index} category={category} onClick={() => setSelectedCategory(category.name)} selectioned={selectedCategory === category.name} />
+				))}
+			</div>
+			<div className={`${styles.box_content}`}>
+				{data.map((category, index) => (
+					<SkillsList key={index} skills={category.skills} isVisible={category.name === selectedCategory} />
+				))}
+			</div>
+		</>)
+}
 
 interface SkillCategoryProps {
 	category: SkillCategory;
@@ -33,7 +66,8 @@ interface SkillCategoryProps {
 	onClick: () => void;
 }
 
-const SkillCategory: React.FC<SkillCategoryProps> = ({ category, selectioned, onClick }) => {
+
+const SkillCategoryView: React.FC<SkillCategoryProps> = ({ category, selectioned, onClick }) => {
 
 	const style = {
 		'backgroundColor': selectioned ? 'rgb(255, 255, 255)' : 'unset',
@@ -43,50 +77,53 @@ const SkillCategory: React.FC<SkillCategoryProps> = ({ category, selectioned, on
 	return (
 		<div
 			className={`${styles.category} ${proximaNovaBold.className}`}
-			style={style}
 			onClick={onClick}
-		>
-			{category.name}
-		</div>)
+			style={style}
+		>{category.name}</div>
+	)
+};
+
+
+interface NarrowScreenViewProps {
+	data: SkillCategory[];
 }
 
-
-export default function Skills() {
-
-	const [selectedCategory, setSelectedCategory] = useState(rawData[0].name);
-
+const NarrowScreenView: React.FC<NarrowScreenViewProps> = ({ data }) => {
 	return (
 		<>
-			<section id={`skills`} className={`section ${styles.skills_section}`}>
-				<div className={`content leaning`}>
-					<span className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}>What are my Skills?</span>
-					<div className={styles.skills_content}>
-						<div className={styles.box}>
-							<div className={`${styles.menu}`}>
-								{rawData.map((category, index) => (
-									<SkillCategory
-										key={index}
-										category={category}
-										selectioned={category.name === selectedCategory}
-										onClick={() => setSelectedCategory(category.name)}
-									/>
-								))}
-							</div>
-							<div className={`${styles.box_content}`}>
-								{rawData.map(category =>
-									<SkillsList
-										key={category.name}
-										skills={category.skills}
-										isVisible={selectedCategory === category.name}
-									/>
-								)}
-							</div>
-						</div>
+			{data.map((category, index) => (
+				<>
+					<div className={`${styles.category_title} ${proximaNovaBold.className}`}>{category.name}</div>
+					<div className={`${styles.box_content}`}>
+						<SkillsList skills={category.skills} isVisible={true} />
 					</div>
-				</div>
-			</section>
-
-			<div className={`section_end ${styles.skills_end}`}></div>
+				</>
+			))}
 		</>
 	)
+};
+
+interface SkillsListProps {
+	skills: Skill[];
+	isVisible: Boolean;
+	onClick?: () => void;
 }
+
+
+const SkillsList: React.FC<SkillsListProps> = ({ skills, isVisible }) => {
+
+
+	return (
+		<div className={`${styles.skills_list}`}
+			style={{ display: isVisible ? 'grid' : 'none' }}
+		>
+			{skills.map((skill, index) => (
+				<a key={index} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
+					<img src={skill.logo} alt={skill.name} />
+					<span>{skill.name}</span>
+				</a>
+			))}
+		</div>)
+};
+
+export default SkillsComponent;
