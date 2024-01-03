@@ -112,13 +112,12 @@ interface SkillsListProps {
 
 const SkillsList: React.FC<SkillsListProps> = ({ skills, isVisible }) => {
 
-
 	return (
 		<div className={`${styles.skills_list}`}
 			style={{ display: isVisible ? 'grid' : 'none' }}
 		>
 			{skills.map((skill, index) => (
-				<a key={index} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
+				<a key={index} style={{textDecoration: 'none'}} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
 					<img src={skill.logo} alt={skill.name} />
 					<span>{skill.name}</span>
 				</a>
