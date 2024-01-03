@@ -83,13 +83,13 @@ interface NarrowScreenViewProps {
 const NarrowScreenView: React.FC<NarrowScreenViewProps> = ({ data }) => {
 	return (
 		<>
-			{data.map((category) => (
-				<>
+			{data.map((category, index) => (
+				<div key={index}>
 					<div className={`${styles.category_title} ${proximaNovaBold.className}`}>{category.name}</div>
 					<div className={`${styles.box_content}`}>
 						<SkillsList skills={category.skills} isVisible={true} />
 					</div>
-				</>
+				</div>
 			))}
 		</>
 	)
