@@ -14,38 +14,38 @@ export default function Header() {
 
 	const openMobileMenu = () => {
 		if (menuDivRef.current) {
-			menuDivRef.current.classList.add(styles.menuOpen);
-			menuDivRef.current.classList.remove(styles.menuClosed);
+			menuDivRef.current.style.transform = "translateX(0px)";
+			menuDivRef.current.style.boxShadow = "-10px 0px 30px rgba(0, 0, 0, 0.7)";
 		}
 	};
 
 	const closeMobileMenu = () => {
 		if (menuDivRef.current) {
-			menuDivRef.current.classList.add(styles.menuClosed);
-			menuDivRef.current.classList.remove(styles.menuOpen);
+			menuDivRef.current.style.transform = "translateX(clamp(0px, 100%, 400px))";
+			menuDivRef.current.style.boxShadow = "none";
 		}
 	};
 
-
 	const [isVisible, setIsVisible] = useState(true);
 	const [isTop, setIsTop] = useState(true);
-	const [lastScrollY, setLastScrollY] = useState(0);
+	const lastScrollY = useRef(0);
 
 	useEffect(() => {
 		const controlHeader = () => {
-			if (typeof window !== 'undefined') {
-				const currentScrollY = window.scrollY;
-				setIsVisible(currentScrollY <= lastScrollY || currentScrollY <= 50);
-				setLastScrollY(currentScrollY);
-				setIsTop(currentScrollY <= 50);
-			}
+		  if (typeof window !== 'undefined') {
+			const currentScrollY = window.scrollY;
+			setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50);
+			lastScrollY.current = currentScrollY;
+			setIsTop(currentScrollY <= 50);
+		  }
 		};
-
+	  
 		if (typeof window !== 'undefined') {
-			window.addEventListener('scroll', controlHeader);
-			return () => window.removeEventListener('scroll', controlHeader);
+		  window.addEventListener('scroll', controlHeader);
+		  return () => window.removeEventListener('scroll', controlHeader);
 		}
-	}, [lastScrollY]);
+	  }, []);
+	  
 
 	const headerStyle = {
 		transition: 'all 0.5s ease-in-out',
