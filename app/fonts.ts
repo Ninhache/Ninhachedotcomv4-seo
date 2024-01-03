@@ -30,3 +30,7 @@ export const proximaNovaBold = localFont({
     display: 'swap'
 })
 
+export const proximaNovaSemiBold = localFont({
+    src: '../fonts/proxima_nova/ProximaNovaSemibold.otf',
+    display: 'swap'
+})
