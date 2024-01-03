@@ -1,25 +1,28 @@
 "use client";
 
 import { calibreRegular, calibreSemibold, ralewayBold, ralewayMedium, ralewaySemiBold } from '@/app/fonts';
-import styles from '@/styles/projects/bigproject.module.css';
-import { isInViewport, sleep } from '@/utils';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import useIsMobileView from '@/components/hooks/useMobileView';
 import { Project } from '@/jsons/jsonUtils';
+import styles from '@/styles/projects/bigproject.module.css';
+import Link from 'next/link';
 
 export interface BigProjectProps {
 	project: Project;
 	isInverted: boolean;
 };
 
+
+
 export const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) => {
+
+	const isMobile = useIsMobileView();
 
 	return (
 		<>
 			<div
 				className={`project ${styles.project} ${isInverted ? `inverted ${styles.inverted}` : ""}`}
 				style={{
-					backgroundImage: window.innerWidth < 780 ? `url(${project.image})` : 'unset'
+					backgroundImage: isMobile ? `url(${project.image})` : 'unset'
 				}}
 			>
 				<div className={`${styles.project_text}`}>
@@ -49,7 +52,7 @@ export const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) =
 					</div>
 				</div>
 				{
-					window.innerWidth > 780 && (
+					!isMobile && (
 						<div className={`${styles.project_view}`}>
 							<a href={`${project.links.redirect}`} target="_blank">
 								<img src={project.image} alt={`Image of the project ${project.title}`} />
