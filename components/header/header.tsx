@@ -7,6 +7,8 @@ import AnimatedComponent from '@/components/AnimatedComponent';
 import { ralewaySemiBold } from '@/app/fonts';
 import useIsMobileView from '../hooks/useMobileView';
 
+import throttle from 'lodash.throttle'; // lodash throttle function
+
 export default function Header() {
 
 	const menuItems = ['Home', 'About', 'Projects', 'Skills', 'Experience'];
@@ -32,22 +34,24 @@ export default function Header() {
 	const [isTop, setIsTop] = useState(true);
 	const lastScrollY = useRef(0);
 
-	useEffect(() => {
-		const controlHeader = () => {
-			if (typeof window !== 'undefined') {
-				const currentScrollY = window.scrollY;
-				setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50);
-				lastScrollY.current = currentScrollY;
-				setIsTop(currentScrollY <= 50);
-			}
-		};
+	const controlHeader = throttle(() => {
+		if (typeof window !== 'undefined') {
+			const currentScrollY = window.scrollY;
+			setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50);
+			lastScrollY.current = currentScrollY;
+			setIsTop(currentScrollY <= 50);
+		}
+	}, 100);
 
+	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			window.addEventListener('scroll', controlHeader);
-			return () => window.removeEventListener('scroll', controlHeader);
+			return () => {
+				controlHeader.cancel();
+				window.removeEventListener('scroll', controlHeader);
+			};
 		}
 	}, []);
-
 
 	const headerStyle = {
 		transition: 'all 0.5s ease-in-out',
@@ -65,7 +69,7 @@ export default function Header() {
 				<header id="header" className={`${styles.header}`}>
 					<nav className={styles.nav}>
 						<div className={styles.logo}>
-							<a href="https://ninhache.fr/">
+							<a href="https://ninhache.fr/" target="_blank" rel="noopener noreferrer">
 								<img src="/svg/Logo.svg" alt="logo"></img>
 							</a>
 						</div>
