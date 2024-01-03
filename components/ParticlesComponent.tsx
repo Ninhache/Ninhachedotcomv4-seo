@@ -69,14 +69,14 @@ export default function ParticlesComponent() {
         [],
     );
     
-    const particlesLoaded = async (container?: Container): Promise<void> => {
-        console.log(container);
-    };
+    // const particlesLoaded = async (container?: Container): Promise<void> => {
+        
+    // };
 
     return (
         init && <Particles
             id="tsparticles"
-            particlesLoaded={particlesLoaded}
+            // particlesLoaded={particlesLoaded}
             className={styles.particles}
             // url='http://localhost:3000/particles.json'
             options={options}
