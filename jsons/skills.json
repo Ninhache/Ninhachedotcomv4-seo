@@ -1,6 +1,6 @@
 [
   {
-    "name": "Raw Programming Language",
+    "name": "Programming Languages Stack",
     "skills": [
       {
         "name": "Java",
@@ -91,7 +91,7 @@
     ]
   },
   {
-    "name": "More?",
+    "name": "Infrastructure",
     "skills": [
       {
         "name": "Git",

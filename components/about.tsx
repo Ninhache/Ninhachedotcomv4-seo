@@ -51,14 +51,11 @@ export default function About() {
 					<div className={styles.about_content}>
 						<div className={styles.left_content}>
 							<p className={`${styles.p_1} ${calibreRegular.className}`}>
-								Hello! My name is Almeida Neo, and I am 20 years old. I enjoy working on personal projects during my free time, which you can find in the <a className="link" href="#projects">projects</a> section of this website.
+								Hello! My name is Almeida Neo, and I am 21 years old. I enjoy working on personal projects during my free time, which you can find in the <a className="link" href="#projects">projects</a> section of this website.
 								<br /><br />
-								Currently, I am a student at the University of Lille, studying to pursue my academic goals.
+								At present, I am actively seeking permanent employment opportunities. Please feel free to contact me !
 								<br /><br />
-								Although my website is still a work in progress, I am continuously working to add more content.
-								Thank you for taking the time to visit my website.
-								<br /><br />
-								Want more informations about me ?
+								You may want more informations about me .. ?
 							</p>
 
 							<a className={`${ralewaySemiBold.className} ${styles.download_resume}`} href="/Resume" target="_blank">
