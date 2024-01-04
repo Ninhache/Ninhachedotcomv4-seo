@@ -2,7 +2,7 @@
 
 import { Skill, SkillCategory } from '@/jsons/jsonUtils';
 import rawData from '@/jsons/skills.json';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import { proximaNovaBold, proximaNovaSemiBold } from '@/app/fonts';
 import styles from '@/styles/skills.module.css';
@@ -11,7 +11,7 @@ import useMobileView from '@/components/hooks/useMobileView';
 interface SkillsComponentProps { }
 
 const SkillsComponent: React.FC<SkillsComponentProps> = () => {
-	
+
 	const isMobile = useMobileView();
 
 	return (
@@ -83,14 +83,18 @@ interface NarrowScreenViewProps {
 const NarrowScreenView: React.FC<NarrowScreenViewProps> = ({ data }) => {
 	return (
 		<>
-			{data.map((category, index) => (
-				<div key={index}>
-					<div className={`${styles.category_title} ${proximaNovaBold.className}`}>{category.name}</div>
-					<div className={`${styles.box_content}`}>
-						<SkillsList skills={category.skills} isVisible={true} />
-					</div>
-				</div>
-			))}
+			{
+				data.map((category, index) => (
+					<Fragment key={index}>
+						<div className={`${styles.category_title} ${proximaNovaBold.className}`}>
+							{category.name}
+						</div>
+						<div className={`${styles.box_content}`}>
+							<SkillsList skills={category.skills} isVisible={true} />
+						</div>
+					</Fragment>
+				))
+			}
 		</>
 	)
 };
@@ -109,7 +113,7 @@ const SkillsList: React.FC<SkillsListProps> = ({ skills, isVisible }) => {
 			style={{ display: isVisible ? 'grid' : 'none' }}
 		>
 			{skills.map((skill, index) => (
-				<a key={index} style={{textDecoration: 'none'}} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
+				<a key={index} style={{ textDecoration: 'none' }} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
 					<img src={skill.logo} alt={skill.name} />
 					<span>{skill.name}</span>
 				</a>
