@@ -1,0 +1,94 @@
+"use client";
+import { calibreRegular, calibreSemibold, ralewayMedium, ralewaySemiBold } from '@/app/fonts';
+import { Experience } from '@/jsons/jsonUtils';
+
+import styles from '@/styles/experience/experienceItem.module.css';
+import '@/styles/globals.css'
+
+import Link from 'next/link';
+import { Fragment } from 'react';
+import useMobileView from '@/app/_components/hooks/useMobileView';
+
+interface ExperienceItemProps {
+	inverted: Boolean;
+	experience: Experience;
+}
+
+export const ExperienceItem: React.FC<ExperienceItemProps> = ({ inverted, experience }) => {
+
+	const parts = experience.date.split("<br>");
+
+	const isMobile = useMobileView();
+
+	return (
+		isMobile ? (
+			<div className={`${styles.content}`} style={{ backgroundImage: `url(${experience.image})` }}>
+				<div className={`${styles.information}`}>
+					<div className={`${styles.type} ${ralewayMedium.className}`}>
+						<span>{experience.type}</span>
+						<span>
+							{experience.date.split("<br>").map((part, index) => (
+								<Fragment key={index}>
+									{part}
+									{index !== experience.date.split("<br>").length - 1 && <br />}
+								</Fragment>
+							))}
+						</span>
+					</div>
+					<a className={`${styles.title} ${calibreSemibold.className}`} href={experience.link} target="_blank">
+						{experience.title}
+					</a>
+					<div className={`${styles.text} ${calibreRegular.className}`}>
+						<p>{experience.description}</p>
+					</div>
+					<div className={`tags ${styles.tags}`}>
+						{experience.tags.map(tag => <Link className={`${ralewaySemiBold.className}`} key={tag.name} href={`${tag.url}`} target="_blank">{tag.name}</Link>)}
+					</div>
+				</div>
+			</div>
+		) : (
+			<div className={`${styles.content} ${inverted ? styles.inverted : ""}`}>
+				<div className={`${styles.information}`}>
+					<div className={`${styles.type}`}
+						style={{
+							marginLeft: inverted ? 'unset' : '15px'
+						}}
+					>
+						<span
+							className={`${ralewayMedium.className}`}
+							style={{
+								marginRight: inverted ? '15px' : 'unset',
+							}}
+						>
+							{parts.map((part, index) => (
+								<Fragment key={index}>
+									{part}
+									{index !== parts.length - 1 && <br />}
+								</Fragment>
+							))}
+						</span>
+						{
+							experience.type && <span className={`${styles.type} ${ralewayMedium.className}`}><i>{experience.type}</i></span>
+						}
+					</div>
+					<a className={`${styles.title} ${calibreSemibold.className}`} href={`${experience.link}`} target="_blank">
+						{experience.title}
+					</a>
+					<div className={`${styles.text} ${calibreRegular.className}`}>
+						<p>{experience.description}</p>
+					</div>
+					<div className={`${styles.tags}`}>
+						{
+							experience.tags.map(tag => <Link className={`${ralewaySemiBold.className}`} key={tag.name} href={`${tag.url}`} target="_blank">{tag.name}</Link>)
+						}
+					</div>
+				</div>
+				<div className={`${styles.view}`}>
+					<a href={`${experience.link}`} target="_blank">
+						<img src={`${experience.image}`} />
+					</a>
+				</div>
+			</div>
+		)
+	)
+};
