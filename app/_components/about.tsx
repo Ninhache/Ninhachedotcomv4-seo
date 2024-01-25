@@ -1,48 +1,47 @@
 "use client"
 
-import Image from "next/image"
-import styles from '@/styles/about.module.css'
+import styles from '@/styles/about.module.css';
 
-import { calibreRegular, proximaNovaBold, ralewaySemiBold } from '@/app/fonts'
-import { useEffect, useState } from "react";
+import { calibreRegular, proximaNovaBold, ralewaySemiBold } from '@/app/fonts';
 import { isInViewport, sleep } from "@/utils";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function About() {
 
-	const [isAnimationDone, setAnimationDone] = useState(false);
+	// const [isAnimationDone, setAnimationDone] = useState(false);
 
-	useEffect(() => {
-		const inAnimationCheck = async () => {
-			if (!isAnimationDone) {
-				const photo = document.querySelector("#photo img") as HTMLElement;
-				if (isInViewport(photo)) {
-					photo.style.clipPath = "circle(49.7%)";
-					await sleep(300);
-					setAnimationDone(true);
-				}
-			}
-		}
+	// useEffect(() => {
+	// 	const inAnimationCheck = async () => {
+	// 		if (!isAnimationDone) {
+	// 			const photo = document.querySelector("#photo img") as HTMLElement;
+	// 			if (isInViewport(photo)) {
+	// 				photo.style.clipPath = "circle(49.7%)";
+	// 				setAnimationDone(true);
+	// 				await sleep(300);
+	// 			}
+	// 		}
+	// 	}
 
-		const handleScroll = () => {
-			inAnimationCheck();
-		};
+	// 	const handleScroll = () => {
+	// 		inAnimationCheck();
+	// 	};
 
-		const handleResize = () => {
-			inAnimationCheck();
-		};
+	// 	const handleResize = () => {
+	// 		inAnimationCheck();
+	// 	};
 
-		window.addEventListener("scroll", handleScroll);
-		window.addEventListener("resize", handleResize);
+	// 	window.addEventListener("scroll", handleScroll);
+	// 	window.addEventListener("resize", handleResize);
 
-		// Initial check
-		inAnimationCheck();
+	// 	// Initial check
+	// 	inAnimationCheck();
 
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-			window.removeEventListener("resize", handleResize);
-		};
-	}, [isAnimationDone]);
+	// 	return () => {
+	// 		window.removeEventListener("scroll", handleScroll);
+	// 		window.removeEventListener("resize", handleResize);
+	// 	};
+	// }, [isAnimationDone]);
 
 	return (
 		<>

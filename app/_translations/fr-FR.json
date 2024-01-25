@@ -2,5 +2,20 @@
   "useLocaleNames": {
     "en-US": "Anglais",
     "fr-FR": "Français"
+  },
+  "home": {
+    "greeting": "Bonjour, je m'appelle",
+    "name": "Almeida Neo.",
+    "profession": "Je suis développeur de logiciels.",
+    "description": "Je suis un étudiant français de 21 ans !",
+    "start": "Commençons"
+  },
+  "about": {
+    "question": "Qui suis-je ?",
+    "introduction":"Bonjour ! Je m'appelle Almeida Neo, et j'ai 21 ans. J'aime travailler sur des projets personnels pendant mon temps libre, que vous pouvez trouver dans la section {projects} de ce site web.",
+    "projectLink" :"projets",
+    "employmentSeeking" : "Actuellement, je suis activement à la recherche d'opportunités d'emploi permanentes. N'hésitez pas à me contacter !",
+    "additionalInfo" :"Vous voulez peut-être plus d'informations sur moi .. ?",
+    "resumeLink" :"Ouvrir mon CV"
   }
 }

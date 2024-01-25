@@ -2,5 +2,20 @@
   "useLocaleNames": {
     "en-US": "English",
     "fr-FR": "French"
+  },
+  "home": {
+    "greeting": "Hi, my name is",
+    "name": "Almeida Neo.",
+    "profession": "I'm a Software Developer.",
+    "description": "I'm a 21 years old french student !",
+    "start": "Get started"
+  },
+  "about": {
+    "question": "Who am I?",
+    "introduction":"Hello! My name is Almeida Neo, and I am 21 years old. I enjoy working on personal projects during my free time, which you can find in the {projects} section of this website.",
+    "projectLink" :"projects",
+    "employmentSeeking" : "At present, I am actively seeking permanent employment opportunities. Please feel free to contact me !",
+    "additionalInfo" :"You may want more informations about me .. ?",
+    "resumeLink" :"Open my resume"
   }
 }
