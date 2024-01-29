@@ -1,7 +1,7 @@
 "use client";
 
 import React, { CSSProperties, useEffect, useState } from 'react';
-import { useIntersectionObserver } from '@/app/_components/hooks/useIntersectionObserver';
+import { useIntersectionObserver } from '@/app/_hooks/useIntersectionObserver';
 
 interface AnimatedComponentProps {
     children: React.ReactNode;

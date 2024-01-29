@@ -1,5 +1,3 @@
-"use client"
-
 import { proximaNovaBold } from '@/app/fonts';
 
 import rawData from '@/jsons/experiences.json';
@@ -11,7 +9,6 @@ import styles from '@/styles/experience/experience.module.css';
 import '@/styles/globals.css'
 
 export default function Experience() {
-
 	return (
 		<>
 			<section className={`section ${styles.section}`} id="experience">

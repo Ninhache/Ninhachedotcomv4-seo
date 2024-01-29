@@ -1,34 +1,40 @@
 "use client";
 
-import { Locale, locales } from "@/i18nconfig";
+import { Locale, locales } from "@/config";
 import { useLocale } from "next-intl";
-import { usePathname, useRouter } from "next-intl/client";
+import { useRouter } from "next/navigation";
+
+import styles from '@/styles/localeSwitcher.module.css';
+import Image from "next/image";
 
 export default function LocaleSwitcher({ localeNames }: { localeNames: Record<Locale, string> }) {
   const locale = useLocale() as Locale;
   const router = useRouter();
-  const pathName = usePathname();
-
-  const lastIndex = locales.length - 2;
 
   const switchLocale = (loc: string, e: React.MouseEvent<HTMLElement>) => {
-    router.push(pathName, { locale: loc });
+    router.replace(loc);
   };
 
   return (
-    <div className="group relative inline-block">
-      <div className="ease-in duration-150 cursor-pointer px-2 rounded-t-lg hover:text-blue group-hover:bg-white">
-        {localeNames[locale]}
-      </div>
-
-      {locales.filter(loc => loc !== locale).map((loc, index) => (
-        <div key={loc} className={`hidden group-hover:block absolute w-full h-full text-center group-hover:bg-white transition-opacity duration-150 opacity-0 group-hover:opacity-100 ${index === lastIndex ? "rounded-b-lg" : ""}`} >
-          <p onClick={(e) => switchLocale(loc, e)} className={`text-black cursor-pointer group-hover:bg-red hover:text-blue slide-in-left`}>
-            {localeNames[loc]}
+    <div className={styles.container} style={{ display: "flex", justifyContent: "center", alignItems: "center", paddingLeft: 12, paddingRight: 12 }}>
+      <div className={styles.content}>
+        <div className={styles.label}>
+          <Image src={`/images/translations/${locale}.jpg`} width={35} height={20} alt={locale} />
+          <p>
+            {localeNames[locale]}
           </p>
         </div>
-      ))}
 
+        {locales.filter(loc => loc !== locale).map((loc, index) => (
+          <div key={loc} className={styles.langList} onClick={(e) => switchLocale(loc, e)}>
+            <Image src={`/images/translations/${loc}.jpg`} width={35} height={20} alt={loc} />
+            <p className={styles.langItem}>
+              {localeNames[loc]}
+            </p>
+          </div>
+        ))}
+
+      </div>
     </div>
   );
 }

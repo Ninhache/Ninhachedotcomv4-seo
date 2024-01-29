@@ -1,5 +1,8 @@
 import '@/styles/globals.css';
+
+import { Locale, locales } from "@/config";
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 const title = `Almeida Neo's Portfolio`;
 const description = `Remind me to add a description please`;
@@ -41,12 +44,27 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children}: {
-  children: React.ReactNode
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export default function RootLayout({
+  children,
+  params: { locale },
+}: {
+  children: React.ReactNode;
+  params: { locale: Locale };
 }) {
+
+  if (locales.includes(locale) === false) {
+    return notFound();
+  }
+
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang={locale}>
+      <body>
+        {children}
+      </body>
     </html>
-  )
+  );
 }

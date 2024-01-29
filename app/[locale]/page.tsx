@@ -6,18 +6,33 @@ import Footer from '@/app/_components/footer'
 import Header from '@/app/_components/header/header'
 import Home from '@/app/_components/home'
 import Skills from '@/app/_components/skills'
-import { Locale } from '@/i18nconfig'
+import { Locale } from '@/config'
+import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 
-export default async function Page({ params: { locale }}: {params: { locale: Locale }}) {
+type Props = {
+  params: { locale: string };
+};
+
+export default function Page({ params: { locale } }: Props) {
+
+  const messages = useMessages();
+
   return (
     <main className='main'>
-      <Header />
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <Header />
+      </NextIntlClientProvider>
 
       <Home />
+      
+      <NextIntlClientProvider
+        locale={locale} messages={messages}
+      >
+        <About />
+        <Projects />
+        <Skills />
+      </NextIntlClientProvider>
 
-      <About />
-      <Projects />
-      <Skills />
       <Experience />
       <Contact />
       <Footer />

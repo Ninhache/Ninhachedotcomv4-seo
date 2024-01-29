@@ -1,17 +1,25 @@
 
 "use client"
 
-import styles from '@/styles/header.module.css';
-import { useEffect, useRef, useState } from 'react';
 import AnimatedComponent from '@/app/_components/AnimatedComponent';
 import { ralewaySemiBold } from '@/app/fonts';
-import useMobileView from '../hooks/useMobileView';
+import styles from '@/styles/header.module.css';
+import { useEffect, useRef, useState } from 'react';
 
+import useLocaleNames from '@/app/_hooks/useLocaleNames';
+import useMobileView from '@/app/_hooks/useMobileView';
+import { Locale } from '@/config';
 import throttle from 'lodash.throttle'; // lodash throttle function
+import { useLocale, useTranslations } from 'next-intl';
+import LocaleSwitcher from '../LocaleSwitcher';
+import Image from 'next/image';
 
 export default function Header() {
+	const locale = useLocale() as Locale;
+	const t = useTranslations("header");
+	const localeNames = useLocaleNames();
 
-	const menuItems = ['Home', 'About', 'Projects', 'Skills', 'Experience'];
+	const menuItems = [`${t('home')}`, t('about'), t('projects'), t('skills'), t('experience')];
 
 	const isMobile = useMobileView();
 	const menuDivRef = useRef<HTMLDivElement>(null);
@@ -59,6 +67,7 @@ export default function Header() {
 		backgroundColor: isTop ? 'transparent' : 'var(--fade_dark_blue)',
 		backdropFilter: isTop ? 'unset' : 'blur(8px)',
 		boxShadow: isTop ? 'unset' : 'rgba(0, 0, 0, 0.8) 0px 5px 20px',
+		height: '100px'
 	};
 
 	const calculateDelay = (index: number) => index * 100;
@@ -70,7 +79,7 @@ export default function Header() {
 					<nav className={styles.nav}>
 						<div className={styles.logo}>
 							<a href="https://ninhache.fr/" target="_blank" rel="noopener noreferrer">
-								<img src="/svg/Logo.svg" alt="logo"></img>
+								<img src="/svg/Logo.svg" alt="logo" width={190} height={35} />
 							</a>
 						</div>
 						{
@@ -81,8 +90,8 @@ export default function Header() {
 											<HeaderItem key={item} name={item} delay={calculateDelay(index)} />
 										))}
 										<li>
-											<a className={`button ${styles.button}`} href="#contact">
-												<p>Contact</p>
+											<a className={`button ${styles.button}`} href={`#contact`}>
+												<p>{t('contact')}</p>
 												<svg role='button' aria-label='open header' className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
 													<g>
 														<path className="path_1" d="M8.9 12.4 L8.9 12.4" />
@@ -91,6 +100,7 @@ export default function Header() {
 												</svg>
 											</a>
 										</li>
+										<LocaleSwitcher localeNames={localeNames} />
 									</ol>
 								</div>
 							</AnimatedComponent>)
@@ -98,12 +108,13 @@ export default function Header() {
 
 						{
 							isMobile && (
-								<svg onClick={openMobileMenu} className={`${styles.menu_icon}`} viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+								<svg onClick={openMobileMenu} className={`${styles.hamburger_icon}`} viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
 									<line x1="10" y1="10" x2="130" y2="10" />
 									<line x1="30" y1="50" x2="130" y2="50" />
 									<line x1="50" y1="90" x2="130" y2="90" />
 								</svg>
-							)}
+							)
+						}
 
 					</nav>
 				</header>
@@ -121,7 +132,7 @@ export default function Header() {
 						))}
 						<li>
 							<a className={`button ${styles.button} `} href="#contact">
-								<p>Contact</p>
+								<p>{t('contact')}</p>
 								<svg className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
 									<g>
 										<path className="path_1" d="M8.9 12.4 L8.9 12.4" />
@@ -130,7 +141,9 @@ export default function Header() {
 								</svg>
 							</a>
 						</li>
-
+						<li>
+							<LocaleSwitcher localeNames={localeNames}/>
+						</li>
 					</ol>
 				</div>
 			</div>
@@ -154,5 +167,6 @@ const HeaderItem: React.FC<HeaderItemProps> = ({ name, delay, onClick }) => {
 				{name}
 			</a>
 		</li>
-	</AnimatedComponent>)
+	</AnimatedComponent>
+	)
 }

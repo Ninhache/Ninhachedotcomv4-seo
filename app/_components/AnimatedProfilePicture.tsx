@@ -1,37 +1,57 @@
 "use client";
 
-import React, { CSSProperties, useEffect, useState } from 'react';
-import { useIntersectionObserver } from '@/app/_components/hooks/useIntersectionObserver';
+import styles from '@/styles/about.module.css';
 
-interface AnimatedComponentProps {
-    children: React.ReactNode;
+import { isInViewport, sleep } from '@/utils';
+import React, { CSSProperties, useEffect, useState } from 'react';
+
+interface AnimatedProfilePictureProps {
     delay?: number;
     customCss?: CSSProperties
 }
 
-const AnimatedComponent: React.FC<AnimatedComponentProps> = ({ children, delay = 0, customCss = {} }) => {
-    const [isVisible, ref] = useIntersectionObserver();
-    const [shouldAnimate, setShouldAnimate] = useState(false);
+const AnimatedProfilePicture: React.FC<AnimatedProfilePictureProps> = ({ delay = 0, customCss = {} }) => {
+
+    const [isAnimationDone, setAnimationDone] = useState(false);
 
     useEffect(() => {
-        let timeout: NodeJS.Timeout;
-        if (isVisible && !shouldAnimate) {
-            timeout = setTimeout(() => setShouldAnimate(true), delay);
+        const inAnimationCheck = async () => {
+            if (!isAnimationDone) {
+                const photo = document.querySelector("#photo img") as HTMLElement;
+                if (isInViewport(photo)) {
+                    photo.style.clipPath = "circle(49.7%)";
+                    setAnimationDone(true);
+                    await sleep(300);
+                }
+            }
         }
-        return () => clearTimeout(timeout);
-    }, [isVisible, delay, shouldAnimate]);
+
+        const handleScroll = () => {
+            inAnimationCheck();
+        };
+
+        const handleResize = () => {
+            inAnimationCheck();
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("resize", handleResize);
+
+        // Initial check
+        inAnimationCheck();
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [isAnimationDone]);
+
 
     return (
-        <div ref={ref} style={{
-            clipPath: "circle(49.7%)",
-            opacity: shouldAnimate ? 1 : 0,
-            transform: shouldAnimate ? 'translateY(0)' : `translateY(30px)`,
-            transition: 'opacity 0.3s ease, transform 0.3s ease',
-            ...customCss
-        }}>
-            {children}
+        <div id="photo" className={styles.photo}>
+            <img src="/images/Photo.jpg" alt="Picture of Neo" />
         </div>
     );
 };
 
-export default AnimatedComponent;
+export default AnimatedProfilePicture;

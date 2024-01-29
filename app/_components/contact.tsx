@@ -1,5 +1,3 @@
-"use client"
-
 import { proximaNovaBold } from "@/app/fonts";
 import styles from '@/styles/contact.module.css';
 import React from 'react';

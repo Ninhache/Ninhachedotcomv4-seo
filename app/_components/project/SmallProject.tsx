@@ -5,12 +5,16 @@ import { Project } from '@/jsons/jsonUtils';
 import Link from 'next/link';
 
 import styles from '@/styles/projects/smallproject.module.css';
+import { Locale } from '@/config';
+import { useLocale } from 'next-intl';
 
 export interface SmallProjectProps {
 	project: Project;
 };
 
 export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
+
+	const locale = useLocale() as Locale;
 
 	return (<>
 		<div className={`${styles.content}`}>
@@ -29,7 +33,9 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
 					</div>
 				</div>
 				<a href={`${project.links.redirect}`} target="_blank" className={`${styles.title} ${calibreSemibold.className}`}>{project.title}</a>
-				<p className={`${styles.text} ${calibreRegular.className}`}>{project.description}</p>
+				<p className={`${styles.text} ${calibreRegular.className}`}>
+					{project.translations[locale].description}
+				</p>
 			</div>
 			<div className={`${styles.tags} ${ralewaySemiBold.className}`}>
 				{project.tags.map(tag => <Link key={tag.name} className={`${styles.tag}`} href={`${tag.url}`} target="_blank">{tag.name}</Link>)}

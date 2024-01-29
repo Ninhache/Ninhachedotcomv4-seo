@@ -8,9 +8,11 @@ import styles from '@/styles/projects/project.module.css'
 
 import { shuffleArray } from '@/utils'
 import { useEffect, useState } from 'react'
+import AnimatedComponent from '../AnimatedComponent'
 import { BigProject } from './BigProject'
 import { SmallProject } from './SmallProject'
-import AnimatedComponent from '../AnimatedComponent'
+import { Locale } from '@/config'
+import { useTranslations } from 'next-intl'
 
 interface SortButtonData {
 	label: string;
@@ -42,28 +44,24 @@ export enum SortType {
 }
 
 const sortByDate = (data: Project[]) => {
-	const monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-
 	data.sort((a, b) => {
-		const aArr = a.date.split(" ");
-		const bArr = b.date.split(" ");
+		const aArr = a.date.split("/");
+		const bArr = b.date.split("/");
 
-		// Convert month name to a number (0-11)
-		const aMonth = monthNames.indexOf(aArr[0].toLowerCase());
-		const bMonth = monthNames.indexOf(bArr[0].toLowerCase());
+		const aMonth = parseInt(aArr[0].toLowerCase(), 10) + 1;
+		const bMonth = parseInt(bArr[0].toLowerCase(), 10) + 1;
 
-		// Create Date objects
-		const aDate: Date = new Date(parseInt(aArr[1]), aMonth);
-		const bDate: Date = new Date(parseInt(bArr[1]), bMonth);
+		const aYear = parseInt(aArr[1].toLowerCase(), 10);
+		const bYear = parseInt(bArr[1].toLowerCase(), 10);
 
-		// Compare dates
+		const aDate: Date = new Date(aYear, aMonth);
+		const bDate: Date = new Date(bYear, bMonth);
+
 		return bDate.getTime() - aDate.getTime();
 	});
 
 	return data;
 };
-
-
 
 const filterByTag = (data: Project[]) => {
 	return function (searchedTag: string): Project[] {
@@ -117,19 +115,24 @@ const jsonData: Project[] = rawData.map((item) => ({
 	sortCategories: parseSortTypes(item.sortCategories)
 }));
 
-export default function Projects() {
+
+interface ProjectsProps { };
+
+const Projects: React.FC<ProjectsProps> = ({ }) => {
+	const t = useTranslations("projects");
 
 	const [selectedSort, setSelectedSort] = useState<SortType>(SortType.DATE);
+	// We're using 2 states because some sortFunctions are "clearing" the array (to filter by tag and not sort)
 	const [originalData, _] = useState<Project[]>(jsonData);
 	const [sortedData, setSortedData] = useState<Project[]>(sortFunctions[SortType.DATE](jsonData));
 
 	const sortButtons: SortButtonData[] = [
-		{ label: 'Date', value: SortType.DATE },
-		{ label: 'School', value: SortType.SCHOOL },
-		{ label: 'Personal', value: SortType.PERSONAL },
-		{ label: 'Web', value: SortType.WEB },
-		{ label: 'Simulations', value: SortType.SIMULATIONS },
-		{ label: 'Random', value: SortType.RANDOM },
+		{ label: t("sortButtons.date"), value: SortType.DATE },
+		{ label: t("sortButtons.school"), value: SortType.SCHOOL },
+		{ label: t("sortButtons.personal"), value: SortType.PERSONAL },
+		{ label: t("sortButtons.web"), value: SortType.WEB },
+		{ label: t("sortButtons.simulations"), value: SortType.SIMULATIONS },
+		{ label: t("sortButtons.random"), value: SortType.RANDOM },
 	];
 
 	useEffect(() => {
@@ -141,13 +144,19 @@ export default function Projects() {
 		sortData(selectedSort);
 	}, [selectedSort, originalData]);
 
+	
+
 	return (
 		<>
 			<section id="projects" className={`section ${styles.projects_section}`}>
 				<div className={`content leaning`}>
-					<span className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}>Some of my Projects</span>
+					<span className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}>
+						{t("title")}
+					</span>
 					<div className={styles.sort_choices}>
-						<span className={`${styles.label} ${ralewaySemiBold.className}`}>Sort by</span>
+						<span className={`${styles.label} ${ralewaySemiBold.className}`}>
+							{t("sortLabel")}
+						</span>
 						{sortButtons.map((button) => (
 							<SortButton
 								key={button.value}
@@ -195,3 +204,5 @@ export default function Projects() {
 		</>
 	)
 }
+
+export default Projects;
