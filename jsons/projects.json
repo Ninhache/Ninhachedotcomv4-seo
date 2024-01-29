@@ -1,9 +1,17 @@
 [
   {
-    "date": "March 2021",
-    "type": "School Project",
     "title": "Sokoban",
-    "description": "A game of Sokoban, a puzzle game where you need to push boxes to the goal.",
+    "date": "03/2021",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet scolaire",
+        "description": "Un jeu de sokoban classique"
+      },
+      "en-US": {
+        "type": "School project",
+        "description": "A game of Sokoban, a puzzle game where you need to push boxes to the goal."
+      }
+    },
     "tags": [
       {
         "name": "C",
@@ -15,20 +23,28 @@
       }
     ],
     "links": {
-		"redirect": "https://github.com/Ninhache/Sokoban",
-		"git": "https://github.com/Ninhache/Sokoban",
-		"play": "https://onlinegdb.com/ay4ieWjm7"
-	},
+      "redirect": "https://github.com/Ninhache/Sokoban",
+      "git": "https://github.com/Ninhache/Sokoban",
+      "play": "https://onlinegdb.com/ay4ieWjm7"
+    },
     "videoUrl": "none",
     "image": "/images/projects/sokobangif1.gif",
     "logo": "/svg/projects/Sokoban.svg",
-    "sortCategories": ["School"]
+    "sortCategories": ["school"]
   },
   {
-    "date": "May 2022",
-    "type": "Personal Project",
     "title": "Maze Things",
-    "description": "Currently, it is only a maze generator, but I intend to add additional features such as solvers.",
+    "date": "05/2022",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet personnel",
+        "description": "Actuellement, c'est seulement un générateur de labyrinthes, mais j'ai l'intention d'ajouter des fonctionnalités supplémentaires telles que des solveurs."
+      },
+      "en-US": {
+        "type": "Personal Project",
+        "description": "Currently, it is only a maze generator, but I intend to add additional features such as solvers."
+      }
+    },
     "tags": [
       {
         "name": "JS",
@@ -43,13 +59,21 @@
     "videoUrl": "none",
     "image": "/images/projects/MazeThings.gif",
     "logo": "/svg/projects/MazeThings.svg",
-    "sortCategories": ["Web", "Personal"]
+    "sortCategories": ["web", "personal"]
   },
   {
-    "date": "April 2021",
-    "type": "School Project",
     "title": "ColorFx",
-    "description": "This is a tool designed to assist you in selecting the optimal color for printing.",
+    "date": "04/2021",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet scolaire",
+        "description": "C'est un outil conçu pour vous aider à choisir la couleur optimale pour des impressions papier."
+      },
+      "en-US": {
+        "type": "School project",
+        "description": "This is a tool designed to assist you in selecting the optimal color for printing."
+      }
+    },
     "tags": [
       {
         "name": "Java",
@@ -68,13 +92,21 @@
     "videoUrl": "none",
     "image": "/images/projects/ColorFx.png",
     "logo": "/svg/projects/ColorFxDropper.svg",
-    "sortCategories": ["School"]
+    "sortCategories": ["school"]
   },
   {
-    "date": "December 2021",
-    "type": "School Project",
     "title": "3D Modelisation Tool (Only for .ply)",
-    "description": "This is a 3D modeling tool that allows you to open .ply files and view them in a visual format.",
+    "date": "12/2021",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet scolaire",
+        "description": "Outil de modélisation 3d"
+      },
+      "en-US": {
+        "type": "School project",
+        "description": "This is a 3D modeling tool that allows you to open .ply files and view them in a visual format."
+      }
+    },
     "tags": [
       {
         "name": "Java",
@@ -93,13 +125,21 @@
     "videoUrl": "none",
     "image": "/images/projects/Modelisation.gif",
     "logo": "/svg/projects/ProjetMode.svg",
-    "sortCategories": ["School"]
+    "sortCategories": ["school"]
   },
   {
-    "date": "February 2022",
-    "type": "Personal Project",
     "title": "Windows's Notepad copy",
-    "description": "This project is a replica of Windows' Notepad, with additional features. It provided me with the opportunity to explore C# and .NET.",
+    "date": "02/2022",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet personnel",
+        "description": "Ce projet est une réplique du Bloc-notes de Windows, avec des fonctionnalités supplémentaires. Il m'a offert l'opportunité d'explorer C# et .NET."
+      },
+      "en-US": {
+        "type": "Personal Project",
+        "description": "This project is a replica of Windows' Notepad, with additional features. It provided me with the opportunity to explore C# and .NET."
+      }
+    },
     "tags": [
       {
         "name": "C#",
@@ -114,17 +154,25 @@
       "redirect": "https://github.com/Ninhache/Notepad-Copy",
       "git": "https://github.com/Ninhache/Notepad-Copy",
       "play": "none"
-	},
+    },
     "videoUrl": "none",
     "image": "/images/projects/Notepad.gif",
     "logo": "/svg/projects/NotepadCopy.svg",
-    "sortCategories": ["Personal"]
+    "sortCategories": ["personal"]
   },
   {
-    "date": "April 2022",
-    "type": "School Project",
     "title": "JustSeries",
-    "description": "This is a website that enables you to search for TV series and access their relevant information.",
+    "date": "04/2022",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet scolaire",
+        "description": "C'est un site web qui vous permet de rechercher des séries télévisées et d'accéder à leurs informations pertinentes."
+      },
+      "en-US": {
+        "type": "School project",
+        "description": "This is a website that enables you to search for TV series and access their relevant information."
+      }
+    },
     "tags": [
       {
         "name": "JS",
@@ -139,17 +187,25 @@
       "redirect": "https://ninhache.fr/JustSeries",
       "git": "https://github.com/Ninhache/JustSeries",
       "play": "https://ninhache.fr/JustSeries"
-	},
+    },
     "videoUrl": "none",
     "image": "/images/projects/JustSeries.gif",
     "logo": "/svg/projects/JustSeries.svg",
-    "sortCategories": ["School", "Web"]
+    "sortCategories": ["school", "web"]
   },
   {
-    "date": "April 2022",
-    "type": "Practical work",
     "title": "Image Processing",
-    "description": "This is a Python project aimed at facilitating the learning of image processing techniques.",
+    "date": "04/2022",
+    "translations": {
+      "fr-FR": {
+        "type": "Travail Pratique",
+        "description": "C'est un projet Python visant à faciliter l'apprentissage des techniques de traitement d'image."
+      },
+      "en-US": {
+        "type": "Practical work",
+        "description": "This is a Python project aimed at facilitating the learning of image processing techniques."
+      }
+    },
     "tags": [
       {
         "name": "Python",
@@ -172,17 +228,25 @@
       "redirect": "https://github.com/Ninhache/Image-Processing",
       "git": "https://github.com/Ninhache/Image-Processing",
       "play": "none"
-	},
+    },
     "videoUrl": "/videos/projects/PythonImageProcessing.mp4",
     "image": "/images/projects/ImageProcessing.png",
     "logo": "/svg/projects/ImageProcessing.svg",
-    "sortCategories": ["School"]
+    "sortCategories": ["school"]
   },
   {
-    "date": "October 2021",
-    "type": "Personal Project",
     "title": "Ch-hess",
-    "description": "It is a chess game called Ch-hess, inspired by the term \"Hess\" frequently used by young people to denote being in a state of financial difficulty.",
+    "date": "10/2021",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet personnel",
+        "description": "C'est un jeu d'échecs appelé Ch-hess, inspiré du terme \"Hess\" fréquemment utilisé par les jeunes pour désigner être dans une situation de difficulté financière."
+      },
+      "en-US": {
+        "type": "Personal Project",
+        "description": "It is a chess game called Ch-hess, inspired by the term \"Hess\" frequently used by young people to denote being in a state of financial difficulty."
+      }
+    },
     "tags": [
       {
         "name": "Java",
@@ -193,17 +257,25 @@
       "redirect": "https://github.com/Ninhache/Ch-Hess",
       "git": "https://github.com/Ninhache/Ch-Hess",
       "play": "none"
-	},
+    },
     "videoUrl": "none",
     "image": "/images/projects/Chess.png",
     "logo": "/svg/projects/Chhess.svg",
-    "sortCategories": ["Personal"]
+    "sortCategories": ["personal"]
   },
   {
-    "date": "April 2022",
-    "type": "School Project",
     "title": "Client SSH",
-    "description": "This is an SSH client, implemented using the Java programming language.",
+    "date": "04/2022",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet scolaire",
+        "description": "C'est un client SSH, implémenté en utilisant le langage de programmation Java."
+      },
+      "en-US": {
+        "type": "School project",
+        "description": "This is an SSH client, implemented using the Java programming language."
+      }
+    },
     "tags": [
       {
         "name": "Java",
@@ -214,17 +286,25 @@
       "redirect": "https://github.com/Ninhache/Client-SSH-Java",
       "git": "https://github.com/Ninhache/Client-SSH-Java",
       "play": "none"
-	},
+    },
     "videoUrl": "/videos/projects/ClientSSH.mp4",
     "image": "/images/projects/ClientSSH.png",
     "logo": "/svg/projects/ClientSSH.svg",
-    "sortCategories": ["School"]
+    "sortCategories": ["school"]
   },
   {
-    "date": "March 2022",
-    "type": "School Project",
     "title": "Netcast",
-    "description": "This is a web server that has been implemented using the C programming language.",
+    "date": "03/2022",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet scolaire",
+        "description": "C'est un serveur web qui a été implémenté en utilisant le langage de programmation C."
+      },
+      "en-US": {
+        "type": "School project",
+        "description": "This is a web server that has been implemented using the C programming language."
+      }
+    },
     "tags": [
       {
         "name": "C",
@@ -235,17 +315,25 @@
       "redirect": "https://github.com/Ninhache/Netcast",
       "git": "https://github.com/Ninhache/Netcast",
       "play": "none"
-	},
+    },
     "videoUrl": "/videos/projects/ServeurWebC.mp4",
     "image": "/images/projects/ServeurWebC.png",
     "logo": "/svg/projects/Netcast.svg",
-    "sortCategories": ["School", "Web"]
+    "sortCategories": ["school", "web"]
   },
   {
-    "date": "June 2022",
-    "type": "Personal Project",
     "title": "FractalDisplayer",
-    "description": "This project is a basic fractal viewer that is currently capable of displaying the Mandelbrot fractal. Its purpose is to help me learn and explore the use of shaders.",
+    "date": "06/2022",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet personnel",
+        "description": "Ce projet est un visualiseur de fractales basique qui est actuellement capable d'afficher la fractale de Mandelbrot. Son but est de m'aider à apprendre et explorer l'utilisation des shaders."
+      },
+      "en-US": {
+        "type": "Personal Project",
+        "description": "This project is a basic fractal viewer that is currently capable of displaying the Mandelbrot fractal. Its purpose is to help me learn and explore the use of shaders."
+      }
+    },
     "tags": [
       {
         "name": "CPP",
@@ -268,17 +356,25 @@
       "redirect": "https://github.com/Ninhache/Fractal-Displayer",
       "git": "https://github.com/Ninhache/Fractal-Displayer",
       "play": "none"
-	},
+    },
     "videoUrl": "none",
     "image": "/images/projects/FractalDisplayer.png",
     "logo": "/svg/projects/FractalDisplayer.svg",
-    "sortCategories": ["Personal", "Simulations"]
+    "sortCategories": ["personal", "simulations"]
   },
   {
-    "date": "January 2023",
-    "type": "School Project",
     "title": "3D Engine (old)",
-    "description": "This is a \"simple\" implementation of a 3D engine that I refer to as \"old\" because I plan to re-implement it in a different way.",
+    "date": "01/2023",
+    "translations": {
+      "fr-FR": {
+        "type": "Projet scolaire",
+        "description": "C'est une implémentation \"simple\" d'un moteur 3D que je qualifie d'\"ancien\" car je prévois de le réimplémenter différemment."
+      },
+      "en-US": {
+        "type": "School project",
+        "description": "This is a \"simple\" implementation of a 3D engine that I refer to as \"old\" because I plan to re-implement it in a different way."
+      }
+    },
     "tags": [
       {
         "name": "CPP",
@@ -305,6 +401,6 @@
     "videoUrl": "none",
     "image": "/images/projects/3DEngine-Old.png",
     "logo": "/svg/projects/3DEngine-Old.svg",
-    "sortCategories": ["School", "Simulations"]
+    "sortCategories": ["school", "simulations"]
   }
 ]
