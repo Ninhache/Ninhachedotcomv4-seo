@@ -1,5 +1,8 @@
 import { proximaNovaBold } from "@/app/fonts";
 import styles from '@/styles/contact.module.css';
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import Link from "next/link";
 import React from 'react';
 
 interface SocialProps {
@@ -32,9 +35,11 @@ export default function Contact() {
 		}
 	];
 
+	const t = useTranslations('contact')
+
 	return (
 		<>
-			<section id="contact" className={`section ${styles.contact_section} ${proximaNovaBold.className}`}>
+			<section id={t('anchor')} className={`section ${styles.contact_section} ${proximaNovaBold.className}`}>
 				<div className={`content leaning ${styles.content} ${styles.leaning}`}>
 					<span className={`section_title ${styles.section_title}`}>How to contact me?</span>
 
@@ -50,18 +55,18 @@ export default function Contact() {
 								const renderSocialLink = (item: SocialProps) => {
 
 									return (
-										<a
+										<Link
 											className={styles.social_link}
 											href={item.redirectLink}
 											target="_blank"
 											rel="noopener noreferrer"
 											style={style}
 										>
-											<img src={item.imageUrl} alt={`Social media link to ${item.text}`} />
+											<Image src={item.imageUrl} alt={`Social media link to ${item.text}`} width={50} height={50} />
 											<div className={styles.social_text}>
 												<span>{item.text}</span>
 											</div>
-										</a>
+										</Link>
 									);
 								};
 

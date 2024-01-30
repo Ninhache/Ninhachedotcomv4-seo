@@ -11,6 +11,7 @@ import { Fragment } from 'react';
 import useMobileView from '@/app/_hooks/useMobileView';
 import { useLocale } from 'next-intl';
 import { Locale } from '@/config';
+import Image from 'next/image';
 
 interface ExperienceItemProps {
 	inverted: Boolean;
@@ -39,9 +40,9 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({ inverted, experi
 							))}
 						</span>
 					</div>
-					<a className={`${styles.title} ${calibreSemibold.className}`} href={experience.link} target="_blank">
+					<Link className={`${styles.title} ${calibreSemibold.className}`} href={experience.link} target="_blank">
 						{experience.title}
-					</a>
+					</Link>
 					<div className={`${styles.text} ${calibreRegular.className}`}>
 						<p>{experience.translations[locale].description}</p>
 					</div>
@@ -78,9 +79,9 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({ inverted, experi
 								</span>
 						}
 					</div>
-					<a className={`${styles.title} ${calibreSemibold.className}`} href={`${experience.link}`} target="_blank">
+					<Link className={`${styles.title} ${calibreSemibold.className}`} href={`${experience.link}`} target="_blank">
 						{experience.title}
-					</a>
+					</Link>
 					<div className={`${styles.text} ${calibreRegular.className}`}>
 						<p>
 							{experience.translations[locale].description}
@@ -91,9 +92,9 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({ inverted, experi
 					</div>
 				</div>
 				<div className={`${styles.view}`}>
-					<a href={`${experience.link}`} target="_blank">
-						<img src={`${experience.image}`} />
-					</a>
+					<Link href={`${experience.link}`} target="_blank">
+						<Image src={`${experience.image}`} alt={`${experience.title}`} width={600} height={340}/>
+					</Link>
 				</div>
 			</div>
 		)

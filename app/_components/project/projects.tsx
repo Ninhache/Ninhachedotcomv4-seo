@@ -148,7 +148,7 @@ const Projects: React.FC<ProjectsProps> = ({ }) => {
 
 	return (
 		<>
-			<section id="projects" className={`section ${styles.projects_section}`}>
+			<section id={t('anchor')} className={`section ${styles.projects_section}`}>
 				<div className={`content leaning`}>
 					<span className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}>
 						{t("title")}

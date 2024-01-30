@@ -8,18 +8,48 @@ import { useEffect, useRef, useState } from 'react';
 
 import useLocaleNames from '@/app/_hooks/useLocaleNames';
 import useMobileView from '@/app/_hooks/useMobileView';
-import { Locale } from '@/config';
 import throttle from 'lodash.throttle'; // lodash throttle function
-import { useLocale, useTranslations } from 'next-intl';
-import LocaleSwitcher from '../LocaleSwitcher';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
+import LocaleSwitcher from '../LocaleSwitcher';
+
+import dynamic from 'next/dynamic';
+
+const HeaderItem = dynamic(() => import('./headerItem'), { ssr: false })
+
+interface menuItemObject {
+	name: string;
+	anchor: string;
+}
 
 export default function Header() {
-	const locale = useLocale() as Locale;
+
 	const t = useTranslations("header");
 	const localeNames = useLocaleNames();
 
-	const menuItems = [`${t('home')}`, t('about'), t('projects'), t('skills'), t('experience')];
+	const menuItems: menuItemObject[] = [
+		{
+			name: t('home'),
+			anchor: t('homeAnchor')
+		},
+		{
+			name: t('about'),
+			anchor: t('aboutAnchor')
+		},
+		{
+			name: t('projects'),
+			anchor: t('projectsAnchor')
+		},
+		{
+			name: t('skills'),
+			anchor: t('skillsAnchor')
+		},
+		{
+			name: t('experience'),
+			anchor: t('experienceAnchor')
+		}
+	];
 
 	const isMobile = useMobileView();
 	const menuDivRef = useRef<HTMLDivElement>(null);
@@ -42,16 +72,16 @@ export default function Header() {
 	const [isTop, setIsTop] = useState(true);
 	const lastScrollY = useRef(0);
 
-	const controlHeader = throttle(() => {
-		if (typeof window !== 'undefined') {
-			const currentScrollY = window.scrollY;
-			setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50);
-			lastScrollY.current = currentScrollY;
-			setIsTop(currentScrollY <= 50);
-		}
-	}, 100);
-
 	useEffect(() => {
+		const controlHeader = throttle(() => {
+			if (typeof window !== 'undefined') {
+				const currentScrollY = window.scrollY;
+				setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50);
+				lastScrollY.current = currentScrollY;
+				setIsTop(currentScrollY <= 50);
+			}
+		}, 100);
+
 		if (typeof window !== 'undefined') {
 			window.addEventListener('scroll', controlHeader);
 			return () => {
@@ -78,29 +108,34 @@ export default function Header() {
 				<header id="header" className={`${styles.header}`}>
 					<nav className={styles.nav}>
 						<div className={styles.logo}>
-							<a href="https://ninhache.fr/" target="_blank" rel="noopener noreferrer">
-								<img src="/svg/Logo.svg" alt="logo" width={190} height={35} />
-							</a>
+							<Link href="https://ninhache.fr/" target="_blank" rel="noopener noreferrer">
+								<Image src="/svg/Logo.svg" alt="logo" width={190} height={35} priority />
+							</Link>
 						</div>
 						{
-							!isMobile && (<AnimatedComponent delay={100}>
+							!isMobile && (
+							<AnimatedComponent delay={100}>
 								<div className={styles.menu}>
 									<ol>
 										{menuItems.map((item, index) => (
-											<HeaderItem key={item} name={item} delay={calculateDelay(index)} />
+											<li key={`${item.name}-${item.anchor}`}>
+												<HeaderItem name={item.name} anchor={item.anchor} delay={calculateDelay(index)} />
+											</li>
 										))}
 										<li>
-											<a className={`button ${styles.button}`} href={`#contact`}>
+											<Link className={`button ${styles.button}`} href={`#contact`}>
 												<p>{t('contact')}</p>
-												<svg role='button' aria-label='open header' className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
+												<svg role='button' aria-label='Open header' className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
 													<g>
 														<path className="path_1" d="M8.9 12.4 L8.9 12.4" />
 														<path className="path_2" d="M16.2 5 8.9 12.4 1.5 5" />
 													</g>
 												</svg>
-											</a>
+											</Link>
 										</li>
-										<LocaleSwitcher localeNames={localeNames} />
+										<li>
+											<LocaleSwitcher localeNames={localeNames} />
+										</li>
 									</ol>
 								</div>
 							</AnimatedComponent>)
@@ -128,10 +163,12 @@ export default function Header() {
 				<div className={`${styles.menu}`}>
 					<ol>
 						{menuItems.map((item, index) => (
-							<HeaderItem key={item} name={item} delay={calculateDelay(index)} onClick={closeMobileMenu} />
+							<li key={`${item.name}-${item.anchor}`}>
+								<HeaderItem key={item.name} name={item.name} anchor={item.anchor} delay={calculateDelay(index)} onClick={closeMobileMenu} />
+							</li>
 						))}
 						<li>
-							<a className={`button ${styles.button} `} href="#contact">
+							<Link className={`button ${styles.button} `} href="#contact">
 								<p>{t('contact')}</p>
 								<svg className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
 									<g>
@@ -139,34 +176,14 @@ export default function Header() {
 										<path className="path_2" d="M16.2 5 8.9 12.4 1.5 5" />
 									</g>
 								</svg>
-							</a>
+							</Link>
 						</li>
 						<li>
-							<LocaleSwitcher localeNames={localeNames}/>
+							<LocaleSwitcher localeNames={localeNames} />
 						</li>
 					</ol>
 				</div>
 			</div>
 		</>
-
-
 	);
-}
-
-interface HeaderItemProps {
-	name: string;
-	delay: number;
-	onClick?: () => void;
-}
-
-const HeaderItem: React.FC<HeaderItemProps> = ({ name, delay, onClick }) => {
-	const lowerName = name.toLowerCase();
-	return (<AnimatedComponent delay={delay}>
-		<li onClick={onClick} className={styles[lowerName]}>
-			<a className={styles.not_button} href={`#${lowerName}`}>
-				{name}
-			</a>
-		</li>
-	</AnimatedComponent>
-	)
 }

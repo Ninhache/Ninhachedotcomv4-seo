@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import AnimatedComponent from './AnimatedComponent';
 import ParticlesComponent from './ParticlesComponent';
+import Link from 'next/link';
 
 export default function Home() {
 
@@ -16,7 +17,7 @@ export default function Home() {
 
 	return (
 		<>
-			<section id="home" className={`section ${styles.home_section}`}>
+			<section id={t('anchor')} className={`section ${styles.home_section}`}>
 				{memoizedParticlesComponent}
 				<div className={`content ${styles.content}`}>
 					<AnimatedComponent delay={100}>
@@ -41,7 +42,7 @@ export default function Home() {
 					</AnimatedComponent>
 					<AnimatedComponent delay={500}>
 						<div className={`${styles.home_button}`}>
-							<a className={`button ${styles.button} ${ralewaySemiBold.className}`} href="#about">
+							<Link className={`button ${styles.button} ${ralewaySemiBold.className}`} href="#about">
 								<p>{t("start")}</p>
 								<svg className={`button_arrow ${styles.button_arrow}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.69 17.39">
 									<g>
@@ -49,7 +50,7 @@ export default function Home() {
 										<path className="path_2" d="M16.2 5 8.9 12.4 1.5 5" />
 									</g>
 								</svg>
-							</a>
+							</Link>
 						</div>
 					</AnimatedComponent>
 				</div>

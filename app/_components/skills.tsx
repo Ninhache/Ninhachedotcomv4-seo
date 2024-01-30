@@ -4,22 +4,23 @@ import { Skill, SkillCategory } from '@/jsons/jsonUtils';
 import rawData from '@/jsons/skills.json';
 import React, { Fragment, useState } from 'react';
 
-import { proximaNovaBold, proximaNovaSemiBold } from '@/app/fonts';
-import styles from '@/styles/skills.module.css';
 import useMobileView from '@/app/_hooks/useMobileView';
+import { proximaNovaBold, proximaNovaSemiBold } from '@/app/fonts';
+import { Locale } from '@/config';
+import styles from '@/styles/skills.module.css';
 import { useLocale, useTranslations } from 'next-intl';
-import { Locale, defaultLocale } from '@/config';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface SkillsComponentProps { }
 
 const SkillsComponent: React.FC<SkillsComponentProps> = () => {
 
 	const isMobile = useMobileView();
-
 	const t = useTranslations('skills');
 
 	return (
-		<section id={`skills`} className={`section ${styles.skills_section}`}>
+		<section id={t('anchor')} className={`section ${styles.skills_section}`}>
 			<div className={`content leaning`}>
 				<span className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}>{t("title")}</span>
 				<div className={styles.skills_content}>
@@ -39,7 +40,6 @@ interface WideScreenViewProps {
 const WideScreenView: React.FC<WideScreenViewProps> = ({ data }) => {
 
 	const locale = useLocale() as Locale;
-
 	const [selectedCategory, setSelectedCategory] = useState(data[0].translations[locale].name);
 
 	return (
@@ -63,7 +63,6 @@ interface SkillCategoryProps {
 	onClick: () => void;
 }
 
-
 const SkillCategoryView: React.FC<SkillCategoryProps> = ({ name, selectioned, onClick }) => {
 
 	const style = {
@@ -79,7 +78,6 @@ const SkillCategoryView: React.FC<SkillCategoryProps> = ({ name, selectioned, on
 		>{name}</div>
 	)
 };
-
 
 interface NarrowScreenViewProps {
 	data: SkillCategory[];
@@ -112,7 +110,6 @@ interface SkillsListProps {
 	onClick?: () => void;
 }
 
-
 const SkillsList: React.FC<SkillsListProps> = ({ skills, isVisible }) => {
 
 	return (
@@ -120,10 +117,10 @@ const SkillsList: React.FC<SkillsListProps> = ({ skills, isVisible }) => {
 			style={{ display: isVisible ? 'grid' : 'none' }}
 		>
 			{skills.map((skill, index) => (
-				<a key={index} style={{ textDecoration: 'none' }} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
-					<img src={skill.logo} alt={skill.name} />
+				<Link key={index} style={{ textDecoration: 'none' }} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
+					<Image src={skill.logo} alt={`Icon of ${skill.name}`} width={83} height={83}/>
 					<span>{skill.name}</span>
-				</a>
+				</Link>
 			))}
 		</div>)
 };

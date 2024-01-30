@@ -3,7 +3,8 @@
 import styles from '@/styles/about.module.css';
 
 import { isInViewport, sleep } from '@/utils';
-import React, { CSSProperties, useEffect, useState } from 'react';
+import Image from 'next/image';
+import React, { CSSProperties, Suspense, useEffect, useState } from 'react';
 
 interface AnimatedProfilePictureProps {
     delay?: number;
@@ -49,7 +50,9 @@ const AnimatedProfilePicture: React.FC<AnimatedProfilePictureProps> = ({ delay =
 
     return (
         <div id="photo" className={styles.photo}>
-            <img src="/images/Photo.jpg" alt="Picture of Neo" />
+            <Suspense fallback={<p>Loading photo...</p>}>
+                <Image className={styles.image} src="/images/Photo.jpg" alt="picture of Neo" width={380} height={380} />
+            </Suspense>
         </div>
     );
 };

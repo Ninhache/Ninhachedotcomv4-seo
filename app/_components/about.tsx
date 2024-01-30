@@ -6,6 +6,7 @@ import { calibreRegular, proximaNovaBold, ralewaySemiBold } from '@/app/fonts';
 import Link from "next/link";
 import AnimatedProfilePicture from './AnimatedProfilePicture';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export default function About() {
 
@@ -13,14 +14,14 @@ export default function About() {
 
 	return (
 		<>
-			<section id="about" className={`section ${styles.about_section}`}>
+			<section id={t('anchor')} className={`section ${styles.about_section}`}>
 				<div className={`content ${styles.content}`}>
 					<span className={`section_title ${proximaNovaBold.className}`}>{t('title')}</span>
 					<div className={styles.about_content}>
 						<div className={styles.left_content}>
 							<p className={`${styles.p_1} ${calibreRegular.className}`}>
 								{t.rich('introduction', {
-									projects: (chunks) => <a className="link" href="#projects">{chunks}</a>
+									projects: (chunks) => <Link className="link" href="#projects">{chunks}</Link>
 								})}
 								<br /><br />
 								{t('employmentSeeking')}
@@ -34,12 +35,8 @@ export default function About() {
 								target="_blank"
 							>
 								<span>{t('resumeLink')}</span>
-								<img src="/svg/OpenLink.svg" alt={t('resumeLink')} />
+								<Image src="/svg/OpenLink.svg" width={20} height={20} alt={t('altLink')} />
 							</Link>
-
-							<a >
-
-							</a>
 						</div>
 
 						<AnimatedProfilePicture />
