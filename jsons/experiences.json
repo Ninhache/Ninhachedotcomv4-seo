@@ -1,9 +1,19 @@
 [
   {
-    "date": "June 2022 - August 2022<br>April 2023 - July 2023",
-    "type": "Full Stack Intern",
     "title": "BetterCallDave",
-    "description": "I undertook two internships at BetterCallDave :\nThe first involved designing and developing 'OpenProcess' for Le Fresnoy\nThe second focused on technically revamping an application called Digster",
+    "date": "June 2022 - August 2022<br>April 2023 - July 2023",
+    "translations": {
+      "fr-FR": {
+        "type": "Stage",
+        "jobtitle": "Stagiaire Fullstack",
+        "description": "J'ai effectué deux stages chez BetterCallDave :\nLe premier consistait à concevoir et développer 'OpenProcess' pour Le Fresnoy\nLe second portait sur la refonte technique d'une application appelée Digster"
+      },
+      "en-US": {
+        "type": "Internship",
+        "jobtitle": "Full Stack Intern",
+        "description": "I undertook two internships at BetterCallDave :\nThe first involved designing and developing 'OpenProcess' for Le Fresnoy\nThe second focused on technically revamping an application called Digster"
+      }
+    },
     "tags": [
       { "name": "ReactJS", "url": "https://fr.wikipedia.org/wiki/React" },
       {
@@ -20,14 +30,23 @@
     ],
     "link": "https://www.bettercalldave.io/",
     "video": "none",
-    "image": "images/experiences/BetterCallDave.webp"
+    "image": "/images/experiences/BetterCallDave.webp"
   },
   {
-    "date": "September 2023 - December 2023",
-    "type": "Permanent contract",
-    "jobtitle": "Full Stack Engineer",
     "title": "Institut Laue-Langevin",
-    "description": "I had the opportunity to design with the help of my team a solution to strengthen one of the reactor safety systems, the project was very interesting but also very complex. Curious about why this contract was brief? Feel free to reach out to me for the story behind it !",
+    "date": "September 2023 - December 2023",
+    "translations": {
+      "fr-FR": {
+        "type": "CDI",
+        "jobtitle": "Ingénieur Full Stack",
+        "description": "J'ai eu l'opportunité de concevoir avec l'aide de mon équipe une solution pour renforcer l'un des systèmes de sûreté du réacteur, le projet était très intéressant mais aussi très complexe. Curieux de savoir pourquoi ce contrat a été bref ? N'hésitez pas à me contacter pour connaître l'histoire qui se cache derrière !"
+      },
+      "en-US": {
+        "type": "Permanent contract",
+        "jobtitle": "Full Stack Engineer",
+        "description": "I had the opportunity to design with the help of my team a solution to strengthen one of the reactor safety systems, the project was very interesting but also very complex. Curious about why this contract was brief? Feel free to reach out to me for the story behind it !"
+      }
+    },
     "tags": [
       { "name": "Angular", "url": "https://fr.wikipedia.org/wiki/Angular" },
       { "name": "Quarkus", "url": "https://fr.wikipedia.org/wiki/Quarkus" },
@@ -43,6 +62,6 @@
     ],
     "link": "https://www.ill.eu/fr/",
     "video": "none",
-    "image": "images/experiences/ILL.webp"
+    "image": "/images/experiences/ILL.webp"
   }
 ]

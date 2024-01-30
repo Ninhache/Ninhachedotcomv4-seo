@@ -1,0 +1,71 @@
+{
+  "useLocaleNames": {
+    "en-US": "English",
+    "fr-FR": "French"
+  },
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills",
+    "experience": "Experience",
+    "contact": "Contact",
+    "homeAnchor": "home",
+    "aboutAnchor": "about",
+    "projectsAnchor": "projects",
+    "skillsAnchor": "skills",
+    "experienceAnchor": "experiences",
+    "contactAnchor": "contact"
+  },
+  "home": {
+    "anchor": "home",
+    "greeting": "Hi, my name is",
+    "name": "Almeida Neo.",
+    "profession": "I'm a Software Developer.",
+    "description": "I'm a 21 years old french student !",
+    "start": "Get started"
+  },
+  "about": {
+    "anchor": "about",
+    "title": "Who am I?",
+    "introduction": "Hello! My name is Almeida Neo, and I am 21 years old. I enjoy working on personal projects during my free time, which you can find in the <projects>projects</projects> section of this website.",
+    "employmentSeeking": "At present, I am actively seeking permanent employment opportunities. Please feel free to contact me !",
+    "additionalInfo": "You may want more informations about me ?",
+    "resumeLink": "Open my resume",
+    "altLink": "Icon representing an external link"
+  },
+  "projects": {
+    "anchor": "projects",
+    "title": "Some of my projects",
+    "sortLabel": "Sort by",
+    "openGit": "See the code",
+    "runCode": "Test the program",
+    "sortButtons": {
+      "date": "Date",
+      "school": "School",
+      "personal": "Personal",
+      "web": "Web",
+      "simulations": "Simulations",
+      "random": "Random"
+    }
+  },
+  "skills": {
+    "anchor": "skills",
+    "title": "What are my Skills"
+  },
+  "jobs": {
+    "anchor": "experiences",
+    "title": "Where I've Worked"
+  },
+  "contact": {
+    "anchor": "contact",
+    "title": "How to contact me?"
+  },
+  "footer": {
+    "github": "See the repository on GitHub",
+    "text": "This website was built by Almeida Neo using NextJS. Thank you for taking the time to read through it, and I hope you found it enjoyable."
+  },
+  "LocaleSwitcher": {
+    "switchLocale": "Switch to {locale, select, de {English} in {French} other {Unknown}}"
+  }
+}

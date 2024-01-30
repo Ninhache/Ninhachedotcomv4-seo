@@ -1,4 +1,5 @@
-import { SortType } from "@/components/project/projects";
+import { SortType } from "@/app/_components/project/projects";
+import { Locale } from "@/config";
 
 export interface Tag {
     name: string;
@@ -11,11 +12,17 @@ export interface outLink {
     play: string; // String can be "none" since we're loading them using a JSON
 }
 
-export interface Project {
-    date: string;
-    type: string;
-    title: string;
+export interface ProjectTranslation {
     description: string;
+    type: string;
+}
+
+export type ProjectTranslations = Record<Locale, ProjectTranslation>;
+
+export interface Project {
+    title: string;
+    date: string;
+    translations: ProjectTranslations;
     tags: Tag[];
     links: outLink;
     videoUrl?: string;
@@ -24,11 +31,18 @@ export interface Project {
     sortCategories: SortType[];
 }
 
-export interface Experience {
-    date: string;
+export interface ExperienceTranslation {
     type: string;
-    title: string;
     description: string;
+    jobtitle: string;
+}
+
+export type ExperienceTranslations = Record<Locale, ExperienceTranslation>;
+
+export interface Experience {
+    title: string;
+    date: string;
+    translations: ExperienceTranslations;
     tags: Tag[];
     link: string;
     videoUrl?: string;
@@ -41,7 +55,13 @@ export interface Skill {
     link: string;
 }
 
-export interface SkillCategory {
+export interface SkillCategoryTranslation {
     name: string;
+}
+
+export type SkillCategoryTranslations = Record<Locale, SkillCategoryTranslation>;
+
+export interface SkillCategory {
+    translations: SkillCategoryTranslations;
     skills: Skill[];
 }

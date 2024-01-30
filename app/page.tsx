@@ -1,29 +1,6 @@
-import Projects from '@/components/project/projects'
-import About from '@/components/about'
-import Contact from '@/components/contact'
-import Experience from '@/components/experience/experience'
-import Footer from '@/components/footer'
-import Header from '@/components/header/header'
-import Home from '@/components/home'
-import Skills from '@/components/skills'
-import HeaderMobile from '@/components/header/headerMobile'
+import {redirect} from 'next/navigation';
 
-// import styles from '@/styles/page.module.css'
-
-export default function Page() {
-  return (
-    <main className='main'>
-      <Header />
-      {/* <HeaderMobile /> */}
-
-      <Home />
-
-      <About />
-      <Projects />
-      <Skills />
-      <Experience />
-      <Contact />
-      <Footer />
-    </main>
-  )
+// This page only renders when the app is built statically (output: 'export')
+export default function RootPage() {
+  redirect('/fr-FR');
 }

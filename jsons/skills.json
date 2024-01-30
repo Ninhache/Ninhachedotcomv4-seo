@@ -1,6 +1,13 @@
 [
   {
-    "name": "Programming Languages Stack",
+    "translations": {
+      "fr-FR": {
+        "name": "Programming Languages Stack"
+      },
+      "en-US": {
+        "name": "Programming Languages Stack"
+      }
+    },
     "skills": [
       {
         "name": "Java",
@@ -36,7 +43,14 @@
   },
 
   {
-    "name": "Front-end",
+    "translations": {
+      "fr-FR": {
+        "name": "Front-end"
+      },
+      "en-US": {
+        "name": "Front-end"
+      }
+    },
     "skills": [
       {
         "name": "Vanilla CSS.",
@@ -71,7 +85,14 @@
     ]
   },
   {
-    "name": "Back-end",
+    "translations": {
+      "fr-FR": {
+        "name": "Back-end"
+      },
+      "en-US": {
+        "name": "Back-end"
+      }
+    },
     "skills": [
       {
         "name": "Quarkus",
@@ -85,13 +106,20 @@
       },
       {
         "name": "ExpressJS",
-        "logo": "svg/skills/Expressjs.svg",
+        "logo": "svg/skills/ExpressJS.svg",
         "link": "https://expressjs.com/fr/"
       }
     ]
   },
   {
-    "name": "Infrastructure",
+    "translations": {
+      "fr-FR": {
+        "name": "Infrastructure"
+      },
+      "en-US": {
+        "name": "Infrastructure"
+      }
+    },
     "skills": [
       {
         "name": "Git",
@@ -116,7 +144,14 @@
     ]
   },
   {
-    "name": "Design",
+    "translations": {
+      "fr-FR": {
+        "name": "Design"
+      },
+      "en-US": {
+        "name": "Design"
+      }
+    },
     "skills": [
       {
         "name": "After Effects",
