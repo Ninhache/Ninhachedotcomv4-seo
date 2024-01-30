@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import { Locale, locales } from "@/config";
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 const title = `Almeida Neo's Portfolio`;
 const description = `Remind me to add a description please`;
@@ -59,6 +60,8 @@ export default function RootLayout({
   if (locales.includes(locale) === false) {
     return notFound();
   }
+
+  unstable_setRequestLocale(locale);
 
   return (
     <html lang={locale}>
