@@ -5,11 +5,11 @@
     "translations": {
       "fr-FR": {
         "type": "Projet scolaire",
-        "description": "Un jeu de sokoban classique"
+        "description": "Un jeu de sokoban réalisé lors de ma toute première année d'étude, un jeu de puzzle ou il faut pousser des boites dans des trous, réalisé en groupe en C, nous avons même choisis d'y utiliser Ncurses pour se compliquer la tâche"
       },
       "en-US": {
         "type": "School project",
-        "description": "A game of Sokoban, a puzzle game where you need to push boxes to the goal."
+        "description": "A sokoban game developed during my very first year of study, a puzzle game where you have to push boxes into holes, completed as a group project in C. We even chose to use Ncurses to make the task more challenging"
       }
     },
     "tags": [
@@ -38,11 +38,11 @@
     "translations": {
       "fr-FR": {
         "type": "Projet personnel",
-        "description": "Actuellement, c'est seulement un générateur de labyrinthes, mais j'ai l'intention d'ajouter des fonctionnalités supplémentaires telles que des solveurs."
+        "description": "Simplement un générateur de labyrinthes qui peut également les résoudres"
       },
       "en-US": {
         "type": "Personal Project",
-        "description": "Currently, it is only a maze generator, but I intend to add additional features such as solvers."
+        "description": "Simply a maze generator, that can solves himself the maze you provides him"
       }
     },
     "tags": [
@@ -67,11 +67,11 @@
     "translations": {
       "fr-FR": {
         "type": "Projet scolaire",
-        "description": "C'est un outil conçu pour vous aider à choisir la couleur optimale pour des impressions papier."
+        "description": "Outil réalisé dans le but de découvrir JavaFX mais également pour résoudre une problématique d'impression en noir et blanc, car les couleurs sont souvent mal choisis et les polycopiés illisible"
       },
       "en-US": {
         "type": "School project",
-        "description": "This is a tool designed to assist you in selecting the optimal color for printing."
+        "description": "Tool developed with the aim of exploring JavaFX, but also to solve a problem with black and white printing, as colors are often poorly chosen, making handouts unreadable."
       }
     },
     "tags": [
@@ -100,11 +100,11 @@
     "translations": {
       "fr-FR": {
         "type": "Projet scolaire",
-        "description": "Outil de modélisation 3d"
+        "description": "Outil réalisé \"en groupe\" permettant de visualiser des .ply, des fichiers qui representent des fichiers 3D"
       },
       "en-US": {
         "type": "School project",
-        "description": "This is a 3D modeling tool that allows you to open .ply files and view them in a visual format."
+        "description": "I've worked with a \"group\" for this 3D modeling tool, that allows you to open .ply files and view them in a visual format."
       }
     },
     "tags": [
@@ -166,11 +166,11 @@
     "translations": {
       "fr-FR": {
         "type": "Projet scolaire",
-        "description": "C'est un site web qui vous permet de rechercher des séries télévisées et d'accéder à leurs informations pertinentes."
+        "description": "Projet réalisé en équipe de 3, dans le simple but d'utiliser une API. Ce site web permet de rechercher des séries télévisées et d'accéder à certaines informations comme leur notes.. et cie"
       },
       "en-US": {
         "type": "School project",
-        "description": "This is a website that enables you to search for TV series and access their relevant information."
+        "description": "Project carried out by a team of 3, with the simple goal of using an API. This website allows users to search for TV series and access certain information such as their ratings, etc."
       }
     },
     "tags": [
@@ -199,11 +199,11 @@
     "translations": {
       "fr-FR": {
         "type": "Travail Pratique",
-        "description": "C'est un projet Python visant à faciliter l'apprentissage des techniques de traitement d'image."
+        "description": "Mini-Projet Python visant à faciliter l'apprentissage des techniques de traitement d'image."
       },
       "en-US": {
         "type": "Practical work",
-        "description": "This is a Python project aimed at facilitating the learning of image processing techniques."
+        "description": "Little python project aimed at facilitating the learning of image processing techniques."
       }
     },
     "tags": [
@@ -368,11 +368,11 @@
     "translations": {
       "fr-FR": {
         "type": "Projet scolaire",
-        "description": "C'est une implémentation \"simple\" d'un moteur 3D que je qualifie d'\"ancien\" car je prévois de le réimplémenter différemment."
+        "description": "Projet réalisé en groupe dans le cadre de ma licence d'informatique ou le but était de réaliser un projet \"complexe\", nous avons donc choisis de découvrir la 3D à travers ce projet en vu du master que nous voulions faire, le master Réalité Virtuelle et Augmentée"
       },
       "en-US": {
         "type": "School project",
-        "description": "This is a \"simple\" implementation of a 3D engine that I refer to as \"old\" because I plan to re-implement it in a different way."
+        "description": "Group project carried out as part of my computer science degree, where the goal was to create a \"complex\" project. We therefore chose to explore 3D through this project in view of the master's program we wanted to pursue, the Master in Virtual and Augmented Reality."
       }
     },
     "tags": [
