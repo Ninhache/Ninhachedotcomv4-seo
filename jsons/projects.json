@@ -52,9 +52,9 @@
       }
     ],
     "links": {
-      "redirect": "https://ninhache.fr/MazeThings/",
+      "redirect": "https://github.com/Ninhache/MazeThings/",
       "git": "https://github.com/Ninhache/MazeThings",
-      "play": "https://ninhache.fr/MazeThings/"
+      "play": "none"
     },
     "videoUrl": "none",
     "image": "/images/projects/MazeThings.gif",
@@ -184,9 +184,9 @@
       }
     ],
     "links": {
-      "redirect": "https://ninhache.fr/JustSeries",
+      "redirect": "https://github.com/Ninhache/JustSeries",
       "git": "https://github.com/Ninhache/JustSeries",
-      "play": "https://ninhache.fr/JustSeries"
+      "play": "none"
     },
     "videoUrl": "none",
     "image": "/images/projects/JustSeries.gif",
