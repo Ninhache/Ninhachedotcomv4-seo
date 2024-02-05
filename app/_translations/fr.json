@@ -1,0 +1,71 @@
+{
+  "useLocaleNames": {
+    "en": "Anglais",
+    "fr": "Français"
+  },
+  "header": {
+    "home": "Accueil",
+    "about": "A propos",
+    "projects": "Projets",
+    "skills": "Compétences",
+    "experience": "Experience",
+    "contact": "Contact",
+    "homeAnchor": "accueil",
+    "aboutAnchor": "apropos",
+    "projectsAnchor": "projets",
+    "skillsAnchor": "competences",
+    "experienceAnchor": "experiences",
+    "contactAnchor": "contact"
+  },
+  "home": {
+    "anchor": "accueil",
+    "greeting": "Bonjour, je m'appelle",
+    "name": "Almeida Neo.",
+    "profession": "Je suis développeur de logiciels.",
+    "description": "Je suis un étudiant français de 21 ans !",
+    "start": "Commençons"
+  },
+  "about": {
+    "anchor": "apropos",
+    "title": "Qui suis-je ?",
+    "introduction": "Bonjour ! Je m'appelle Almeida Neo, et j'ai 21 ans. J'aime travailler sur des projets personnels pendant mon temps libre, que vous pouvez trouver dans la section <projects>projets</projects> de ce site web.",
+    "employmentSeeking": "Actuellement, je suis activement à la recherche d'opportunités d'emploi permanentes. N'hésitez pas à me contacter !",
+    "additionalInfo": "Vous voulez peut-être plus d'informations sur moi ?",
+    "resumeLink": "Ouvrir mon CV",
+    "altLink": "Icone représentant un lien externe"
+  },
+  "projects": {
+    "anchor": "projets",
+    "title": "Quelques-uns de mes projets",
+    "sortLabel": "Trier par",
+    "openGit": "Voir le code",
+    "runCode": "Tester le programme",
+    "sortButtons": {
+      "date": "Date",
+      "school": "Ecole",
+      "personal": "Personnel",
+      "web": "Web",
+      "simulations": "Simulations",
+      "random": "Aléatoire"
+    }
+  },
+  "skills": {
+    "anchor": "competences",
+    "title": "Quelles sont mes compétences"
+  },
+  "jobs": {
+    "anchor": "experiences",
+    "title": "Où j'ai travaillé"
+  },
+  "contact": {
+    "anchor": "contact",
+    "title": "Voir le dépôt sur GitHub?"
+  },
+  "footer": {
+    "github": "Voir le repo. sur GitHub",
+    "text": "Ce site web a été construit par Neo ALMEIDA en utilisant NextJS."
+  },
+  "LocaleSwitcher": {
+    "switchLocale": "Changer la langue de {locale, select, de {Français} en {Anglais} other {Inconnu}} wechseln"
+  }
+}

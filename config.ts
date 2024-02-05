@@ -1,14 +1,14 @@
 
 
-export type Locale = "en-US" | "fr-FR";
+export type Locale = "en" | "fr";
 
-export const defaultLocale: Locale = "en-US";
+export const defaultLocale: Locale = "en";
 
-export const locales: Locale[] = ["en-US", "fr-FR"];
+export const locales: Locale[] = ["en", "fr"];
 
 export const localeNames: Record<Locale, string> = {
-  "en-US": "English",
-  "fr-FR": "French",
+  "en": "English",
+  "fr": "French",
 };
 
 export const localePrefix = undefined;
@@ -21,10 +21,10 @@ import { Pathnames } from "next-intl/navigation";
 
 export const pathnames = {
   '/': '/',
-  '/resume': {
-    'en-US': '/resume',
-    'fr-FR': '/cv'
-  }
+  // '/resume': {
+  //   'en': '/resume',
+  //   'fr': '/cv'
+  // }
 } satisfies Pathnames<typeof locales>;
 
 // export type AppPathnames = keyof typeof pathnames;
