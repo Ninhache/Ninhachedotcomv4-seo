@@ -1,10 +1,10 @@
 [
   {
     "translations": {
-      "fr-FR": {
+      "fr": {
         "name": "Programming Languages Stack"
       },
-      "en-US": {
+      "en": {
         "name": "Programming Languages Stack"
       }
     },
@@ -44,10 +44,10 @@
 
   {
     "translations": {
-      "fr-FR": {
+      "fr": {
         "name": "Front-end"
       },
-      "en-US": {
+      "en": {
         "name": "Front-end"
       }
     },
@@ -86,10 +86,10 @@
   },
   {
     "translations": {
-      "fr-FR": {
+      "fr": {
         "name": "Back-end"
       },
-      "en-US": {
+      "en": {
         "name": "Back-end"
       }
     },
@@ -113,10 +113,10 @@
   },
   {
     "translations": {
-      "fr-FR": {
+      "fr": {
         "name": "Infrastructure"
       },
-      "en-US": {
+      "en": {
         "name": "Infrastructure"
       }
     },
@@ -145,10 +145,10 @@
   },
   {
     "translations": {
-      "fr-FR": {
+      "fr": {
         "name": "Design"
       },
-      "en-US": {
+      "en": {
         "name": "Design"
       }
     },

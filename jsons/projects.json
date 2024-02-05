@@ -3,11 +3,11 @@
     "title": "Sokoban",
     "date": "03/2021",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet scolaire",
         "description": "Un jeu de sokoban réalisé lors de ma toute première année d'étude, un jeu de puzzle ou il faut pousser des boites dans des trous, réalisé en groupe en C, nous avons même choisis d'y utiliser Ncurses pour se compliquer la tâche"
       },
-      "en-US": {
+      "en": {
         "type": "School project",
         "description": "A sokoban game developed during my very first year of study, a puzzle game where you have to push boxes into holes, completed as a group project in C. We even chose to use Ncurses to make the task more challenging"
       }
@@ -36,11 +36,11 @@
     "title": "Maze Things",
     "date": "05/2022",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet personnel",
         "description": "Simplement un générateur de labyrinthes qui peut également les résoudres"
       },
-      "en-US": {
+      "en": {
         "type": "Personal Project",
         "description": "Simply a maze generator, that can solves himself the maze you provides him"
       }
@@ -65,11 +65,11 @@
     "title": "ColorFx",
     "date": "04/2021",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet scolaire",
         "description": "Outil réalisé dans le but de découvrir JavaFX mais également pour résoudre une problématique d'impression en noir et blanc, car les couleurs sont souvent mal choisis et les polycopiés illisible"
       },
-      "en-US": {
+      "en": {
         "type": "School project",
         "description": "Tool developed with the aim of exploring JavaFX, but also to solve a problem with black and white printing, as colors are often poorly chosen, making handouts unreadable."
       }
@@ -98,11 +98,11 @@
     "title": "3D Modelisation Tool (Only for .ply)",
     "date": "12/2021",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet scolaire",
         "description": "Outil réalisé \"en groupe\" permettant de visualiser des .ply, des fichiers qui representent des fichiers 3D"
       },
-      "en-US": {
+      "en": {
         "type": "School project",
         "description": "I've worked with a \"group\" for this 3D modeling tool, that allows you to open .ply files and view them in a visual format."
       }
@@ -131,11 +131,11 @@
     "title": "Windows's Notepad copy",
     "date": "02/2022",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet personnel",
         "description": "Ce projet est une réplique du Bloc-notes de Windows, avec des fonctionnalités supplémentaires. Il m'a offert l'opportunité d'explorer C# et .NET."
       },
-      "en-US": {
+      "en": {
         "type": "Personal Project",
         "description": "This project is a replica of Windows' Notepad, with additional features. It provided me with the opportunity to explore C# and .NET."
       }
@@ -143,11 +143,11 @@
     "tags": [
       {
         "name": "C#",
-        "url": "https://docs.microsoft.com/en-us/dotnet/csharp/"
+        "url": "https://docs.microsoft.com/en/dotnet/csharp/"
       },
       {
         "name": ".NET",
-        "url": "https://docs.microsoft.com/en-us/dotnet/"
+        "url": "https://docs.microsoft.com/en/dotnet/"
       }
     ],
     "links": {
@@ -164,11 +164,11 @@
     "title": "JustSeries",
     "date": "04/2022",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet scolaire",
         "description": "Projet réalisé en équipe de 3, dans le simple but d'utiliser une API. Ce site web permet de rechercher des séries télévisées et d'accéder à certaines informations comme leur notes.. et cie"
       },
-      "en-US": {
+      "en": {
         "type": "School project",
         "description": "Project carried out by a team of 3, with the simple goal of using an API. This website allows users to search for TV series and access certain information such as their ratings, etc."
       }
@@ -197,11 +197,11 @@
     "title": "Image Processing",
     "date": "04/2022",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Travail Pratique",
         "description": "Mini-Projet Python visant à faciliter l'apprentissage des techniques de traitement d'image."
       },
-      "en-US": {
+      "en": {
         "type": "Practical work",
         "description": "Little python project aimed at facilitating the learning of image processing techniques."
       }
@@ -238,11 +238,11 @@
     "title": "Ch-hess",
     "date": "10/2021",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet personnel",
         "description": "C'est un jeu d'échecs appelé Ch-hess, inspiré du terme \"Hess\" fréquemment utilisé par les jeunes pour désigner être dans une situation de difficulté financière."
       },
-      "en-US": {
+      "en": {
         "type": "Personal Project",
         "description": "It is a chess game called Ch-hess, inspired by the term \"Hess\" frequently used by young people to denote being in a state of financial difficulty."
       }
@@ -267,11 +267,11 @@
     "title": "Client SSH",
     "date": "04/2022",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet scolaire",
         "description": "C'est un client SSH, implémenté en utilisant le langage de programmation Java."
       },
-      "en-US": {
+      "en": {
         "type": "School project",
         "description": "This is an SSH client, implemented using the Java programming language."
       }
@@ -296,11 +296,11 @@
     "title": "Netcast",
     "date": "03/2022",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet scolaire",
         "description": "C'est un serveur web qui a été implémenté en utilisant le langage de programmation C."
       },
-      "en-US": {
+      "en": {
         "type": "School project",
         "description": "This is a web server that has been implemented using the C programming language."
       }
@@ -325,11 +325,11 @@
     "title": "FractalDisplayer",
     "date": "06/2022",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet personnel",
         "description": "Ce projet est un visualiseur de fractales basique qui est actuellement capable d'afficher la fractale de Mandelbrot. Son but est de m'aider à apprendre et explorer l'utilisation des shaders."
       },
-      "en-US": {
+      "en": {
         "type": "Personal Project",
         "description": "This project is a basic fractal viewer that is currently capable of displaying the Mandelbrot fractal. Its purpose is to help me learn and explore the use of shaders."
       }
@@ -366,11 +366,11 @@
     "title": "3D Engine (old)",
     "date": "01/2023",
     "translations": {
-      "fr-FR": {
+      "fr": {
         "type": "Projet scolaire",
         "description": "Projet réalisé en groupe dans le cadre de ma licence d'informatique ou le but était de réaliser un projet \"complexe\", nous avons donc choisis de découvrir la 3D à travers ce projet en vu du master que nous voulions faire, le master Réalité Virtuelle et Augmentée"
       },
-      "en-US": {
+      "en": {
         "type": "School project",
         "description": "Group project carried out as part of my computer science degree, where the goal was to create a \"complex\" project. We therefore chose to explore 3D through this project in view of the master's program we wanted to pursue, the Master in Virtual and Augmented Reality."
       }

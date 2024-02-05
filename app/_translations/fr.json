@@ -1,7 +1,7 @@
 {
   "useLocaleNames": {
-    "en-US": "Anglais",
-    "fr-FR": "Français"
+    "en": "Anglais",
+    "fr": "Français"
   },
   "header": {
     "home": "Accueil",
