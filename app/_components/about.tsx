@@ -5,12 +5,15 @@ import styles from '@/styles/about.module.css';
 import { calibreRegular, proximaNovaBold, ralewaySemiBold } from '@/app/fonts';
 import Link from "next/link";
 import AnimatedProfilePicture from './AnimatedProfilePicture';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 export default function About() {
 
 	const t = useTranslations('about');
+	
+	// const locale = useLocale();
+	// todo: add the english version
 
 	return (
 		<>
@@ -31,7 +34,7 @@ export default function About() {
 
 							<Link
 								className={`${ralewaySemiBold.className} ${styles.download_resume}`}
-								href="/resume"
+								href="/documents/CV_ALMEDA_Neo_FR.pdf"
 								target="_blank"
 							>
 								<span>{t('resumeLink')}</span>
@@ -47,3 +50,4 @@ export default function About() {
 		</>
 	)
 }
+
