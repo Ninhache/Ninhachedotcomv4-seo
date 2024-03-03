@@ -20,7 +20,7 @@ export default function Experience() {
 					<span className={`section_title ${styles.title} ${proximaNovaBold.className}`}>Where I&apos;ve Worked</span>
 					<div className={styles.content}>
 						{
-							rawData.map((item, index) => {
+							rawData.sort((a,b) => a.order - a.order).map((item, index) => {
 								return (
 									<AnimatedComponent delay={100} key={index}>
 										<ExperienceItem key={index} experience={item} inverted={index % 2 === 0} />
