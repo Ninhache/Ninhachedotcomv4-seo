@@ -8,8 +8,6 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { useEffect, useMemo, useState } from 'react';
 import { loadFull } from 'tsparticles';
 
-
-
 export default function ParticlesComponent() {
 
     const [init, setInit] = useState(false);
