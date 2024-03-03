@@ -34,7 +34,7 @@ export default function About() {
 
 							<Link
 								className={`${ralewaySemiBold.className} ${styles.download_resume}`}
-								href="/documents/CV_ALMEDA_Neo_FR-web.pdf"
+								href="/documents/CV_ALMEIDA_Neo_FR-web.pdf"
 								target="_blank"
 							>
 								<span>{t('resumeLink')}</span>
