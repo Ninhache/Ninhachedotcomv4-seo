@@ -62,7 +62,13 @@ export default function Contact() {
 											rel="noopener noreferrer"
 											style={style}
 										>
-											<Image src={item.imageUrl} alt={`Social media link to ${item.text}`} width={50} height={50} />
+											<Image
+												src={item.imageUrl}
+												alt={`Social media link to ${item.text}`}
+												width={50}
+												height={50}
+												style={{ width: '50px', height: '50px' }}
+											/>
 											<div className={styles.social_text}>
 												<span>{item.text}</span>
 											</div>

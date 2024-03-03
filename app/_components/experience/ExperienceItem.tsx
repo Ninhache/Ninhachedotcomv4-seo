@@ -93,7 +93,13 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({ inverted, experi
 				</div>
 				<div className={`${styles.view}`}>
 					<Link href={`${experience.link}`} target="_blank">
-						<Image src={`${experience.image}`} alt={`${experience.title}`} width={600} height={340}/>
+						<Image
+							src={`${experience.image}`}
+							alt={`${experience.title}`}
+							width={600}
+							height={340}
+							style={{ width: '600px', height: '340px' }}
+						/>
 					</Link>
 				</div>
 			</div>

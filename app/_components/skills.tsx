@@ -118,7 +118,13 @@ const SkillsList: React.FC<SkillsListProps> = ({ skills, isVisible }) => {
 		>
 			{skills.map((skill, index) => (
 				<Link key={index} style={{ textDecoration: 'none' }} className={`${styles.skill} ${proximaNovaSemiBold.className}`} href={skill.link} target="_blank" rel="noopener noreferrer">
-					<Image src={skill.logo} alt={`Icon of ${skill.name}`} width={83} height={83}/>
+					<Image
+						src={skill.logo}
+						alt={`Icon of ${skill.name}`}
+						width={83}
+						height={83}
+						style={{ width: '83px', height: '83px' }}
+					/>
 					<span>{skill.name}</span>
 				</Link>
 			))}

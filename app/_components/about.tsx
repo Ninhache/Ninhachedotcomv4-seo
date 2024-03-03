@@ -38,7 +38,13 @@ export default function About() {
 								target="_blank"
 							>
 								<span>{t('resumeLink')}</span>
-								<Image src="/svg/OpenLink.svg" width={20} height={20} alt={t('altLink')} />
+								<Image
+									src="/svg/OpenLink.svg"
+									width={20}
+									height={20}
+									alt={t('altLink')}
+									style={{ width: '20px', height: '20px' }}
+								/>
 							</Link>
 						</div>
 

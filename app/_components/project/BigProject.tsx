@@ -67,7 +67,13 @@ export const BigProject: React.FC<BigProjectProps> = ({ project, isInverted }) =
 					!isMobile && (
 						<div className={`${styles.project_view}`}>
 							<Link href={`${project.links.redirect}`} target="_blank">
-								<Image src={project.image} alt={`Image of the project ${project.title}`} width={600} height={300} />
+								<Image
+									src={project.image}
+									alt={`Image of the project ${project.title}`}
+									width={630}
+									height={350} 
+									style={{ width: '630px', height: '350px', objectFit: 'cover' }}
+								/>
 							</Link>
 						</div>
 					)

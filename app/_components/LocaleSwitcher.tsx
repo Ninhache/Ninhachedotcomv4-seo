@@ -19,7 +19,13 @@ export default function LocaleSwitcher({ localeNames }: { localeNames: Record<Lo
     <div className={styles.container} style={{ display: "flex", justifyContent: "center", alignItems: "center", paddingLeft: 12, paddingRight: 12 }}>
       <div className={styles.content}>
         <div className={styles.label}>
-          <Image src={`/images/translations/${locale}.jpg`} width={35} height={20} alt={locale} />
+          <Image
+            src={`/images/translations/${locale}.jpg`}
+            width={35}
+            height={20}
+            alt={locale}
+            style={{ width: '35px', height: '20px' }}
+          />
           <p>
             {localeNames[locale]}
           </p>
@@ -27,7 +33,13 @@ export default function LocaleSwitcher({ localeNames }: { localeNames: Record<Lo
 
         {locales.filter(loc => loc !== locale).map((loc, index) => (
           <div key={loc} className={styles.langList} onClick={(e) => switchLocale(loc, e)}>
-            <Image src={`/images/translations/${loc}.jpg`} width={35} height={20} alt={loc} />
+            <Image
+              src={`/images/translations/${loc}.jpg`}
+              width={35}
+              height={20}
+              alt={loc}
+              style={{ width: '35px', height: '20px' }}
+            />
             <p className={styles.langItem}>
               {localeNames[loc]}
             </p>

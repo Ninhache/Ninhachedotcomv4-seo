@@ -109,7 +109,14 @@ export default function Header() {
 					<nav className={styles.nav}>
 						<div className={styles.logo}>
 							<Link href="https://ninhache.fr/" target="_blank" rel="noopener noreferrer">
-								<Image src="/svg/Logo.svg" alt="logo" width={190} height={35} priority />
+								<Image
+									src="/svg/Logo.svg"
+									alt="logo"
+									width={190}
+									height={35}
+									priority
+									
+								/>
 							</Link>
 						</div>
 						{

@@ -21,7 +21,13 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
 		<div className={`${styles.content}`}>
 			<div className={`${styles.header}`}>
 				<div className={`${styles.logos}`}>
-					<Image src={project.logo} alt={`Icon for the project ${project.title}`} width={45} height={60} />
+					<Image
+						src={project.logo}
+						alt={`Icon for the project ${project.title}`}
+						width={45}
+						height={60}
+						style={{ width: '45px', height: '60px' }}
+					/>
 					<div className={`${styles.links}`}>
 						{project.links.git !== "none" &&
 							<Link aria-label='Access the code on github' className={`${styles.github}`} href={`${project.links.git}`} target="_blank">

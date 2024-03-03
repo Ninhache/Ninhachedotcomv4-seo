@@ -51,7 +51,14 @@ const AnimatedProfilePicture: React.FC<AnimatedProfilePictureProps> = ({ delay =
     return (
         <div id="photo" className={styles.photo}>
             <Suspense fallback={<p>Loading photo...</p>}>
-                <Image className={styles.image} src="/images/Photo.jpg" alt="picture of Neo" width={380} height={380} />
+                <Image
+                    className={styles.image}
+                    src="/images/Photo.jpg"
+                    alt="picture of Neo"
+                    width={380}
+                    height={380}
+                    style={{ width: '380px', height: '380px' }}
+                />
             </Suspense>
         </div>
     );

@@ -15,12 +15,25 @@ export default function Footer() {
 				<div className={`${styles.footer_content}`}>
 					<Link className={styles.footer_licence} href="https://github.com/Ninhache/Ninhachedotv4/blob/main/LICENSE" target="_blank">
 						<span>© 2024 Almeida Neo</span>
-						<Image src={`svg/License.svg`} alt="license link" width={`20`} height={`20`} />
+						<Image
+							src={`svg/License.svg`}
+							alt="license link"
+							width={`20`}
+							height={`20`}
+							style={{ width: '20px', height: '20px' }}
+
+						/>
 						<span>MIT license</span>
 					</Link>
 					<Link href="https://github.com/ninhache/Ninhachedotv4" target="_blank">
 						<span>{t('github')}</span>
-						<Image src={`svg/Github.svg`} alt="github link" width={`20`} height={`20`} />
+						<Image
+							src={`svg/Github.svg`}
+							alt="github link"
+							width={`20`}
+							height={`20`}
+							style={{ width: '20px', height: '20px' }}
+						/>
 					</Link>
 				</div>
 				<div className={`${styles.footer_content}`}>

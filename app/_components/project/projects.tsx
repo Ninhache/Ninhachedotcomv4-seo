@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import AnimatedComponent from '../AnimatedComponent'
 import { BigProject } from './BigProject'
 import { SmallProject } from './SmallProject'
-import { Locale } from '@/config'
+
 import { useTranslations } from 'next-intl'
 
 interface SortButtonData {
@@ -22,12 +22,13 @@ interface SortButtonData {
 interface SortButtonProps {
 	label: string;
 	isSelected: boolean;
+	className?: string;
 	onClick: () => void;
 };
 
-const SortButton: React.FC<SortButtonProps> = ({ label, isSelected, onClick }) => (
+const SortButton: React.FC<SortButtonProps> = ({ label, isSelected, className, onClick }) => (
 	<button
-		className={`${styles.choice} ${ralewaySemiBold.className} ${isSelected ? styles.selected : ''}`}
+		className={`${styles.choice} ${ralewaySemiBold.className} ${isSelected ? styles.selected : ''} `}
 		onClick={onClick}
 	>
 		{label}
@@ -161,6 +162,7 @@ const Projects: React.FC<ProjectsProps> = ({ }) => {
 							<SortButton
 								key={button.value}
 								label={button.label}
+								className={button.value === SortType.RANDOM ? `${styles.cursor}` : ``}
 								isSelected={selectedSort === button.value}
 								onClick={() => setSelectedSort(button.value)}
 							/>
