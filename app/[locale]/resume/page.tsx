@@ -12,5 +12,5 @@ export default async function Page({ params: { locale } }: Props) {
 
   await fetch(`http://localhost:3000/documents/CV_ALMEIDA_Neo_${locale.toLocaleUpperCase()}-web.pdf`)
           .then(() => redirect(`/documents/CV_ALMEIDA_Neo_${locale.toLocaleUpperCase()}-web.pdf`))
-          .catch(e => redirect(`/documents/CV_ALMEIDA_Neo_${defaultLocale}-web.pdf`));
+          .catch(e => redirect(`/documents/CV_ALMEIDA_Neo_${defaultLocale.toLocaleUpperCase()}-web.pdf`));
 }
