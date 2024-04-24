@@ -25,7 +25,7 @@ export default function Footer() {
 						/>
 						<span>MIT license</span>
 					</Link>
-					<Link href="https://github.com/ninhache/Ninhachedotv4" target="_blank">
+					<Link href="https://github.com/Ninhache/Ninhachedotcomv4-seo" target="_blank">
 						<span>{t('github')}</span>
 						<Image
 							src={`svg/Github.svg`}
