@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useMobileView = (): boolean => {
   const [isMobile, setIsMobile] = useState(false);
@@ -10,9 +10,9 @@ const useMobileView = (): boolean => {
 
     checkIfMobile();
 
-    window.addEventListener('resize', checkIfMobile);
+    window.addEventListener("resize", checkIfMobile);
 
-    return () => window.removeEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
   return isMobile;

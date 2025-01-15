@@ -38,7 +38,6 @@
   }
 }
 
-
 .other_projects_content {
   display: grid;
   justify-content: center;
@@ -61,8 +60,6 @@
   padding-left: 0px;
   padding-right: clamp(0px, calc(18vw - 234px), 60px);
 }
-
-
 
 .project_view {
   z-index: 5;
@@ -108,8 +105,6 @@
   margin-right: -100px;
 }
 
-
-
 .project_text .type {
   display: flex;
   width: 100%;
@@ -122,8 +117,6 @@
   margin-bottom: 10px;
 }
 
-
-
 .project_text .title {
   font-size: 32px;
   color: var(--white);
@@ -132,8 +125,6 @@
   margin-left: 15px;
   transition: color 0.2s ease;
 }
-
-
 
 .project_text .title:hover {
   color: var(--light_blue);
@@ -158,8 +149,6 @@
   color: var(--fade_white);
 }
 
-
-
 .project_text .tags {
   display: flex;
   justify-content: flex-start;
@@ -170,7 +159,6 @@
   margin-left: 9px;
   gap: 8px;
 }
-
 
 .project_text .tags a {
   font-size: 16px;

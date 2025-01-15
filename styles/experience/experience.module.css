@@ -16,7 +16,7 @@
 }
 
 .title {
-  color: var(--white) !important; 
+  color: var(--white) !important;
   margin-bottom: clamp(50px, 6vw, 80px);
 }
 
@@ -143,5 +143,3 @@
     bottom: 15px;
   }
 }
-
-

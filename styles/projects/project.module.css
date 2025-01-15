@@ -3,7 +3,6 @@
   margin-bottom: 60px;
 }
 
-
 @media screen and (max-width: 1125px) {
   .projects_content {
     gap: clamp(20px, 5vw, 100px);

@@ -2,7 +2,7 @@
 
 `npm run dev`
 
-## Get into the deployment 
+## Get into the deployment
 
 > Standard way
 

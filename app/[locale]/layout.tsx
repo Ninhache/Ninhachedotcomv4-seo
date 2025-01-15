@@ -1,9 +1,9 @@
-import '@/styles/globals.css';
+import "@/styles/globals.css";
 
 import { Locale, locales } from "@/config";
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { unstable_setRequestLocale } from 'next-intl/server';
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 const title = `Almeida Neo's Portfolio`;
 const description = `Remind me to add a description please`;
@@ -22,11 +22,11 @@ export const metadata: Metadata = {
         type: "image/png",
         width: 1920,
         height: 1080,
-      }
+      },
     ],
     title,
     description,
-    siteName: "Almeida Neo Portfolio"
+    siteName: "Almeida Neo Portfolio",
   },
   twitter: {
     title,
@@ -38,12 +38,12 @@ export const metadata: Metadata = {
         type: "image/png",
         width: 1920,
         height: 1080,
-      }
+      },
     ],
     card: "summary_large_image",
     site: "@NinhacheUwU",
   },
-}
+};
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -56,7 +56,6 @@ export default function RootLayout({
   children: React.ReactNode;
   params: { locale: Locale };
 }) {
-
   if (locales.includes(locale) === false) {
     return notFound();
   }
@@ -65,9 +64,7 @@ export default function RootLayout({
 
   return (
     <html lang={locale}>
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

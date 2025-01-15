@@ -229,7 +229,7 @@
 }
 
 @media screen and (max-width: 780px) {
-  .content{
+  .content {
     background-size: cover;
     background-position: center;
     border-radius: 15px;
@@ -301,7 +301,7 @@
 .section .view {
   z-index: 5;
   display: flex;
-  justify-content: center;  
+  justify-content: center;
   align-items: center;
 }
 

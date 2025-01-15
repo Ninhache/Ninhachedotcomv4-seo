@@ -2,20 +2,19 @@
 
 const config = {
   webpack: (config) => {
-      config.module.rules.push({
-          test: /\.svg$/,
-          use: ['@svgr/webpack'],
-      });
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
 
-      return config;
+    return config;
   },
 };
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
- 
-const withNextIntl = require("next-intl/plugin")("./i18n.ts") ;
- 
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
-module.exports = withBundleAnalyzer(withNextIntl(config))
+const withNextIntl = require("next-intl/plugin")("./i18n.ts");
+
+module.exports = withBundleAnalyzer(withNextIntl(config));

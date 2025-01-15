@@ -1,56 +1,55 @@
 .content {
-    display: inline-block;
-    position: relative;
-    color: white;
-    width: 100%;
+  display: inline-block;
+  position: relative;
+  color: white;
+  width: 100%;
 }
 
 .label {
-    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-    transition-duration: 150ms;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .label:hover {
-    color: var(--light_blue);
-    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-    transition-duration: 150ms;
+  color: var(--light_blue);
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 150ms;
 }
 
 .langList {
-    display: none;
-    position: absolute;
-    top: calc(100% + 10px);
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition-property: opacity;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-    opacity: 0;
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  opacity: 0;
 }
 
 .container:hover .langList {
-    display: flex;
-    align-items: center;
-    opacity: 1;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  gap: 10px;
 }
 
 .langItem {
-    color: var(--white);
-    
+  color: var(--white);
 }
 
 .langList {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-.langList:hover p{
-    color: var(--light_blue);
-    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
-    transition-duration: 150ms;
+.langList:hover p {
+  color: var(--light_blue);
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 150ms;
 }
