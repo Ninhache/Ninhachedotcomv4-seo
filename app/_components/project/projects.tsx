@@ -7,7 +7,7 @@ import rawData from "@/jsons/projects.json";
 import styles from "@/styles/projects/project.module.css";
 
 import { shuffleArray } from "@/utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AnimatedComponent from "../AnimatedComponent";
 import { BigProject } from "./BigProject";
 import { SmallProject } from "./SmallProject";
@@ -42,14 +42,16 @@ const SortButton: React.FC<SortButtonProps> = ({
   </button>
 );
 
-export enum SortType {
-  DATE = "Date",
-  SCHOOL = "School",
-  PERSONAL = "Personal",
-  WEB = "Web",
-  SIMULATIONS = "Simulations",
-  RANDOM = "Random",
-}
+export const SORT_TYPE = {
+  DATE: "date",
+  SCHOOL: "school",
+  PERSONAL: "personal",
+  WEB: "web",
+  SIMULATIONS: "simulations",
+  RANDOM: "random",
+} as const;
+
+export type SortType = (typeof SORT_TYPE)[keyof typeof SORT_TYPE];
 
 const sortByDate = (data: Project[]) => {
   data.sort((a, b) => {
@@ -72,10 +74,11 @@ const sortByDate = (data: Project[]) => {
 };
 
 const filterByTag = (data: Project[]) => {
-  return function (searchedTag: string): Project[] {
+  return function (searchedTag: SortType): Project[] {
     return data.filter((project) =>
       project.sortCategories.includes(
-        SortType[searchedTag.toUpperCase() as keyof typeof SortType]
+        searchedTag
+        // SortType[searchedTag.toUpperCase() as keyof typeof SortType]
       )
     );
   };
@@ -101,22 +104,19 @@ const sortByRandom = (data: Project[]): Project[] => {
   return shuffleArray(data);
 };
 
-const sortFunctions = {
-  [SortType.DATE]: sortByDate,
-  [SortType.SCHOOL]: filterBySchool,
-  [SortType.PERSONAL]: filterByPersonal,
-  [SortType.WEB]: filterByWeb,
-  [SortType.SIMULATIONS]: filterBySimulations,
-  [SortType.RANDOM]: sortByRandom,
+const sortFunctions: Record<SortType, (data: Project[]) => Project[]> = {
+  date: sortByDate,
+  school: filterBySchool,
+  personal: filterByPersonal,
+  web: filterByWeb,
+  simulations: filterBySimulations,
+  random: sortByRandom,
 };
 
 const parseSortTypes = (categories: string[]): SortType[] => {
   return categories.map((category: string) => {
     const uppercaseCategory = category.toLocaleUpperCase();
-    if (uppercaseCategory in SortType) {
-      return SortType[uppercaseCategory as keyof typeof SortType];
-    }
-    throw new Error(`Invalid sort category: ${category}`);
+    return SORT_TYPE[uppercaseCategory as keyof typeof SORT_TYPE];
   });
 };
 
@@ -125,35 +125,50 @@ const jsonData: Project[] = rawData.map((item) => ({
   sortCategories: parseSortTypes(item.sortCategories),
 }));
 
-interface ProjectsProps {}
-
-const Projects: React.FC<ProjectsProps> = ({}) => {
+const Projects: React.FC = () => {
   const t = useTranslations("projects");
 
-  const [selectedSort, setSelectedSort] = useState<SortType>(SortType.DATE);
-  // We're using 2 states because some sortFunctions are "clearing" the array (to filter by tag and not sort)
-  const [originalData, _] = useState<Project[]>(jsonData);
-  const [sortedData, setSortedData] = useState<Project[]>(
-    sortFunctions[SortType.DATE](jsonData)
+  const [allProjects] = useState<Project[]>(jsonData);
+  const [selectedSort, setSelectedSort] = useState<SortType>("date");
+  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
+  const [sortKey, setSortKey] = useState(0);
+
+  const runSort = useCallback(
+    (sortType: SortType) => {
+      const newData = sortFunctions[sortType]([...allProjects]);
+      setDisplayedProjects(newData);
+    },
+    [allProjects]
   );
 
-  const sortButtons: SortButtonData[] = [
-    { label: t("sortButtons.date"), value: SortType.DATE },
-    { label: t("sortButtons.school"), value: SortType.SCHOOL },
-    { label: t("sortButtons.personal"), value: SortType.PERSONAL },
-    { label: t("sortButtons.web"), value: SortType.WEB },
-    { label: t("sortButtons.simulations"), value: SortType.SIMULATIONS },
-    { label: t("sortButtons.random"), value: SortType.RANDOM },
-  ];
+  useEffect(() => {
+    if (selectedSort !== SORT_TYPE.RANDOM) {
+      runSort(selectedSort);
+    }
+  }, [selectedSort, runSort]);
 
   useEffect(() => {
-    const sortData = (sortType: SortType) => {
-      const sorted = sortFunctions[sortType]([...originalData]);
-      setSortedData(sorted);
-    };
+    if (selectedSort === SORT_TYPE.RANDOM) {
+      runSort(SORT_TYPE.RANDOM);
+    }
+  }, [sortKey, runSort]);
 
-    sortData(selectedSort);
-  }, [selectedSort, originalData]);
+  const handleSortClick = (sortType: SortType) => {
+    if (sortType === SORT_TYPE.RANDOM) {
+      setSortKey((prev) => prev + 1);
+    }
+
+    setSelectedSort(sortType);
+  };
+
+  const sortButtons: SortButtonData[] = [
+    { label: t("sortButtons.date"), value: "date" },
+    { label: t("sortButtons.school"), value: "school" },
+    { label: t("sortButtons.personal"), value: "personal" },
+    { label: t("sortButtons.web"), value: "web" },
+    { label: t("sortButtons.simulations"), value: "simulations" },
+    { label: t("sortButtons.random"), value: "random" },
+  ];
 
   return (
     <>
@@ -175,17 +190,19 @@ const Projects: React.FC<ProjectsProps> = ({}) => {
               <SortButton
                 key={button.value}
                 label={button.label}
-                className={
-                  button.value === SortType.RANDOM ? `${styles.cursor}` : ``
+                className={button.value === "random" ? `${styles.cursor}` : ``}
+                isSelected={
+                  button.value !== "random" && selectedSort === button.value
                 }
-                isSelected={selectedSort === button.value}
-                onClick={() => setSelectedSort(button.value)}
+                onClick={() => {
+                  handleSortClick(button.value);
+                }}
               />
             ))}
           </div>
 
           <div className={styles.projects_content}>
-            {sortedData.slice(0, 7).map((item, index) => (
+            {displayedProjects.slice(0, 7).map((item, index) => (
               <AnimatedComponent delay={100} key={index}>
                 <BigProject
                   key={item.title}
@@ -197,7 +214,7 @@ const Projects: React.FC<ProjectsProps> = ({}) => {
           </div>
 
           <div className={styles.other_projects_content}>
-            {sortedData.slice(7, 21).map((item, index) => (
+            {displayedProjects.slice(7, 21).map((item, index) => (
               <AnimatedComponent
                 delay={100}
                 key={index}
