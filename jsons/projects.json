@@ -402,5 +402,38 @@
     "image": "/images/projects/3DEngine-Old.png",
     "logo": "/svg/projects/3DEngine-Old.svg",
     "sortCategories": ["school", "simulations"]
+  },
+  {
+    "title": "Wakfuli",
+    "date": "09/2024",
+    "translations": {
+      "fr": {
+        "type": "Projet collaboratif",
+        "description": "Wakfuli est un builder pour le jeu Wakfu, conçu pour permettre aux joueurs de créer et optimiser leurs builds facilement. Développé en équipe de trois, ce projet vise à proposer une interface fluide et intuitive pour personnaliser équipements, sorts et aptitudes. Actuellement non open-source, il a pour objectif d’offrir un outil performant à la communauté."
+      },
+      "en": {
+        "type": "Collaborative Project",
+        "description": "Wakfuli is a builder for the video game Wakfu, designed to help players create and optimize their builds easily. Developed by a team of three enthusiasts, the project aims to provide a smooth and intuitive interface for customizing equipment, spells, and abilities. While not open-source for now, our goal is to deliver a powerful tool for the community."
+      }
+    },
+    "tags": [
+      {
+        "name": "TS",
+        "url": "https://en.wikipedia.org/wiki/TypeScript"
+      },
+      {
+        "name": "NextJS",
+        "url": "https://en.wikipedia.org/wiki/Next.js"
+      }
+    ],
+    "links": {
+      "redirect": "none",
+      "git": "none",
+      "play": "none"
+    },
+    "videoUrl": "none",
+    "image": "/images/projects/Wakfuli.png",
+    "logo": "/svg/projects/Wakfuli.svg",
+    "sortCategories": ["personal", "web"]
   }
 ]

@@ -15,7 +15,7 @@ import LocaleSwitcher from "../LocaleSwitcher";
 
 import dynamic from "next/dynamic";
 
-const HeaderItem = dynamic(() => import("./headerItem"), { ssr: false });
+const HeaderItem = dynamic(() => import("./headerItem"), { ssr: true });
 
 interface menuItemObject {
   name: string;
@@ -142,7 +142,7 @@ export default function Header() {
                     <li>
                       <Link
                         className={`button ${styles.button}`}
-                        href={`#contact`}
+                        href={`#${t("contactAnchor")}`}
                       >
                         <p>{t("contact")}</p>
                         <svg

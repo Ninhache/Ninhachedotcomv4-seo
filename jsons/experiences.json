@@ -1,6 +1,35 @@
 [
   {
     "order": 1,
+    "title": "PIT",
+    "date": "September 2024 - September 2025",
+    "translations": {
+      "fr": {
+        "type": "Alternance",
+        "jobtitle": "Développeur Full Stack",
+        "description": "Après plusieurs années d'expérience en développement, j'ai décidé de reprendre mes études pour approfondir mes compétences et explorer de nouveaux domaines. Cette alternance me permet de mettre en pratique mes connaissances en développement full stack tout en relevant des défis techniques concrets."
+      },
+      "en": {
+        "type": "Apprenticeship",
+        "jobtitle": "Full Stack Developer",
+        "description": "After several years of experience in development, I decided to resume my studies to deepen my skills and explore new areas. This apprenticeship allows me to apply my full stack development knowledge while tackling real-world technical challenges."
+      }
+    },
+    "tags": [
+      { "name": "Flutter", "url": "https://fr.wikipedia.org/wiki/Flutter" },
+      { "name": "NextJS", "url": "https://fr.wikipedia.org/wiki/Next.js" },
+      {
+        "name": "Typescript",
+        "url": "https://en.wikipedia.org/wiki/TypeScript"
+      },
+      { "name": "SQL", "url": "https://fr.wikipedia.org/wiki/SQL" }
+    ],
+    "link": "https://pit.fr/agence/",
+    "video": "none",
+    "image": "/images/experiences/PIT.webp"
+  },
+  {
+    "order": 2,
     "title": "Institut Laue-Langevin",
     "date": "September 2023 - December 2023",
     "translations": {
@@ -23,8 +52,8 @@
         "url": "https://en.wikipedia.org/wiki/Java_(programming_language)"
       },
       {
-        "name": "Javascript",
-        "url": "https://fr.wikipedia.org/wiki/JavaScript"
+        "name": "Typescript",
+        "url": "https://fr.wikipedia.org/wiki/TypeScript"
       },
       { "name": "SQL", "url": "https://fr.wikipedia.org/wiki/SQL" }
     ],
@@ -33,7 +62,7 @@
     "image": "/images/experiences/ILL.webp"
   },
   {
-    "order": 2,
+    "order": 3,
     "title": "BetterCallDave",
     "date": "June 2022 - August 2022<br>April 2023 - July 2023",
     "translations": {

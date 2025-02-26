@@ -54,7 +54,7 @@ const AnimatedProfilePicture: React.FC<AnimatedProfilePictureProps> = ({
       <Suspense fallback={<p>Loading photo...</p>}>
         <Image
           className={styles.image}
-          src="/images/Photo.jpg"
+          src="/images/Photo.webp"
           alt="picture of Neo"
           width={380}
           height={380}

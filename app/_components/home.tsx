@@ -9,6 +9,7 @@ import Link from "next/link";
 
 export default function Home() {
   const t = useTranslations("home");
+  const t_about = useTranslations("about");
 
   const memoizedParticlesComponent = useMemo(() => {
     return <ParticlesComponent />;
@@ -43,7 +44,7 @@ export default function Home() {
             <div className={`${styles.home_button}`}>
               <Link
                 className={`button ${styles.button} ${ralewaySemiBold.className}`}
-                href="#about"
+                href={`#${t_about("anchor")}`}
               >
                 <p>{t("start")}</p>
                 <svg

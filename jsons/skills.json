@@ -15,9 +15,9 @@
         "link": "https://en.wikipedia.org/wiki/Java_(programming_language)"
       },
       {
-        "name": "JavaScript",
-        "logo": "svg/skills/JavaScript.svg",
-        "link": "https://en.wikipedia.org/wiki/JavaScript"
+        "name": "TypeScript",
+        "logo": "svg/skills/TypeScript.svg",
+        "link": "https://en.wikipedia.org/wiki/TypeScript"
       },
       {
         "name": "Rust",
@@ -60,6 +60,11 @@
       {
         "name": "Vanilla JS",
         "logo": "svg/skills/JavaScript.svg",
+        "link": "https://en.wikipedia.org/wiki/JavaScript"
+      },
+      {
+        "name": "TypeScript",
+        "logo": "svg/skills/TypeScript.svg",
         "link": "https://en.wikipedia.org/wiki/JavaScript"
       },
       {
@@ -108,6 +113,11 @@
         "name": "ExpressJS",
         "logo": "svg/skills/ExpressJS.svg",
         "link": "https://expressjs.com/fr/"
+      },
+      {
+        "name": "NestJS",
+        "logo": "svg/skills/NestJS.svg",
+        "link": "https://nestjs.com/"
       }
     ]
   },

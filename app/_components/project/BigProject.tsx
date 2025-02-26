@@ -43,13 +43,19 @@ export const BigProject: React.FC<BigProjectProps> = ({
             <span>•</span>
             <span>{project.translations[locale].type}</span>
           </div>
-          <Link
-            className={`${styles.title} ${calibreSemibold.className}`}
-            href={`${project.links.redirect}`}
-            target="_blank"
-          >
-            {project.title}
-          </Link>
+          {project.links.redirect === "none" ? (
+            <span className={`${styles.title} ${calibreSemibold.className}`}>
+              {project.title}
+            </span>
+          ) : (
+            <Link
+              className={`${styles.title} ${calibreSemibold.className}`}
+              href={project.links.redirect}
+              target="_blank"
+            >
+              {project.title}
+            </Link>
+          )}
           <div className={`${styles.text} ${calibreRegular.className}`}>
             <p>{project.translations[locale].description}</p>
           </div>
@@ -61,7 +67,7 @@ export const BigProject: React.FC<BigProjectProps> = ({
             ))}
           </div>
           <div className={`${styles.links}`}>
-            {project.links.git && (
+            {project.links.git !== "none" && (
               <Link
                 className={`${styles.github}`}
                 href={`${project.links.git}`}
@@ -105,7 +111,7 @@ export const BigProject: React.FC<BigProjectProps> = ({
         </div>
         {!isMobile && (
           <div className={`${styles.project_view}`}>
-            <Link href={`${project.links.redirect}`} target="_blank">
+            {project.links.redirect === "none" ? (
               <Image
                 src={project.image}
                 alt={`Image of the project ${project.title}`}
@@ -113,7 +119,21 @@ export const BigProject: React.FC<BigProjectProps> = ({
                 height={350}
                 style={{ width: "630px", height: "350px", objectFit: "cover" }}
               />
-            </Link>
+            ) : (
+              <Link href={project.links.redirect} target="_blank">
+                <Image
+                  src={project.image}
+                  alt={`Image of the project ${project.title}`}
+                  width={630}
+                  height={350}
+                  style={{
+                    width: "630px",
+                    height: "350px",
+                    objectFit: "cover",
+                  }}
+                />
+              </Link>
+            )}
           </div>
         )}
       </div>

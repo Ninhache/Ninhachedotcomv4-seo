@@ -19,7 +19,7 @@ export default function Footer() {
             href="https://github.com/Ninhache/Ninhachedotv4/blob/main/LICENSE"
             target="_blank"
           >
-            <span>© 2024 Almeida Neo</span>
+            <span>© 2025 Almeida Neo</span>
             <Image
               src={`svg/License.svg`}
               alt="license link"
