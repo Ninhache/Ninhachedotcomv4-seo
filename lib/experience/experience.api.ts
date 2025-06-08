@@ -11,7 +11,6 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   const session = await getSession();
-  console.log("session", session);
   // @ts-ignore
   config.headers.Authorization = `Bearer ${session?.accessToken}`;
 
