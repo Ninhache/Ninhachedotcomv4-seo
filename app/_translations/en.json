@@ -22,13 +22,13 @@
     "greeting": "Hi, my name is",
     "name": "Almeida Neo.",
     "profession": "I'm a Software Developer.",
-    "description": "I'm a 22 years old french student !",
+    "description": "I'm a {age} years old french student !",
     "start": "Get started"
   },
   "about": {
     "anchor": "about",
     "title": "Who am I?",
-    "introduction": "Hey! My name is Almeida Néo, I'm 22 years old, and I'm passionate about development. I enjoy spending my free time working on personal projects, which you can explore in the <projects>projects</projects> section of this site",
+    "introduction": "Hey! My name is Almeida Néo, I'm {age} years old, and I'm passionate about development. I enjoy spending my free time working on personal projects, which you can explore in the <projects>projects</projects> section of this site",
     "employmentSeeking": "Currently employed, I remain curious and open to new opportunities. Feel free to reach out to connect!",
     "additionalInfo": "You may want more informations about me ?",
     "resumeLink": "Open my resume",

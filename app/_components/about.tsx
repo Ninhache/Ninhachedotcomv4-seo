@@ -25,6 +25,13 @@ export default function About() {
             <div className={styles.left_content}>
               <p className={`${styles.p_1} ${calibreRegular.className}`}>
                 {t.rich("introduction", {
+                  age:
+                    new Date().getFullYear() -
+                    2002 -
+                    (new Date().getMonth() < 5 ||
+                    (new Date().getMonth() === 5 && new Date().getDate() < 27)
+                      ? 1
+                      : 0),
                   projects: (chunks) => (
                     <Link className="link" href="#projects">
                       {chunks}
