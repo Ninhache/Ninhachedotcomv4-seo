@@ -22,13 +22,13 @@
     "greeting": "Bonjour, je m'appelle",
     "name": "Almeida Neo.",
     "profession": "Je suis développeur de logiciels.",
-    "description": "Je suis un étudiant français de 22 ans !",
+    "description": "Je suis un étudiant français de {age} ans !",
     "start": "Commençons"
   },
   "about": {
     "anchor": "apropos",
     "title": "Qui suis-je ?",
-    "introduction": "Hello ! Je m'appelle Almeida Néo, j'ai 22 ans, et je suis passionné par le développement. J'aime consacrer mon temps libre à des projets personnels, que vous pouvez découvrir dans la section <projects>projets</projects> de ce site.",
+    "introduction": "Hello ! Je m'appelle Almeida Néo, j'ai {age} ans, et je suis passionné par le développement. J'aime consacrer mon temps libre à des projets personnels, que vous pouvez découvrir dans la section <projects>projets</projects> de ce site.",
     "employmentSeeking": "Actuellement en poste, je reste toujours curieux et ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour échanger !",
     "additionalInfo": "Vous voulez peut-être plus d'informations sur moi ?",
     "resumeLink": "Ouvrir mon CV",

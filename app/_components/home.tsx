@@ -37,7 +37,15 @@ export default function Home() {
           </AnimatedComponent>
           <AnimatedComponent delay={400}>
             <p className={`${styles.bio} ${calibreRegular.className}`}>
-              {t("description")}
+              {t.rich("description", {
+                age:
+                  new Date().getFullYear() -
+                  2002 -
+                  (new Date().getMonth() < 5 ||
+                  (new Date().getMonth() === 5 && new Date().getDate() < 27)
+                    ? 1
+                    : 0),
+              })}
             </p>
           </AnimatedComponent>
           <AnimatedComponent delay={500}>
