@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { ExperienceApi } from "./experience.api";
+import { ExperienceApi } from './experience.api'
 
 export const ExperienceService = {
   findAll: () => {
-    return ExperienceApi.findAll();
+    return ExperienceApi.findAll()
   },
-};
+}

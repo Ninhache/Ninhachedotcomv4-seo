@@ -1,22 +1,22 @@
-"use client";
+'use client'
 
-import styles from "@/styles/home.module.css";
+import styles from '@/styles/home.module.css'
 
-import { ISourceOptions } from "@tsparticles/engine";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { useEffect, useMemo, useState } from "react";
-import { loadFull } from "tsparticles";
+import { ISourceOptions } from '@tsparticles/engine'
+import Particles, { initParticlesEngine } from '@tsparticles/react'
+import { useEffect, useMemo, useState } from 'react'
+import { loadFull } from 'tsparticles'
 
 export default function ParticlesComponent() {
-  const [init, setInit] = useState(false);
+  const [init, setInit] = useState(false)
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-      await loadFull(engine);
+      await loadFull(engine)
     }).then(() => {
-      setInit(true);
-    });
-  }, []);
+      setInit(true)
+    })
+  }, [])
 
   const options: ISourceOptions = useMemo(
     () => ({
@@ -28,10 +28,10 @@ export default function ParticlesComponent() {
           },
         },
         color: {
-          value: "#fff",
+          value: '#fff',
         },
         shape: {
-          type: "circle",
+          type: 'circle',
         },
         opacity: {
           value: 1,
@@ -42,7 +42,7 @@ export default function ParticlesComponent() {
         move: {
           enable: true,
           speed: 2,
-          direction: "bottom",
+          direction: 'bottom',
           straight: true,
         },
         wobble: {
@@ -61,8 +61,8 @@ export default function ParticlesComponent() {
         },
       },
     }),
-    []
-  );
+    [],
+  )
 
   // const particlesLoaded = async (container?: Container): Promise<void> => {
 
@@ -81,5 +81,5 @@ export default function ParticlesComponent() {
         options={options}
       />
     )
-  );
+  )
 }

@@ -1,53 +1,53 @@
-"use client";
+'use client'
 
-import styles from "@/styles/about.module.css";
+import styles from '@/styles/about.module.css'
 
-import { isInViewport, sleep } from "@/utils";
-import Image from "next/image";
-import React, { CSSProperties, Suspense, useEffect, useState } from "react";
+import { isInViewport, sleep } from '@/utils'
+import Image from 'next/image'
+import React, { CSSProperties, Suspense, useEffect, useState } from 'react'
 
 interface AnimatedProfilePictureProps {
-  delay?: number;
-  customCss?: CSSProperties;
+  delay?: number
+  customCss?: CSSProperties
 }
 
 const AnimatedProfilePicture: React.FC<AnimatedProfilePictureProps> = ({
   delay = 0,
   customCss = {},
 }) => {
-  const [isAnimationDone, setAnimationDone] = useState(false);
+  const [isAnimationDone, setAnimationDone] = useState(false)
 
   useEffect(() => {
     const inAnimationCheck = async () => {
       if (!isAnimationDone) {
-        const photo = document.querySelector("#photo img") as HTMLElement;
+        const photo = document.querySelector('#photo img') as HTMLElement
         if (isInViewport(photo)) {
-          photo.style.clipPath = "circle(49.7%)";
-          setAnimationDone(true);
-          await sleep(300);
+          photo.style.clipPath = 'circle(49.7%)'
+          setAnimationDone(true)
+          await sleep(300)
         }
       }
-    };
+    }
 
     const handleScroll = () => {
-      inAnimationCheck();
-    };
+      inAnimationCheck()
+    }
 
     const handleResize = () => {
-      inAnimationCheck();
-    };
+      inAnimationCheck()
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleResize)
 
     // Initial check
-    inAnimationCheck();
+    inAnimationCheck()
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [isAnimationDone]);
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isAnimationDone])
 
   return (
     <div id="photo" className={styles.photo}>
@@ -58,11 +58,11 @@ const AnimatedProfilePicture: React.FC<AnimatedProfilePictureProps> = ({
           alt="picture of Neo"
           width={380}
           height={380}
-          style={{ width: "380px", height: "380px" }}
+          style={{ width: '380px', height: '380px' }}
         />
       </Suspense>
     </div>
-  );
-};
+  )
+}
 
-export default AnimatedProfilePicture;
+export default AnimatedProfilePicture

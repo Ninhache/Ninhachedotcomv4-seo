@@ -124,7 +124,7 @@ ol {
 }
 
 .link::before {
-  content: "";
+  content: '';
   position: absolute;
   display: block;
   width: 100%;
@@ -139,7 +139,9 @@ ol {
   transition: -webkit-transform 0.3s ease;
   -o-transition: transform 0.3s ease;
   transition: transform 0.3s ease;
-  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
 }
 
 .link:hover::before {
@@ -194,19 +196,21 @@ ol {
 }
 
 .button:hover .button_arrow .path_1 {
-  d: path("M8.85 1.5 L8.85 15.89");
-  d: "M8.85 1.5 L8.85 15.89";
+  d: path('M8.85 1.5 L8.85 15.89');
+  d: 'M8.85 1.5 L8.85 15.89';
 }
 
 .button:hover .button_arrow .path_2 {
-  d: path("M16.19 8.54 8.85 15.89 1.5 8.54");
-  d: "M16.19 8.54 8.85 15.89 1.5 8.54";
+  d: path('M16.19 8.54 8.85 15.89 1.5 8.54');
+  d: 'M16.19 8.54 8.85 15.89 1.5 8.54';
 }
 
 .in_animation {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transition:
+    opacity 0.5s ease-in-out,
+    transform 0.5s ease-in-out;
 }
 
 .section_title {

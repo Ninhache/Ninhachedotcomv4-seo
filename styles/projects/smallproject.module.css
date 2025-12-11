@@ -8,7 +8,10 @@
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.2));
   border-radius: 15px;
   overflow: hidden;
-  transition: opacity 0.5s ease-in-out, filter 0.4s ease, transform 0.4s ease !important;
+  transition:
+    opacity 0.5s ease-in-out,
+    filter 0.4s ease,
+    transform 0.4s ease !important;
 }
 
 .content:hover {
@@ -48,7 +51,7 @@
 }
 
 .title::before {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   z-index: 5;
@@ -94,7 +97,9 @@
   stroke-linejoin: round;
   stroke: var(--fade_white);
   opacity: 0.8;
-  transition: stroke 0.2s ease, opacity 0.2s ease;
+  transition:
+    stroke 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .links .github svg:hover {

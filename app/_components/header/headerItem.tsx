@@ -1,21 +1,16 @@
-import Link from "next/link";
-import AnimatedComponent from "../AnimatedComponent";
-import styles from "@/styles/header.module.css";
+import Link from 'next/link'
+import AnimatedComponent from '../AnimatedComponent'
+import styles from '@/styles/header.module.css'
 
 interface HeaderItemProps {
-  name: string;
-  anchor: string;
-  delay: number;
-  onClick?: () => void;
+  name: string
+  anchor: string
+  delay: number
+  onClick?: () => void
 }
 
-const HeaderItem: React.FC<HeaderItemProps> = ({
-  name,
-  anchor,
-  delay,
-  onClick,
-}) => {
-  const lowerName = name.toLocaleLowerCase();
+const HeaderItem: React.FC<HeaderItemProps> = ({ name, anchor, delay, onClick }) => {
+  const lowerName = name.toLocaleLowerCase()
   return (
     <AnimatedComponent delay={delay}>
       <div onClick={onClick} className={styles[lowerName]}>
@@ -24,7 +19,7 @@ const HeaderItem: React.FC<HeaderItemProps> = ({
         </Link>
       </div>
     </AnimatedComponent>
-  );
-};
+  )
+}
 
-export default HeaderItem;
+export default HeaderItem

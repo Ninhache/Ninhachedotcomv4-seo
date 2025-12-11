@@ -21,14 +21,23 @@
   -webkit-transform: translateX(clamp(0px, 100%, 400px));
   -ms-transform: translateX(clamp(0px, 100%, 400px));
   transform: translateX(clamp(0px, 100%, 400px));
-  -webkit-transition: -webkit-transform 0.5s ease-in-out,
+  -webkit-transition:
+    -webkit-transform 0.5s ease-in-out,
     -webkit-box-shadow 0.5s ease-in-out;
-  transition: -webkit-transform 0.5s ease-in-out,
+  transition:
+    -webkit-transform 0.5s ease-in-out,
     -webkit-box-shadow 0.5s ease-in-out;
-  -o-transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
-  transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
-  transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out,
-    -webkit-transform 0.5s ease-in-out, -webkit-box-shadow 0.5s ease-in-out;
+  -o-transition:
+    transform 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
+  transition:
+    transform 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out;
+  transition:
+    transform 0.5s ease-in-out,
+    box-shadow 0.5s ease-in-out,
+    -webkit-transform 0.5s ease-in-out,
+    -webkit-box-shadow 0.5s ease-in-out;
 }
 
 .menu_div .menu_icon {

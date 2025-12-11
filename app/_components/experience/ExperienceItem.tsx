@@ -1,50 +1,39 @@
-"use client";
+'use client'
 
-import {
-  calibreRegular,
-  calibreSemibold,
-  ralewayMedium,
-  ralewaySemiBold,
-} from "@/app/fonts";
-import { Experience } from "@/jsons/jsonUtils";
+import { calibreRegular, calibreSemibold, ralewayMedium, ralewaySemiBold } from '@/app/fonts'
+import { Experience } from '@/jsons/jsonUtils'
 
-import styles from "@/styles/experience/experienceItem.module.css";
-import "@/styles/globals.css";
+import styles from '@/styles/experience/experienceItem.module.css'
+import '@/styles/globals.css'
 
-import Link from "next/link";
-import { Fragment } from "react";
-import useMobileView from "@/app/_hooks/useMobileView";
-import { useLocale } from "next-intl";
-import { Locale } from "@/config";
-import Image from "next/image";
+import Link from 'next/link'
+import { Fragment } from 'react'
+import useMobileView from '@/app/_hooks/useMobileView'
+import { useLocale } from 'next-intl'
+import { Locale } from '@/config'
+import Image from 'next/image'
 
 interface ExperienceItemProps {
-  inverted: Boolean;
-  experience: Experience;
+  inverted: Boolean
+  experience: Experience
 }
 
-export const ExperienceItem: React.FC<ExperienceItemProps> = ({
-  inverted,
-  experience,
-}) => {
-  const parts = experience.date.split("<br>");
+export const ExperienceItem: React.FC<ExperienceItemProps> = ({ inverted, experience }) => {
+  const parts = experience.date.split('<br>')
 
-  const isMobile = useMobileView();
-  const locale = useLocale() as Locale;
+  const isMobile = useMobileView()
+  const locale = useLocale() as Locale
 
   return isMobile ? (
-    <div
-      className={`${styles.content}`}
-      style={{ backgroundImage: `url(${experience.image})` }}
-    >
+    <div className={`${styles.content}`} style={{ backgroundImage: `url(${experience.image})` }}>
       <div className={`${styles.information}`}>
         <div className={`${styles.type} ${ralewayMedium.className}`}>
           <span>{experience.translations[locale].type}</span>
           <span>
-            {experience.date.split("<br>").map((part, index) => (
+            {experience.date.split('<br>').map((part, index) => (
               <Fragment key={index}>
                 {part}
-                {index !== experience.date.split("<br>").length - 1 && <br />}
+                {index !== experience.date.split('<br>').length - 1 && <br />}
               </Fragment>
             ))}
           </span>
@@ -74,18 +63,18 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({
       </div>
     </div>
   ) : (
-    <div className={`${styles.content} ${inverted ? styles.inverted : ""}`}>
+    <div className={`${styles.content} ${inverted ? styles.inverted : ''}`}>
       <div className={`${styles.information}`}>
         <div
           className={`${styles.type}`}
           style={{
-            marginLeft: inverted ? "unset" : "15px",
+            marginLeft: inverted ? 'unset' : '15px',
           }}
         >
           <span
             className={`${ralewayMedium.className}`}
             style={{
-              marginRight: inverted ? "15px" : "unset",
+              marginRight: inverted ? '15px' : 'unset',
             }}
           >
             {parts.map((part, index) => (
@@ -98,8 +87,7 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({
           {experience.translations[locale].type && (
             <span className={`${styles.type} ${ralewayMedium.className}`}>
               <i>
-                {experience.translations[locale].type} -{" "}
-                {experience.translations[locale].jobtitle}
+                {experience.translations[locale].type} - {experience.translations[locale].jobtitle}
               </i>
             </span>
           )}
@@ -134,10 +122,10 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({
             alt={`${experience.title}`}
             width={600}
             height={340}
-            style={{ width: "600px", height: "340px" }}
+            style={{ width: '600px', height: '340px' }}
           />
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}

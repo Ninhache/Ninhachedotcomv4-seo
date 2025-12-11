@@ -1,39 +1,18 @@
-"use client";
+'use client'
 
-import { ExperienceService } from "@/lib/experience/experience.service";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { WipCard } from '@/components/data/wip-card'
 
-export default function Component() {
-  const { data, status } = useSession();
-
-  const [experienceData, setExperienceData] = useState<unknown>(null);
-
-  useEffect(() => {
-    const fetchExperienceData = async () => {
-      try {
-        const experiences = await ExperienceService.findAll();
-        setExperienceData(experiences);
-      } catch (error) {
-        console.error("Error fetching experiences:", error);
-      }
-    };
-    fetchExperienceData();
-  }, []);
-
+export default function AdminHome() {
   return (
-    <>
-      Data: {JSON.stringify(data)}
-      Status: {JSON.stringify(status)}
-      <br />
-      Fake Data: {JSON.stringify(experienceData)}
-    </>
-  );
-
-  return (
-    <>
-      Data: {JSON.stringify(data)}
-      Status: {JSON.stringify(status)}
-    </>
-  );
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <WipCard title="Projects" href="/admin/projects" />
+      <WipCard title="Skills" href="/admin/skills" />
+      <WipCard title="Skill Categories" href="/admin/categories" />
+      <WipCard title="Tags" href="/admin/tags" />
+      <WipCard title="Experiences" href="/admin/experiences" ready />
+      <WipCard title="Contacts" href="/admin/contacts" />
+      <WipCard title="Resume" href="/admin/resume" />
+      <WipCard title="Users" href="/admin/users" />
+    </div>
+  )
 }

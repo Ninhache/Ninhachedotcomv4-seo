@@ -1,129 +1,113 @@
-"use client";
+'use client'
 
-import AnimatedComponent from "@/app/_components/AnimatedComponent";
-import { ralewaySemiBold } from "@/app/fonts";
-import styles from "@/styles/header.module.css";
-import { useEffect, useRef, useState } from "react";
+import AnimatedComponent from '@/app/_components/AnimatedComponent'
+import { ralewaySemiBold } from '@/app/fonts'
+import styles from '@/styles/header.module.css'
+import { useEffect, useRef, useState } from 'react'
 
-import useLocaleNames from "@/app/_hooks/useLocaleNames";
-import useMobileView from "@/app/_hooks/useMobileView";
-import throttle from "lodash.throttle"; // lodash throttle function
-import { useTranslations } from "next-intl";
-import Image from "next/image";
-import Link from "next/link";
-import LocaleSwitcher from "../LocaleSwitcher";
+import useLocaleNames from '@/app/_hooks/useLocaleNames'
+import useMobileView from '@/app/_hooks/useMobileView'
+import throttle from 'lodash.throttle' // lodash throttle function
+import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+import Link from 'next/link'
+import LocaleSwitcher from '../LocaleSwitcher'
 
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic'
 
-const HeaderItem = dynamic(() => import("./headerItem"), { ssr: true });
+const HeaderItem = dynamic(() => import('./headerItem'), { ssr: true })
 
 interface menuItemObject {
-  name: string;
-  anchor: string;
+  name: string
+  anchor: string
 }
 
 export default function Header() {
-  const t = useTranslations("header");
-  const localeNames = useLocaleNames();
+  const t = useTranslations('header')
+  const localeNames = useLocaleNames()
 
   const menuItems: menuItemObject[] = [
     {
-      name: t("home"),
-      anchor: t("homeAnchor"),
+      name: t('home'),
+      anchor: t('homeAnchor'),
     },
     {
-      name: t("about"),
-      anchor: t("aboutAnchor"),
+      name: t('about'),
+      anchor: t('aboutAnchor'),
     },
     {
-      name: t("projects"),
-      anchor: t("projectsAnchor"),
+      name: t('projects'),
+      anchor: t('projectsAnchor'),
     },
     {
-      name: t("skills"),
-      anchor: t("skillsAnchor"),
+      name: t('skills'),
+      anchor: t('skillsAnchor'),
     },
     {
-      name: t("experience"),
-      anchor: t("experienceAnchor"),
+      name: t('experience'),
+      anchor: t('experienceAnchor'),
     },
-  ];
+  ]
 
-  const isMobile = useMobileView();
-  const menuDivRef = useRef<HTMLDivElement>(null);
+  const isMobile = useMobileView()
+  const menuDivRef = useRef<HTMLDivElement>(null)
 
   const openMobileMenu = () => {
     if (menuDivRef.current) {
-      menuDivRef.current.style.transform = "translateX(0px)";
-      menuDivRef.current.style.boxShadow = "-10px 0px 30px rgba(0, 0, 0, 0.7)";
+      menuDivRef.current.style.transform = 'translateX(0px)'
+      menuDivRef.current.style.boxShadow = '-10px 0px 30px rgba(0, 0, 0, 0.7)'
     }
-  };
+  }
 
   const closeMobileMenu = () => {
     if (menuDivRef.current) {
-      menuDivRef.current.style.transform =
-        "translateX(clamp(0px, 100%, 400px))";
-      menuDivRef.current.style.boxShadow = "none";
+      menuDivRef.current.style.transform = 'translateX(clamp(0px, 100%, 400px))'
+      menuDivRef.current.style.boxShadow = 'none'
     }
-  };
+  }
 
-  const [isVisible, setIsVisible] = useState(true);
-  const [isTop, setIsTop] = useState(true);
-  const lastScrollY = useRef(0);
+  const [isVisible, setIsVisible] = useState(true)
+  const [isTop, setIsTop] = useState(true)
+  const lastScrollY = useRef(0)
 
   useEffect(() => {
     const controlHeader = throttle(() => {
-      if (typeof window !== "undefined") {
-        const currentScrollY = window.scrollY;
-        setIsVisible(
-          currentScrollY <= lastScrollY.current || currentScrollY <= 50
-        );
-        lastScrollY.current = currentScrollY;
-        setIsTop(currentScrollY <= 50);
+      if (typeof window !== 'undefined') {
+        const currentScrollY = window.scrollY
+        setIsVisible(currentScrollY <= lastScrollY.current || currentScrollY <= 50)
+        lastScrollY.current = currentScrollY
+        setIsTop(currentScrollY <= 50)
       }
-    }, 100);
+    }, 100)
 
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", controlHeader);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlHeader)
       return () => {
-        controlHeader.cancel();
-        window.removeEventListener("scroll", controlHeader);
-      };
+        controlHeader.cancel()
+        window.removeEventListener('scroll', controlHeader)
+      }
     }
-  }, []);
+  }, [])
 
   const headerStyle = {
-    transition: "all 0.5s ease-in-out",
-    transform: isVisible ? "translateY(0)" : "translateY(-100%)",
-    backgroundColor: isTop ? "transparent" : "var(--fade_dark_blue)",
-    backdropFilter: isTop ? "unset" : "blur(8px)",
-    boxShadow: isTop ? "unset" : "rgba(0, 0, 0, 0.8) 0px 5px 20px",
-    height: "100px",
-  };
+    transition: 'all 0.5s ease-in-out',
+    transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
+    backgroundColor: isTop ? 'transparent' : 'var(--fade_dark_blue)',
+    backdropFilter: isTop ? 'unset' : 'blur(8px)',
+    boxShadow: isTop ? 'unset' : 'rgba(0, 0, 0, 0.8) 0px 5px 20px',
+    height: '100px',
+  }
 
-  const calculateDelay = (index: number) => index * 100;
+  const calculateDelay = (index: number) => index * 100
 
   return (
     <>
-      <div
-        className={`${styles.content} ${ralewaySemiBold.className}`}
-        style={headerStyle}
-      >
+      <div className={`${styles.content} ${ralewaySemiBold.className}`} style={headerStyle}>
         <header id="header" className={`${styles.header}`}>
           <nav className={styles.nav}>
             <div className={styles.logo}>
-              <Link
-                href="https://ninhache.fr/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/svg/Logo.svg"
-                  alt="logo"
-                  width={190}
-                  height={35}
-                  priority
-                />
+              <Link href="https://ninhache.fr/" target="_blank" rel="noopener noreferrer">
+                <Image src="/svg/Logo.svg" alt="logo" width={190} height={35} priority />
               </Link>
             </div>
             {!isMobile && (
@@ -140,11 +124,8 @@ export default function Header() {
                       </li>
                     ))}
                     <li>
-                      <Link
-                        className={`button ${styles.button}`}
-                        href={`#${t("contactAnchor")}`}
-                      >
-                        <p>{t("contact")}</p>
+                      <Link className={`button ${styles.button}`} href={`#${t('contactAnchor')}`}>
+                        <p>{t('contact')}</p>
                         <svg
                           role="button"
                           aria-label="Open header"
@@ -154,10 +135,7 @@ export default function Header() {
                         >
                           <g>
                             <path className="path_1" d="M8.9 12.4 L8.9 12.4" />
-                            <path
-                              className="path_2"
-                              d="M16.2 5 8.9 12.4 1.5 5"
-                            />
+                            <path className="path_2" d="M16.2 5 8.9 12.4 1.5 5" />
                           </g>
                         </svg>
                       </Link>
@@ -217,7 +195,7 @@ export default function Header() {
             ))}
             <li>
               <Link className={`button ${styles.button} `} href="#contact">
-                <p>{t("contact")}</p>
+                <p>{t('contact')}</p>
                 <svg
                   className={`button_arrow ${styles.button_arrow}`}
                   xmlns="http://www.w3.org/2000/svg"
@@ -237,5 +215,5 @@ export default function Header() {
         </div>
       </div>
     </>
-  );
+  )
 }

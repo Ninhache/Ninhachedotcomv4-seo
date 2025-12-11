@@ -4,17 +4,17 @@ const config = {
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
+      use: ['@svgr/webpack'],
+    })
 
-    return config;
+    return config
   },
-};
+}
 
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 
-const withNextIntl = require("next-intl/plugin")("./i18n.ts");
+const withNextIntl = require('next-intl/plugin')('./i18n.ts')
 
-module.exports = withBundleAnalyzer(withNextIntl(config));
+module.exports = withBundleAnalyzer(withNextIntl(config))
