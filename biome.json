@@ -1,0 +1,114 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+    "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+    "files": { "ignoreUnknown": false, "includes": ["**", "!**/*.css"] },
+    "formatter": {
+        "enabled": true,
+        "formatWithErrors": false,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineEnding": "lf",
+        "lineWidth": 80,
+        "attributePosition": "auto",
+        "bracketSameLine": false,
+        "bracketSpacing": true,
+        "expand": "auto",
+        "useEditorconfig": true,
+        "includes": ["**", "!**/package.json"]
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": false,
+            "style": { "useBlockStatements": "off" }
+        },
+        "includes": [
+            "**",
+            "!.github/*",
+            "!.husky/*",
+            "!coverage/*",
+            "!data/*",
+            "!dist/*",
+            "!docs/*",
+            "!logs/*",
+            "!node_modules/*",
+            "**",
+            "!dist/*",
+            "!coverage/*",
+            "!node_modules/*",
+            "!logs/*",
+            "!data/*",
+            "!.husky/*",
+            "!.github/*"
+        ]
+    },
+    "javascript": {
+        "parser": { "unsafeParameterDecoratorsEnabled": true },
+        "formatter": {
+            "jsxQuoteStyle": "double",
+            "quoteProperties": "asNeeded",
+            "trailingCommas": "es5",
+            "semicolons": "always",
+            "arrowParentheses": "asNeeded",
+            "bracketSameLine": false,
+            "quoteStyle": "single",
+            "attributePosition": "auto",
+            "bracketSpacing": true
+        }
+    },
+    "html": { "formatter": { "selfCloseVoidElements": "always" } },
+    "overrides": [
+        {
+            "includes": ["src/**/*.ts"],
+            "javascript": { "globals": [] },
+            "linter": {
+                "rules": {
+                    "complexity": {
+                        "noArguments": "error",
+                        "noUselessTypeConstraint": "error"
+                    },
+                    "correctness": {
+                        "noConstAssign": "off",
+                        "noGlobalObjectCalls": "off",
+                        "noInvalidBuiltinInstantiation": "off",
+                        "noInvalidConstructorSuper": "off",
+                        "noSetterReturn": "off",
+                        "noUndeclaredVariables": "off",
+                        "noUnreachable": "off",
+                        "noUnreachableSuper": "off",
+                        "noUnusedVariables": "warn"
+                    },
+                    "style": {
+                        "noCommonJs": "error",
+                        "noNamespace": "error",
+                        "useArrayLiterals": "error",
+                        "useAsConstAssertion": "error",
+                        "useConst": "error"
+                    },
+                    "suspicious": {
+                        "noClassAssign": "off",
+                        "noDuplicateClassMembers": "off",
+                        "noDuplicateObjectKeys": "off",
+                        "noDuplicateParameters": "off",
+                        "noExplicitAny": "off",
+                        "noExtraNonNullAssertion": "error",
+                        "noFunctionAssign": "off",
+                        "noImportAssign": "off",
+                        "noMisleadingInstantiator": "error",
+                        "noRedeclare": "off",
+                        "noUnsafeDeclarationMerging": "error",
+                        "noUnsafeNegation": "off",
+                        "noVar": "error",
+                        "noWith": "off",
+                        "useGetterReturn": "off",
+                        "useNamespaceKeyword": "error"
+                    }
+                }
+            }
+        }
+    ],
+    "assist": {
+        "enabled": true,
+        "actions": { "source": { "organizeImports": "on" } }
+    }
+}

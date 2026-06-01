@@ -1,29 +1,31 @@
-import { getSession } from 'next-auth/react'
-import { baseUrl } from '../baseurl'
-import axios from 'axios'
+import axios from 'axios';
+import { getSession } from 'next-auth/react';
+import { baseUrl } from '../baseurl';
 
 const api = axios.create({
-  baseURL: baseUrl,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+    baseURL: baseUrl,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
-api.interceptors.request.use(async (config) => {
-  const session = await getSession()
-  // @ts-ignore
-  config.headers.Authorization = `Bearer ${session?.accessToken}`
+api.interceptors.request.use(async config => {
+    const session = await getSession();
+    // @ts-ignore
+    config.headers.Authorization = `Bearer ${session?.accessToken}`;
 
-  return config
-})
+    return config;
+});
 
 export const LocalesApi = {
-  findAll: () => {
-    return api
-      .get('/locales')
-      .then((response) => response.data)
-      .catch((error) => {
-        throw new Error(error.response?.data?.message || 'Failed to fetch locales')
-      })
-  },
-}
+    findAll: () => {
+        return api
+            .get('/locales')
+            .then(response => response.data)
+            .catch(error => {
+                throw new Error(
+                    error.response?.data?.message || 'Failed to fetch locales'
+                );
+            });
+    },
+};

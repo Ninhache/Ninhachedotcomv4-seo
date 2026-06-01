@@ -1,23 +1,30 @@
-import { defaultLocale } from '@/config'
-import { unstable_setRequestLocale } from 'next-intl/server'
-import { redirect } from 'next/navigation'
+import { existsSync } from 'fs';
+import { redirect } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
+import path from 'path';
+import { defaultLocale } from '@/config';
 
 type Props = {
-  params: Promise<{ locale: string }>
-}
+    params: Promise<{ locale: string }>;
+};
+
+const resumeFileFor = (locale: string) =>
+    `CV_ALMEIDA_Neo_${locale.toUpperCase()}-web.pdf`;
 
 export default async function Page(props: Props) {
-  const params = await props.params
+    const { locale } = await props.params;
 
-  const { locale } = params
+    setRequestLocale(locale);
 
-  unstable_setRequestLocale(locale)
+    // Resumes are static assets in /public/documents. Serve the locale-specific
+    // file when it exists, otherwise fall back to the default locale's resume.
+    const requested = resumeFileFor(locale);
+    const requestedExists = existsSync(
+        path.join(process.cwd(), 'public', 'documents', requested)
+    );
+    const file = requestedExists ? requested : resumeFileFor(defaultLocale);
 
-  await fetch(
-    `http://localhost:3000/documents/CV_ALMEIDA_Neo_${locale.toLocaleUpperCase()}-web.pdf`,
-  )
-    .then(() => redirect(`/documents/CV_ALMEIDA_Neo_${locale.toLocaleUpperCase()}-web.pdf`))
-    .catch((e) =>
-      redirect(`/documents/CV_ALMEIDA_Neo_${defaultLocale.toLocaleUpperCase()}-web.pdf`),
-    )
+    // redirect() throws internally — must be called outside any try/catch so the
+    // NEXT_REDIRECT signal is not swallowed.
+    redirect(`/documents/${file}`);
 }
