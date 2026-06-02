@@ -42,6 +42,7 @@ import {
 } from '@/components/ui/table';
 import { SkillApi } from '@/lib/skill/skill.api';
 import type { SkillDTO } from '@/lib/types';
+import { assetUrl } from '@/lib/utils';
 
 function getSkillName(skill: SkillDTO, locale: string) {
     return (
@@ -168,7 +169,7 @@ export default function SkillsPage() {
                                         <TableCell className="hidden md:table-cell">
                                             {skill.image ? (
                                                 <Image
-                                                    src={skill.image}
+                                                    src={assetUrl(skill.image)}
                                                     alt={getSkillName(
                                                         skill,
                                                         'fr'

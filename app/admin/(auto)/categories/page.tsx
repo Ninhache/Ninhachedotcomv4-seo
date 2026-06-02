@@ -41,6 +41,7 @@ import {
 } from '@/components/ui/table';
 import { CategoryApi, SkillApi } from '@/lib/skill/skill.api';
 import type { SkillCategoryDTO, SkillDTO } from '@/lib/types';
+import { assetUrl } from '@/lib/utils';
 
 type FormState = {
     isVisible: boolean;
@@ -228,9 +229,9 @@ export default function CategoriesPage() {
                                                         >
                                                             {s.image && (
                                                                 <Image
-                                                                    src={
+                                                                    src={assetUrl(
                                                                         s.image
-                                                                    }
+                                                                    )}
                                                                     alt=""
                                                                     width={12}
                                                                     height={12}
@@ -431,7 +432,7 @@ export default function CategoriesPage() {
                                         />
                                         {skill.image && (
                                             <Image
-                                                src={skill.image}
+                                                src={assetUrl(skill.image)}
                                                 alt=""
                                                 width={20}
                                                 height={20}

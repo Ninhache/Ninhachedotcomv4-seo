@@ -41,6 +41,7 @@ import {
 } from '@/components/ui/table';
 import { ContactApi } from '@/lib/contact/contact.api';
 import type { ContactDTO } from '@/lib/types';
+import { assetUrl } from '@/lib/utils';
 
 function getContactName(contact: ContactDTO, locale: string) {
     return (
@@ -169,7 +170,9 @@ export default function ContactsPage() {
                                         <TableCell className="hidden md:table-cell">
                                             {contact.imageUrl ? (
                                                 <Image
-                                                    src={contact.imageUrl}
+                                                    src={assetUrl(
+                                                        contact.imageUrl
+                                                    )}
                                                     alt={getContactName(
                                                         contact,
                                                         'fr'
