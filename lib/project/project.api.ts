@@ -59,6 +59,14 @@ export const ProjectApi = {
     deleteMedia: (mediaId: string): Promise<void> =>
         unwrap(api.delete(`/media/${mediaId}`)),
 
+    // Persist editable media metadata (alt text). Backend must accept `alt` on
+    // PATCH /media/:id (see UpdateMediaDto).
+    updateMedia: (
+        mediaId: string,
+        payload: { alt?: string | null }
+    ): Promise<ProjectMediaDTO> =>
+        unwrap(api.patch<ProjectMediaDTO>(`/media/${mediaId}`, payload)),
+
     uploadMedia: (
         file: File,
         type?: 'IMAGE' | 'VIDEO',

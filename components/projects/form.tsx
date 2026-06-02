@@ -24,7 +24,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { baseUrl } from '@/lib/baseurl';
+import { mediaSrc } from '@/lib/baseurl';
 import { LocalesApi } from '@/lib/locales/locales.api';
 import { ProjectApi } from '@/lib/project/project.api';
 import { TagApi } from '@/lib/tag/tag.api';
@@ -76,6 +76,7 @@ const mediaShape = z.object({
     id: z.string().optional(),
     mediaUrl: z.string().min(1),
     type: z.enum(['IMAGE', 'VIDEO']),
+    alt: z.string().optional().default(''),
 });
 
 /* ================================================================== */
@@ -198,6 +199,7 @@ export function ProjectForm({
                     id: m.id,
                     mediaUrl: m.mediaUrl,
                     type: m.type,
+                    alt: m.alt ?? m.originalName ?? '',
                 })) ?? [],
             translations,
         };
@@ -269,6 +271,7 @@ export function ProjectForm({
                         id: uploaded.id,
                         mediaUrl: uploaded.mediaUrl,
                         type: uploaded.type,
+                        alt: uploaded.alt ?? uploaded.originalName ?? '',
                     },
                 ],
                 {
@@ -354,6 +357,19 @@ export function ProjectForm({
                             .filter(Boolean) as string[],
                     })) as ProjectDTO;
                 }
+
+                // Persist editable alt text per media. Best-effort: the project
+                // itself is already saved, and the backend may not accept `alt`
+                // on PATCH /media/:id yet — don't let that fail the whole save.
+                await Promise.allSettled(
+                    mediasRaw
+                        .filter(m => m.id)
+                        .map(m =>
+                            ProjectApi.updateMedia(m.id as string, {
+                                alt: m.alt ?? '',
+                            })
+                        )
+                );
 
                 onSaved?.(saved as ProjectDTO);
             } finally {
@@ -574,14 +590,14 @@ export function ProjectForm({
                                 >
                                     {media.type === 'IMAGE' ? (
                                         <img
-                                            src={
-                                                media.mediaUrl.startsWith(
-                                                    'http'
-                                                )
-                                                    ? media.mediaUrl
-                                                    : `${baseUrl}${media.mediaUrl}`
+                                            src={mediaSrc(media.mediaUrl)}
+                                            alt={
+                                                media.alt ||
+                                                media.mediaUrl
+                                                    .split('/')
+                                                    .pop() ||
+                                                'Aperçu du média'
                                             }
-                                            alt={`Media ${index + 1}`}
                                             className="h-32 w-full object-cover"
                                         />
                                     ) : (
@@ -610,6 +626,27 @@ export function ProjectForm({
                                         >
                                             <Trash2 className="h-3.5 w-3.5" />
                                         </Button>
+                                    </div>
+                                    <div className="px-3 pb-3">
+                                        <Input
+                                            value={media.alt ?? ''}
+                                            onChange={e => {
+                                                const next = [
+                                                    ...(form.getValues(
+                                                        'medias'
+                                                    ) ?? []),
+                                                ];
+                                                next[index] = {
+                                                    ...next[index],
+                                                    alt: e.target.value,
+                                                };
+                                                form.setValue('medias', next, {
+                                                    shouldDirty: true,
+                                                });
+                                            }}
+                                            placeholder="Texte alternatif (alt)"
+                                            className="h-8 text-xs"
+                                        />
                                     </div>
                                 </div>
                             ))}

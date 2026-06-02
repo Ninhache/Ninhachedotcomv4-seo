@@ -56,6 +56,7 @@ export type ProjectMediaDTO = {
     id: string;
     mediaUrl: string;
     type: MediaType;
+    alt?: string | null; // editable alt text (a11y/SEO)
     originalName?: string;
     mimeType?: string;
 };
