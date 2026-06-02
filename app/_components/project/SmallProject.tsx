@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { calibreRegular, calibreSemibold, ralewaySemiBold } from '@/app/fonts';
 import { Locale } from '@/config';
 import { Project } from '@/jsons/jsonUtils';
@@ -14,6 +14,7 @@ export interface SmallProjectProps {
 
 export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
     const locale = useLocale() as Locale;
+    const t = useTranslations('projects');
 
     return (
         <>
@@ -71,6 +72,13 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                     >
                         {project.title}
                     </Link>
+                    {project.ongoing && (
+                        <span
+                            className={`${styles.devPill} ${ralewaySemiBold.className}`}
+                        >
+                            {t('inDevelopment')}
+                        </span>
+                    )}
                     <p className={`${styles.text} ${calibreRegular.className}`}>
                         {project.translations[locale].description}
                     </p>

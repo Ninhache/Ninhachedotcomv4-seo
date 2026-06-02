@@ -40,6 +40,7 @@
         "sortLabel": "Sort by",
         "openGit": "See the code",
         "runCode": "Test the program",
+        "inDevelopment": "In development",
         "sortButtons": {
             "date": "Date",
             "school": "School",

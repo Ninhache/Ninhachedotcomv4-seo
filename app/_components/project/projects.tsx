@@ -50,21 +50,10 @@ export const SORT_TYPE = {
 export type SortType = (typeof SORT_TYPE)[keyof typeof SORT_TYPE];
 
 const sortByDate = (data: Project[]) => {
-    data.sort((a, b) => {
-        const aArr = a.date.split('/');
-        const bArr = b.date.split('/');
-
-        const aMonth = parseInt(aArr[0].toLowerCase(), 10) + 1;
-        const bMonth = parseInt(bArr[0].toLowerCase(), 10) + 1;
-
-        const aYear = parseInt(aArr[1].toLowerCase(), 10);
-        const bYear = parseInt(bArr[1].toLowerCase(), 10);
-
-        const aDate: Date = new Date(aYear, aMonth);
-        const bDate: Date = new Date(bYear, bMonth);
-
-        return bDate.getTime() - aDate.getTime();
-    });
+    data.sort(
+        (a, b) =>
+            new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+    );
 
     return data;
 };

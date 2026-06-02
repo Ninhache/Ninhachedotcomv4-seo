@@ -32,7 +32,41 @@ function formatExperienceDate(startIso: string, endIso: string): string {
     return `${start} - ${end}`;
 }
 
-export function mapProject(dto: ProjectDTO): Project {
+function monthsSince(startIso: string): number {
+    const start = new Date(startIso);
+    const now = new Date();
+    return (
+        (now.getFullYear() - start.getFullYear()) * 12 +
+        (now.getMonth() - start.getMonth())
+    );
+}
+
+/**
+ * Display label for a project's timespan.
+ * - With an end date: "MM/YYYY - MM/YYYY".
+ * - Ongoing (no end date): localized "depuis plus de X ans/mois" / "for over X years/months".
+ */
+function formatProjectDate(
+    startIso: string,
+    endIso: string | null | undefined,
+    locale: Locale
+): string {
+    if (endIso) return `${formatDate(startIso)} - ${formatDate(endIso)}`;
+
+    const months = Math.max(monthsSince(startIso), 1);
+    if (months >= 12) {
+        const years = Math.floor(months / 12);
+        return locale === 'en'
+            ? `for over ${years} year${years > 1 ? 's' : ''}`
+            : `depuis plus de ${years} an${years > 1 ? 's' : ''}`;
+    }
+    return locale === 'en'
+        ? `for over ${months} month${months > 1 ? 's' : ''}`
+        : `depuis plus de ${months} mois`;
+}
+
+export function mapProject(dto: ProjectDTO, locale: Locale): Project {
+    const startIso = dto.startDate ?? dto.date ?? new Date().toISOString();
     const translationsRecord = {} as Project['translations'];
     for (const t of dto.translations) {
         translationsRecord[t.locale as Locale] = {
@@ -70,7 +104,9 @@ export function mapProject(dto: ProjectDTO): Project {
             dto.translations.find(t => t.locale === 'en')?.name ??
             dto.translations[0]?.name ??
             '',
-        date: formatDate(dto.date),
+        date: formatProjectDate(startIso, dto.endDate, locale),
+        startDate: startIso,
+        ongoing: !dto.endDate,
         translations: translationsRecord,
         tags: techTags,
         links: {

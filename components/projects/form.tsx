@@ -1,10 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { format } from 'date-fns';
-import { fr as frLocale } from 'date-fns/locale';
 import {
-    CalendarIcon,
     Code2,
     Eye,
     EyeOff,
@@ -19,17 +16,12 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { DateField } from '@/components/forms/date-field';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
 import { TagMultiSelect } from '@/components/forms/tag-multi-select';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { baseUrl } from '@/lib/baseurl';
@@ -124,7 +116,9 @@ export function ProjectForm({
     const FormSchema = useMemo(() => {
         return z
             .object({
-                date: z.coerce.date(),
+                startDate: z.coerce.date(),
+                // Optional: empty = ongoing project ("depuis plus de X ans/mois").
+                endDate: z.coerce.date().optional(),
                 gitUrl: z
                     .string()
                     .url()
@@ -142,6 +136,13 @@ export function ProjectForm({
                 translations: z.record(z.string(), translationShape),
             })
             .superRefine((data, ctx) => {
+                if (data.endDate && data.endDate < data.startDate) {
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        path: ['endDate'],
+                        message: 'La fin doit être ≥ début',
+                    });
+                }
                 const missing = locales.filter(
                     loc => !data.translations?.[loc]
                 );
@@ -183,8 +184,10 @@ export function ProjectForm({
             locales.map(loc => [loc, mapT(loc)])
         );
 
+        const startSource = initial?.startDate ?? initial?.date;
         return {
-            date: initial ? new Date(initial.date) : new Date(),
+            startDate: startSource ? new Date(startSource) : new Date(),
+            endDate: initial?.endDate ? new Date(initial.endDate) : undefined,
             gitUrl: initial?.gitUrl ?? undefined,
             visitUrl: initial?.visitUrl ?? undefined,
             isVisible: initial?.isVisible ?? true,
@@ -314,7 +317,10 @@ export function ProjectForm({
 
                 // Build base payload (shared between create & update)
                 const basePayload = {
-                    date: values.date.toISOString(),
+                    startDate: values.startDate.toISOString(),
+                    endDate: values.endDate
+                        ? values.endDate.toISOString()
+                        : null,
                     ...(values.gitUrl ? { gitUrl: values.gitUrl } : {}),
                     ...(values.visitUrl ? { visitUrl: values.visitUrl } : {}),
                     isVisible: values.isVisible,
@@ -356,52 +362,9 @@ export function ProjectForm({
         })(e);
     };
 
-    // Date field — BUG FIX: explicit type="button" to prevent form submit
-    const DateField = ({ label, name }: { label: string; name: 'date' }) => {
-        const raw = form.watch(name) as unknown;
-        const value = raw
-            ? raw instanceof Date
-                ? raw
-                : new Date(raw as any)
-            : undefined;
-
-        const setValue = (d?: Date) =>
-            form.setValue(name, d ?? new Date(), {
-                shouldDirty: true,
-                shouldValidate: true,
-            });
-
-        return (
-            <div className="grid gap-2">
-                <Label>{label}</Label>
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            className={cn(
-                                'justify-start text-left font-normal',
-                                !value && 'text-muted-foreground'
-                            )}
-                        >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {value
-                                ? format(value, 'PPP', { locale: frLocale })
-                                : 'Choisir une date'}
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="p-0">
-                        <Calendar
-                            mode="single"
-                            selected={value}
-                            onSelect={setValue}
-                            initialFocus
-                        />
-                    </PopoverContent>
-                </Popover>
-            </div>
-        );
-    };
+    // Coerce a watched RHF value (Date | string | undefined) into a Date.
+    const toDate = (raw: unknown): Date | undefined =>
+        raw ? (raw instanceof Date ? raw : new Date(raw as any)) : undefined;
 
     const watchedMedias = form.watch('medias') ?? [];
     const isVisible = form.watch('isVisible');
@@ -417,7 +380,30 @@ export function ProjectForm({
                 />
                 <div className="rounded-lg border bg-muted/30 p-4 space-y-4">
                     <div className="grid gap-4 sm:grid-cols-2">
-                        <DateField label="Date" name="date" />
+                        <DateField
+                            label="Date de début"
+                            value={toDate(form.watch('startDate'))}
+                            onChange={d =>
+                                form.setValue(
+                                    'startDate',
+                                    (d ?? new Date()) as any,
+                                    { shouldDirty: true, shouldValidate: true }
+                                )
+                            }
+                        />
+                        <DateField
+                            label="Date de fin"
+                            clearable
+                            emptyLabel="En cours (aucune)"
+                            value={toDate(form.watch('endDate'))}
+                            defaultMonth={toDate(form.watch('startDate'))}
+                            onChange={d =>
+                                form.setValue('endDate', d as any, {
+                                    shouldDirty: true,
+                                    shouldValidate: true,
+                                })
+                            }
+                        />
 
                         <div className="grid gap-2">
                             <Label>URL Git</Label>

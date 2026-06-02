@@ -63,6 +63,61 @@
     color: var(--light_blue);
 }
 
+/* "In development" pill for ongoing projects (frosted + pulsing dot) */
+.devPill {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 12px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background: rgba(10, 16, 28, 0.5);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+    backdrop-filter: blur(8px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #eafff4;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.devPill::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: #34d399;
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.9);
+    animation: devPillPulse 1.8s ease-out infinite;
+}
+
+@keyframes devPillPulse {
+    0% {
+        box-shadow:
+            0 0 8px rgba(52, 211, 153, 0.9),
+            0 0 0 0 rgba(52, 211, 153, 0.55);
+    }
+    70% {
+        box-shadow:
+            0 0 8px rgba(52, 211, 153, 0.9),
+            0 0 0 6px rgba(52, 211, 153, 0);
+    }
+    100% {
+        box-shadow:
+            0 0 8px rgba(52, 211, 153, 0.9),
+            0 0 0 0 rgba(52, 211, 153, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .devPill::before {
+        animation: none;
+    }
+}
+
 .logos {
     display: flex;
     justify-content: space-between;

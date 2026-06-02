@@ -189,11 +189,19 @@ export default function ProjectsPage() {
                                             </span>
                                         </TableCell>
                                         <TableCell className="hidden whitespace-nowrap text-muted-foreground md:table-cell">
-                                            {format(
-                                                new Date(it.date),
-                                                'MMM yyyy',
-                                                { locale: fr }
-                                            )}
+                                            {(() => {
+                                                const start =
+                                                    it.startDate ?? it.date;
+                                                if (!start) return '—';
+                                                const startLabel = format(
+                                                    new Date(start),
+                                                    'MMM yyyy',
+                                                    { locale: fr }
+                                                );
+                                                return it.endDate
+                                                    ? `${startLabel} → ${format(new Date(it.endDate), 'MMM yyyy', { locale: fr })}`
+                                                    : `${startLabel} → en cours`;
+                                            })()}
                                         </TableCell>
                                         <TableCell className="hidden md:table-cell">
                                             <div className="flex items-center gap-1.5">

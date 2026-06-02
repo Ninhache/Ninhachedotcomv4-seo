@@ -39,6 +39,13 @@ export const BigProject: React.FC<BigProjectProps> = ({
                         : 'unset',
                 }}
             >
+                {isMobile && project.ongoing && (
+                    <span
+                        className={`${styles.ribbon} ${styles.ribbonMobile} ${ralewaySemiBold.className}`}
+                    >
+                        {t('inDevelopment')}
+                    </span>
+                )}
                 <div className={`${styles.project_text}`}>
                     <div
                         className={`${styles.type} ${ralewayMedium.className}`}
@@ -129,6 +136,13 @@ export const BigProject: React.FC<BigProjectProps> = ({
                 </div>
                 {!isMobile && (
                     <div className={`${styles.project_view}`}>
+                        {project.ongoing && (
+                            <span
+                                className={`${styles.ribbon} ${isInverted ? styles.ribbonInverted : ''} ${ralewaySemiBold.className}`}
+                            >
+                                {t('inDevelopment')}
+                            </span>
+                        )}
                         {project.links.redirect === 'none' ? (
                             <Image
                                 src={project.image}

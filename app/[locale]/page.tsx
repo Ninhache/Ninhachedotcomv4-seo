@@ -47,7 +47,7 @@ export default async function Page(props: Props) {
 
     const projects = rawProjects
         .filter(p => p.isVisible)
-        .map(p => mapProject(p));
+        .map(p => mapProject(p, locale as Locale));
     const experiences = rawExperiences
         .filter(e => e.isVisible)
         .map(e => mapExperience(e));

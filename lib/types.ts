@@ -62,7 +62,10 @@ export type ProjectMediaDTO = {
 
 export type ProjectDTO = {
     id: string;
-    date: string; // ISO
+    startDate: string; // ISO
+    endDate?: string | null; // ISO; null/absent = ongoing project
+    /** @deprecated legacy single date — kept as a transition fallback until the back migration lands */
+    date?: string; // ISO
     gitUrl?: string | null;
     visitUrl?: string | null;
     playUrl?: string | null;
