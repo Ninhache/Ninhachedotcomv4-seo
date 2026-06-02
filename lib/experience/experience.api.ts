@@ -19,8 +19,9 @@ api.interceptors.request.use(async config => {
 
 export const ExperienceApi = {
     findAll: (query: string = '') => {
+        // raw=true -> editor gets @@ aliases unresolved (public portfolio omits it).
         return api
-            .get('/experiences')
+            .get('/experiences', { params: { raw: true } })
             .then(response => response.data)
             .catch(error => {
                 throw new Error(

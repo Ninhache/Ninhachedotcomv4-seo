@@ -16,7 +16,11 @@ api.interceptors.request.use(async config => {
 });
 
 export const ProfileApi = {
-    get: (): Promise<ProfileDTO> => api.get('/profile').then(r => r.data),
+    // raw=true tells the back to return content with @@ aliases UNRESOLVED, so
+    // the editor round-trips the literal tokens instead of freezing resolved
+    // values. The public portfolio (lib/portfolio.ts) omits it -> resolved.
+    get: (): Promise<ProfileDTO> =>
+        api.get('/profile', { params: { raw: true } }).then(r => r.data),
 
     update: (
         payload: Partial<ProfileDTO> & { translations?: any[] }

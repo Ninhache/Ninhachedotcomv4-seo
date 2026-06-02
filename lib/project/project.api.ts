@@ -38,11 +38,15 @@ function unwrap<T>(p: Promise<{ data: T }>) {
 }
 
 export const ProjectApi = {
+    // raw=true -> back returns @@ aliases unresolved (for editing). Public
+    // portfolio omits it and gets resolved content.
     findAll: (): Promise<ProjectDTO[]> =>
-        unwrap(api.get<ProjectDTO[]>('/project')),
+        unwrap(api.get<ProjectDTO[]>('/project', { params: { raw: true } })),
 
     findOne: (id: string): Promise<ProjectDTO> =>
-        unwrap(api.get<ProjectDTO>(`/project/${id}`)),
+        unwrap(
+            api.get<ProjectDTO>(`/project/${id}`, { params: { raw: true } })
+        ),
 
     create: (payload: any): Promise<ProjectDTO> =>
         unwrap(api.post<ProjectDTO>('/project', payload)),

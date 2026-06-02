@@ -31,6 +31,7 @@ const readyModules = [
     { title: 'Resume', href: '/admin/resume', ready: true },
     { title: 'Skills', href: '/admin/skills', ready: true },
     { title: 'Contacts', href: '/admin/contacts', ready: true },
+    { title: 'Aliases', href: '/admin/aliases', ready: true },
 ];
 
 const roadmap = [

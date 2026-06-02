@@ -34,7 +34,9 @@ function unwrap<T>(p: Promise<{ data: T }>) {
 }
 
 export const ContactApi = {
-    findAll: () => unwrap(api.get<ContactDTO[]>('/contact')),
+    // raw=true -> editor gets @@ aliases unresolved (public portfolio omits it).
+    findAll: () =>
+        unwrap(api.get<ContactDTO[]>('/contact', { params: { raw: true } })),
 
     create: (payload: CreateContactPayload): Promise<ContactDTO> =>
         unwrap(api.post<ContactDTO>('/contact', payload)),

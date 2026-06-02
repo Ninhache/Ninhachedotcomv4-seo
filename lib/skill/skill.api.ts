@@ -42,7 +42,9 @@ export type CategoryPayload = {
 };
 
 export const SkillApi = {
-    findAll: () => unwrap(api.get<SkillDTO[]>('/skill')),
+    // raw=true -> editor gets @@ aliases unresolved (public portfolio omits it).
+    findAll: () =>
+        unwrap(api.get<SkillDTO[]>('/skill', { params: { raw: true } })),
 
     create: (payload: CreateSkillPayload): Promise<SkillDTO> =>
         unwrap(api.post<SkillDTO>('/skill', payload)),
@@ -55,7 +57,11 @@ export const SkillApi = {
 
 export const CategoryApi = {
     findAll: () =>
-        unwrap(api.get<SkillCategoryDTO[]>('/skill/categories/admin')),
+        unwrap(
+            api.get<SkillCategoryDTO[]>('/skill/categories/admin', {
+                params: { raw: true },
+            })
+        ),
 
     create: (payload: CategoryPayload): Promise<SkillCategoryDTO> =>
         unwrap(api.post<SkillCategoryDTO>('/skill/categories', payload)),

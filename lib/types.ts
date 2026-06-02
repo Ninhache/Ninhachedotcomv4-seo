@@ -139,3 +139,20 @@ export type ContactDTO = {
     translations: ContactTranslationDTO[];
     nameByLocale: Record<Locale, string>;
 };
+
+// --- Aliases (back-office editor) ---------------------------------------
+// Front's COPY of the backend alias contract. The front never executes these
+// bodies; it only edits them. Resync with the backend on any contract change.
+//
+// Each body is JS source: last line = `return`; other aliases via `$.cle`;
+// args via `$.args`. Execution happens ONLY on the backend (isolated VM).
+export type AliasBody = {
+    id?: string;
+    locale: Locale;
+    code: string;
+};
+export type Alias = {
+    id: string;
+    key: string; // slug
+    bodies: AliasBody[];
+};

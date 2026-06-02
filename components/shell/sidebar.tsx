@@ -13,6 +13,7 @@ const items = [
     { href: '/admin/tags', label: 'Tags' },
     { href: '/admin/experiences', label: 'Experiences' },
     { href: '/admin/contacts', label: 'Contacts' },
+    { href: '/admin/aliases', label: 'Aliases' },
     { href: '/admin/resume', label: 'Resume' },
     { href: '/admin/users', label: 'Users', wip: true },
 ];
