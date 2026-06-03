@@ -10,6 +10,7 @@ import {
     AdminToolbar,
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
+import { useAutoSaveDialog } from '@/components/forms/use-auto-save-dialog';
 import { SkillForm } from '@/components/skills/form';
 import {
     AlertDialog,
@@ -58,6 +59,7 @@ export default function SkillsPage() {
     const [q, setQ] = useState('');
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState<SkillDTO | null>(null);
+    const { register, onOpenChange, closeWithoutSaving } = useAutoSaveDialog();
     const [visibilityPending, setVisibilityPending] = useState<string | null>(
         null
     );
@@ -346,7 +348,7 @@ export default function SkillsPage() {
                 </CardContent>
             </AdminCard>
 
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={onOpenChange(setOpen)}>
                 <DialogContent className="sm:max-w-xl">
                     <DialogHeader>
                         <DialogTitle>
@@ -357,9 +359,12 @@ export default function SkillsPage() {
                         <SkillForm
                             initial={current}
                             dialogOpen={open}
-                            onCancel={() => setOpen(false)}
+                            onRegister={register}
+                            onCancel={() =>
+                                closeWithoutSaving(() => setOpen(false))
+                            }
                             onSaved={() => {
-                                setOpen(false);
+                                closeWithoutSaving(() => setOpen(false));
                                 load();
                             }}
                         />

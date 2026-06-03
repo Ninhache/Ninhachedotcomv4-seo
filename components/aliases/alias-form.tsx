@@ -1,9 +1,10 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import type { EditFormHandle } from '@/components/forms/edit-form-handle';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +32,7 @@ export function AliasForm({
     save,
     onSaved,
     onCancel,
+    onRegister,
     dialogOpen = false,
 }: {
     initial?: Alias | null;
@@ -39,6 +41,7 @@ export function AliasForm({
     save: (payload: AliasPayload) => Promise<Alias>;
     onSaved?: (alias: Alias) => void;
     onCancel?: () => void;
+    onRegister?: (handle: EditFormHandle) => void;
     dialogOpen?: boolean;
 }) {
     const [locales, setLocales] = useState<Array<Locale | string>>([
@@ -78,6 +81,15 @@ export function AliasForm({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultValues]);
 
+    const formElRef = useRef<HTMLFormElement>(null);
+    useEffect(() => {
+        onRegister?.({
+            isDirty: () => form.formState.isDirty,
+            submit: () => formElRef.current?.requestSubmit(),
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const localeList = (locales.length ? locales : ['fr', 'en']) as Locale[];
     const primaryLocale = localeList[0] ?? 'fr';
 
@@ -100,7 +112,7 @@ export function AliasForm({
     });
 
     return (
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form ref={formElRef} onSubmit={onSubmit} className="space-y-6">
             <div className="grid gap-2">
                 <Label>Clé</Label>
                 <Input

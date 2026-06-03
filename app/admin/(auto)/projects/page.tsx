@@ -21,6 +21,7 @@ import {
     AdminToolbar,
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
+import { useAutoSaveDialog } from '@/components/forms/use-auto-save-dialog';
 import { ProjectForm } from '@/components/projects/form';
 import {
     AlertDialog,
@@ -59,6 +60,7 @@ export default function ProjectsPage() {
     const [q, setQ] = useState('');
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState<ProjectDTO | null>(null);
+    const { register, onOpenChange, closeWithoutSaving } = useAutoSaveDialog();
     const [loading, setLoading] = useState(false);
     const [visibilityPending, setVisibilityPending] = useState<string | null>(
         null
@@ -410,7 +412,7 @@ export default function ProjectsPage() {
                 </CardContent>
             </AdminCard>
 
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={onOpenChange(setOpen)}>
                 <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-hidden">
                     <DialogHeader>
                         <DialogTitle>
@@ -421,9 +423,12 @@ export default function ProjectsPage() {
                         <ProjectForm
                             initial={current}
                             dialogOpen={open}
-                            onCancel={() => setOpen(false)}
+                            onRegister={register}
+                            onCancel={() =>
+                                closeWithoutSaving(() => setOpen(false))
+                            }
                             onSaved={() => {
-                                setOpen(false);
+                                closeWithoutSaving(() => setOpen(false));
                                 load();
                             }}
                         />

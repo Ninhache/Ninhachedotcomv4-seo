@@ -10,6 +10,7 @@ import {
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
 import { AliasForm } from '@/components/aliases/alias-form';
+import { useAutoSaveDialog } from '@/components/forms/use-auto-save-dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -45,6 +46,7 @@ export default function AliasesPage() {
     const [q, setQ] = useState('');
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState<Alias | null>(null);
+    const { register, onOpenChange, closeWithoutSaving } = useAutoSaveDialog();
     const [loading, setLoading] = useState(false);
 
     const load = async () => {
@@ -230,7 +232,7 @@ export default function AliasesPage() {
                 </CardContent>
             </AdminCard>
 
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={onOpenChange(setOpen)}>
                 <DialogContent className="max-h-[90vh] overflow-hidden sm:max-w-3xl">
                     <DialogHeader>
                         <DialogTitle>
@@ -246,9 +248,12 @@ export default function AliasesPage() {
                                     ? AliasApi.update(current.id, payload)
                                     : AliasApi.create(payload)
                             }
-                            onCancel={() => setOpen(false)}
+                            onRegister={register}
+                            onCancel={() =>
+                                closeWithoutSaving(() => setOpen(false))
+                            }
                             onSaved={() => {
-                                setOpen(false);
+                                closeWithoutSaving(() => setOpen(false));
                                 load();
                             }}
                         />

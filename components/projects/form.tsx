@@ -17,6 +17,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { DateField } from '@/components/forms/date-field';
+import type { EditFormHandle } from '@/components/forms/edit-form-handle';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
 import { TagMultiSelect } from '@/components/forms/tag-multi-select';
 import { Button } from '@/components/ui/button';
@@ -86,11 +87,13 @@ export function ProjectForm({
     initial,
     onSaved,
     onCancel,
+    onRegister,
     dialogOpen = false,
 }: {
     initial?: ProjectDTO | null;
     onSaved?: (saved: ProjectDTO) => void;
     onCancel?: () => void;
+    onRegister?: (handle: EditFormHandle) => void;
     dialogOpen?: boolean;
 }) {
     const [techTags, setTechTags] = useState<TagDTO[]>([]);
@@ -215,6 +218,15 @@ export function ProjectForm({
         form.reset(defaultValues);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultValues]);
+
+    const formElRef = useRef<HTMLFormElement>(null);
+    useEffect(() => {
+        onRegister?.({
+            isDirty: () => form.formState.isDirty,
+            submit: () => formElRef.current?.requestSubmit(),
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // load tags when dialog opens
     useEffect(() => {
@@ -386,7 +398,7 @@ export function ProjectForm({
     const isVisible = form.watch('isVisible');
 
     return (
-        <form onSubmit={handleFormSubmit} className="space-y-8">
+        <form ref={formElRef} onSubmit={handleFormSubmit} className="space-y-8">
             {/* ── Section 1: Informations generales ── */}
             <section className="space-y-4">
                 <SectionHeading

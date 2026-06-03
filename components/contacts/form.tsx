@@ -1,9 +1,10 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import type { EditFormHandle } from '@/components/forms/edit-form-handle';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,11 +32,13 @@ export function ContactForm({
     initial,
     onSaved,
     onCancel,
+    onRegister,
     dialogOpen = false,
 }: {
     initial?: ContactDTO | null;
     onSaved?: (contact: ContactDTO) => void;
     onCancel?: () => void;
+    onRegister?: (handle: EditFormHandle) => void;
     dialogOpen?: boolean;
 }) {
     const [locales, setLocales] = useState<Array<Locale | string>>([
@@ -81,6 +84,15 @@ export function ContactForm({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultValues]);
 
+    const formElRef = useRef<HTMLFormElement>(null);
+    useEffect(() => {
+        onRegister?.({
+            isDirty: () => form.formState.isDirty,
+            submit: () => formElRef.current?.requestSubmit(),
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const [saving, setSaving] = useState(false);
 
     const onSubmit = form.handleSubmit(async raw => {
@@ -110,7 +122,7 @@ export function ContactForm({
     const primaryLocale = localeList[0] ?? 'fr';
 
     return (
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form ref={formElRef} onSubmit={onSubmit} className="space-y-6">
             <div className="grid gap-4 md:grid-cols-2">
                 <div className="grid gap-2">
                     <Label>Contact URL</Label>

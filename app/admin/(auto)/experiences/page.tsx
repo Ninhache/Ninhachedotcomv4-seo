@@ -13,6 +13,7 @@ import {
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
 import { ExperienceForm } from '@/components/experiences/form';
+import { useAutoSaveDialog } from '@/components/forms/use-auto-save-dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -51,6 +52,7 @@ export default function ExperiencesPage() {
     const [open, setOpen] = useState(false);
     const [current, setCurrent] = useState<ExperienceDTO | null>(null);
     const [loading, setLoading] = useState(false);
+    const { register, onOpenChange, closeWithoutSaving } = useAutoSaveDialog();
     const [visibilityPending, setVisibilityPending] = useState<string | null>(
         null
     );
@@ -381,7 +383,7 @@ export default function ExperiencesPage() {
                 </CardContent>
             </AdminCard>
 
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={onOpenChange(setOpen)}>
                 <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-hidden">
                     <DialogHeader>
                         <DialogTitle>
@@ -394,9 +396,12 @@ export default function ExperiencesPage() {
                         <ExperienceForm
                             initial={current}
                             dialogOpen={open}
-                            onCancel={() => setOpen(false)}
+                            onRegister={register}
+                            onCancel={() =>
+                                closeWithoutSaving(() => setOpen(false))
+                            }
                             onSaved={() => {
-                                setOpen(false);
+                                closeWithoutSaving(() => setOpen(false));
                                 load();
                             }}
                         />

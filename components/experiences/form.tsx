@@ -4,9 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { fr as frLocale } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import type { EditFormHandle } from '@/components/forms/edit-form-handle';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
@@ -44,11 +45,13 @@ export function ExperienceForm({
     initial,
     onSaved,
     onCancel,
+    onRegister,
     dialogOpen = false,
 }: {
     initial?: ExperienceDTO | null;
     onSaved?: (saved: ExperienceDTO) => void;
     onCancel?: () => void;
+    onRegister?: (handle: EditFormHandle) => void;
     dialogOpen?: boolean;
 }) {
     const [tags, setTags] = useState<TagDTO[]>([]);
@@ -172,6 +175,15 @@ export function ExperienceForm({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [defaultValues]);
 
+    const formElRef = useRef<HTMLFormElement>(null);
+    useEffect(() => {
+        onRegister?.({
+            isDirty: () => form.formState.isDirty,
+            submit: () => formElRef.current?.requestSubmit(),
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     // tags (chargés quand le dialogue est ouvert pour éviter des appels inutiles)
     useEffect(() => {
         if (!dialogOpen) return;
@@ -279,7 +291,7 @@ export function ExperienceForm({
     };
 
     return (
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form ref={formElRef} onSubmit={onSubmit} className="space-y-6">
             <div className="grid gap-4 md:grid-cols-2">
                 <div className="grid gap-2">
                     <Label>Entreprise</Label>

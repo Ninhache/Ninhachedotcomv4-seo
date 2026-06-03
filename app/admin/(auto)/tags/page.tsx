@@ -9,6 +9,7 @@ import {
     AdminToolbar,
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
+import { useAutoSaveDialog } from '@/components/forms/use-auto-save-dialog';
 import { TagForm } from '@/components/tags/tag-form';
 import {
     AlertDialog,
@@ -77,6 +78,7 @@ export default function TagsPage() {
     );
     const [deleteTarget, setDeleteTarget] = useState<TagDTO | null>(null);
     const [deleting, setDeleting] = useState(false);
+    const { register, onOpenChange, closeWithoutSaving } = useAutoSaveDialog();
 
     const load = async () => {
         setLoading(true);
@@ -328,7 +330,7 @@ export default function TagsPage() {
                 </CardContent>
             </AdminCard>
 
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={onOpenChange(setOpen)}>
                 <DialogContent className="sm:max-w-xl">
                     <DialogHeader>
                         <DialogTitle>
@@ -339,9 +341,12 @@ export default function TagsPage() {
                         <TagForm
                             initial={current}
                             dialogOpen={open}
-                            onCancel={() => setOpen(false)}
+                            onRegister={register}
+                            onCancel={() =>
+                                closeWithoutSaving(() => setOpen(false))
+                            }
                             onSaved={() => {
-                                setOpen(false);
+                                closeWithoutSaving(() => setOpen(false));
                                 load();
                             }}
                         />
