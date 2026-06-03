@@ -14,9 +14,25 @@ interface SkillsComponentProps {
     data: SkillCategory[];
 }
 
+/**
+ * Category label for the active locale, with a fallback to any available
+ * translation so a category missing the current locale never crashes.
+ */
+function categoryName(category: SkillCategory, locale: Locale): string {
+    return (
+        category.translations[locale]?.name ??
+        Object.values(category.translations)[0]?.name ??
+        ''
+    );
+}
+
 const SkillsComponent: React.FC<SkillsComponentProps> = ({ data }) => {
     const isMobile = useMobileView();
     const t = useTranslations('skills');
+
+    // The public read path serves `[]` on a backend blip or when no category
+    // exists — render nothing rather than dereferencing an empty list.
+    if (!data || data.length === 0) return null;
 
     return (
         <section
@@ -50,7 +66,7 @@ interface WideScreenViewProps {
 const WideScreenView: React.FC<WideScreenViewProps> = ({ data }) => {
     const locale = useLocale() as Locale;
     const [selectedCategory, setSelectedCategory] = useState(
-        data[0].translations[locale].name
+        categoryName(data[0], locale)
     );
 
     return (
@@ -59,15 +75,12 @@ const WideScreenView: React.FC<WideScreenViewProps> = ({ data }) => {
                 {data.map((category, index) => (
                     <SkillCategoryView
                         key={index}
-                        name={category.translations[locale].name}
+                        name={categoryName(category, locale)}
                         onClick={() =>
-                            setSelectedCategory(
-                                category.translations[locale].name
-                            )
+                            setSelectedCategory(categoryName(category, locale))
                         }
                         selectioned={
-                            selectedCategory ===
-                            category.translations[locale].name
+                            selectedCategory === categoryName(category, locale)
                         }
                     />
                 ))}
@@ -78,8 +91,7 @@ const WideScreenView: React.FC<WideScreenViewProps> = ({ data }) => {
                         key={index}
                         skills={category.skills}
                         isVisible={
-                            category.translations[locale].name ===
-                            selectedCategory
+                            categoryName(category, locale) === selectedCategory
                         }
                     />
                 ))}
@@ -128,7 +140,7 @@ const NarrowScreenView: React.FC<NarrowScreenViewProps> = ({ data }) => {
                     <div
                         className={`${styles.category_title} ${proximaNovaBold.className}`}
                     >
-                        {category.translations[locale].name}
+                        {categoryName(category, locale)}
                     </div>
                     <div className={`${styles.box_content}`}>
                         <SkillsList skills={category.skills} isVisible={true} />
