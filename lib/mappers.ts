@@ -1,6 +1,10 @@
-import { SORT_TYPE, SortType } from '@/app/_components/project/projects';
 import type { Locale } from '@/config';
 import type { Experience, Project, SkillCategory } from '@/jsons/jsonUtils';
+import {
+    projectTypeLabel,
+    SORT_TYPE,
+    type SortType,
+} from '@/lib/project-categories';
 import type {
     ContactDTO,
     ExperienceDTO,
@@ -32,19 +36,10 @@ function formatExperienceDate(startIso: string, endIso: string): string {
     return `${start} - ${end}`;
 }
 
-function monthsSince(startIso: string): number {
-    const start = new Date(startIso);
-    const now = new Date();
-    return (
-        (now.getFullYear() - start.getFullYear()) * 12 +
-        (now.getMonth() - start.getMonth())
-    );
-}
-
 /**
  * Display label for a project's timespan.
  * - With an end date: "MM/YYYY - MM/YYYY".
- * - Ongoing (no end date): localized "depuis plus de X ans/mois" / "for over X years/months".
+ * - Ongoing (no end date): "depuis MM/YYYY" / "since MM/YYYY".
  */
 function formatProjectDate(
     startIso: string,
@@ -52,26 +47,32 @@ function formatProjectDate(
     locale: Locale
 ): string {
     if (endIso) return `${formatDate(startIso)} - ${formatDate(endIso)}`;
-
-    const months = Math.max(monthsSince(startIso), 1);
-    if (months >= 12) {
-        const years = Math.floor(months / 12);
-        return locale === 'en'
-            ? `for over ${years} year${years > 1 ? 's' : ''}`
-            : `depuis plus de ${years} an${years > 1 ? 's' : ''}`;
-    }
     return locale === 'en'
-        ? `for over ${months} month${months > 1 ? 's' : ''}`
-        : `depuis plus de ${months} mois`;
+        ? `Since ${formatDate(startIso)}`
+        : `Depuis ${formatDate(startIso)}`;
 }
 
 export function mapProject(dto: ProjectDTO, locale: Locale): Project {
     const startIso = dto.startDate ?? dto.date ?? new Date().toISOString();
+
+    const sortCategories: SortType[] = dto.qualTags
+        .map(tag => {
+            const name =
+                tag.translations?.find(t => t.locale === 'en')?.name ??
+                tag.nameByLocale?.en ??
+                '';
+            return SORT_TYPE[name.toUpperCase() as keyof typeof SORT_TYPE];
+        })
+        .filter((s): s is SortType => Boolean(s));
+
     const translationsRecord = {} as Project['translations'];
     for (const t of dto.translations) {
-        translationsRecord[t.locale as Locale] = {
+        const loc = t.locale as Locale;
+        // The backend `type` is null since the migration — derive a localized
+        // label from the project's nature category (personal/school) instead.
+        translationsRecord[loc] = {
             description: t.description,
-            type: t.type ?? '',
+            type: t.type ?? projectTypeLabel(sortCategories, loc),
         };
     }
 
@@ -85,16 +86,6 @@ export function mapProject(dto: ProjectDTO, locale: Locale): Project {
             '';
         return { name, url: '#' };
     });
-
-    const sortCategories: SortType[] = dto.qualTags
-        .map(tag => {
-            const name =
-                tag.translations?.find(t => t.locale === 'en')?.name ??
-                tag.nameByLocale?.en ??
-                '';
-            return SORT_TYPE[name.toUpperCase() as keyof typeof SORT_TYPE];
-        })
-        .filter((s): s is SortType => Boolean(s));
 
     const imageMedia = dto.medias.find(m => m.type === 'IMAGE');
     const videoMedia = dto.medias.find(m => m.type === 'VIDEO');

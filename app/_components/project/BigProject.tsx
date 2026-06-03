@@ -51,8 +51,12 @@ export const BigProject: React.FC<BigProjectProps> = ({
                         className={`${styles.type} ${ralewayMedium.className}`}
                     >
                         <span>{project.date}</span>
-                        <span>•</span>
-                        <span>{project.translations[locale].type}</span>
+                        {project.translations[locale].type && (
+                            <>
+                                <span>•</span>
+                                <span>{project.translations[locale].type}</span>
+                            </>
+                        )}
                     </div>
                     {project.links.redirect === 'none' ? (
                         <span

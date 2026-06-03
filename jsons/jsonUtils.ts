@@ -1,5 +1,5 @@
-import { SortType } from '@/app/_components/project/projects';
 import { Locale } from '@/config';
+import { SortType } from '@/lib/project-categories';
 
 export interface Tag {
     name: string;

@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { proximaNovaBold, ralewaySemiBold } from '@/app/fonts';
 import { Project } from '@/jsons/jsonUtils';
+import { SORT_TYPE, type SortType } from '@/lib/project-categories';
 import styles from '@/styles/projects/project.module.css';
 import { shuffleArray } from '@/utils';
 import AnimatedComponent from '../AnimatedComponent';
@@ -37,17 +38,6 @@ const SortButton: React.FC<SortButtonProps> = ({
         {label}
     </button>
 );
-
-export const SORT_TYPE = {
-    DATE: 'date',
-    SCHOOL: 'school',
-    PERSONAL: 'personal',
-    WEB: 'web',
-    SIMULATIONS: 'simulations',
-    RANDOM: 'random',
-} as const;
-
-export type SortType = (typeof SORT_TYPE)[keyof typeof SORT_TYPE];
 
 const sortByDate = (data: Project[]) => {
     data.sort(
