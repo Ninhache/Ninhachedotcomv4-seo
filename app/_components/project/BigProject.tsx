@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useRef } from 'react';
 import useMobileView from '@/app/_hooks/useMobileView';
 import {
     calibreRegular,
@@ -19,6 +20,74 @@ export interface BigProjectProps {
     project: Project;
     isInverted: boolean;
 }
+
+const MEDIA_STYLE = {
+    width: '630px',
+    height: '350px',
+    objectFit: 'cover',
+} as const;
+
+/**
+ * The project's main visual. A VIDEO media must render as a real <video> —
+ * next/image cannot decode an .mp4 and fails silently. The video src is an
+ * absolute backend URL (`mediaSrc`), so the browser streams it directly with
+ * Range requests; the image (if any) doubles as the poster.
+ *
+ * No controls: it autoplays (muted) only while in view and pauses off-screen,
+ * so an off-screen demo doesn't burn CPU/bandwidth. Muting is required for the
+ * browser to allow programmatic autoplay.
+ */
+const ProjectMedia: React.FC<{ project: Project }> = ({ project }) => {
+    const hasVideo = !!project.videoUrl && project.videoUrl !== 'none';
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const el = videoRef.current;
+        if (!el) return undefined;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    el.play().catch(() => {});
+                } else {
+                    el.pause();
+                }
+            },
+            { threshold: 0.4 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    if (hasVideo) {
+        return (
+            <video
+                ref={videoRef}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={project.image || undefined}
+                width={630}
+                height={350}
+                style={MEDIA_STYLE}
+            >
+                <source src={project.videoUrl} />
+            </video>
+        );
+    }
+
+    if (!project.image) return null;
+
+    return (
+        <Image
+            src={project.image}
+            alt={`Image of the project ${project.title}`}
+            width={630}
+            height={350}
+            style={MEDIA_STYLE}
+        />
+    );
+};
 
 export const BigProject: React.FC<BigProjectProps> = ({
     project,
@@ -148,30 +217,10 @@ export const BigProject: React.FC<BigProjectProps> = ({
                             </span>
                         )}
                         {project.links.redirect === 'none' ? (
-                            <Image
-                                src={project.image}
-                                alt={`Image of the project ${project.title}`}
-                                width={630}
-                                height={350}
-                                style={{
-                                    width: '630px',
-                                    height: '350px',
-                                    objectFit: 'cover',
-                                }}
-                            />
+                            <ProjectMedia project={project} />
                         ) : (
                             <Link href={project.links.redirect} target="_blank">
-                                <Image
-                                    src={project.image}
-                                    alt={`Image of the project ${project.title}`}
-                                    width={630}
-                                    height={350}
-                                    style={{
-                                        width: '630px',
-                                        height: '350px',
-                                        objectFit: 'cover',
-                                    }}
-                                />
+                                <ProjectMedia project={project} />
                             </Link>
                         )}
                     </div>
