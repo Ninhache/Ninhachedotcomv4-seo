@@ -40,10 +40,13 @@ const SortButton: React.FC<SortButtonProps> = ({
 );
 
 const sortByDate = (data: Project[]) => {
-    data.sort(
-        (a, b) =>
+    data.sort((a, b) => {
+        // Ongoing (in-development) projects first, then most recent start date.
+        if (a.ongoing !== b.ongoing) return a.ongoing ? -1 : 1;
+        return (
             new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
-    );
+        );
+    });
 
     return data;
 };
