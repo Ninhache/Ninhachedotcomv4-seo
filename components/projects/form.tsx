@@ -134,6 +134,17 @@ export function ProjectForm({
                     .optional()
                     .or(z.literal('').transform(() => undefined)),
                 isVisible: z.boolean(),
+                logoUrl: z
+                    .string()
+                    .optional()
+                    .or(z.literal('').transform(() => undefined))
+                    .refine(
+                        value =>
+                            value === undefined ||
+                            /^https?:\/\/.+/i.test(value) ||
+                            /^\/.+/.test(value),
+                        'URL invalide'
+                    ),
                 techTagIds: z.array(z.string()).default([]),
                 qualTagIds: z.array(z.string()).default([]),
                 medias: z.array(mediaShape).default([]),
@@ -195,6 +206,7 @@ export function ProjectForm({
             gitUrl: initial?.gitUrl ?? undefined,
             visitUrl: initial?.visitUrl ?? undefined,
             isVisible: initial?.isVisible ?? true,
+            logoUrl: initial?.logoUrl ?? undefined,
             techTagIds: initial?.techTagIds ?? [],
             qualTagIds: initial?.qualTagIds ?? [],
             medias:
@@ -338,6 +350,7 @@ export function ProjectForm({
                         : null,
                     ...(values.gitUrl ? { gitUrl: values.gitUrl } : {}),
                     ...(values.visitUrl ? { visitUrl: values.visitUrl } : {}),
+                    logoUrl: values.logoUrl ?? null,
                     isVisible: values.isVisible,
                     techTagIds: values.techTagIds ?? [],
                     qualTagIds: values.qualTagIds ?? [],
@@ -396,6 +409,7 @@ export function ProjectForm({
 
     const watchedMedias = form.watch('medias') ?? [];
     const isVisible = form.watch('isVisible');
+    const watchedLogoUrl = form.watch('logoUrl');
 
     return (
         <form ref={formElRef} onSubmit={handleFormSubmit} className="space-y-8">
@@ -488,6 +502,42 @@ export function ProjectForm({
                                 <Label className="cursor-pointer">
                                     {isVisible ? 'Visible' : 'Masque'}
                                 </Label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="grid gap-2">
+                            <Label>URL du logo</Label>
+                            <div className="relative">
+                                <ImageIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                <Input
+                                    {...form.register('logoUrl')}
+                                    placeholder="https://... ou /uploads/..."
+                                    className="pl-9"
+                                />
+                            </div>
+                            {form.formState.errors.logoUrl?.message && (
+                                <p className="text-sm text-destructive">
+                                    {form.formState.errors.logoUrl.message}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label>Aperçu du logo</Label>
+                            <div className="flex h-20 items-center justify-center rounded-md border bg-background">
+                                {watchedLogoUrl ? (
+                                    <img
+                                        src={mediaSrc(watchedLogoUrl)}
+                                        alt="Aperçu du logo"
+                                        className="max-h-14 max-w-full object-contain"
+                                    />
+                                ) : (
+                                    <span className="text-xs text-muted-foreground">
+                                        Aucun logo
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>

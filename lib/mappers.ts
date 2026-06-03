@@ -1,5 +1,6 @@
 import type { Locale } from '@/config';
 import type { Experience, Project, SkillCategory } from '@/jsons/jsonUtils';
+import { mediaSrc } from '@/lib/baseurl';
 import {
     projectTypeLabel,
     SORT_TYPE,
@@ -105,9 +106,9 @@ export function mapProject(dto: ProjectDTO, locale: Locale): Project {
             git: dto.gitUrl ?? 'none',
             play: dto.playUrl ?? 'none',
         },
-        videoUrl: videoMedia?.mediaUrl ?? 'none',
-        image: imageMedia?.mediaUrl ?? '',
-        logo: dto.logoUrl ?? '',
+        videoUrl: videoMedia?.mediaUrl ? mediaSrc(videoMedia.mediaUrl) : 'none',
+        image: imageMedia?.mediaUrl ? mediaSrc(imageMedia.mediaUrl) : '',
+        logo: dto.logoUrl ? mediaSrc(dto.logoUrl) : '',
         sortCategories,
     };
 }
