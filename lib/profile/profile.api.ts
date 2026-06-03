@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
+import { handleUnauthorized } from '../auth/on-unauthorized';
 import { baseUrl } from '../baseurl';
 import type { ProfileDTO } from '../types';
 
@@ -14,6 +15,8 @@ api.interceptors.request.use(async config => {
     config.headers.Authorization = `Bearer ${session?.accessToken}`;
     return config;
 });
+
+handleUnauthorized(api);
 
 export const ProfileApi = {
     // raw=true tells the back to return content with @@ aliases UNRESOLVED, so

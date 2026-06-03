@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
+import { handleUnauthorized } from '../auth/on-unauthorized';
 import { baseUrl } from '../baseurl';
 import type { ProjectDTO, ProjectMediaDTO } from '../types';
 
@@ -28,6 +29,9 @@ uploadApi.interceptors.request.use(async config => {
     config.headers.Authorization = `Bearer ${session?.accessToken}`;
     return config;
 });
+
+handleUnauthorized(api);
+handleUnauthorized(uploadApi);
 
 function unwrap<T>(p: Promise<{ data: T }>) {
     return p

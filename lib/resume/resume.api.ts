@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
+import { handleUnauthorized } from '../auth/on-unauthorized';
 import { baseUrl } from '../baseurl';
 import type { ResumeDTO } from '../types';
 
@@ -13,6 +14,8 @@ api.interceptors.request.use(async config => {
     config.headers.Authorization = `Bearer ${session?.accessToken}`;
     return config;
 });
+
+handleUnauthorized(api);
 
 function unwrap<T>(p: Promise<{ data: T }>) {
     return p

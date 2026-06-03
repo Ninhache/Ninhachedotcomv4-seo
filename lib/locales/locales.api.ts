@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
+import { handleUnauthorized } from '../auth/on-unauthorized';
 import { baseUrl } from '../baseurl';
 
 const api = axios.create({
@@ -16,6 +17,8 @@ api.interceptors.request.use(async config => {
 
     return config;
 });
+
+handleUnauthorized(api);
 
 export const LocalesApi = {
     findAll: () => {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
+import { handleUnauthorized } from '../auth/on-unauthorized';
 import { baseUrl } from '../baseurl';
 import type { SkillCategoryDTO, SkillDTO } from '../types';
 
@@ -26,6 +27,8 @@ api.interceptors.request.use(async config => {
     }
     return config;
 });
+
+handleUnauthorized(api);
 
 function unwrap<T>(p: Promise<{ data: T }>) {
     return p
