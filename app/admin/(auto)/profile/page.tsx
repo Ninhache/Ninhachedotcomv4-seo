@@ -1,7 +1,7 @@
 'use client';
 
-import { RefreshCcw, Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Loader2, RefreshCcw, Save, Upload } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import {
     AdminCard,
     AdminHeader,
@@ -12,19 +12,34 @@ import { CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { mediaSrc } from '@/lib/baseurl';
 import { ProfileApi } from '@/lib/profile/profile.api';
+import { ProjectApi } from '@/lib/project/project.api';
 import type { ProfileDTO } from '@/lib/types';
+
+const DEFAULT_PHOTO = '/images/Photo.webp';
 
 const LOCALES = ['fr', 'en'] as const;
 const LOCALE_LABELS = { fr: 'Français', en: 'English' };
 
-type LocaleData = { greeting: string; profession: string; description: string };
-type FormState = { name: string; fr: LocaleData; en: LocaleData };
+type LocaleData = {
+    greeting: string;
+    profession: string;
+    description: string;
+    introduction: string;
+};
+type FormState = {
+    name: string;
+    imageUrl: string;
+    fr: LocaleData;
+    en: LocaleData;
+};
 
 const empty = (): LocaleData => ({
     greeting: '',
     profession: '',
     description: '',
+    introduction: '',
 });
 
 function toFormState(p: ProfileDTO): FormState {
@@ -35,21 +50,49 @@ function toFormState(p: ProfileDTO): FormState {
                   greeting: t.greeting,
                   profession: t.profession,
                   description: t.description,
+                  introduction: t.introduction ?? '',
               }
             : empty();
     };
-    return { name: p.name, fr: get('fr'), en: get('en') };
+    return {
+        name: p.name,
+        imageUrl: p.imageUrl ?? '',
+        fr: get('fr'),
+        en: get('en'),
+    };
 }
 
 export default function ProfilePage() {
     const [form, setForm] = useState<FormState>({
         name: '',
+        imageUrl: '',
         fr: empty(),
         en: empty(),
     });
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleImageUpload = async (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        e.target.value = '';
+        setUploading(true);
+        try {
+            // Reuses the generic media upload (POST /media) — no projectId.
+            const uploaded = await ProjectApi.uploadMedia(file, 'IMAGE');
+            setForm(p => ({ ...p, imageUrl: uploaded.mediaUrl }));
+            setSaved(false);
+        } catch (err) {
+            console.error('Image upload failed:', err);
+        } finally {
+            setUploading(false);
+        }
+    };
 
     const load = async () => {
         setLoading(true);
@@ -79,11 +122,13 @@ export default function ProfilePage() {
         try {
             await ProfileApi.update({
                 name: form.name,
+                imageUrl: form.imageUrl,
                 translations: LOCALES.map(loc => ({
                     locale: loc,
                     greeting: form[loc].greeting,
                     profession: form[loc].profession,
                     description: form[loc].description,
+                    introduction: form[loc].introduction,
                 })),
             });
             setSaved(true);
@@ -135,6 +180,42 @@ export default function ProfilePage() {
                         <p className="text-xs text-muted-foreground">
                             Affiché dans les deux langues.
                         </p>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label>Photo (« Qui suis-je ? »)</Label>
+                        <div className="flex items-center gap-4">
+                            <img
+                                src={
+                                    form.imageUrl
+                                        ? mediaSrc(form.imageUrl)
+                                        : DEFAULT_PHOTO
+                                }
+                                alt="Aperçu de la photo de profil"
+                                className="h-20 w-20 rounded-full border object-cover"
+                            />
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleImageUpload}
+                            />
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                disabled={uploading}
+                                onClick={() => fileInputRef.current?.click()}
+                            >
+                                {uploading ? (
+                                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                                ) : (
+                                    <Upload className="mr-1 h-4 w-4" />
+                                )}
+                                {uploading ? 'Envoi…' : 'Changer la photo'}
+                            </Button>
+                        </div>
                     </div>
 
                     <div className="grid gap-6 md:grid-cols-2">
@@ -197,6 +278,37 @@ export default function ProfilePage() {
                                         }
                                         rows={3}
                                     />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>
+                                        Introduction (« Qui suis-je ? »)
+                                    </Label>
+                                    <Textarea
+                                        value={form[loc].introduction}
+                                        onChange={e =>
+                                            setLocale(
+                                                loc,
+                                                'introduction',
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder={
+                                            loc === 'fr'
+                                                ? 'Hello ! Je m’appelle… découvrez la section <projects>projets</projects> de ce site.'
+                                                : 'Hey! My name is… explore the <projects>projects</projects> section of this site.'
+                                        }
+                                        rows={5}
+                                    />
+                                    <p className="text-xs text-muted-foreground">
+                                        Texte complet de la section. Saute une
+                                        ligne pour un nouveau paragraphe ;
+                                        entoure un mot avec{' '}
+                                        <code>
+                                            &lt;projects&gt;…&lt;/projects&gt;
+                                        </code>{' '}
+                                        pour en faire un lien vers la section
+                                        projets.
+                                    </p>
                                 </div>
                             </div>
                         ))}

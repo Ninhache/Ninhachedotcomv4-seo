@@ -85,11 +85,15 @@ export type ProfileTranslationDTO = {
     greeting: string;
     profession: string;
     description: string;
+    // "Who am I?" intro paragraph. May contain a <projects>…</projects> tag that
+    // the public site renders as a link to the projects section.
+    introduction?: string;
 };
 
 export type ProfileDTO = {
     id: string;
     name: string;
+    imageUrl?: string | null; // "Who am I?" portrait; editable in the back-office
     updatedAt: string;
     translations: ProfileTranslationDTO[];
 };

@@ -3,15 +3,52 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
+import { Fragment } from 'react';
 import { calibreRegular, proximaNovaBold, ralewaySemiBold } from '@/app/fonts';
+import { Locale } from '@/config';
+import type { ProfileDTO } from '@/lib/types';
 import styles from '@/styles/about.module.css';
 import AnimatedProfilePicture from './AnimatedProfilePicture';
 
-export default function About() {
-    const t = useTranslations('about');
+// Render the editable "Who am I?" text, turning a <projects>label</projects>
+// tag into a link to the projects section and newlines into line breaks.
+// Everything else stays plain text (React escapes it — the string is
+// admin-authored, no raw HTML is injected).
+function renderIntroduction(text: string, projectsHref: string) {
+    return text.split(/<projects>(.*?)<\/projects>/g).map((part, i) => {
+        if (i % 2 === 1) {
+            return (
+                <Link key={i} className="link" href={projectsHref}>
+                    {part}
+                </Link>
+            );
+        }
+        const lines = part.split('\n');
+        return (
+            <Fragment key={i}>
+                {lines.map((line, j) => (
+                    <Fragment key={j}>
+                        {line}
+                        {j < lines.length - 1 && <br />}
+                    </Fragment>
+                ))}
+            </Fragment>
+        );
+    });
+}
 
-    // const locale = useLocale();
-    // todo: add the english version
+export default function About({ profile }: { profile?: ProfileDTO | null }) {
+    const t = useTranslations('about');
+    const tProjects = useTranslations('projects');
+    const locale = useLocale() as Locale;
+
+    // Anchor of the projects section is localized (#projets / #projects) — use
+    // the same source the section's id comes from so the link always matches.
+    const projectsHref = `#${tProjects('anchor')}`;
+
+    const introduction = profile?.translations.find(
+        tr => tr.locale === locale
+    )?.introduction;
 
     return (
         <>
@@ -30,19 +67,31 @@ export default function About() {
                             <p
                                 className={`${styles.p_1} ${calibreRegular.className}`}
                             >
-                                {t.rich('introduction', {
-                                    projects: chunks => (
-                                        <Link className="link" href="#projects">
-                                            {chunks}
-                                        </Link>
-                                    ),
-                                })}
-                                <br />
-                                <br />
-                                {t('employmentSeeking')}
-                                <br />
-                                <br />
-                                {t('additionalInfo')}
+                                {introduction ? (
+                                    renderIntroduction(
+                                        introduction,
+                                        projectsHref
+                                    )
+                                ) : (
+                                    <>
+                                        {t.rich('introduction', {
+                                            projects: chunks => (
+                                                <Link
+                                                    className="link"
+                                                    href={projectsHref}
+                                                >
+                                                    {chunks}
+                                                </Link>
+                                            ),
+                                        })}
+                                        <br />
+                                        <br />
+                                        {t('employmentSeeking')}
+                                        <br />
+                                        <br />
+                                        {t('additionalInfo')}
+                                    </>
+                                )}
                             </p>
 
                             <Link
@@ -61,7 +110,7 @@ export default function About() {
                             </Link>
                         </div>
 
-                        <AnimatedProfilePicture />
+                        <AnimatedProfilePicture src={profile?.imageUrl} />
                     </div>
                 </div>
             </section>

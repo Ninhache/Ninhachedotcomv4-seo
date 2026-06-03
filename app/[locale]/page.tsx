@@ -62,7 +62,7 @@ export default async function Page(props: Props) {
             <main className="main">
                 <Header />
                 <Home profile={profile} locale={locale} />
-                <About />
+                <About profile={profile} />
                 <Projects data={projects} />
                 <Skills data={skillCategories} />
                 <Experience data={experiences} />
