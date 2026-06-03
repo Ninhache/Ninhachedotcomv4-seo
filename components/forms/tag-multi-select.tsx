@@ -118,6 +118,11 @@ export function TagMultiSelect({
     const onContainerKeyDown: React.KeyboardEventHandler<
         HTMLDivElement
     > = e => {
+        // The search popover is portaled, but React bubbles its events through
+        // the component tree — so keystrokes in the CommandInput would reach
+        // here too. Only handle keys when the bar itself is focused, otherwise
+        // Backspace-in-search would also pop the last selected chip.
+        if (e.target !== e.currentTarget) return;
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             openSearch();
@@ -221,7 +226,12 @@ export function TagMultiSelect({
                         className="w-72 p-0"
                         onClick={e => e.stopPropagation()}
                     >
-                        <Command>
+                        {/* We filter ourselves via `visibleOptions` (by name).
+                            cmdk's default filter scores the query against each
+                            item's `value` — which here is the tag id (a cuid),
+                            so it fuzzy-matches ids and hides the wrong tags.
+                            Disable it and let `visibleOptions` be authoritative. */}
+                        <Command shouldFilter={false}>
                             <CommandInput
                                 ref={commandInputRef}
                                 placeholder={placeholder}
