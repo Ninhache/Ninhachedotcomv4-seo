@@ -39,15 +39,20 @@ function formatExperienceDate(startIso: string, endIso: string): string {
 
 /**
  * Display label for a project's timespan.
- * - With an end date: "MM/YYYY - MM/YYYY".
- * - Ongoing (no end date): "depuis MM/YYYY" / "since MM/YYYY".
+ * - With an end date: "MM/YYYY - MM/YYYY" (or a single "MM/YYYY" when start and
+ *   end fall in the same month).
+ * - Ongoing (no end date): "Depuis MM/YYYY" / "Since MM/YYYY".
  */
 function formatProjectDate(
     startIso: string,
     endIso: string | null | undefined,
     locale: Locale
 ): string {
-    if (endIso) return `${formatDate(startIso)} - ${formatDate(endIso)}`;
+    if (endIso) {
+        const start = formatDate(startIso);
+        const end = formatDate(endIso);
+        return start === end ? start : `${start} - ${end}`;
+    }
     return locale === 'en'
         ? `Since ${formatDate(startIso)}`
         : `Depuis ${formatDate(startIso)}`;
