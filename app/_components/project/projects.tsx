@@ -32,20 +32,31 @@ const SortButton: React.FC<SortButtonProps> = ({
     <button
         className={`${styles.choice} ${ralewaySemiBold.className} ${
             isSelected ? styles.selected : ''
-        } `}
+        } ${className ?? ''}`}
         onClick={onClick}
     >
         {label}
     </button>
 );
 
-const sortByDate = (data: Project[]) => {
+type SortDir = 'asc' | 'desc';
+
+const time = (iso?: string) => (iso ? new Date(iso).getTime() : 0);
+
+const sortByDate = (data: Project[], dir: SortDir = 'asc') => {
+    // asc => oldest first; desc => newest first.
+    const factor = dir === 'asc' ? 1 : -1;
     data.sort((a, b) => {
-        // Ongoing (in-development) projects first, then most recent start date.
+        // Under-development projects (no endDate) always come first, whatever
+        // the direction — they're the "current" work.
         if (a.ongoing !== b.ongoing) return a.ongoing ? -1 : 1;
-        return (
-            new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
-        );
+        // Both finished: order by endDate in the chosen direction.
+        if (!a.ongoing && !b.ongoing) {
+            const byEnd = time(a.endDate) - time(b.endDate);
+            if (byEnd !== 0) return byEnd * factor;
+        }
+        // Tiebreak (and the ordering within the ongoing group) by startDate.
+        return (time(a.startDate) - time(b.startDate)) * factor;
     });
 
     return data;
@@ -107,12 +118,16 @@ const Projects: React.FC<ProjectsProps> = ({ data }) => {
 
     const [allProjects] = useState<Project[]>(data);
     const [selectedSort, setSelectedSort] = useState<SortType>('date');
+    const [sortDir, setSortDir] = useState<SortDir>('desc');
     const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
     const [sortKey, setSortKey] = useState(0);
 
     const runSort = useCallback(
-        (sortType: SortType) => {
-            const newData = sortFunctions[sortType]([...allProjects]);
+        (sortType: SortType, dir: SortDir) => {
+            const newData =
+                sortType === 'date'
+                    ? sortByDate([...allProjects], dir)
+                    : sortFunctions[sortType]([...allProjects]);
             setDisplayedProjects(newData);
         },
         [allProjects]
@@ -120,19 +135,33 @@ const Projects: React.FC<ProjectsProps> = ({ data }) => {
 
     useEffect(() => {
         if (selectedSort !== SORT_TYPE.RANDOM) {
-            runSort(selectedSort);
+            runSort(selectedSort, sortDir);
         }
-    }, [selectedSort, runSort]);
+    }, [selectedSort, sortDir, runSort]);
 
     useEffect(() => {
         if (selectedSort === SORT_TYPE.RANDOM) {
-            runSort(SORT_TYPE.RANDOM);
+            runSort(SORT_TYPE.RANDOM, sortDir);
         }
     }, [sortKey, runSort]);
 
     const handleSortClick = (sortType: SortType) => {
         if (sortType === SORT_TYPE.RANDOM) {
             setSortKey(prev => prev + 1);
+            setSelectedSort(sortType);
+            return;
+        }
+
+        if (sortType === 'date') {
+            if (selectedSort === 'date') {
+                // Re-clicking the active date sort flips its direction.
+                setSortDir(prev => (prev === 'desc' ? 'asc' : 'desc'));
+            } else {
+                // Entering the date sort always starts on DESC (newest first).
+                setSortDir('desc');
+                setSelectedSort('date');
+            }
+            return;
         }
 
         setSelectedSort(sortType);
@@ -168,11 +197,16 @@ const Projects: React.FC<ProjectsProps> = ({ data }) => {
                         {sortButtons.map(button => (
                             <SortButton
                                 key={button.value}
-                                label={button.label}
+                                label={
+                                    button.value === 'date' &&
+                                    selectedSort === 'date'
+                                        ? `${button.label} ${sortDir === 'asc' ? '↑' : '↓'}`
+                                        : button.label
+                                }
                                 className={
-                                    button.value === 'random'
-                                        ? `${styles.cursor}`
-                                        : ``
+                                    button.value === 'date'
+                                        ? styles.toggleable
+                                        : ''
                                 }
                                 isSelected={
                                     button.value !== 'random' &&

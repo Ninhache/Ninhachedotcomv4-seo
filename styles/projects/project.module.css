@@ -87,6 +87,12 @@
     background-color: var(--light_blue);
 }
 
+/* The date sort stays clickable while selected so it can toggle ASC/DESC. */
+.choice.selected.toggleable {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
 .projects_end {
     background-color: var(--dark_purple);
 }

@@ -23,6 +23,7 @@ export interface Project {
     title: string;
     date: string; // display label: "MM/YYYY - MM/YYYY" or "depuis plus de X ans"
     startDate: string; // ISO — used for sorting
+    endDate?: string; // ISO — set only for finished projects; used for sorting
     ongoing: boolean; // no end date => actively in development
     translations: ProjectTranslations;
     tags: Tag[];

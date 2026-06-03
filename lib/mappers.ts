@@ -103,6 +103,7 @@ export function mapProject(dto: ProjectDTO, locale: Locale): Project {
             '',
         date: formatProjectDate(startIso, dto.endDate, locale),
         startDate: startIso,
+        endDate: dto.endDate ?? undefined,
         ongoing: !dto.endDate,
         translations: translationsRecord,
         tags: techTags,
