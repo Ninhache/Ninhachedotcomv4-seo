@@ -107,9 +107,13 @@ export function TagForm({
 
     // Expose dirty state + submit so the dialog can auto-save on close.
     const formElRef = useRef<HTMLFormElement>(null);
+    // RHF's formState proxy only tracks fields read during render — read
+    // isDirty here so it stays current, exposed via a ref to the dialog.
+    const isDirtyRef = useRef(false);
+    isDirtyRef.current = form.formState.isDirty;
     useEffect(() => {
         onRegister?.({
-            isDirty: () => form.formState.isDirty,
+            isDirty: () => isDirtyRef.current,
             submit: () => formElRef.current?.requestSubmit(),
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
