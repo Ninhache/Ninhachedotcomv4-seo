@@ -120,7 +120,12 @@ export type SkillCategoryTranslationDTO = {
 export type SkillCategoryDTO = {
     id: string;
     isVisible: boolean;
+    // Display order on the public portfolio (ascending). Defaults to 0 when the
+    // backend predates the ordering feature — callers sort with `?? 0`.
+    order: number;
     translations: SkillCategoryTranslationDTO[];
+    // Returned pre-sorted by the per-category join order; array order IS the
+    // skill display order within this category.
     skills: SkillDTO[];
 };
 export type SkillDTO = {

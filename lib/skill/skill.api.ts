@@ -77,4 +77,12 @@ export const CategoryApi = {
 
     remove: (id: string): Promise<void> =>
         unwrap(api.delete(`/skill/categories/${id}`)),
+
+    /**
+     * Persist the display order of categories in a single atomic request.
+     * Send the full ordered list; the backend assigns `order = index`.
+     * @param items category ids paired with their new zero-based order
+     */
+    reorder: (items: { id: string; order: number }[]): Promise<void> =>
+        unwrap(api.patch('/skill/categories/reorder', { items })),
 };
