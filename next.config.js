@@ -11,7 +11,9 @@ const config = {
         remotePatterns: [
             {
                 protocol: isDev ? 'http' : 'https',
-                hostname: isDev ? 'localhost' : 'ninhache.fr',
+                // Uploaded media is served by the backend API host, not the
+                // front-end origin. Must match NEXT_PUBLIC_BACKOFFICE_URL's host.
+                hostname: isDev ? 'localhost' : 'api.ninhache.fr',
                 port: isDev ? '5000' : '',
                 pathname: '/uploads/**',
             },
