@@ -1,188 +1,188 @@
 [
-  {
-    "translations": {
-      "fr": {
-        "name": "Programming Languages Stack"
-      },
-      "en": {
-        "name": "Programming Languages Stack"
-      }
+    {
+        "translations": {
+            "fr": {
+                "name": "Programming Languages Stack"
+            },
+            "en": {
+                "name": "Programming Languages Stack"
+            }
+        },
+        "skills": [
+            {
+                "name": "Java",
+                "logo": "svg/skills/Java.svg",
+                "link": "https://en.wikipedia.org/wiki/Java_(programming_language)"
+            },
+            {
+                "name": "TypeScript",
+                "logo": "svg/skills/TypeScript.svg",
+                "link": "https://en.wikipedia.org/wiki/TypeScript"
+            },
+            {
+                "name": "Rust",
+                "logo": "svg/skills/Rust.svg",
+                "link": "https://www.rust-lang.org/"
+            },
+            {
+                "name": "C",
+                "logo": "svg/skills/C.svg",
+                "link": "https://en.wikipedia.org/wiki/C_(programming_language)"
+            },
+            {
+                "name": "C++",
+                "logo": "svg/skills/Cpp.svg",
+                "link": "https://en.wikipedia.org/wiki/C%2B%2B"
+            },
+            {
+                "name": "Python",
+                "logo": "svg/skills/Python.svg",
+                "link": "https://www.python.org/"
+            }
+        ]
     },
-    "skills": [
-      {
-        "name": "Java",
-        "logo": "svg/skills/Java.svg",
-        "link": "https://en.wikipedia.org/wiki/Java_(programming_language)"
-      },
-      {
-        "name": "TypeScript",
-        "logo": "svg/skills/TypeScript.svg",
-        "link": "https://en.wikipedia.org/wiki/TypeScript"
-      },
-      {
-        "name": "Rust",
-        "logo": "svg/skills/Rust.svg",
-        "link": "https://www.rust-lang.org/"
-      },
-      {
-        "name": "C",
-        "logo": "svg/skills/C.svg",
-        "link": "https://en.wikipedia.org/wiki/C_(programming_language)"
-      },
-      {
-        "name": "C++",
-        "logo": "svg/skills/Cpp.svg",
-        "link": "https://en.wikipedia.org/wiki/C%2B%2B"
-      },
-      {
-        "name": "Python",
-        "logo": "svg/skills/Python.svg",
-        "link": "https://www.python.org/"
-      }
-    ]
-  },
 
-  {
-    "translations": {
-      "fr": {
-        "name": "Front-end"
-      },
-      "en": {
-        "name": "Front-end"
-      }
+    {
+        "translations": {
+            "fr": {
+                "name": "Front-end"
+            },
+            "en": {
+                "name": "Front-end"
+            }
+        },
+        "skills": [
+            {
+                "name": "Vanilla CSS.",
+                "logo": "svg/skills/Css.svg",
+                "link": "https://en.wikipedia.org/wiki/CSS"
+            },
+            {
+                "name": "Vanilla JS",
+                "logo": "svg/skills/JavaScript.svg",
+                "link": "https://en.wikipedia.org/wiki/JavaScript"
+            },
+            {
+                "name": "TypeScript",
+                "logo": "svg/skills/TypeScript.svg",
+                "link": "https://en.wikipedia.org/wiki/JavaScript"
+            },
+            {
+                "name": "React",
+                "logo": "svg/skills/React.svg",
+                "link": "https://react.dev/"
+            },
+            {
+                "name": "React Native",
+                "logo": "svg/skills/React.svg",
+                "link": "https://reactnative.dev/"
+            },
+            {
+                "name": "NextJS",
+                "logo": "svg/skills/NextJS.svg",
+                "link": "https://nextjs.org/"
+            },
+            {
+                "name": "Angular",
+                "logo": "svg/skills/Angular.svg",
+                "link": "https://angular.io/"
+            }
+        ]
     },
-    "skills": [
-      {
-        "name": "Vanilla CSS.",
-        "logo": "svg/skills/Css.svg",
-        "link": "https://en.wikipedia.org/wiki/CSS"
-      },
-      {
-        "name": "Vanilla JS",
-        "logo": "svg/skills/JavaScript.svg",
-        "link": "https://en.wikipedia.org/wiki/JavaScript"
-      },
-      {
-        "name": "TypeScript",
-        "logo": "svg/skills/TypeScript.svg",
-        "link": "https://en.wikipedia.org/wiki/JavaScript"
-      },
-      {
-        "name": "React",
-        "logo": "svg/skills/React.svg",
-        "link": "https://react.dev/"
-      },
-      {
-        "name": "React Native",
-        "logo": "svg/skills/React.svg",
-        "link": "https://reactnative.dev/"
-      },
-      {
-        "name": "NextJS",
-        "logo": "svg/skills/NextJS.svg",
-        "link": "https://nextjs.org/"
-      },
-      {
-        "name": "Angular",
-        "logo": "svg/skills/Angular.svg",
-        "link": "https://angular.io/"
-      }
-    ]
-  },
-  {
-    "translations": {
-      "fr": {
-        "name": "Back-end"
-      },
-      "en": {
-        "name": "Back-end"
-      }
+    {
+        "translations": {
+            "fr": {
+                "name": "Back-end"
+            },
+            "en": {
+                "name": "Back-end"
+            }
+        },
+        "skills": [
+            {
+                "name": "Quarkus",
+                "logo": "svg/skills/Quarkus.svg",
+                "link": "https://quarkus.io/"
+            },
+            {
+                "name": "NodeJS",
+                "logo": "svg/skills/NodeJS.svg",
+                "link": "https://nodejs.org/en/"
+            },
+            {
+                "name": "ExpressJS",
+                "logo": "svg/skills/ExpressJS.svg",
+                "link": "https://expressjs.com/fr/"
+            },
+            {
+                "name": "NestJS",
+                "logo": "svg/skills/NestJS.svg",
+                "link": "https://nestjs.com/"
+            }
+        ]
     },
-    "skills": [
-      {
-        "name": "Quarkus",
-        "logo": "svg/skills/Quarkus.svg",
-        "link": "https://quarkus.io/"
-      },
-      {
-        "name": "NodeJS",
-        "logo": "svg/skills/NodeJS.svg",
-        "link": "https://nodejs.org/en/"
-      },
-      {
-        "name": "ExpressJS",
-        "logo": "svg/skills/ExpressJS.svg",
-        "link": "https://expressjs.com/fr/"
-      },
-      {
-        "name": "NestJS",
-        "logo": "svg/skills/NestJS.svg",
-        "link": "https://nestjs.com/"
-      }
-    ]
-  },
-  {
-    "translations": {
-      "fr": {
-        "name": "Infrastructure"
-      },
-      "en": {
-        "name": "Infrastructure"
-      }
+    {
+        "translations": {
+            "fr": {
+                "name": "Infrastructure"
+            },
+            "en": {
+                "name": "Infrastructure"
+            }
+        },
+        "skills": [
+            {
+                "name": "Git",
+                "logo": "svg/skills/Git.svg",
+                "link": "https://git-scm.com/"
+            },
+            {
+                "name": "Docker",
+                "logo": "svg/skills/Docker.svg",
+                "link": "https://www.docker.com/"
+            },
+            {
+                "name": "Kubernetes",
+                "logo": "svg/skills/Kubernetes.svg",
+                "link": "https://kubernetes.io/fr/"
+            },
+            {
+                "name": "Unix",
+                "logo": "svg/skills/Unix.svg",
+                "link": "https://fr.wikipedia.org/wiki/Unix"
+            }
+        ]
     },
-    "skills": [
-      {
-        "name": "Git",
-        "logo": "svg/skills/Git.svg",
-        "link": "https://git-scm.com/"
-      },
-      {
-        "name": "Docker",
-        "logo": "svg/skills/Docker.svg",
-        "link": "https://www.docker.com/"
-      },
-      {
-        "name": "Kubernetes",
-        "logo": "svg/skills/Kubernetes.svg",
-        "link": "https://kubernetes.io/fr/"
-      },
-      {
-        "name": "Unix",
-        "logo": "svg/skills/Unix.svg",
-        "link": "https://fr.wikipedia.org/wiki/Unix"
-      }
-    ]
-  },
-  {
-    "translations": {
-      "fr": {
-        "name": "Design"
-      },
-      "en": {
-        "name": "Design"
-      }
-    },
-    "skills": [
-      {
-        "name": "After Effects",
-        "logo": "svg/skills/AfterEffects.svg",
-        "link": "https://www.adobe.com/products/aftereffects.html"
-      },
-      {
-        "name": "Illustrator",
-        "logo": "svg/skills/Illustrator.svg",
-        "link": "https://www.adobe.com/products/illustrator.html"
-      },
-      {
-        "name": "Photoshop",
-        "logo": "svg/skills/Photoshop.svg",
-        "link": "https://www.adobe.com/products/photoshop.html"
-      },
-      {
-        "name": "Figma",
-        "logo": "svg/skills/Figma.svg",
-        "link": "https://www.figma.com/"
-      }
-    ]
-  }
+    {
+        "translations": {
+            "fr": {
+                "name": "Design"
+            },
+            "en": {
+                "name": "Design"
+            }
+        },
+        "skills": [
+            {
+                "name": "After Effects",
+                "logo": "svg/skills/AfterEffects.svg",
+                "link": "https://www.adobe.com/products/aftereffects.html"
+            },
+            {
+                "name": "Illustrator",
+                "logo": "svg/skills/Illustrator.svg",
+                "link": "https://www.adobe.com/products/illustrator.html"
+            },
+            {
+                "name": "Photoshop",
+                "logo": "svg/skills/Photoshop.svg",
+                "link": "https://www.adobe.com/products/photoshop.html"
+            },
+            {
+                "name": "Figma",
+                "logo": "svg/skills/Figma.svg",
+                "link": "https://www.figma.com/"
+            }
+        ]
+    }
 ]

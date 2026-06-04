@@ -1,66 +1,72 @@
-import { getSession } from 'next-auth/react'
-import { baseUrl } from '../baseurl'
-import axios from 'axios'
+import axios from 'axios';
+import { getSession } from 'next-auth/react';
+import { handleUnauthorized } from '../auth/on-unauthorized';
+import { baseUrl } from '../baseurl';
 
 const api = axios.create({
-  baseURL: baseUrl,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+    baseURL: baseUrl,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
-api.interceptors.request.use(async (config) => {
-  const session = await getSession()
-  // @ts-ignore
-  config.headers.Authorization = `Bearer ${session?.accessToken}`
+api.interceptors.request.use(async config => {
+    const session = await getSession();
+    // @ts-ignore
+    config.headers.Authorization = `Bearer ${session?.accessToken}`;
 
-  return config
-})
+    return config;
+});
+
+handleUnauthorized(api);
 
 export const ExperienceApi = {
-  findAll: (query: string = '') => {
-    return api
-      .get('/experiences')
-      .then((response) => response.data)
-      .catch((error) => {
-        throw new Error(error.response?.data?.message || 'Failed to fetch experiences')
-      })
-  },
+    findAll: (query: string = '') => {
+        // raw=true -> editor gets @@ aliases unresolved (public portfolio omits it).
+        return api
+            .get('/experiences', { params: { raw: true } })
+            .then(response => response.data)
+            .catch(error => {
+                throw new Error(
+                    error.response?.data?.message ||
+                        'Failed to fetch experiences'
+                );
+            });
+    },
 
-  update: (id: string, payload: any) => {
-    return api
-      .patch(`/experiences/${id}`, payload)
-      .then((response) => response.data)
-      .catch((error) => {
-        throw new Error(error.response?.data?.message || 'Failed to update experiences')
-      })
-  },
+    update: (id: string, payload: any) => {
+        return api
+            .patch(`/experiences/${id}`, payload)
+            .then(response => response.data)
+            .catch(error => {
+                throw new Error(
+                    error.response?.data?.message ||
+                        'Failed to update experiences'
+                );
+            });
+    },
 
-  create: (payload: any) => {
-    return api
-      .post(`/experiences`, payload)
-      .then((response) => response.data)
-      .catch((error) => {
-        throw new Error(error.response?.data?.message || 'Failed to create experience')
-      })
-  },
+    create: (payload: any) => {
+        return api
+            .post(`/experiences`, payload)
+            .then(response => response.data)
+            .catch(error => {
+                throw new Error(
+                    error.response?.data?.message ||
+                        'Failed to create experience'
+                );
+            });
+    },
 
-  remove: (id: string) => {
-    return api
-      .delete(`/experiences/${id}`)
-      .then((response) => response.data)
-      .catch((error) => {
-        throw new Error(error.response?.data?.message || 'Failed to delete experience')
-      })
-  },
-
-  patchVisibility: (id: string, next: boolean) =>
-    api
-      .patch(`/experiences/${id}/visibility`, JSON.stringify({ isVisible: next }))
-      .then((response) => response.data)
-      .catch((error) => {
-        throw new Error(
-          error.response?.data?.message || `Failed to update experience's ${id} visibility`,
-        )
-      }),
-}
+    remove: (id: string) => {
+        return api
+            .delete(`/experiences/${id}`)
+            .then(response => response.data)
+            .catch(error => {
+                throw new Error(
+                    error.response?.data?.message ||
+                        'Failed to delete experience'
+                );
+            });
+    },
+};

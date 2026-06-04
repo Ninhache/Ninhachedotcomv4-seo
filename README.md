@@ -1,3 +1,8 @@
+# Ninhache.com V4 (Frontend)
+
+This is the main portfolio website.
+For the backend / admin part, see the [Ninhachedotcomv4-back](https://github.com/Ninhache/Ninhachedotcomv4-back) repository.
+
 ## Get into the developpement
 
 `npm run dev`

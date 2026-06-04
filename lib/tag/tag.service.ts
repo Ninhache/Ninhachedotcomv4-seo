@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { TagApi } from './tag.api'
+import { TagApi } from './tag.api';
 
 export const TagService = {
-  findAll: () => {
-    return TagApi.findAll()
-  },
-}
+    findAll: () => {
+        return TagApi.findAll();
+    },
+};

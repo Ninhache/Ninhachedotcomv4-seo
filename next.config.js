@@ -1,20 +1,29 @@
 /** @type {import('next').NextConfig} */
+const isDev = process.env.NODE_ENV === 'development';
 
 const config = {
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    })
+    // Pin the workspace root: a stray lockfile in a parent dir made Turbopack
+    // infer the wrong root. Without this, Next warns and may resolve from there.
+    turbopack: { root: __dirname },
 
-    return config
-  },
-}
+    images: {
+        dangerouslyAllowLocalIP: isDev,
+        remotePatterns: [
+            {
+                protocol: isDev ? 'http' : 'https',
+                hostname: isDev ? 'localhost' : 'ninhache.fr',
+                port: isDev ? '5000' : '',
+                pathname: '/uploads/**',
+            },
+        ],
+    },
+};
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
+    enabled: process.env.ANALYZE === 'true',
+});
 
-const withNextIntl = require('next-intl/plugin')('./i18n.ts')
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin();
 
-module.exports = withBundleAnalyzer(withNextIntl(config))
+module.exports = withBundleAnalyzer(withNextIntl(config));

@@ -1,71 +1,72 @@
 {
-  "useLocaleNames": {
-    "en": "Anglais",
-    "fr": "Français"
-  },
-  "header": {
-    "home": "Accueil",
-    "about": "A propos",
-    "projects": "Projets",
-    "skills": "Compétences",
-    "experience": "Experiences",
-    "contact": "Contact",
-    "homeAnchor": "accueil",
-    "aboutAnchor": "apropos",
-    "projectsAnchor": "projets",
-    "skillsAnchor": "competences",
-    "experienceAnchor": "experiences",
-    "contactAnchor": "contact"
-  },
-  "home": {
-    "anchor": "accueil",
-    "greeting": "Bonjour, je m'appelle",
-    "name": "Almeida Neo.",
-    "profession": "Je suis développeur de logiciels.",
-    "description": "Je suis un étudiant français de 22 ans !",
-    "start": "Commençons"
-  },
-  "about": {
-    "anchor": "apropos",
-    "title": "Qui suis-je ?",
-    "introduction": "Hello ! Je m'appelle Almeida Néo, j'ai 22 ans, et je suis passionné par le développement. J'aime consacrer mon temps libre à des projets personnels, que vous pouvez découvrir dans la section <projects>projets</projects> de ce site.",
-    "employmentSeeking": "Actuellement en poste, je reste toujours curieux et ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour échanger !",
-    "additionalInfo": "Vous voulez peut-être plus d'informations sur moi ?",
-    "resumeLink": "Ouvrir mon CV",
-    "altLink": "Icone représentant un lien externe"
-  },
-  "projects": {
-    "anchor": "projets",
-    "title": "Quelques-uns de mes projets",
-    "sortLabel": "Trier par",
-    "openGit": "Voir le code",
-    "runCode": "Tester le programme",
-    "sortButtons": {
-      "date": "Date",
-      "school": "Ecole",
-      "personal": "Personnel",
-      "web": "Web",
-      "simulations": "Simulations",
-      "random": "Aléatoire"
+    "useLocaleNames": {
+        "en": "Anglais",
+        "fr": "Français"
+    },
+    "header": {
+        "home": "Accueil",
+        "about": "A propos",
+        "projects": "Projets",
+        "skills": "Compétences",
+        "experience": "Experiences",
+        "contact": "Contact",
+        "homeAnchor": "accueil",
+        "aboutAnchor": "apropos",
+        "projectsAnchor": "projets",
+        "skillsAnchor": "competences",
+        "experienceAnchor": "experiences",
+        "contactAnchor": "contact"
+    },
+    "home": {
+        "anchor": "accueil",
+        "greeting": "Bonjour, je m'appelle",
+        "name": "Almeida Neo.",
+        "profession": "Je suis développeur de logiciels.",
+        "description": "Je suis un étudiant français de 22 ans !",
+        "start": "Commençons"
+    },
+    "about": {
+        "anchor": "apropos",
+        "title": "Qui suis-je ?",
+        "introduction": "Hello ! Je m'appelle Almeida Néo, j'ai 22 ans, et je suis passionné par le développement. J'aime consacrer mon temps libre à des projets personnels, que vous pouvez découvrir dans la section <projects>projets</projects> de ce site.",
+        "employmentSeeking": "Actuellement en poste, je reste toujours curieux et ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour échanger !",
+        "additionalInfo": "Vous voulez peut-être plus d'informations sur moi ?",
+        "resumeLink": "Ouvrir mon CV",
+        "altLink": "Icone représentant un lien externe"
+    },
+    "projects": {
+        "anchor": "projets",
+        "title": "Quelques-uns de mes projets",
+        "sortLabel": "Trier par",
+        "openGit": "Voir le code",
+        "runCode": "Tester le programme",
+        "inDevelopment": "En développement",
+        "sortButtons": {
+            "date": "Date",
+            "school": "Ecole",
+            "personal": "Personnel",
+            "web": "Web",
+            "simulations": "Simulations",
+            "random": "Aléatoire"
+        }
+    },
+    "skills": {
+        "anchor": "competences",
+        "title": "Quelles sont mes compétences"
+    },
+    "jobs": {
+        "anchor": "experiences",
+        "title": "Où j'ai travaillé"
+    },
+    "contact": {
+        "anchor": "contact",
+        "title": "Voir le dépôt sur GitHub?"
+    },
+    "footer": {
+        "github": "Voir le repo. sur GitHub",
+        "text": "Ce site web a été construit par Neo ALMEIDA en utilisant NextJS."
+    },
+    "LocaleSwitcher": {
+        "switchLocale": "Changer la langue de {locale, select, de {Français} en {Anglais} other {Inconnu}} wechseln"
     }
-  },
-  "skills": {
-    "anchor": "competences",
-    "title": "Quelles sont mes compétences"
-  },
-  "jobs": {
-    "anchor": "experiences",
-    "title": "Où j'ai travaillé"
-  },
-  "contact": {
-    "anchor": "contact",
-    "title": "Voir le dépôt sur GitHub?"
-  },
-  "footer": {
-    "github": "Voir le repo. sur GitHub",
-    "text": "Ce site web a été construit par Neo ALMEIDA en utilisant NextJS."
-  },
-  "LocaleSwitcher": {
-    "switchLocale": "Changer la langue de {locale, select, de {Français} en {Anglais} other {Inconnu}} wechseln"
-  }
 }

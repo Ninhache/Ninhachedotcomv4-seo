@@ -1,439 +1,439 @@
 [
-  {
-    "title": "Sokoban",
-    "date": "03/2021",
-    "translations": {
-      "fr": {
-        "type": "Projet scolaire",
-        "description": "Un jeu de sokoban réalisé lors de ma toute première année d'étude, un jeu de puzzle ou il faut pousser des boites dans des trous, réalisé en groupe en C, nous avons même choisis d'y utiliser Ncurses pour se compliquer la tâche"
-      },
-      "en": {
-        "type": "School project",
-        "description": "A sokoban game developed during my very first year of study, a puzzle game where you have to push boxes into holes, completed as a group project in C. We even chose to use Ncurses to make the task more challenging"
-      }
+    {
+        "title": "Sokoban",
+        "date": "03/2021",
+        "translations": {
+            "fr": {
+                "type": "Projet scolaire",
+                "description": "Un jeu de sokoban réalisé lors de ma toute première année d'étude, un jeu de puzzle ou il faut pousser des boites dans des trous, réalisé en groupe en C, nous avons même choisis d'y utiliser Ncurses pour se compliquer la tâche"
+            },
+            "en": {
+                "type": "School project",
+                "description": "A sokoban game developed during my very first year of study, a puzzle game where you have to push boxes into holes, completed as a group project in C. We even chose to use Ncurses to make the task more challenging"
+            }
+        },
+        "tags": [
+            {
+                "name": "C",
+                "url": "https://fr.wikipedia.org/wiki/C_(langage)"
+            },
+            {
+                "name": "Ncurses",
+                "url": "https://fr.wikipedia.org/wiki/Ncurses"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Sokoban",
+            "git": "https://github.com/Ninhache/Sokoban",
+            "play": "https://onlinegdb.com/ay4ieWjm7"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/sokobangif1.gif",
+        "logo": "/svg/projects/Sokoban.svg",
+        "sortCategories": ["school"]
     },
-    "tags": [
-      {
-        "name": "C",
-        "url": "https://fr.wikipedia.org/wiki/C_(langage)"
-      },
-      {
-        "name": "Ncurses",
-        "url": "https://fr.wikipedia.org/wiki/Ncurses"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Sokoban",
-      "git": "https://github.com/Ninhache/Sokoban",
-      "play": "https://onlinegdb.com/ay4ieWjm7"
+    {
+        "title": "Maze Things",
+        "date": "05/2022",
+        "translations": {
+            "fr": {
+                "type": "Projet personnel",
+                "description": "Simplement un générateur de labyrinthes qui peut également les résoudres"
+            },
+            "en": {
+                "type": "Personal Project",
+                "description": "Simply a maze generator, that can solves himself the maze you provides him"
+            }
+        },
+        "tags": [
+            {
+                "name": "JS",
+                "url": "https://developer.mozilla.org/fr/docs/Web/JavaScript"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/MazeThings/",
+            "git": "https://github.com/Ninhache/MazeThings",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/MazeThings.gif",
+        "logo": "/svg/projects/MazeThings.svg",
+        "sortCategories": ["web", "personal"]
     },
-    "videoUrl": "none",
-    "image": "/images/projects/sokobangif1.gif",
-    "logo": "/svg/projects/Sokoban.svg",
-    "sortCategories": ["school"]
-  },
-  {
-    "title": "Maze Things",
-    "date": "05/2022",
-    "translations": {
-      "fr": {
-        "type": "Projet personnel",
-        "description": "Simplement un générateur de labyrinthes qui peut également les résoudres"
-      },
-      "en": {
-        "type": "Personal Project",
-        "description": "Simply a maze generator, that can solves himself the maze you provides him"
-      }
+    {
+        "title": "ColorFx",
+        "date": "04/2021",
+        "translations": {
+            "fr": {
+                "type": "Projet scolaire",
+                "description": "Outil réalisé dans le but de découvrir JavaFX mais également pour résoudre une problématique d'impression en noir et blanc, car les couleurs sont souvent mal choisis et les polycopiés illisible"
+            },
+            "en": {
+                "type": "School project",
+                "description": "Tool developed with the aim of exploring JavaFX, but also to solve a problem with black and white printing, as colors are often poorly chosen, making handouts unreadable."
+            }
+        },
+        "tags": [
+            {
+                "name": "Java",
+                "url": "https://www.java.com/en/"
+            },
+            {
+                "name": "JavaFX",
+                "url": "https://openjfx.io/"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/ColorFx",
+            "git": "https://github.com/Ninhache/ColorFx",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/ColorFx.png",
+        "logo": "/svg/projects/ColorFxDropper.svg",
+        "sortCategories": ["school"]
     },
-    "tags": [
-      {
-        "name": "JS",
-        "url": "https://developer.mozilla.org/fr/docs/Web/JavaScript"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/MazeThings/",
-      "git": "https://github.com/Ninhache/MazeThings",
-      "play": "none"
+    {
+        "title": "3D Modelisation Tool (Only for .ply)",
+        "date": "12/2021",
+        "translations": {
+            "fr": {
+                "type": "Projet scolaire",
+                "description": "Outil réalisé \"en groupe\" permettant de visualiser des .ply, des fichiers qui representent des fichiers 3D"
+            },
+            "en": {
+                "type": "School project",
+                "description": "I've worked with a \"group\" for this 3D modeling tool, that allows you to open .ply files and view them in a visual format."
+            }
+        },
+        "tags": [
+            {
+                "name": "Java",
+                "url": "https://www.java.com/en/"
+            },
+            {
+                "name": "JavaFX",
+                "url": "https://openjfx.io/"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Projet-Mod-lisation-S3",
+            "git": "https://github.com/Ninhache/Projet-Mod-lisation-S3",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/Modelisation.gif",
+        "logo": "/svg/projects/ProjetMode.svg",
+        "sortCategories": ["school"]
     },
-    "videoUrl": "none",
-    "image": "/images/projects/MazeThings.gif",
-    "logo": "/svg/projects/MazeThings.svg",
-    "sortCategories": ["web", "personal"]
-  },
-  {
-    "title": "ColorFx",
-    "date": "04/2021",
-    "translations": {
-      "fr": {
-        "type": "Projet scolaire",
-        "description": "Outil réalisé dans le but de découvrir JavaFX mais également pour résoudre une problématique d'impression en noir et blanc, car les couleurs sont souvent mal choisis et les polycopiés illisible"
-      },
-      "en": {
-        "type": "School project",
-        "description": "Tool developed with the aim of exploring JavaFX, but also to solve a problem with black and white printing, as colors are often poorly chosen, making handouts unreadable."
-      }
+    {
+        "title": "Windows's Notepad copy",
+        "date": "02/2022",
+        "translations": {
+            "fr": {
+                "type": "Projet personnel",
+                "description": "Ce projet est une réplique du Bloc-notes de Windows, avec des fonctionnalités supplémentaires. Il m'a offert l'opportunité d'explorer C# et .NET."
+            },
+            "en": {
+                "type": "Personal Project",
+                "description": "This project is a replica of Windows' Notepad, with additional features. It provided me with the opportunity to explore C# and .NET."
+            }
+        },
+        "tags": [
+            {
+                "name": "C#",
+                "url": "https://docs.microsoft.com/en/dotnet/csharp/"
+            },
+            {
+                "name": ".NET",
+                "url": "https://docs.microsoft.com/en/dotnet/"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Notepad-Copy",
+            "git": "https://github.com/Ninhache/Notepad-Copy",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/Notepad.gif",
+        "logo": "/svg/projects/NotepadCopy.svg",
+        "sortCategories": ["personal"]
     },
-    "tags": [
-      {
-        "name": "Java",
-        "url": "https://www.java.com/en/"
-      },
-      {
-        "name": "JavaFX",
-        "url": "https://openjfx.io/"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/ColorFx",
-      "git": "https://github.com/Ninhache/ColorFx",
-      "play": "none"
+    {
+        "title": "JustSeries",
+        "date": "04/2022",
+        "translations": {
+            "fr": {
+                "type": "Projet scolaire",
+                "description": "Projet réalisé en équipe de 3, dans le simple but d'utiliser une API. Ce site web permet de rechercher des séries télévisées et d'accéder à certaines informations comme leur notes.. et cie"
+            },
+            "en": {
+                "type": "School project",
+                "description": "Project carried out by a team of 3, with the simple goal of using an API. This website allows users to search for TV series and access certain information such as their ratings, etc."
+            }
+        },
+        "tags": [
+            {
+                "name": "JS",
+                "url": "https://developer.mozilla.org/fr/docs/Web/JavaScript"
+            },
+            {
+                "name": "TvMazeAPI",
+                "url": "https://www.tvmaze.com/"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/JustSeries",
+            "git": "https://github.com/Ninhache/JustSeries",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/JustSeries.gif",
+        "logo": "/svg/projects/JustSeries.svg",
+        "sortCategories": ["school", "web"]
     },
-    "videoUrl": "none",
-    "image": "/images/projects/ColorFx.png",
-    "logo": "/svg/projects/ColorFxDropper.svg",
-    "sortCategories": ["school"]
-  },
-  {
-    "title": "3D Modelisation Tool (Only for .ply)",
-    "date": "12/2021",
-    "translations": {
-      "fr": {
-        "type": "Projet scolaire",
-        "description": "Outil réalisé \"en groupe\" permettant de visualiser des .ply, des fichiers qui representent des fichiers 3D"
-      },
-      "en": {
-        "type": "School project",
-        "description": "I've worked with a \"group\" for this 3D modeling tool, that allows you to open .ply files and view them in a visual format."
-      }
+    {
+        "title": "Image Processing",
+        "date": "04/2022",
+        "translations": {
+            "fr": {
+                "type": "Travail Pratique",
+                "description": "Mini-Projet Python visant à faciliter l'apprentissage des techniques de traitement d'image."
+            },
+            "en": {
+                "type": "Practical work",
+                "description": "Little python project aimed at facilitating the learning of image processing techniques."
+            }
+        },
+        "tags": [
+            {
+                "name": "Python",
+                "url": "https://www.python.org/"
+            },
+            {
+                "name": "OpenCV",
+                "url": "https://docs.opencv.org/4.x/"
+            },
+            {
+                "name": "Numpy",
+                "url": "https://numpy.org/"
+            },
+            {
+                "name": "Matplotlib",
+                "url": "https://matplotlib.org/"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Image-Processing",
+            "git": "https://github.com/Ninhache/Image-Processing",
+            "play": "none"
+        },
+        "videoUrl": "/videos/projects/PythonImageProcessing.mp4",
+        "image": "/images/projects/ImageProcessing.png",
+        "logo": "/svg/projects/ImageProcessing.svg",
+        "sortCategories": ["school"]
     },
-    "tags": [
-      {
-        "name": "Java",
-        "url": "https://www.java.com/en/"
-      },
-      {
-        "name": "JavaFX",
-        "url": "https://openjfx.io/"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Projet-Mod-lisation-S3",
-      "git": "https://github.com/Ninhache/Projet-Mod-lisation-S3",
-      "play": "none"
+    {
+        "title": "Ch-hess",
+        "date": "10/2021",
+        "translations": {
+            "fr": {
+                "type": "Projet personnel",
+                "description": "C'est un jeu d'échecs appelé Ch-hess, inspiré du terme \"Hess\" fréquemment utilisé par les jeunes pour désigner être dans une situation de difficulté financière."
+            },
+            "en": {
+                "type": "Personal Project",
+                "description": "It is a chess game called Ch-hess, inspired by the term \"Hess\" frequently used by young people to denote being in a state of financial difficulty."
+            }
+        },
+        "tags": [
+            {
+                "name": "Java",
+                "url": "https://fr.wikipedia.org/wiki/Java_(langage)"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Ch-Hess",
+            "git": "https://github.com/Ninhache/Ch-Hess",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/Chess.png",
+        "logo": "/svg/projects/Chhess.svg",
+        "sortCategories": ["personal"]
     },
-    "videoUrl": "none",
-    "image": "/images/projects/Modelisation.gif",
-    "logo": "/svg/projects/ProjetMode.svg",
-    "sortCategories": ["school"]
-  },
-  {
-    "title": "Windows's Notepad copy",
-    "date": "02/2022",
-    "translations": {
-      "fr": {
-        "type": "Projet personnel",
-        "description": "Ce projet est une réplique du Bloc-notes de Windows, avec des fonctionnalités supplémentaires. Il m'a offert l'opportunité d'explorer C# et .NET."
-      },
-      "en": {
-        "type": "Personal Project",
-        "description": "This project is a replica of Windows' Notepad, with additional features. It provided me with the opportunity to explore C# and .NET."
-      }
+    {
+        "title": "Client SSH",
+        "date": "04/2022",
+        "translations": {
+            "fr": {
+                "type": "Projet scolaire",
+                "description": "C'est un client SSH, implémenté en utilisant le langage de programmation Java."
+            },
+            "en": {
+                "type": "School project",
+                "description": "This is an SSH client, implemented using the Java programming language."
+            }
+        },
+        "tags": [
+            {
+                "name": "Java",
+                "url": "https://fr.wikipedia.org/wiki/Java_(langage)"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Client-SSH-Java",
+            "git": "https://github.com/Ninhache/Client-SSH-Java",
+            "play": "none"
+        },
+        "videoUrl": "/videos/projects/ClientSSH.mp4",
+        "image": "/images/projects/ClientSSH.png",
+        "logo": "/svg/projects/ClientSSH.svg",
+        "sortCategories": ["school"]
     },
-    "tags": [
-      {
-        "name": "C#",
-        "url": "https://docs.microsoft.com/en/dotnet/csharp/"
-      },
-      {
-        "name": ".NET",
-        "url": "https://docs.microsoft.com/en/dotnet/"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Notepad-Copy",
-      "git": "https://github.com/Ninhache/Notepad-Copy",
-      "play": "none"
+    {
+        "title": "Netcast",
+        "date": "03/2022",
+        "translations": {
+            "fr": {
+                "type": "Projet scolaire",
+                "description": "C'est un serveur web qui a été implémenté en utilisant le langage de programmation C."
+            },
+            "en": {
+                "type": "School project",
+                "description": "This is a web server that has been implemented using the C programming language."
+            }
+        },
+        "tags": [
+            {
+                "name": "C",
+                "url": "https://fr.wikipedia.org/wiki/C_(langage)"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Netcast",
+            "git": "https://github.com/Ninhache/Netcast",
+            "play": "none"
+        },
+        "videoUrl": "/videos/projects/ServeurWebC.mp4",
+        "image": "/images/projects/ServeurWebC.png",
+        "logo": "/svg/projects/Netcast.svg",
+        "sortCategories": ["school", "web"]
     },
-    "videoUrl": "none",
-    "image": "/images/projects/Notepad.gif",
-    "logo": "/svg/projects/NotepadCopy.svg",
-    "sortCategories": ["personal"]
-  },
-  {
-    "title": "JustSeries",
-    "date": "04/2022",
-    "translations": {
-      "fr": {
-        "type": "Projet scolaire",
-        "description": "Projet réalisé en équipe de 3, dans le simple but d'utiliser une API. Ce site web permet de rechercher des séries télévisées et d'accéder à certaines informations comme leur notes.. et cie"
-      },
-      "en": {
-        "type": "School project",
-        "description": "Project carried out by a team of 3, with the simple goal of using an API. This website allows users to search for TV series and access certain information such as their ratings, etc."
-      }
+    {
+        "title": "FractalDisplayer",
+        "date": "06/2022",
+        "translations": {
+            "fr": {
+                "type": "Projet personnel",
+                "description": "Ce projet est un visualiseur de fractales basique qui est actuellement capable d'afficher la fractale de Mandelbrot. Son but est de m'aider à apprendre et explorer l'utilisation des shaders."
+            },
+            "en": {
+                "type": "Personal Project",
+                "description": "This project is a basic fractal viewer that is currently capable of displaying the Mandelbrot fractal. Its purpose is to help me learn and explore the use of shaders."
+            }
+        },
+        "tags": [
+            {
+                "name": "CPP",
+                "url": "https://fr.wikipedia.org/wiki/C%2B%2B"
+            },
+            {
+                "name": "GLSL",
+                "url": "https://fr.wikipedia.org/wiki/GLSL"
+            },
+            {
+                "name": "SFML",
+                "url": "https://fr.wikipedia.org/wiki/Simple_and_Fast_Multimedia_Library"
+            },
+            {
+                "name": "ImGui",
+                "url": "https://github.com/ocornut/imgui"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/Fractal-Displayer",
+            "git": "https://github.com/Ninhache/Fractal-Displayer",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/FractalDisplayer.png",
+        "logo": "/svg/projects/FractalDisplayer.svg",
+        "sortCategories": ["personal", "simulations"]
     },
-    "tags": [
-      {
-        "name": "JS",
-        "url": "https://developer.mozilla.org/fr/docs/Web/JavaScript"
-      },
-      {
-        "name": "TvMazeAPI",
-        "url": "https://www.tvmaze.com/"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/JustSeries",
-      "git": "https://github.com/Ninhache/JustSeries",
-      "play": "none"
+    {
+        "title": "3D Engine (old)",
+        "date": "01/2023",
+        "translations": {
+            "fr": {
+                "type": "Projet scolaire",
+                "description": "Projet réalisé en groupe dans le cadre de ma licence d'informatique ou le but était de réaliser un projet \"complexe\", nous avons donc choisis de découvrir la 3D à travers ce projet en vu du master que nous voulions faire, le master Réalité Virtuelle et Augmentée"
+            },
+            "en": {
+                "type": "School project",
+                "description": "Group project carried out as part of my computer science degree, where the goal was to create a \"complex\" project. We therefore chose to explore 3D through this project in view of the master's program we wanted to pursue, the Master in Virtual and Augmented Reality."
+            }
+        },
+        "tags": [
+            {
+                "name": "CPP",
+                "url": "https://fr.wikipedia.org/wiki/C%2B%2B"
+            },
+            {
+                "name": "OPENGL",
+                "url": "https://fr.wikipedia.org/wiki/GLSL"
+            },
+            {
+                "name": "GLFW",
+                "url": "https://fr.wikipedia.org/wiki/GLFW"
+            },
+            {
+                "name": "ImGui",
+                "url": "https://github.com/ocornut/imgui"
+            }
+        ],
+        "links": {
+            "redirect": "https://github.com/Ninhache/3d-engine-old",
+            "git": "https://github.com/Ninhache/3d-engine-old",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/3DEngine-Old.png",
+        "logo": "/svg/projects/3DEngine-Old.svg",
+        "sortCategories": ["school", "simulations"]
     },
-    "videoUrl": "none",
-    "image": "/images/projects/JustSeries.gif",
-    "logo": "/svg/projects/JustSeries.svg",
-    "sortCategories": ["school", "web"]
-  },
-  {
-    "title": "Image Processing",
-    "date": "04/2022",
-    "translations": {
-      "fr": {
-        "type": "Travail Pratique",
-        "description": "Mini-Projet Python visant à faciliter l'apprentissage des techniques de traitement d'image."
-      },
-      "en": {
-        "type": "Practical work",
-        "description": "Little python project aimed at facilitating the learning of image processing techniques."
-      }
-    },
-    "tags": [
-      {
-        "name": "Python",
-        "url": "https://www.python.org/"
-      },
-      {
-        "name": "OpenCV",
-        "url": "https://docs.opencv.org/4.x/"
-      },
-      {
-        "name": "Numpy",
-        "url": "https://numpy.org/"
-      },
-      {
-        "name": "Matplotlib",
-        "url": "https://matplotlib.org/"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Image-Processing",
-      "git": "https://github.com/Ninhache/Image-Processing",
-      "play": "none"
-    },
-    "videoUrl": "/videos/projects/PythonImageProcessing.mp4",
-    "image": "/images/projects/ImageProcessing.png",
-    "logo": "/svg/projects/ImageProcessing.svg",
-    "sortCategories": ["school"]
-  },
-  {
-    "title": "Ch-hess",
-    "date": "10/2021",
-    "translations": {
-      "fr": {
-        "type": "Projet personnel",
-        "description": "C'est un jeu d'échecs appelé Ch-hess, inspiré du terme \"Hess\" fréquemment utilisé par les jeunes pour désigner être dans une situation de difficulté financière."
-      },
-      "en": {
-        "type": "Personal Project",
-        "description": "It is a chess game called Ch-hess, inspired by the term \"Hess\" frequently used by young people to denote being in a state of financial difficulty."
-      }
-    },
-    "tags": [
-      {
-        "name": "Java",
-        "url": "https://fr.wikipedia.org/wiki/Java_(langage)"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Ch-Hess",
-      "git": "https://github.com/Ninhache/Ch-Hess",
-      "play": "none"
-    },
-    "videoUrl": "none",
-    "image": "/images/projects/Chess.png",
-    "logo": "/svg/projects/Chhess.svg",
-    "sortCategories": ["personal"]
-  },
-  {
-    "title": "Client SSH",
-    "date": "04/2022",
-    "translations": {
-      "fr": {
-        "type": "Projet scolaire",
-        "description": "C'est un client SSH, implémenté en utilisant le langage de programmation Java."
-      },
-      "en": {
-        "type": "School project",
-        "description": "This is an SSH client, implemented using the Java programming language."
-      }
-    },
-    "tags": [
-      {
-        "name": "Java",
-        "url": "https://fr.wikipedia.org/wiki/Java_(langage)"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Client-SSH-Java",
-      "git": "https://github.com/Ninhache/Client-SSH-Java",
-      "play": "none"
-    },
-    "videoUrl": "/videos/projects/ClientSSH.mp4",
-    "image": "/images/projects/ClientSSH.png",
-    "logo": "/svg/projects/ClientSSH.svg",
-    "sortCategories": ["school"]
-  },
-  {
-    "title": "Netcast",
-    "date": "03/2022",
-    "translations": {
-      "fr": {
-        "type": "Projet scolaire",
-        "description": "C'est un serveur web qui a été implémenté en utilisant le langage de programmation C."
-      },
-      "en": {
-        "type": "School project",
-        "description": "This is a web server that has been implemented using the C programming language."
-      }
-    },
-    "tags": [
-      {
-        "name": "C",
-        "url": "https://fr.wikipedia.org/wiki/C_(langage)"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Netcast",
-      "git": "https://github.com/Ninhache/Netcast",
-      "play": "none"
-    },
-    "videoUrl": "/videos/projects/ServeurWebC.mp4",
-    "image": "/images/projects/ServeurWebC.png",
-    "logo": "/svg/projects/Netcast.svg",
-    "sortCategories": ["school", "web"]
-  },
-  {
-    "title": "FractalDisplayer",
-    "date": "06/2022",
-    "translations": {
-      "fr": {
-        "type": "Projet personnel",
-        "description": "Ce projet est un visualiseur de fractales basique qui est actuellement capable d'afficher la fractale de Mandelbrot. Son but est de m'aider à apprendre et explorer l'utilisation des shaders."
-      },
-      "en": {
-        "type": "Personal Project",
-        "description": "This project is a basic fractal viewer that is currently capable of displaying the Mandelbrot fractal. Its purpose is to help me learn and explore the use of shaders."
-      }
-    },
-    "tags": [
-      {
-        "name": "CPP",
-        "url": "https://fr.wikipedia.org/wiki/C%2B%2B"
-      },
-      {
-        "name": "GLSL",
-        "url": "https://fr.wikipedia.org/wiki/GLSL"
-      },
-      {
-        "name": "SFML",
-        "url": "https://fr.wikipedia.org/wiki/Simple_and_Fast_Multimedia_Library"
-      },
-      {
-        "name": "ImGui",
-        "url": "https://github.com/ocornut/imgui"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/Fractal-Displayer",
-      "git": "https://github.com/Ninhache/Fractal-Displayer",
-      "play": "none"
-    },
-    "videoUrl": "none",
-    "image": "/images/projects/FractalDisplayer.png",
-    "logo": "/svg/projects/FractalDisplayer.svg",
-    "sortCategories": ["personal", "simulations"]
-  },
-  {
-    "title": "3D Engine (old)",
-    "date": "01/2023",
-    "translations": {
-      "fr": {
-        "type": "Projet scolaire",
-        "description": "Projet réalisé en groupe dans le cadre de ma licence d'informatique ou le but était de réaliser un projet \"complexe\", nous avons donc choisis de découvrir la 3D à travers ce projet en vu du master que nous voulions faire, le master Réalité Virtuelle et Augmentée"
-      },
-      "en": {
-        "type": "School project",
-        "description": "Group project carried out as part of my computer science degree, where the goal was to create a \"complex\" project. We therefore chose to explore 3D through this project in view of the master's program we wanted to pursue, the Master in Virtual and Augmented Reality."
-      }
-    },
-    "tags": [
-      {
-        "name": "CPP",
-        "url": "https://fr.wikipedia.org/wiki/C%2B%2B"
-      },
-      {
-        "name": "OPENGL",
-        "url": "https://fr.wikipedia.org/wiki/GLSL"
-      },
-      {
-        "name": "GLFW",
-        "url": "https://fr.wikipedia.org/wiki/GLFW"
-      },
-      {
-        "name": "ImGui",
-        "url": "https://github.com/ocornut/imgui"
-      }
-    ],
-    "links": {
-      "redirect": "https://github.com/Ninhache/3d-engine-old",
-      "git": "https://github.com/Ninhache/3d-engine-old",
-      "play": "none"
-    },
-    "videoUrl": "none",
-    "image": "/images/projects/3DEngine-Old.png",
-    "logo": "/svg/projects/3DEngine-Old.svg",
-    "sortCategories": ["school", "simulations"]
-  },
-  {
-    "title": "Wakfuli",
-    "date": "09/2024",
-    "translations": {
-      "fr": {
-        "type": "Projet collaboratif",
-        "description": "Wakfuli est un builder pour le jeu Wakfu, conçu pour permettre aux joueurs de créer et optimiser leurs builds facilement. Développé en équipe de trois, ce projet vise à proposer une interface fluide et intuitive pour personnaliser équipements, sorts et aptitudes. Actuellement non open-source, il a pour objectif d’offrir un outil performant à la communauté."
-      },
-      "en": {
-        "type": "Collaborative Project",
-        "description": "Wakfuli is a builder for the video game Wakfu, designed to help players create and optimize their builds easily. Developed by a team of three enthusiasts, the project aims to provide a smooth and intuitive interface for customizing equipment, spells, and abilities. While not open-source for now, our goal is to deliver a powerful tool for the community."
-      }
-    },
-    "tags": [
-      {
-        "name": "TS",
-        "url": "https://en.wikipedia.org/wiki/TypeScript"
-      },
-      {
-        "name": "NextJS",
-        "url": "https://en.wikipedia.org/wiki/Next.js"
-      }
-    ],
-    "links": {
-      "redirect": "none",
-      "git": "none",
-      "play": "none"
-    },
-    "videoUrl": "none",
-    "image": "/images/projects/Wakfuli.png",
-    "logo": "/svg/projects/Wakfuli.svg",
-    "sortCategories": ["personal", "web"]
-  }
+    {
+        "title": "Wakfuli",
+        "date": "09/2024",
+        "translations": {
+            "fr": {
+                "type": "Projet collaboratif",
+                "description": "Wakfuli est un builder pour le jeu Wakfu, conçu pour permettre aux joueurs de créer et optimiser leurs builds facilement. Développé en équipe de trois, ce projet vise à proposer une interface fluide et intuitive pour personnaliser équipements, sorts et aptitudes. Actuellement non open-source, il a pour objectif d’offrir un outil performant à la communauté."
+            },
+            "en": {
+                "type": "Collaborative Project",
+                "description": "Wakfuli is a builder for the video game Wakfu, designed to help players create and optimize their builds easily. Developed by a team of three enthusiasts, the project aims to provide a smooth and intuitive interface for customizing equipment, spells, and abilities. While not open-source for now, our goal is to deliver a powerful tool for the community."
+            }
+        },
+        "tags": [
+            {
+                "name": "TS",
+                "url": "https://en.wikipedia.org/wiki/TypeScript"
+            },
+            {
+                "name": "NextJS",
+                "url": "https://en.wikipedia.org/wiki/Next.js"
+            }
+        ],
+        "links": {
+            "redirect": "none",
+            "git": "none",
+            "play": "none"
+        },
+        "videoUrl": "none",
+        "image": "/images/projects/Wakfuli.png",
+        "logo": "/svg/projects/Wakfuli.svg",
+        "sortCategories": ["personal", "web"]
+    }
 ]
