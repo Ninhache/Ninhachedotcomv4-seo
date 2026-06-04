@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" role="img" aria-label="deob-mapper: ProGuard-decompiled Java with mangled identifiers (class fBU, method aD) is matched against readable sources by the features that survive obfuscation — string literals, structure, imports — then its names are recovered in place, resolving fBU.java back into PlayerEntity.java with 0.86 confidence.">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="32%" r="92%">
+      <stop offset="0%" stop-color="#161b22"/>
+      <stop offset="100%" stop-color="#0a0d12"/>
+    </radialGradient>
+    <filter id="gG" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <clipPath id="codeClip"><rect x="40" y="126" width="616" height="376"/></clipPath>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#bg)"/>
+
+  <!-- title -->
+  <text x="40" y="46" fill="#e6edf3" font-size="23" font-weight="700">deob<tspan fill="#3fb950">-mapper</tspan></text>
+  <text x="42" y="68" fill="#8b7d92" font-size="12.5">decompiled garbage <tspan fill="#3fb950">→</tspan> real names, recovered</text>
+  <!-- phase word (top-right) -->
+  <g text-anchor="end" font-size="12.5" font-weight="700">
+    <text x="920" y="52" fill="#e3a008"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0;0.2;0.4;0.6" dur="10s" calcMode="discrete" repeatCount="indefinite"/>● decompiled</text>
+    <text x="920" y="52" fill="#58a6ff"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.2;0.4;0.6" dur="10s" calcMode="discrete" repeatCount="indefinite"/>● fingerprint</text>
+    <text x="920" y="52" fill="#d29922"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.2;0.4;0.6" dur="10s" calcMode="discrete" repeatCount="indefinite"/>● match</text>
+    <text x="920" y="52" fill="#3fb950"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.2;0.4;0.6" dur="10s" calcMode="discrete" repeatCount="indefinite"/>● recover</text>
+  </g>
+
+  <!-- ================= CODE EDITOR (left) ================= -->
+  <rect x="40" y="92" width="616" height="410" rx="10" fill="#0d1117" stroke="#30363d"/>
+  <!-- title bar -->
+  <rect x="40" y="92" width="616" height="34" rx="10" fill="#161b22"/>
+  <rect x="40" y="116" width="616" height="10" fill="#161b22"/>
+  <circle cx="62" cy="109" r="4" fill="#f85149"/><circle cx="78" cy="109" r="4" fill="#d29922"/><circle cx="94" cy="109" r="4" fill="#3fb950"/>
+  <!-- filename: mangled → resolved (cross-fade, last to resolve) -->
+  <text x="118" y="114" font-size="13" fill="#e3a008"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.86;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/>fBU.java</text>
+  <text x="118" y="114" font-size="13" font-weight="700" fill="#3fb950" filter="url(#gG)" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.86;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/>PlayerEntity.java</text>
+
+  <!-- gutter -->
+  <line x1="80" y1="126" x2="80" y2="502" stroke="#21262d"/>
+  <g fill="#3d4452" font-size="12" text-anchor="end">
+    <text x="72" y="170">1</text><text x="72" y="203">2</text><text x="72" y="236">3</text><text x="72" y="269">4</text>
+    <text x="72" y="302">5</text><text x="72" y="335">6</text><text x="72" y="368">7</text><text x="72" y="401">8</text>
+    <text x="72" y="434">9</text><text x="72" y="467">10</text>
+  </g>
+
+  <g clip-path="url(#codeClip)" font-size="15" xml:space="preserve">
+    <!-- L1 -->
+    <text x="92" y="170"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.64;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">class </tspan><tspan fill="#e3a008">fBU</tspan><tspan fill="#ff7b72"> extends </tspan><tspan fill="#e3a008">qZ</tspan><tspan fill="#8b949e"> {</tspan></text>
+    <text x="92" y="170" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.64;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">class </tspan><tspan fill="#c9c2d1">PlayerEntity</tspan><tspan fill="#ff7b72"> extends </tspan><tspan fill="#79c0ff">Entity</tspan><tspan fill="#8b949e"> {</tspan></text>
+    <!-- L2 -->
+    <text x="92" y="203"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.67;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  private </tspan><tspan fill="#79c0ff">int </tspan><tspan fill="#e3a008">aB</tspan><tspan fill="#8b949e"> = </tspan><tspan fill="#79c0ff">20</tspan><tspan fill="#8b949e">;</tspan></text>
+    <text x="92" y="203" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.67;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  private </tspan><tspan fill="#79c0ff">int </tspan><tspan fill="#c9c2d1">health</tspan><tspan fill="#8b949e"> = </tspan><tspan fill="#79c0ff">20</tspan><tspan fill="#8b949e">;</tspan></text>
+    <!-- L3 (string literal "spawn" stays green = anchor) -->
+    <text x="92" y="236"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.70;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  private </tspan><tspan fill="#79c0ff">String </tspan><tspan fill="#e3a008">aC</tspan><tspan fill="#8b949e"> = </tspan><tspan fill="#3fb950">"spawn"</tspan><tspan fill="#8b949e">;</tspan></text>
+    <text x="92" y="236" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.70;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  private </tspan><tspan fill="#79c0ff">String </tspan><tspan fill="#c9c2d1">tag</tspan><tspan fill="#8b949e"> = </tspan><tspan fill="#3fb950">"spawn"</tspan><tspan fill="#8b949e">;</tspan></text>
+    <!-- L5 -->
+    <text x="92" y="302"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.73;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  void </tspan><tspan fill="#e3a008">aD</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#79c0ff">int </tspan><tspan fill="#e3a008">a</tspan><tspan fill="#8b949e">) {</tspan></text>
+    <text x="92" y="302" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.73;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  void </tspan><tspan fill="#c9c2d1">damage</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#79c0ff">int </tspan><tspan fill="#c9c2d1">amount</tspan><tspan fill="#8b949e">) {</tspan></text>
+    <!-- L6 -->
+    <text x="92" y="335"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.76;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">    this</tspan><tspan fill="#8b949e">.</tspan><tspan fill="#e3a008">aB</tspan><tspan fill="#8b949e"> -= </tspan><tspan fill="#e3a008">a</tspan><tspan fill="#8b949e">;</tspan></text>
+    <text x="92" y="335" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.76;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">    this</tspan><tspan fill="#8b949e">.</tspan><tspan fill="#c9c2d1">health</tspan><tspan fill="#8b949e"> -= </tspan><tspan fill="#c9c2d1">amount</tspan><tspan fill="#8b949e">;</tspan></text>
+    <!-- L7 -->
+    <text x="92" y="368"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.79;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">    if </tspan><tspan fill="#8b949e">(</tspan><tspan fill="#e3a008">aB</tspan><tspan fill="#8b949e"> &lt;= </tspan><tspan fill="#79c0ff">0</tspan><tspan fill="#8b949e">) </tspan><tspan fill="#e3a008">aE</tspan><tspan fill="#8b949e">();</tspan></text>
+    <text x="92" y="368" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.79;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">    if </tspan><tspan fill="#8b949e">(</tspan><tspan fill="#c9c2d1">health</tspan><tspan fill="#8b949e"> &lt;= </tspan><tspan fill="#79c0ff">0</tspan><tspan fill="#8b949e">) </tspan><tspan fill="#c9c2d1">die</tspan><tspan fill="#8b949e">();</tspan></text>
+    <!-- L8 (unchanged) -->
+    <text x="92" y="401" fill="#8b949e">  }</text>
+    <!-- L10 -->
+    <text x="92" y="467"><animate attributeName="opacity" values="1;1;0" keyTimes="0;0.82;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  void </tspan><tspan fill="#e3a008">aE</tspan><tspan fill="#8b949e">() { </tspan><tspan fill="#e3a008">dN9</tspan><tspan fill="#8b949e">.</tspan><tspan fill="#e3a008">b</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#3fb950">"dead"</tspan><tspan fill="#8b949e">); }</tspan></text>
+    <text x="92" y="467" opacity="0"><animate attributeName="opacity" values="0;0;1" keyTimes="0;0.82;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/><tspan fill="#ff7b72">  void </tspan><tspan fill="#c9c2d1">die</tspan><tspan fill="#8b949e">() { </tspan><tspan fill="#79c0ff">World</tspan><tspan fill="#8b949e">.</tspan><tspan fill="#c9c2d1">log</tspan><tspan fill="#8b949e">(</tspan><tspan fill="#3fb950">"dead"</tspan><tspan fill="#8b949e">); }</tspan></text>
+
+    <!-- fingerprint scan-line (phase 2) -->
+    <rect x="80" width="576" height="3" fill="#58a6ff" opacity="0" filter="url(#gG)">
+      <animate attributeName="opacity" values="0;0.8;0.8;0;0" keyTimes="0;0.2;0.38;0.4;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/>
+      <animate attributeName="y" values="140;140;490;140;140" keyTimes="0;0.2;0.4;0.401;1" dur="10s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <!-- ================= MATCH RAIL (right) ================= -->
+  <rect x="680" y="92" width="240" height="410" rx="10" fill="#0d1117" stroke="#30363d"/>
+  <text x="700" y="120" fill="#6e6478" font-size="10.5" letter-spacing="1.2">CANDIDATES</text>
+
+  <!-- candidate fBU (winner) -->
+  <text x="700" y="150" font-size="13" fill="#c9c2d1">fBU.java</text>
+  <text x="900" y="150" font-size="12.5" font-weight="700" fill="#3fb950" text-anchor="end" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.4;0.42;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/>0.86</text>
+  <rect x="700" y="158" width="200" height="6" rx="3" fill="#21262d"/>
+  <rect x="700" y="158" height="6" rx="3" fill="#3fb950"><animate attributeName="width" values="0;0;172;172;0" keyTimes="0;0.2;0.4;0.97;1" dur="10s" repeatCount="indefinite"/></rect>
+
+  <!-- candidate aCK -->
+  <text x="700" y="194" font-size="13" fill="#c9c2d1">aCK.java</text>
+  <text x="900" y="194" font-size="12.5" font-weight="700" fill="#d29922" text-anchor="end" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.4;0.42;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/>0.58</text>
+  <rect x="700" y="202" width="200" height="6" rx="3" fill="#21262d"/>
+  <rect x="700" y="202" height="6" rx="3" fill="#d29922"><animate attributeName="width" values="0;0;116;116;0" keyTimes="0;0.22;0.4;0.97;1" dur="10s" repeatCount="indefinite"/></rect>
+
+  <!-- candidate qZ3 -->
+  <text x="700" y="238" font-size="13" fill="#8b949e">qZ3.java</text>
+  <text x="900" y="238" font-size="12.5" font-weight="700" fill="#f85149" text-anchor="end" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.4;0.42;1" dur="10s" calcMode="discrete" repeatCount="indefinite"/>0.22</text>
+  <rect x="700" y="246" width="200" height="6" rx="3" fill="#21262d"/>
+  <rect x="700" y="246" height="6" rx="3" fill="#f85149"><animate attributeName="width" values="0;0;44;44;0" keyTimes="0;0.24;0.4;0.97;1" dur="10s" repeatCount="indefinite"/></rect>
+
+  <line x1="700" y1="276" x2="900" y2="276" stroke="#21262d"/>
+
+  <!-- matched-on signals (fill in fingerprint phase) -->
+  <text x="700" y="300" fill="#6e6478" font-size="10.5" letter-spacing="1.2">MATCHED ON</text>
+  <g font-size="11">
+    <text x="700" y="324" fill="#3fb950">strings</text><text x="900" y="324" fill="#6e6478" font-size="10" text-anchor="end">.35</text>
+    <rect x="772" y="316" width="100" height="6" rx="3" fill="#21262d"/>
+    <rect x="772" y="316" height="6" rx="3" fill="#3fb950"><animate attributeName="width" values="0;0;88;88;0" keyTimes="0;0.2;0.36;0.97;1" dur="10s" repeatCount="indefinite"/></rect>
+    <text x="700" y="348" fill="#8b9099">imports</text><text x="900" y="348" fill="#6e6478" font-size="10" text-anchor="end">.15</text>
+    <rect x="772" y="340" width="100" height="6" rx="3" fill="#21262d"/>
+    <rect x="772" y="340" height="6" rx="3" fill="#58a6ff"><animate attributeName="width" values="0;0;60;60;0" keyTimes="0;0.22;0.38;0.97;1" dur="10s" repeatCount="indefinite"/></rect>
+    <text x="700" y="372" fill="#8b9099">structure</text><text x="900" y="372" fill="#6e6478" font-size="10" text-anchor="end">.10</text>
+    <rect x="772" y="364" width="100" height="6" rx="3" fill="#21262d"/>
+    <rect x="772" y="364" height="6" rx="3" fill="#8b949e"><animate attributeName="width" values="0;0;46;46;0" keyTimes="0;0.24;0.4;0.97;1" dur="10s" repeatCount="indefinite"/></rect>
+  </g>
+
+  <!-- confirm strip -->
+  <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.4;0.42;0.6" dur="10s" calcMode="discrete" repeatCount="indefinite"/>
+    <rect x="700" y="404" width="138" height="26" rx="13" fill="#3fb95022" stroke="#3fb950"/>
+    <text x="769" y="421" font-size="11.5" font-weight="700" fill="#3fb950" text-anchor="middle">HIGH ≥ 0.80</text>
+  </g>
+  <g opacity="0"><animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.4;0.6;0.62" dur="10s" calcMode="discrete" repeatCount="indefinite"/>
+    <rect x="700" y="404" width="150" height="26" rx="13" fill="#3fb950" filter="url(#gG)"/>
+    <text x="775" y="421" font-size="11.5" font-weight="700" fill="#0d1117" text-anchor="middle">✓ CONFIRMED</text>
+    <text x="700" y="456" font-size="10.5" fill="#3fb95099">↳ parent vote ×1.10 → siblings</text>
+  </g>
+</svg>
