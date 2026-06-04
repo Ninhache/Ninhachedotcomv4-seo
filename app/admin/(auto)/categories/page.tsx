@@ -1,6 +1,13 @@
 'use client';
 
-import { Pencil, Plus, RefreshCcw, Trash2 } from 'lucide-react';
+import {
+    ArrowDown,
+    ArrowUp,
+    Pencil,
+    Plus,
+    RefreshCcw,
+    Trash2,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import {
@@ -88,6 +95,7 @@ export default function CategoriesPage() {
     const [visibilityPending, setVisibilityPending] = useState<string | null>(
         null
     );
+    const [reordering, setReordering] = useState(false);
 
     const load = async () => {
         setLoading(true);
@@ -96,7 +104,9 @@ export default function CategoriesPage() {
                 CategoryApi.findAll(),
                 SkillApi.findAll(),
             ]);
-            setCategories(cats);
+            setCategories(
+                [...cats].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            );
             setAllSkills(skills);
         } finally {
             setLoading(false);
@@ -156,6 +166,41 @@ export default function CategoriesPage() {
         }));
     };
 
+    /** Move a selected skill up/down in the dialog's display-order list. */
+    const moveSkill = (index: number, dir: -1 | 1) => {
+        setForm(prev => {
+            const next = [...prev.skillIds];
+            const target = index + dir;
+            if (target < 0 || target >= next.length) return prev;
+            [next[index], next[target]] = [next[target], next[index]];
+            return { ...prev, skillIds: next };
+        });
+    };
+
+    /**
+     * Swap a category with its neighbour and persist the whole ordering in one
+     * batch request. Optimistic: the table reverts if the backend rejects.
+     */
+    const moveCategory = async (index: number, dir: -1 | 1) => {
+        const target = index + dir;
+        if (target < 0 || target >= categories.length) return;
+
+        const previous = categories;
+        const next = [...categories];
+        [next[index], next[target]] = [next[target], next[index]];
+        setCategories(next);
+        setReordering(true);
+        try {
+            await CategoryApi.reorder(
+                next.map((c, i) => ({ id: c.id, order: i }))
+            );
+        } catch {
+            setCategories(previous);
+        } finally {
+            setReordering(false);
+        }
+    };
+
     return (
         <AdminPageShell>
             <AdminHeader
@@ -193,6 +238,9 @@ export default function CategoriesPage() {
                         <Table>
                             <TableHeader className="sticky top-0 z-10 bg-muted/60 backdrop-blur supports-[backdrop-filter]:bg-muted/40">
                                 <TableRow>
+                                    <TableHead className="w-24">
+                                        Ordre
+                                    </TableHead>
                                     <TableHead>Nom (FR)</TableHead>
                                     <TableHead className="hidden md:table-cell">
                                         Nom (EN)
@@ -205,12 +253,52 @@ export default function CategoriesPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {categories.map(cat => (
+                                {categories.map((cat, index) => (
                                     <TableRow
                                         key={cat.id}
                                         className="cursor-pointer hover:bg-muted/50"
                                         onDoubleClick={() => openEdit(cat)}
                                     >
+                                        <TableCell
+                                            onDoubleClick={e =>
+                                                e.stopPropagation()
+                                            }
+                                        >
+                                            <div className="inline-flex items-center gap-0.5">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-7 w-7"
+                                                    aria-label="Monter"
+                                                    disabled={
+                                                        reordering ||
+                                                        index === 0
+                                                    }
+                                                    onClick={() =>
+                                                        moveCategory(index, -1)
+                                                    }
+                                                >
+                                                    <ArrowUp className="h-4 w-4" />
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-7 w-7"
+                                                    aria-label="Descendre"
+                                                    disabled={
+                                                        reordering ||
+                                                        index ===
+                                                            categories.length -
+                                                                1
+                                                    }
+                                                    onClick={() =>
+                                                        moveCategory(index, 1)
+                                                    }
+                                                >
+                                                    <ArrowDown className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </TableCell>
                                         <TableCell className="font-medium">
                                             {getCategoryName(cat, 'fr')}
                                         </TableCell>
@@ -333,7 +421,7 @@ export default function CategoriesPage() {
                                 {!loading && categories.length === 0 && (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={5}
+                                            colSpan={6}
                                             className="h-32 text-center text-muted-foreground"
                                         >
                                             Aucune catégorie.
@@ -343,7 +431,7 @@ export default function CategoriesPage() {
                                 {loading && (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={5}
+                                            colSpan={6}
                                             className="h-32 text-center text-muted-foreground"
                                         >
                                             Chargement…
@@ -415,6 +503,80 @@ export default function CategoriesPage() {
                                 Compétences ({form.skillIds.length}{' '}
                                 sélectionnées)
                             </Label>
+
+                            {form.skillIds.length > 0 && (
+                                <div className="space-y-1">
+                                    <p className="text-xs text-muted-foreground">
+                                        Ordre d&apos;affichage — utilisez les
+                                        flèches pour réordonner.
+                                    </p>
+                                    <div className="rounded-md border p-2 space-y-1">
+                                        {form.skillIds.map((id, index) => {
+                                            const skill = allSkills.find(
+                                                s => s.id === id
+                                            );
+                                            if (!skill) return null;
+                                            return (
+                                                <div
+                                                    key={id}
+                                                    className="flex items-center gap-2 rounded px-2 py-1"
+                                                >
+                                                    <span className="w-5 text-xs text-muted-foreground tabular-nums">
+                                                        {index + 1}
+                                                    </span>
+                                                    {skill.image && (
+                                                        <Image
+                                                            src={assetUrl(
+                                                                skill.image
+                                                            )}
+                                                            alt=""
+                                                            width={20}
+                                                            height={20}
+                                                            className="rounded object-contain"
+                                                            unoptimized
+                                                        />
+                                                    )}
+                                                    <span className="flex-1 text-sm">
+                                                        {getSkillName(skill)}
+                                                    </span>
+                                                    <Button
+                                                        type="button"
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-7 w-7"
+                                                        aria-label="Monter"
+                                                        disabled={index === 0}
+                                                        onClick={() =>
+                                                            moveSkill(index, -1)
+                                                        }
+                                                    >
+                                                        <ArrowUp className="h-4 w-4" />
+                                                    </Button>
+                                                    <Button
+                                                        type="button"
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-7 w-7"
+                                                        aria-label="Descendre"
+                                                        disabled={
+                                                            index ===
+                                                            form.skillIds
+                                                                .length -
+                                                                1
+                                                        }
+                                                        onClick={() =>
+                                                            moveSkill(index, 1)
+                                                        }
+                                                    >
+                                                        <ArrowDown className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="max-h-64 overflow-y-auto rounded-md border p-2 space-y-1">
                                 {allSkills.map(skill => (
                                     <div

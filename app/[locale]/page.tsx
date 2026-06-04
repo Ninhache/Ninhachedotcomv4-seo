@@ -51,7 +51,9 @@ export default async function Page(props: Props) {
     const experiences = rawExperiences
         .filter(e => e.isVisible)
         .map(e => mapExperience(e));
-    const skillCategories = rawCategories.map(c => mapSkillCategory(c));
+    const skillCategories = [...rawCategories]
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        .map(c => mapSkillCategory(c));
     const profileTrans = profile?.translations.find(t => t.locale === locale);
     const contacts = rawContacts
         .filter(c => c.isVisible)
