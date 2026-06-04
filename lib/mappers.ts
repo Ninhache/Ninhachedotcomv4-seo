@@ -142,7 +142,7 @@ export function mapExperience(dto: ExperienceDTO): Experience {
         translations: translationsRecord,
         tags,
         link: dto.siteUrl ?? '#',
-        image: dto.imageUrl ?? '',
+        image: dto.imageUrl ? mediaSrc(dto.imageUrl) : '',
     };
 }
 
@@ -155,9 +155,7 @@ export function mapSkillCategory(dto: SkillCategoryDTO): SkillCategory {
     const skills = dto.skills.map(skill => {
         const enTranslation = skill.translations.find(t => t.locale === 'en');
         const frTranslation = skill.translations.find(t => t.locale === 'fr');
-        const logo = skill.image?.startsWith('http')
-            ? skill.image
-            : `/${skill.image}`;
+        const logo = mediaSrc(skill.image);
         return {
             name: enTranslation?.name ?? frTranslation?.name ?? '',
             logo,
@@ -171,7 +169,7 @@ export function mapSkillCategory(dto: SkillCategoryDTO): SkillCategory {
 export function mapContact(dto: ContactDTO, locale: Locale): SocialProps {
     return {
         text: dto.nameByLocale[locale] ?? dto.nameByLocale['en'] ?? '',
-        imageUrl: dto.imageUrl,
+        imageUrl: mediaSrc(dto.imageUrl),
         redirectLink: dto.contactUrl,
         cssSize: dto.cssSize ?? 'auto',
     };
