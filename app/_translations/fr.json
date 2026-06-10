@@ -56,7 +56,25 @@
     },
     "jobs": {
         "anchor": "experiences",
-        "title": "Où j'ai travaillé"
+        "title": "Où j'ai travaillé",
+        "present": "Aujourd'hui",
+        "noExperiences": "Aucune expérience à afficher pour le moment.",
+        "showMissions": "Voir les missions",
+        "hideMissions": "Masquer les missions",
+        "atClient": "chez",
+        "missionClient": "Client",
+        "missionInternal": "Interne",
+        "roleProgression": "Évolution du poste",
+        "currentRole": "Actuel",
+        "missionsCount": "{count, plural, one {# mission} other {# missions}}",
+        "close": "Fermer",
+        "contractTypes": {
+            "Permanent": "CDI",
+            "Fixed": "CDD",
+            "Internship": "Stage",
+            "Workstudy": "Alternance",
+            "Freelance": "Freelance"
+        }
     },
     "contact": {
         "anchor": "contact",

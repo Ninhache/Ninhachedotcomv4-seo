@@ -1,0 +1,346 @@
+/* Mission-detail modal opened from an experience card's CTA. Responsive:
+   a centered dialog on desktop, a full-height bottom sheet on mobile. The
+   public side has no shared modal primitive, so this is self-contained. */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(8, 8, 24, 0.66);
+    backdrop-filter: blur(3px);
+    animation: overlayIn 0.2s ease;
+}
+
+@keyframes overlayIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.dialog {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--dark_purple);
+    border: 1px solid var(--fade_light_blue);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: dialogIn 0.25s ease;
+}
+
+@keyframes dialogIn {
+    from {
+        transform: translateY(12px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--fade_light_blue);
+    flex-shrink: 0;
+}
+
+.headerTitle {
+    color: var(--white);
+    font-size: 22px;
+}
+
+.headerSub {
+    color: var(--light_gray);
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--fade_light_blue);
+    background: transparent;
+    color: var(--light_blue);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.close:hover {
+    background: var(--fade_light_blue);
+    color: var(--white);
+}
+
+/* Scrollable list of missions. `overscroll-behavior: contain` stops scroll
+   chaining — hitting the top/bottom of this list must NOT scroll the page
+   behind the modal (the body is already overflow-locked, but the wheel/touch
+   delta still chains to the document without this). */
+.body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 8px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Focused programmatically (tabIndex -1) to capture scroll — no focus ring. */
+.body:focus {
+    outline: none;
+}
+
+.mission {
+    position: relative;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mission:last-child {
+    border-bottom: none;
+}
+
+/* Large, very faint logo watermark on the right, vertically centred. The layer
+   spans the whole card (`inset: 0`) and clips ONLY the image: `overflow: hidden`
+   lives here, on a wrapper whose sole child is the watermark <img>, so the logo
+   stays inside the card and NEVER spills onto the mission above/below — while
+   the mission's text and focus rings (siblings of this layer, not descendants)
+   are never clipped. */
+.watermark {
+    position: absolute;
+    inset: 0;
+    /* Bleed past the body's 24px side padding so the logo sits flush against the
+       dialog's right border instead of stopping short. The dialog's own
+       overflow:hidden makes the final clean cut at its rounded edge. */
+    right: -24px;
+    /* Reach up across the body's 4px flex gap so the logo touches the separator
+       line above (the previous mission's border-bottom), with no creux. */
+    top: -4px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* The first mission has no mission above it: the space over it is the body's 8px
+   top padding (below the header's border), not the 4px flex gap — reach up that
+   far so the logo also touches the header line. The body clips any overshoot. */
+.mission:first-child .watermark {
+    top: -8px;
+}
+
+/* A real <img> (not a CSS background) so the `border-radius` rounds the actual
+   painted logo — a background's painted region can't be rounded. Anchored to the
+   top-right and pushed out by the radius on BOTH edges, so the top corner (flush
+   to the separator line above) and the right corner (flush to the dialog border)
+   are clipped straight, while the visible left side keeps its rounding. */
+.watermarkImg {
+    position: absolute;
+    top: -24px;
+    right: -24px;
+    height: 300px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 24px;
+    opacity: 0.07;
+}
+
+/* Keep the mission content above the watermark (the watermark layer itself
+   stays at its own z-index 0). */
+.mission > *:not(.watermark) {
+    position: relative;
+    z-index: 1;
+}
+
+.missionHead {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Title + Client/Interne badge on one line so the mission type reads at a
+   glance before the context. */
+.missionTitleRow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.missionBadge {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    line-height: 1.4;
+}
+
+/* Client missions get the accent pill; internal ones a muted neutral pill. */
+.badgeClient {
+    color: var(--light_blue);
+    background-color: var(--fade_light_blue);
+}
+
+.badgeInternal {
+    color: var(--light_gray);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.missionLogo,
+.missionLogoFallback {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.missionLogo {
+    object-fit: contain;
+    background: #fff;
+    padding: 4px;
+}
+
+.missionLogoFallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--fade_light_blue);
+    color: var(--light_blue);
+    font-size: 15px;
+}
+
+.missionTitle {
+    color: var(--white);
+    font-size: 20px;
+    /* Rendered as <h4>: drop the default heading margin/weight. */
+    margin: 0;
+    font-weight: 400;
+}
+
+.missionDate {
+    color: var(--light_gray);
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+/* The client company's own blurb, set apart from the mission context with an
+   accent rail so it reads as "about the client", not "what I did". */
+.clientDesc {
+    color: var(--fade_white);
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 14px 0 0 0;
+    padding-left: 12px;
+    border-left: 2px solid var(--fade_light_blue);
+}
+
+.context {
+    color: var(--fade_white);
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 14px 0 0 0;
+}
+
+.tasks {
+    margin: 12px 0 0 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tasks li {
+    color: var(--fade_white);
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.tag {
+    color: var(--light_blue);
+    background-color: var(--fade_light_blue);
+    font-size: 14px;
+    padding: 4px 11px;
+    border-radius: 20px;
+    /* Tags that are links (<a>) must read as pills, not underlined text. */
+    text-decoration: none;
+}
+
+/* Visible keyboard focus for the tag links and the close button. */
+.tag:focus-visible,
+.close:focus-visible {
+    outline: 2px solid var(--light_blue);
+    outline-offset: 2px;
+}
+
+/* Mobile: full-height sheet anchored to the bottom of the screen. */
+@media screen and (max-width: 600px) {
+    .overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .dialog {
+        max-width: 100%;
+        max-height: 92vh;
+        border-radius: 18px 18px 0 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        animation: sheetIn 0.28s ease;
+    }
+
+    .header {
+        padding: 18px 20px;
+    }
+
+    .body {
+        padding: 4px 20px 28px;
+    }
+}
+
+@keyframes sheetIn {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .overlay,
+    .dialog {
+        animation: none;
+    }
+}

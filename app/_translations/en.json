@@ -56,7 +56,25 @@
     },
     "jobs": {
         "anchor": "experiences",
-        "title": "Where I've Worked"
+        "title": "Where I've Worked",
+        "present": "Present",
+        "noExperiences": "No experience to display yet.",
+        "showMissions": "Show missions",
+        "hideMissions": "Hide missions",
+        "atClient": "at",
+        "missionClient": "Client",
+        "missionInternal": "Internal",
+        "roleProgression": "Role progression",
+        "currentRole": "Current",
+        "missionsCount": "{count, plural, one {# mission} other {# missions}}",
+        "close": "Close",
+        "contractTypes": {
+            "Permanent": "Permanent",
+            "Fixed": "Fixed-term",
+            "Internship": "Internship",
+            "Workstudy": "Work-study",
+            "Freelance": "Freelance"
+        }
     },
     "contact": {
         "anchor": "contact",
