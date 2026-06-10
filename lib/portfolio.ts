@@ -1,10 +1,10 @@
 import { baseUrl } from './baseurl';
 import type {
     ContactDTO,
-    ExperienceDTO,
     ProfileDTO,
     ProjectDTO,
     SkillCategoryDTO,
+    TimelinePayloadDTO,
 } from './types';
 
 /**
@@ -51,8 +51,16 @@ const localeTags = (entity: string) => [entity, `${entity}:fr`, `${entity}:en`];
 export const getProjects = () =>
     fetchPublic<ProjectDTO[]>('/project', localeTags('projects'), []);
 
-export const getExperiences = () =>
-    fetchPublic<ExperienceDTO[]>('/experiences', localeTags('experiences'), []);
+// Unified "where I've worked" data: employers + their missions in one request.
+// Tagged on both underlying entities (companies/missions) plus the dedicated
+// `timeline` tag the back emits on any mutation, so an admin edit to either
+// busts this cache entry.
+export const getTimeline = () =>
+    fetchPublic<TimelinePayloadDTO>(
+        '/timeline',
+        [...localeTags('companies'), ...localeTags('missions'), 'timeline'],
+        { companies: [], missions: [], educations: [], positions: [] }
+    );
 
 export const getSkillCategories = () =>
     fetchPublic<SkillCategoryDTO[]>(

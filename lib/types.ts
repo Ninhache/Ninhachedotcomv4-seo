@@ -6,42 +6,127 @@ export type ContractType =
     | 'Workstudy'
     | 'Freelance';
 
-export type ExperienceTranslationDTO = {
+// Project nature categories (formerly QUAL tags). Mirrors the backend
+// `ProjectNature` enum and the keys of SORT_TYPE in lib/project-categories.ts.
+export type ProjectNature =
+    | 'SCHOOL'
+    | 'PERSONAL'
+    | 'WEB'
+    | 'SIMULATIONS'
+    | 'DATE'
+    | 'RANDOM';
+
+/* ---------------- TIMELINE: companies / missions / education ----------------
+ * Front's copy of the backend timeline wire contract (GET /timeline and the
+ * per-resource admin endpoints). Resync with the backend DTOs on any change.
+ * GET returns full skill objects; POST/PATCH bodies use `skillIds` (the same
+ * GET-vs-write asymmetry the Project DTO has). */
+
+export type CompanyKind = 'EMPLOYER' | 'CLIENT';
+
+// Per-locale editorial blurb for a company (GET returns full objects; the write
+// payload reuses the same shape under `translations`).
+export type CompanyTranslationDTO = {
     locale: Locale;
-    jobTitle: string;
     description: string;
 };
 
-export type ExperienceDTO = {
+export type CompanyDTO = {
     id: string;
-    startDate: string; // ISO
-    endDate: string; // ISO
-    contractType: ContractType;
-    localisation: string;
-    isVisible: boolean;
-    siteUrl?: string | null;
-    imageUrl?: string | null;
-    order: number;
-    companyName: string;
-    // GET response returns full tag objects; POST/PATCH body uses tagIds
-    tags?: (TagDTO & { translations: TagTranslationDTO[] })[];
-    tagIds?: string[];
-    translations: ExperienceTranslationDTO[];
-};
-
-export type TagTranslationDTO = {
-    id?: string;
-    locale: Locale;
+    kind: CompanyKind;
     name: string;
+    localisation: string | null;
+    siteUrl: string | null;
+    // Large illustration image (« fond ») shown on the public experience card.
+    backgroundUrl: string | null;
+    // The company's actual logo — used by the standalone timeline app, not the
+    // public site.
+    logoUrl: string | null;
+    isVisible: boolean;
+    order: number;
+    // Employer-only (null for CLIENT). employmentEnd null = current employer.
+    contractType: ContractType | null;
+    employmentStart: string | null; // ISO
+    employmentEnd: string | null; // ISO
+    // CLIENT-only: the employer this client was engaged through. Null for EMPLOYER.
+    parentEmployerId: string | null;
+    // EMPLOYER-level curated skills shown on the public card (GET returns full
+    // objects; the write payload uses `skillIds`). Empty for clients/skill-less.
+    skills?: SkillDTO[];
+    skillIds?: string[];
+    // Company's own translated blurb. GET returns full rows; the write payload
+    // sends the same `translations` array (replace-on-update).
+    translations?: CompanyTranslationDTO[];
 };
 
-export type TagDTO = {
+export type MissionTranslationDTO = {
+    locale: Locale;
+    title: string;
+    context: string | null;
+    tasks: string[];
+};
+
+export type MissionDTO = {
     id: string;
-    type: 'TECH' | 'QUAL' | 'SKILL_CATEGORY' | 'EXPERIENCE_TECH';
+    employerCompanyId: string;
+    clientCompanyId: string | null;
+    startDate: string; // ISO
+    endDate: string | null; // ISO; null = ongoing
     isVisible: boolean;
-    hexColor: string;
-    nameByLocale: Record<Locale, string>; // dérivé de TagTranslation
-    translations?: TagTranslationDTO[];
+    order: number;
+    skills?: SkillDTO[];
+    skillIds?: string[];
+    // Optional illustration — a plain path/URL string (like Company.logoUrl).
+    // '' on the write payload clears it.
+    imageUrl?: string | null;
+    translations: MissionTranslationDTO[];
+};
+
+export type PositionTranslationDTO = {
+    locale: Locale;
+    title: string;
+};
+
+// A job title held at an employer over a date range. Several positions under one
+// employer express a title progression (e.g. Apprentice Dev → +DevOps → Engineer).
+// Distinct from MissionDTO: a position carries no client/tags, only the evolving title.
+export type PositionDTO = {
+    id: string;
+    companyId: string;
+    startDate: string; // ISO
+    endDate: string | null; // ISO; null = current position
+    isVisible: boolean;
+    order: number;
+    translations: PositionTranslationDTO[];
+};
+
+export type EducationTranslationDTO = {
+    locale: Locale;
+    degree: string;
+    description: string | null;
+};
+
+export type EducationDTO = {
+    id: string;
+    institutionName: string;
+    startDate: string; // ISO
+    endDate: string | null; // ISO
+    logoUrl: string | null;
+    siteUrl: string | null;
+    isVisible: boolean;
+    order: number;
+    translations: EducationTranslationDTO[];
+};
+
+// One-shot payload of GET /timeline — built for the public site so it can render
+// the whole "where I've worked" timeline (employers + their missions) from a
+// single unauthenticated request. `educations` is consumed by the timeline SPA,
+// not the public portfolio, but travels in the same response.
+export type TimelinePayloadDTO = {
+    companies: CompanyDTO[];
+    missions: MissionDTO[];
+    educations: EducationDTO[];
+    positions: PositionDTO[];
 };
 
 export type MediaType = 'IMAGE' | 'VIDEO';
@@ -73,10 +158,11 @@ export type ProjectDTO = {
     logoUrl?: string | null;
     isVisible: boolean;
     medias: ProjectMediaDTO[];
-    techTagIds: string[];
-    qualTagIds: string[];
-    techTags: (TagDTO & { translations: TagTranslationDTO[] })[];
-    qualTags: (TagDTO & { translations: TagTranslationDTO[] })[];
+    // Tech stack = skills (GET returns full objects; write uses `skillIds`).
+    skillIds: string[];
+    skills: SkillDTO[];
+    // Project nature(s) — formerly QUAL tags, now a scalar enum array.
+    natures: ProjectNature[];
     translations: (ProjectTranslationDTO & { type?: string | null })[];
 };
 
@@ -130,11 +216,13 @@ export type SkillCategoryDTO = {
 };
 export type SkillDTO = {
     id: string;
-    image: string;
+    // Nullable: skills migrated from the former TECH tag pool have no SVG yet.
+    image: string | null;
     wikiUrl: string | null;
     isVisible: boolean;
-    tags: TagDTO[];
-    categories: SkillCategoryDTO[];
+    // Present only on the full admin/skills read; absent when a skill is embedded
+    // as a tech chip on a project/mission/company.
+    categories?: SkillCategoryDTO[];
     translations: SkillTranslationDTO[];
 };
 

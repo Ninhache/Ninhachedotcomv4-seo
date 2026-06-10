@@ -1,4 +1,4 @@
-// src/app/admin/experiences/page.tsx
+// app/admin/(auto)/education/page.tsx
 'use client';
 
 import { format } from 'date-fns';
@@ -12,7 +12,7 @@ import {
     AdminToolbar,
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
-import { ExperienceForm } from '@/components/experiences/form';
+import { EducationForm } from '@/components/education/form';
 import { useAutoSaveDialog } from '@/components/forms/use-auto-save-dialog';
 import {
     AlertDialog,
@@ -33,7 +33,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Switch } from '@/components/ui/switch';
 import {
     Table,
@@ -43,14 +42,14 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { ExperienceApi } from '@/lib/experience/experience.api';
-import type { ExperienceDTO } from '@/lib/types';
+import { EducationApi } from '@/lib/education/education.api';
+import type { EducationDTO } from '@/lib/types';
 
-export default function ExperiencesPage() {
-    const [items, setItems] = useState<ExperienceDTO[]>([]);
+export default function EducationPage() {
+    const [items, setItems] = useState<EducationDTO[]>([]);
     const [q, setQ] = useState('');
     const [open, setOpen] = useState(false);
-    const [current, setCurrent] = useState<ExperienceDTO | null>(null);
+    const [current, setCurrent] = useState<EducationDTO | null>(null);
     const [loading, setLoading] = useState(false);
     const { register, onOpenChange, closeWithoutSaving } = useAutoSaveDialog();
     const [visibilityPending, setVisibilityPending] = useState<string | null>(
@@ -60,8 +59,8 @@ export default function ExperiencesPage() {
     const load = async () => {
         setLoading(true);
         try {
-            const items = await ExperienceApi.findAll();
-            setItems(items);
+            const data = await EducationApi.findAll();
+            setItems(data);
         } finally {
             setLoading(false);
         }
@@ -77,9 +76,9 @@ export default function ExperiencesPage() {
         const needle = q.toLowerCase();
         return src.filter(
             x =>
-                (x.companyName ?? '').toLowerCase().includes(needle) ||
+                (x.institutionName ?? '').toLowerCase().includes(needle) ||
                 (x.translations ?? []).some(t =>
-                    (t.jobTitle ?? '').toLowerCase().includes(needle)
+                    (t.degree ?? '').toLowerCase().includes(needle)
                 )
         );
     }, [items, q]);
@@ -87,12 +86,12 @@ export default function ExperiencesPage() {
     return (
         <AdminPageShell>
             <AdminHeader
-                title="Experiences"
-                description="Gère les expériences affichées sur le CV interactif."
+                title="Éducation"
+                description="Gère les formations / diplômes du parcours."
                 meta={
                     <p className="text-xs text-muted-foreground">
                         {items.length
-                            ? `${items.length} expériences`
+                            ? `${items.length} formation${items.length > 1 ? 's' : ''}`
                             : 'Aucune donnée'}
                     </p>
                 }
@@ -124,7 +123,7 @@ export default function ExperiencesPage() {
                 <ResourceSearchInput
                     value={q}
                     onChange={setQ}
-                    placeholder="Rechercher une entreprise ou un titre…"
+                    placeholder="Rechercher un établissement ou un diplôme…"
                     className="w-full max-w-xs"
                 />
             </AdminToolbar>
@@ -135,15 +134,12 @@ export default function ExperiencesPage() {
                         <Table>
                             <TableHeader className="sticky top-0 z-10 bg-muted/60 backdrop-blur supports-[backdrop-filter]:bg-muted/40">
                                 <TableRow>
-                                    <TableHead>Entreprise</TableHead>
+                                    <TableHead>Établissement</TableHead>
                                     <TableHead className="hidden md:table-cell">
-                                        Titre (FR)
+                                        Diplôme (FR)
                                     </TableHead>
                                     <TableHead className="hidden md:table-cell">
                                         Période
-                                    </TableHead>
-                                    <TableHead className="hidden md:table-cell">
-                                        Contrat
                                     </TableHead>
                                     <TableHead>Visible</TableHead>
                                     <TableHead className="text-right">
@@ -153,42 +149,41 @@ export default function ExperiencesPage() {
                             </TableHeader>
                             <TableBody>
                                 {filtered.map(it => {
-                                    const frTitle =
+                                    const frDegree =
                                         it.translations.find(
                                             t => t.locale === 'fr'
-                                        )?.jobTitle ?? '';
+                                        )?.degree ?? '';
+                                    const period =
+                                        format(
+                                            new Date(it.startDate),
+                                            'MMM yyyy',
+                                            { locale: fr }
+                                        ) +
+                                        ' — ' +
+                                        (it.endDate
+                                            ? format(
+                                                  new Date(it.endDate),
+                                                  'MMM yyyy',
+                                                  { locale: fr }
+                                              )
+                                            : 'En cours');
                                     return (
                                         <TableRow
+                                            key={it.id}
                                             onDoubleClick={() => {
                                                 setCurrent(it);
                                                 setOpen(true);
                                             }}
                                             className="cursor-pointer hover:bg-muted/50"
-                                            key={it.id}
                                         >
                                             <TableCell className="truncate font-medium">
-                                                {it.companyName}
+                                                {it.institutionName}
                                             </TableCell>
                                             <TableCell className="hidden truncate md:table-cell">
-                                                {frTitle}
+                                                {frDegree}
                                             </TableCell>
                                             <TableCell className="hidden whitespace-nowrap md:table-cell">
-                                                {format(
-                                                    new Date(it.startDate),
-                                                    'MMM yyyy',
-                                                    {
-                                                        locale: fr,
-                                                    }
-                                                )}{' '}
-                                                —{' '}
-                                                {format(
-                                                    new Date(it.endDate),
-                                                    'MMM yyyy',
-                                                    { locale: fr }
-                                                )}
-                                            </TableCell>
-                                            <TableCell className="hidden md:table-cell">
-                                                {it.contractType}
+                                                {period}
                                             </TableCell>
                                             <TableCell>
                                                 <Switch
@@ -214,62 +209,9 @@ export default function ExperiencesPage() {
                                                             )
                                                         );
                                                         try {
-                                                            // The backend UpdateExperienceDto is not partial — it
-                                                            // requires the full set of fields. Rebuild a whitelist-safe
-                                                            // payload from the row and flip only isVisible.
-                                                            await ExperienceApi.update(
+                                                            await EducationApi.patchVisibility(
                                                                 it.id,
-                                                                {
-                                                                    startDate:
-                                                                        it.startDate,
-                                                                    endDate:
-                                                                        it.endDate,
-                                                                    contractType:
-                                                                        it.contractType,
-                                                                    localisation:
-                                                                        it.localisation,
-                                                                    companyName:
-                                                                        it.companyName,
-                                                                    isVisible:
-                                                                        next,
-                                                                    tagIds:
-                                                                        it.tagIds ??
-                                                                        (
-                                                                            it.tags ??
-                                                                            []
-                                                                        ).map(
-                                                                            t =>
-                                                                                t.id
-                                                                        ),
-                                                                    translations:
-                                                                        it.translations.map(
-                                                                            t => ({
-                                                                                locale: t.locale,
-                                                                                jobTitle:
-                                                                                    t.jobTitle,
-                                                                                description:
-                                                                                    t.description,
-                                                                            })
-                                                                        ),
-                                                                    ...(it.siteUrl
-                                                                        ? {
-                                                                              siteUrl:
-                                                                                  it.siteUrl,
-                                                                          }
-                                                                        : {}),
-                                                                    ...(it.imageUrl
-                                                                        ? {
-                                                                              imageUrl:
-                                                                                  it.imageUrl,
-                                                                          }
-                                                                        : {}),
-                                                                    ...(typeof it.order ===
-                                                                    'number'
-                                                                        ? {
-                                                                              order: it.order,
-                                                                          }
-                                                                        : {}),
-                                                                }
+                                                                next
                                                             );
                                                         } catch {
                                                             setItems(prev =>
@@ -324,7 +266,7 @@ export default function ExperiencesPage() {
                                                                 <AlertDialogTitle>
                                                                     Supprimer
                                                                     cette
-                                                                    expérience ?
+                                                                    formation ?
                                                                 </AlertDialogTitle>
                                                                 <AlertDialogDescription>
                                                                     Cette action
@@ -339,7 +281,7 @@ export default function ExperiencesPage() {
                                                                 <AlertDialogAction
                                                                     className="text-destructive-foreground bg-destructive hover:bg-destructive/90"
                                                                     onClick={async () => {
-                                                                        await ExperienceApi.remove(
+                                                                        await EducationApi.remove(
                                                                             it.id
                                                                         );
                                                                         load();
@@ -359,7 +301,7 @@ export default function ExperiencesPage() {
                                 {!loading && filtered.length === 0 && (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={6}
+                                            colSpan={5}
                                             className="h-32 text-center text-muted-foreground"
                                         >
                                             Aucun résultat.
@@ -370,7 +312,7 @@ export default function ExperiencesPage() {
                                 {loading && (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={6}
+                                            colSpan={5}
                                             className="h-32 text-center text-muted-foreground"
                                         >
                                             Chargement…
@@ -388,12 +330,12 @@ export default function ExperiencesPage() {
                     <DialogHeader>
                         <DialogTitle>
                             {current
-                                ? 'Éditer une expérience'
-                                : 'Créer une expérience'}
+                                ? 'Éditer une formation'
+                                : 'Créer une formation'}
                         </DialogTitle>
                     </DialogHeader>
                     <div className="max-h-[70vh] overflow-y-auto py-2 pr-1">
-                        <ExperienceForm
+                        <EducationForm
                             initial={current}
                             dialogOpen={open}
                             onRegister={register}
