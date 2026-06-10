@@ -18,8 +18,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { DateField } from '@/components/forms/date-field';
 import type { EditFormHandle } from '@/components/forms/edit-form-handle';
+import { SectionHeading } from '@/components/forms/form-section';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
-import { TagMultiSelect } from '@/components/forms/tag-multi-select';
+import { MediaUploadField } from '@/components/forms/media-upload-field';
+import { SkillMultiSelect } from '@/components/forms/skill-multi-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,42 +30,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { mediaSrc } from '@/lib/baseurl';
 import { LocalesApi } from '@/lib/locales/locales.api';
 import { ProjectApi } from '@/lib/project/project.api';
-import { TagApi } from '@/lib/tag/tag.api';
-import type {
-    Locale,
-    MediaType,
-    ProjectDTO,
-    ProjectMediaDTO,
-    TagDTO,
-} from '@/lib/types';
+import { SkillApi } from '@/lib/skill/skill.api';
+import type { Locale, ProjectDTO, ProjectNature, SkillDTO } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
-/* ------------------------------------------------------------------ */
-/*  Section heading helper                                            */
-/* ------------------------------------------------------------------ */
-function SectionHeading({
-    icon: Icon,
-    title,
-    description,
-}: {
-    icon: React.ElementType;
-    title: string;
-    description?: string;
-}) {
-    return (
-        <div className="flex items-center gap-2 pb-1">
-            <Icon className="h-4 w-4 text-muted-foreground" />
-            <div>
-                <h3 className="text-sm font-semibold leading-none">{title}</h3>
-                {description && (
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                        {description}
-                    </p>
-                )}
-            </div>
-        </div>
-    );
-}
+// Editable project natures (formerly QUAL tags). DATE/RANDOM are legacy sort
+// directives with no label, so they aren't offered as toggles.
+const NATURE_OPTIONS: { value: ProjectNature; label: string }[] = [
+    { value: 'PERSONAL', label: 'Personnel' },
+    { value: 'SCHOOL', label: 'Scolaire' },
+    { value: 'WEB', label: 'Web' },
+    { value: 'SIMULATIONS', label: 'Simulation' },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Zod schemas                                                       */
@@ -96,9 +74,8 @@ export function ProjectForm({
     onRegister?: (handle: EditFormHandle) => void;
     dialogOpen?: boolean;
 }) {
-    const [techTags, setTechTags] = useState<TagDTO[]>([]);
-    const [qualTags, setQualTags] = useState<TagDTO[]>([]);
-    const [tagsLoading, setTagsLoading] = useState(false);
+    const [skills, setSkills] = useState<SkillDTO[]>([]);
+    const [skillsLoading, setSkillsLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -145,8 +122,19 @@ export function ProjectForm({
                             /^\/.+/.test(value),
                         'URL invalide'
                     ),
-                techTagIds: z.array(z.string()).default([]),
-                qualTagIds: z.array(z.string()).default([]),
+                skillIds: z.array(z.string()).default([]),
+                natures: z
+                    .array(
+                        z.enum([
+                            'SCHOOL',
+                            'PERSONAL',
+                            'WEB',
+                            'SIMULATIONS',
+                            'DATE',
+                            'RANDOM',
+                        ])
+                    )
+                    .default([]),
                 medias: z.array(mediaShape).default([]),
                 translations: z.record(z.string(), translationShape),
             })
@@ -207,8 +195,8 @@ export function ProjectForm({
             visitUrl: initial?.visitUrl ?? undefined,
             isVisible: initial?.isVisible ?? true,
             logoUrl: initial?.logoUrl ?? undefined,
-            techTagIds: initial?.techTagIds ?? [],
-            qualTagIds: initial?.qualTagIds ?? [],
+            skillIds: initial?.skillIds ?? [],
+            natures: initial?.natures ?? [],
             medias:
                 initial?.medias?.map(m => ({
                     id: m.id,
@@ -244,31 +232,20 @@ export function ProjectForm({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // load tags when dialog opens
+    // load skills when dialog opens (the unified tech-stack pool)
     useEffect(() => {
         if (!dialogOpen) return;
         let ignore = false;
-        setTagsLoading(true);
-        Promise.allSettled([
-            TagApi.findAll({ type: 'TECH' }),
-            TagApi.findAll({ type: 'QUAL' }),
-        ])
-            .then(([techRes, qualRes]) => {
-                if (!ignore) {
-                    setTechTags(
-                        techRes.status === 'fulfilled'
-                            ? (techRes.value ?? [])
-                            : []
-                    );
-                    setQualTags(
-                        qualRes.status === 'fulfilled'
-                            ? (qualRes.value ?? [])
-                            : []
-                    );
-                }
+        setSkillsLoading(true);
+        SkillApi.findAll()
+            .then(list => {
+                if (!ignore) setSkills(Array.isArray(list) ? list : []);
+            })
+            .catch(() => {
+                if (!ignore) setSkills([]);
             })
             .finally(() => {
-                if (!ignore) setTagsLoading(false);
+                if (!ignore) setSkillsLoading(false);
             });
         return () => {
             ignore = true;
@@ -356,8 +333,8 @@ export function ProjectForm({
                     ...(values.visitUrl ? { visitUrl: values.visitUrl } : {}),
                     logoUrl: values.logoUrl ?? null,
                     isVisible: values.isVisible,
-                    techTagIds: values.techTagIds ?? [],
-                    qualTagIds: values.qualTagIds ?? [],
+                    skillIds: values.skillIds ?? [],
+                    natures: values.natures ?? [],
                     translations: Object.entries(values.translations).map(
                         ([locale, t]) => ({
                             locale: locale as Locale,
@@ -413,7 +390,6 @@ export function ProjectForm({
 
     const watchedMedias = form.watch('medias') ?? [];
     const isVisible = form.watch('isVisible');
-    const watchedLogoUrl = form.watch('logoUrl');
 
     return (
         <form ref={formElRef} onSubmit={handleFormSubmit} className="space-y-8">
@@ -510,129 +486,105 @@ export function ProjectForm({
                         </div>
                     </div>
 
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="grid gap-2">
-                            <Label>URL du logo</Label>
-                            <div className="relative">
-                                <ImageIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    {...form.register('logoUrl')}
-                                    placeholder="https://... ou /uploads/..."
-                                    className="pl-9"
-                                />
-                            </div>
-                            {form.formState.errors.logoUrl?.message && (
-                                <p className="text-sm text-destructive">
-                                    {form.formState.errors.logoUrl.message}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label>Aperçu du logo</Label>
-                            <div className="flex h-20 items-center justify-center rounded-md border bg-background">
-                                {watchedLogoUrl ? (
-                                    <img
-                                        src={mediaSrc(watchedLogoUrl)}
-                                        alt="Aperçu du logo"
-                                        className="max-h-14 max-w-full object-contain"
-                                    />
-                                ) : (
-                                    <span className="text-xs text-muted-foreground">
-                                        Aucun logo
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                    <MediaUploadField
+                        label="Logo"
+                        value={form.watch('logoUrl') ?? ''}
+                        onChange={v =>
+                            form.setValue('logoUrl', v, {
+                                shouldDirty: true,
+                                shouldValidate: true,
+                            })
+                        }
+                    />
+                    {form.formState.errors.logoUrl?.message && (
+                        <p className="text-sm text-destructive">
+                            {form.formState.errors.logoUrl.message}
+                        </p>
+                    )}
                 </div>
             </section>
 
-            {/* ── Section 2: Tags ── */}
+            {/* ── Section 2: Compétences & nature ── */}
             <section className="space-y-4">
                 <SectionHeading
                     icon={Tag}
-                    title="Tags"
-                    description="Technologies et qualites associees au projet."
+                    title="Compétences & nature"
+                    description="Stack technique (compétences) et nature du projet."
                 />
                 <div className="rounded-lg border bg-muted/30 p-4 space-y-5">
-                    {/* Tech Tags */}
+                    {/* Skills (tech stack) */}
                     <div className="space-y-2">
                         <div className="flex items-center gap-2">
                             <div className="h-2 w-2 rounded-full bg-blue-500" />
                             <Label className="text-sm font-medium">
-                                Tags Tech
+                                Compétences
                             </Label>
                         </div>
-                        <TagMultiSelect
-                            value={form.watch('techTagIds') ?? []}
+                        <SkillMultiSelect
+                            value={form.watch('skillIds') ?? []}
                             onChange={ids =>
-                                form.setValue('techTagIds', ids, {
+                                form.setValue('skillIds', ids, {
                                     shouldDirty: true,
                                     shouldValidate: true,
                                 })
                             }
-                            options={techTags}
+                            options={skills}
                             locale={(locales[0] as any) ?? 'fr'}
-                            allowCreate
-                            locales={locales as string[]}
-                            createDefaults={{
-                                type: 'TECH',
-                                hexColor: '#3b82f6',
-                                isVisible: true,
-                            }}
-                            createTag={TagApi.create}
-                            onCreated={tag =>
-                                setTechTags(prev => [...prev, tag])
-                            }
                         />
                         <p className="text-xs text-muted-foreground">
-                            {tagsLoading
-                                ? 'Chargement des tags...'
-                                : techTags.length === 0
-                                  ? 'Aucun tag tech disponible — cree-en un via le bouton "+".'
+                            {skillsLoading
+                                ? 'Chargement des compétences...'
+                                : skills.length === 0
+                                  ? 'Aucune compétence disponible — crée-en via la page Compétences.'
                                   : 'Langages, frameworks, outils... Tape pour filtrer.'}
                         </p>
                     </div>
 
                     <div className="border-t" />
 
-                    {/* Qual Tags */}
+                    {/* Nature (formerly QUAL tags) */}
                     <div className="space-y-2">
                         <div className="flex items-center gap-2">
                             <div className="h-2 w-2 rounded-full bg-violet-500" />
                             <Label className="text-sm font-medium">
-                                Tags Qualite
+                                Nature du projet
                             </Label>
                         </div>
-                        <TagMultiSelect
-                            value={form.watch('qualTagIds') ?? []}
-                            onChange={ids =>
-                                form.setValue('qualTagIds', ids, {
-                                    shouldDirty: true,
-                                    shouldValidate: true,
-                                })
-                            }
-                            options={qualTags}
-                            locale={(locales[0] as any) ?? 'fr'}
-                            allowCreate
-                            locales={locales as string[]}
-                            createDefaults={{
-                                type: 'QUAL',
-                                hexColor: '#8b5cf6',
-                                isVisible: true,
-                            }}
-                            createTag={TagApi.create}
-                            onCreated={tag =>
-                                setQualTags(prev => [...prev, tag])
-                            }
-                        />
+                        <div className="flex flex-wrap gap-2">
+                            {NATURE_OPTIONS.map(opt => {
+                                const current = form.watch('natures') ?? [];
+                                const checked = current.includes(opt.value);
+                                return (
+                                    <button
+                                        key={opt.value}
+                                        type="button"
+                                        onClick={() => {
+                                            const next = checked
+                                                ? current.filter(
+                                                      n => n !== opt.value
+                                                  )
+                                                : [...current, opt.value];
+                                            form.setValue('natures', next, {
+                                                shouldDirty: true,
+                                                shouldValidate: true,
+                                            });
+                                        }}
+                                        className={cn(
+                                            'inline-flex items-center rounded-full border px-3 py-1 text-xs transition-colors',
+                                            checked
+                                                ? 'border-violet-500 bg-violet-500/15 text-foreground'
+                                                : 'border-muted-foreground/25 text-muted-foreground hover:bg-muted'
+                                        )}
+                                        aria-pressed={checked}
+                                    >
+                                        {opt.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
                         <p className="text-xs text-muted-foreground">
-                            {tagsLoading
-                                ? 'Chargement des tags...'
-                                : qualTags.length === 0
-                                  ? 'Aucun tag qualite disponible — cree-en un via le bouton "+".'
-                                  : 'Categories, domaines, qualites... Tape pour filtrer.'}
+                            Détermine le tri et le libellé « type »
+                            (Personnel/Scolaire/Web/Simulation).
                         </p>
                     </div>
                 </div>

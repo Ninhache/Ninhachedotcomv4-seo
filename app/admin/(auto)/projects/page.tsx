@@ -99,8 +99,8 @@ export default function ProjectsPage() {
         return frT?.name || enT?.name || project.translations[0]?.name || '—';
     };
 
-    const getTagCount = (project: ProjectDTO): number =>
-        (project.techTagIds?.length ?? 0) + (project.qualTagIds?.length ?? 0);
+    const getSkillCount = (project: ProjectDTO): number =>
+        project.skillIds?.length ?? project.skills?.length ?? 0;
 
     const getMediaCount = (project: ProjectDTO): number =>
         project.medias?.length ?? 0;
@@ -164,7 +164,7 @@ export default function ProjectsPage() {
                                         Liens
                                     </TableHead>
                                     <TableHead className="hidden md:table-cell">
-                                        Tags
+                                        Compétences
                                     </TableHead>
                                     <TableHead className="hidden md:table-cell">
                                         Medias
@@ -251,11 +251,11 @@ export default function ProjectsPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="hidden md:table-cell">
-                                            {getTagCount(it) > 0 ? (
+                                            {getSkillCount(it) > 0 ? (
                                                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                                                     <Tag className="h-3 w-3" />
                                                     <span>
-                                                        {getTagCount(it)}
+                                                        {getSkillCount(it)}
                                                     </span>
                                                 </div>
                                             ) : (

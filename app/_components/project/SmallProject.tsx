@@ -84,16 +84,23 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                     </p>
                 </div>
                 <div className={`${styles.tags} ${ralewaySemiBold.className}`}>
-                    {project.tags.map(tag => (
-                        <Link
-                            key={tag.name}
-                            className={`${styles.tag}`}
-                            href={`${tag.url}`}
-                            target="_blank"
-                        >
-                            {tag.name}
-                        </Link>
-                    ))}
+                    {project.tags.map(tag =>
+                        tag.url && tag.url !== '#' ? (
+                            <Link
+                                key={tag.name}
+                                className={`${styles.tag}`}
+                                href={`${tag.url}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {tag.name}
+                            </Link>
+                        ) : (
+                            <span key={tag.name} className={`${styles.tag}`}>
+                                {tag.name}
+                            </span>
+                        )
+                    )}
                 </div>
             </div>
         </>

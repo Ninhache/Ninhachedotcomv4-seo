@@ -1,10 +1,4 @@
-import type {
-    ContactDTO,
-    ExperienceDTO,
-    Locale,
-    ProjectDTO,
-    SkillDTO,
-} from '@/lib/types';
+import type { ContactDTO, Locale, ProjectDTO, SkillDTO } from '@/lib/types';
 
 /** Locales the public site renders. An item is "complete" when both are present. */
 export const LOCALES: readonly Locale[] = ['fr', 'en'];
@@ -37,7 +31,6 @@ export type HealthItem = {
 
 type HealthInput = {
     projects: ProjectDTO[];
-    experiences: ExperienceDTO[];
     skills: SkillDTO[];
     contacts: ContactDTO[];
 };
@@ -54,10 +47,6 @@ const fromTranslations = (
 
 const projectName = (p: ProjectDTO) => fromTranslations(p.translations);
 const skillName = (s: SkillDTO) => fromTranslations(s.translations);
-const experienceName = (e: ExperienceDTO) =>
-    e.companyName ||
-    e.translations?.find(t => t.locale === 'fr')?.jobTitle ||
-    FALLBACK;
 const contactName = (c: ContactDTO) =>
     c.nameByLocale?.fr ||
     c.nameByLocale?.en ||
@@ -73,7 +62,6 @@ const isUntranslated = (item: { translations?: { locale: Locale }[] }) =>
  */
 export function computeHealth({
     projects,
-    experiences,
     skills,
     contacts,
 }: HealthInput): HealthItem[] {
@@ -108,28 +96,6 @@ export function computeHealth({
                 isUntranslated,
                 projectName,
                 p => p.id
-            ),
-        },
-        {
-            id: 'experiences-no-image',
-            label: 'Expériences sans visuel',
-            href: '/admin/experiences',
-            offenders: offendersOf(
-                experiences,
-                e => !e.imageUrl,
-                experienceName,
-                e => e.id
-            ),
-        },
-        {
-            id: 'experiences-untranslated',
-            label: 'Expériences sans traduction (fr/en)',
-            href: '/admin/experiences',
-            offenders: offendersOf(
-                experiences,
-                isUntranslated,
-                experienceName,
-                e => e.id
             ),
         },
         {

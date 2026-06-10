@@ -10,8 +10,8 @@ const items = [
     { href: '/admin/projects', label: 'Projects' },
     { href: '/admin/skills', label: 'Skills' },
     { href: '/admin/categories', label: 'Catégories' },
-    { href: '/admin/tags', label: 'Tags' },
-    { href: '/admin/experiences', label: 'Experiences' },
+    { href: '/admin/companies', label: 'Entreprises' },
+    { href: '/admin/education', label: 'Éducation' },
     { href: '/admin/contacts', label: 'Contacts' },
     { href: '/admin/aliases', label: 'Aliases' },
     { href: '/admin/resume', label: 'Resume' },
@@ -27,7 +27,13 @@ export function Sidebar() {
             </div>
             <nav className="space-y-1 p-2">
                 {items.map(it => {
-                    const active = pathname === it.href;
+                    // Prefix-match so detail/sub-pages (e.g. an employer's
+                    // clients) keep their section highlighted. `/admin` stays
+                    // exact so it doesn't match every nested route.
+                    const active =
+                        pathname === it.href ||
+                        (it.href !== '/admin' &&
+                            pathname.startsWith(`${it.href}/`));
                     return (
                         <Link
                             key={it.href}

@@ -241,7 +241,8 @@
     gap: 8px;
 }
 
-.project_text .tags a {
+.project_text .tags a,
+.project_text .tags span {
     font-size: 16px;
     color: var(--light_blue);
     text-decoration: none;
