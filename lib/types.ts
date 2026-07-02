@@ -341,6 +341,49 @@ export type SkillDTO = {
     translations: SkillTranslationDTO[];
 };
 
+/* ---------------- BLOG: articles / categories ----------------
+ * Front's copy of the backend blog wire contract (GET /articles[/:slug],
+ * GET /article-categories, and the admin CRUD endpoints). Same GET-vs-write
+ * asymmetry as the rest: GET returns full category objects, POST/PATCH bodies
+ * send `categoryIds`. Resync with the backend DTOs on any change. */
+
+export type ArticleCategoryTranslationDTO = {
+    id?: string;
+    locale: Locale;
+    name: string;
+};
+export type ArticleCategoryDTO = {
+    id: string;
+    slug: string;
+    isVisible: boolean;
+    order: number;
+    translations: ArticleCategoryTranslationDTO[];
+};
+
+export type ArticleTranslationDTO = {
+    id?: string;
+    locale: Locale;
+    title: string;
+    excerpt: string;
+    // Raw Markdown source (GFM + `:::` directives). Rendered server-side.
+    body: string;
+};
+export type ArticleDTO = {
+    id: string;
+    slug: string;
+    isVisible: boolean;
+    publishedAt: string | null; // ISO; null = draft/never published
+    coverImageUrl: string | null;
+    tags: string[];
+    order: number;
+    createdAt: string; // ISO
+    updatedAt: string; // ISO
+    // GET returns full category objects; the write payload uses `categoryIds`.
+    categories?: ArticleCategoryDTO[];
+    categoryIds?: string[];
+    translations: ArticleTranslationDTO[];
+};
+
 export type ContactTranslationDTO = {
     id?: string;
     locale: Locale;

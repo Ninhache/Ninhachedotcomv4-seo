@@ -10,6 +10,8 @@ const items = [
     { href: '/admin/projects', label: 'Projects' },
     { href: '/admin/skills', label: 'Skills' },
     { href: '/admin/categories', label: 'Catégories' },
+    { href: '/admin/articles', label: 'Articles' },
+    { href: '/admin/article-categories', label: 'Catégories (Blog)' },
     { href: '/admin/companies', label: 'Entreprises' },
     { href: '/admin/education', label: 'Éducation' },
     { href: '/admin/contacts', label: 'Contacts' },
