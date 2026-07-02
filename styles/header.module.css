@@ -205,6 +205,8 @@
 
 .header .logo {
     display: flex;
+    /* Never let the logo shrink when the nav gets tight — the menu flexes instead. */
+    flex-shrink: 0;
 }
 
 .header .logo a {
@@ -226,8 +228,7 @@
 
 .header .menu li {
     display: flex;
-    flex-shrink: 0;
-    margin: 0px 6px;
+    margin: 0px 4px;
 }
 
 .header .menu a {
@@ -236,8 +237,8 @@
        "A propos" would otherwise collapse to its longest word and wrap. */
     white-space: nowrap;
     pointer-events: all;
-    padding: 10px 12px;
-    font-size: 15px;
+    padding: 9px 10px;
+    font-size: 14px;
     color: var(--white);
     text-decoration: none;
 }
