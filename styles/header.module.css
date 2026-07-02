@@ -226,9 +226,14 @@
     display: flex;
 }
 
+.header .menu {
+    /* Let the menu flex/shrink in the nav instead of overflowing the page. */
+    min-width: 0;
+}
+
 .header .menu li {
     display: flex;
-    margin: 0px 4px;
+    margin: 0px 2px;
 }
 
 .header .menu a {
@@ -237,8 +242,8 @@
        "A propos" would otherwise collapse to its longest word and wrap. */
     white-space: nowrap;
     pointer-events: all;
-    padding: 9px 10px;
-    font-size: 14px;
+    padding: 8px 8px;
+    font-size: 13px;
     color: var(--white);
     text-decoration: none;
 }
@@ -256,12 +261,12 @@
     justify-content: center;
     align-items: center;
     color: var(--light_blue);
-    padding: 9px 16px;
+    padding: 8px 12px;
 }
 
 .header .menu .button .button_arrow {
     height: 12px;
-    margin-left: 12px;
+    margin-left: 8px;
     transform: rotate(-90deg);
 }
 
