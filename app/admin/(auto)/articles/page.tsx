@@ -177,7 +177,7 @@ export default function ArticlesPage() {
                                         key={it.id}
                                         onDoubleClick={() =>
                                             router.push(
-                                                `/admin/articles/${it.id}`
+                                                `/admin/articles/${it.id}/edit`
                                             )
                                         }
                                         className="cursor-pointer hover:bg-muted/50"
@@ -285,7 +285,7 @@ export default function ArticlesPage() {
                                                     size="icon"
                                                     onClick={() =>
                                                         router.push(
-                                                            `/admin/articles/${it.id}`
+                                                            `/admin/articles/${it.id}/edit`
                                                         )
                                                     }
                                                     aria-label="Éditer"
