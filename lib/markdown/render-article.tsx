@@ -1,6 +1,12 @@
 import 'server-only';
 
 import { compile, run } from '@mdx-js/mdx';
+import {
+    transformerNotationDiff,
+    transformerNotationFocus,
+    transformerNotationHighlight,
+    transformerNotationWordHighlight,
+} from '@shikijs/transformers';
 import type { ReactNode } from 'react';
 import * as runtime from 'react/jsx-runtime';
 import readingTime from 'reading-time';
@@ -90,7 +96,22 @@ export async function renderArticle(mdx: string): Promise<RenderedArticle> {
                 rehypeSlug,
                 [rehypeAutolinkHeadings, { behavior: 'wrap' }],
                 [rehypeCollectToc, toc],
-                [rehypePrettyCode, { theme: CODE_THEME, keepBackground: true }],
+                [
+                    rehypePrettyCode,
+                    {
+                        theme: CODE_THEME,
+                        keepBackground: true,
+                        // Enable inline notation in code fences:
+                        //   // [!code highlight]  // [!code ++] / [!code --]
+                        //   // [!code focus]       // [!code word:foo]
+                        transformers: [
+                            transformerNotationHighlight(),
+                            transformerNotationDiff(),
+                            transformerNotationFocus(),
+                            transformerNotationWordHighlight(),
+                        ],
+                    },
+                ],
             ],
         });
 
