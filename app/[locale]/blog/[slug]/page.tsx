@@ -97,7 +97,7 @@ export default async function ArticlePage(props: Props) {
                 </Link>
 
                 <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-10">
-                    <article id={ARTICLE_ID} className="min-w-0">
+                    <article id={ARTICLE_ID} className="min-w-0 max-w-3xl">
                         {categories.length > 0 && (
                             <div className="mb-3 flex flex-wrap gap-1.5">
                                 {categories.map(c => (
@@ -141,7 +141,7 @@ export default async function ArticlePage(props: Props) {
 
                         {/* Body is server-rendered, sanitized-by-construction HTML. */}
                         <div
-                            className="prose prose-invert mt-8 max-w-none prose-headings:scroll-mt-24 prose-pre:bg-transparent prose-pre:p-0"
+                            className="prose prose-lg prose-invert mt-8 max-w-none leading-relaxed prose-headings:scroll-mt-24 prose-pre:bg-transparent prose-pre:p-0"
                             dangerouslySetInnerHTML={{ __html: html }}
                         />
                     </article>
