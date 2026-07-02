@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { BlogHeader } from '@/app/_components/blog/BlogHeader';
 import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
 import { TableOfContents } from '@/app/_components/blog/TableOfContents';
+import { ralewaySemiBold } from '@/app/fonts';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
 import {
@@ -113,7 +114,9 @@ export default async function ArticlePage(props: Props) {
                             </div>
                         )}
 
-                        <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+                        <h1
+                            className={`text-3xl font-bold leading-tight tracking-tight sm:text-4xl ${ralewaySemiBold.className}`}
+                        >
                             {tr.title}
                         </h1>
 

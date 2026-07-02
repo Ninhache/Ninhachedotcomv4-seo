@@ -3,6 +3,7 @@ import readingTime from 'reading-time';
 import { BlogHeader } from '@/app/_components/blog/BlogHeader';
 import { CategoryFilter } from '@/app/_components/blog/CategoryFilter';
 import { PostCard, type PostCardData } from '@/app/_components/blog/PostCard';
+import { ralewaySemiBold } from '@/app/fonts';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
 import {
@@ -23,9 +24,22 @@ type Props = {
 };
 
 /**
- * Public blog index: a category-filterable grid of article teasers. The filter
- * is driven by the `?cat=<slug>` search param (a real server round-trip), so the
- * backend does the filtering and the page stays cache-friendly.
+ * Bento span for a card at `index`: the first post is a big 2×2 feature, then a
+ * repeating rhythm of wide/tall tiles fills the grid (with `grid-auto-flow:
+ * dense` packing the gaps). Only standard span utilities so Tailwind generates
+ * them reliably.
+ */
+function bentoSpan(index: number): string {
+    if (index === 0) return 'sm:col-span-2 sm:row-span-2';
+    if (index % 5 === 3) return 'sm:col-span-2';
+    if (index % 6 === 5) return 'sm:row-span-2';
+    return '';
+}
+
+/**
+ * Public blog index: a bento grid of article teasers, styled in the portfolio's
+ * art direction. The category filter is driven by the `?cat=<slug>` search
+ * param (a real server round-trip), so the backend does the filtering.
  */
 export default async function BlogListPage(props: Props) {
     const { locale } = await props.params;
@@ -67,12 +81,14 @@ export default async function BlogListPage(props: Props) {
     return (
         <>
             <BlogHeader />
-            <main className="mx-auto max-w-5xl px-4 py-10">
-                <header className="mb-8">
-                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            <main className="mx-auto max-w-6xl px-4 py-12">
+                <header className="mb-10">
+                    <h1
+                        className={`text-4xl font-bold tracking-tight sm:text-5xl ${ralewaySemiBold.className}`}
+                    >
                         {t('title')}
                     </h1>
-                    <p className="mt-2 max-w-2xl text-muted-foreground">
+                    <p className="mt-3 max-w-2xl text-muted-foreground">
                         {t('intro')}
                     </p>
                 </header>
@@ -88,17 +104,25 @@ export default async function BlogListPage(props: Props) {
                 )}
 
                 {posts.length === 0 ? (
-                    <p className="rounded-lg border border-dashed border-border py-16 text-center text-muted-foreground">
+                    <p className="rounded-2xl border border-dashed border-border py-20 text-center text-muted-foreground">
                         {t('empty')}
                     </p>
                 ) : (
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {posts.map(post => (
-                            <PostCard
-                                key={post.slug}
-                                post={post}
-                                readMinutesLabel={t('minutesShort')}
-                            />
+                    <div
+                        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                        style={{
+                            gridAutoRows: '13rem',
+                            gridAutoFlow: 'dense',
+                        }}
+                    >
+                        {posts.map((post, i) => (
+                            <div key={post.slug} className={bentoSpan(i)}>
+                                <PostCard
+                                    post={post}
+                                    readMinutesLabel={t('minutesShort')}
+                                    featured={i === 0}
+                                />
+                            </div>
                         ))}
                     </div>
                 )}
