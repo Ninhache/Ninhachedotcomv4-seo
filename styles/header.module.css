@@ -220,20 +220,17 @@
 
 .header .menu {
     display: flex;
+    /* Let the menu flex/shrink in the nav instead of overflowing the page. */
+    min-width: 0;
 }
 
 .header .menu ol {
     display: flex;
 }
 
-.header .menu {
-    /* Let the menu flex/shrink in the nav instead of overflowing the page. */
-    min-width: 0;
-}
-
 .header .menu li {
     display: flex;
-    margin: 0px 2px;
+    margin: 0px 10px;
 }
 
 .header .menu a {
@@ -242,8 +239,8 @@
        "A propos" would otherwise collapse to its longest word and wrap. */
     white-space: nowrap;
     pointer-events: all;
-    padding: 8px 8px;
-    font-size: 13px;
+    padding: 10px 15px;
+    font-size: 15px;
     color: var(--white);
     text-decoration: none;
 }
@@ -261,13 +258,32 @@
     justify-content: center;
     align-items: center;
     color: var(--light_blue);
-    padding: 8px 12px;
+    padding: 9px 20px;
 }
 
 .header .menu .button .button_arrow {
     height: 12px;
-    margin-left: 8px;
+    margin-left: 12px;
     transform: rotate(-90deg);
+}
+
+/* Between the mobile breakpoint (780px) and comfortable desktop, the longer FR
+   labels + Contact + locale don't fit next to the logo at normal spacing.
+   Compact the nav so it stays on one row without wrapping or overflowing. */
+@media (max-width: 1200px) {
+    .header .menu li {
+        margin: 0px 3px;
+    }
+    .header .menu a {
+        padding: 8px 9px;
+        font-size: 13px;
+    }
+    .header .menu .button {
+        padding: 8px 13px;
+    }
+    .header .menu .button .button_arrow {
+        margin-left: 8px;
+    }
 }
 
 .hamburger_icon {
