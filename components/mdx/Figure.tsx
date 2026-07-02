@@ -30,8 +30,7 @@ export function Figure({
                     {caption}
                     {credit && (
                         <span className="opacity-70">
-                            {caption ? ' — ' : ''}
-                            {credit}
+                            {caption ? ` (${credit})` : credit}
                         </span>
                     )}
                 </figcaption>

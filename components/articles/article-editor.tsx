@@ -311,7 +311,7 @@ export function ArticleEditor({
                                                     `translations.${loc}.body` as any
                                                 )}
                                                 placeholder={
-                                                    '## Introduction\n\nÉcris en MDX — GFM, `:::tip`, blocs de code, et <Callout type="tip">…</Callout>'
+                                                    '## Introduction\n\nÉcris en MDX : GFM, `:::tip`, blocs de code, et <Callout type="tip">…</Callout>'
                                                 }
                                                 className="min-h-[32rem] resize-y font-mono text-sm leading-relaxed"
                                             />
