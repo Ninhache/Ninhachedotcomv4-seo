@@ -49,7 +49,9 @@
             "web": "Web",
             "simulations": "Simulations",
             "random": "Random"
-        }
+        },
+        "readArticle": "Read the article",
+        "seeArticles": "See the articles"
     },
     "skills": {
         "anchor": "skills",

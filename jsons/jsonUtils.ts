@@ -28,6 +28,10 @@ export interface Project {
     translations: ProjectTranslations;
     tags: Tag[];
     links: outLink;
+    // Optional links from a project to the blog. A project may point at a
+    // flagship article and/or a whole category (both, per the admin's choice).
+    blogArticleSlug?: string; // → /blog/{slug}
+    blogCategorySlug?: string; // → /blog?cat={slug}
     videoUrl?: string;
     image: string;
     logo: string;

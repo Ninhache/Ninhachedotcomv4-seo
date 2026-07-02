@@ -163,6 +163,13 @@ export type ProjectDTO = {
     skills: SkillDTO[];
     // Project nature(s) — formerly QUAL tags, now a scalar enum array.
     natures: ProjectNature[];
+    // Optional blog cross-links. GET returns the linked objects (with their
+    // translations); the write payload sends `blogCategoryId`/`blogArticleId`.
+    // Either/both may be null.
+    blogCategoryId?: string | null;
+    blogArticleId?: string | null;
+    blogCategory?: ArticleCategoryDTO | null;
+    blogArticle?: ArticleDTO | null;
     translations: (ProjectTranslationDTO & { type?: string | null })[];
 };
 

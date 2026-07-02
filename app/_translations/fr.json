@@ -49,7 +49,9 @@
             "web": "Web",
             "simulations": "Simulations",
             "random": "Aléatoire"
-        }
+        },
+        "readArticle": "Lire l'article",
+        "seeArticles": "Voir les articles"
     },
     "skills": {
         "anchor": "competences",

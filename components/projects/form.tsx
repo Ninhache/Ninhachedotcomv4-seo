@@ -9,6 +9,7 @@ import {
     Globe,
     ImageIcon,
     Loader2,
+    Newspaper,
     Tag,
     Trash2,
     Upload,
@@ -25,13 +26,29 @@ import { SkillMultiSelect } from '@/components/forms/skill-multi-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { ArticleApi } from '@/lib/article/article.api';
+import { ArticleCategoryApi } from '@/lib/article-category/article-category.api';
 import { mediaSrc } from '@/lib/baseurl';
 import { LocalesApi } from '@/lib/locales/locales.api';
 import { ProjectApi } from '@/lib/project/project.api';
 import { SkillApi } from '@/lib/skill/skill.api';
-import type { Locale, ProjectDTO, ProjectNature, SkillDTO } from '@/lib/types';
+import type {
+    ArticleCategoryDTO,
+    ArticleDTO,
+    Locale,
+    ProjectDTO,
+    ProjectNature,
+    SkillDTO,
+} from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 // Editable project natures (formerly QUAL tags). DATE/RANDOM are legacy sort
@@ -76,6 +93,11 @@ export function ProjectForm({
 }) {
     const [skills, setSkills] = useState<SkillDTO[]>([]);
     const [skillsLoading, setSkillsLoading] = useState(false);
+    // Blog cross-link options (loaded alongside skills when the dialog opens).
+    const [articles, setArticles] = useState<ArticleDTO[]>([]);
+    const [blogCategories, setBlogCategories] = useState<ArticleCategoryDTO[]>(
+        []
+    );
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -136,6 +158,15 @@ export function ProjectForm({
                     )
                     .default([]),
                 medias: z.array(mediaShape).default([]),
+                // Optional blog cross-links (both independent). '' → undefined.
+                blogCategoryId: z
+                    .string()
+                    .optional()
+                    .or(z.literal('').transform(() => undefined)),
+                blogArticleId: z
+                    .string()
+                    .optional()
+                    .or(z.literal('').transform(() => undefined)),
                 translations: z.record(z.string(), translationShape),
             })
             .superRefine((data, ctx) => {
@@ -197,6 +228,8 @@ export function ProjectForm({
             logoUrl: initial?.logoUrl ?? undefined,
             skillIds: initial?.skillIds ?? [],
             natures: initial?.natures ?? [],
+            blogCategoryId: initial?.blogCategoryId ?? undefined,
+            blogArticleId: initial?.blogArticleId ?? undefined,
             medias:
                 initial?.medias?.map(m => ({
                     id: m.id,
@@ -246,6 +279,26 @@ export function ProjectForm({
             })
             .finally(() => {
                 if (!ignore) setSkillsLoading(false);
+            });
+        return () => {
+            ignore = true;
+        };
+    }, [dialogOpen]);
+
+    // load blog cross-link options when the dialog opens
+    useEffect(() => {
+        if (!dialogOpen) return;
+        let ignore = false;
+        Promise.all([ArticleApi.findAll(), ArticleCategoryApi.findAll()])
+            .then(([arts, cats]) => {
+                if (ignore) return;
+                setArticles(Array.isArray(arts) ? arts : []);
+                setBlogCategories(Array.isArray(cats) ? cats : []);
+            })
+            .catch(() => {
+                if (ignore) return;
+                setArticles([]);
+                setBlogCategories([]);
             });
         return () => {
             ignore = true;
@@ -335,6 +388,9 @@ export function ProjectForm({
                     isVisible: values.isVisible,
                     skillIds: values.skillIds ?? [],
                     natures: values.natures ?? [],
+                    // null explicitly clears a previously-set link on update.
+                    blogCategoryId: values.blogCategoryId ?? null,
+                    blogArticleId: values.blogArticleId ?? null,
                     translations: Object.entries(values.translations).map(
                         ([locale, t]) => ({
                             locale: locale as Locale,
@@ -585,6 +641,79 @@ export function ProjectForm({
                         <p className="text-xs text-muted-foreground">
                             Détermine le tri et le libellé « type »
                             (Personnel/Scolaire/Web/Simulation).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Section: Lien blog ── */}
+            <section className="space-y-4">
+                <SectionHeading
+                    icon={Newspaper}
+                    title="Lien blog"
+                    description="Relie ce projet à un article et/ou une catégorie du blog (les deux sont optionnels)."
+                />
+                <div className="grid gap-4 rounded-lg border bg-muted/30 p-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                        <Label>Article lié</Label>
+                        <Select
+                            value={form.watch('blogArticleId') ?? '__none__'}
+                            onValueChange={v =>
+                                form.setValue(
+                                    'blogArticleId',
+                                    v === '__none__' ? undefined : v,
+                                    { shouldDirty: true }
+                                )
+                            }
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Aucun" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="__none__">Aucun</SelectItem>
+                                {articles.map(a => (
+                                    <SelectItem key={a.id} value={a.id}>
+                                        {a.translations.find(
+                                            t => t.locale === 'fr'
+                                        )?.title ??
+                                            a.translations[0]?.title ??
+                                            a.slug}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                            Affiche « Lire l&apos;article » sur la carte projet.
+                        </p>
+                    </div>
+                    <div className="space-y-2">
+                        <Label>Catégorie liée</Label>
+                        <Select
+                            value={form.watch('blogCategoryId') ?? '__none__'}
+                            onValueChange={v =>
+                                form.setValue(
+                                    'blogCategoryId',
+                                    v === '__none__' ? undefined : v,
+                                    { shouldDirty: true }
+                                )
+                            }
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Aucune" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="__none__">Aucune</SelectItem>
+                                {blogCategories.map(c => (
+                                    <SelectItem key={c.id} value={c.id}>
+                                        {c.translations.find(
+                                            t => t.locale === 'fr'
+                                        )?.name ?? c.slug}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                            Affiche « Voir les articles » (filtre /blog?cat=).
                         </p>
                     </div>
                 </div>

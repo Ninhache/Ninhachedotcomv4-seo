@@ -117,6 +117,10 @@ export function mapProject(dto: ProjectDTO, locale: Locale): Project {
             git: dto.gitUrl ?? 'none',
             play: dto.playUrl ?? 'none',
         },
+        // Blog cross-links: prefer the included object's slug, tolerate an
+        // id-only payload (undefined slug then, so the link is simply omitted).
+        blogArticleSlug: dto.blogArticle?.slug,
+        blogCategorySlug: dto.blogCategory?.slug,
         videoUrl: videoMedia?.mediaUrl ? mediaSrc(videoMedia.mediaUrl) : 'none',
         image: imageMedia?.mediaUrl ? mediaSrc(imageMedia.mediaUrl) : '',
         logo: dto.logoUrl ? mediaSrc(dto.logoUrl) : '',

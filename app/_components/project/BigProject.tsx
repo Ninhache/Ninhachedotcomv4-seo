@@ -14,6 +14,7 @@ import {
 } from '@/app/fonts';
 import { Locale } from '@/config';
 import { Project } from '@/jsons/jsonUtils';
+import { Link as LocalizedLink } from '@/navigation';
 import styles from '@/styles/projects/bigproject.module.css';
 
 export interface BigProjectProps {
@@ -209,6 +210,59 @@ export const BigProject: React.FC<BigProjectProps> = ({
                                     {t('runCode')}
                                 </span>
                             </Link>
+                        )}
+                        {project.blogArticleSlug && (
+                            <LocalizedLink
+                                href={`/blog/${project.blogArticleSlug}`}
+                                style={
+                                    {
+                                        '--color': 'rgb(147, 130, 216)',
+                                    } as React.CSSProperties
+                                }
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <desc>Read the related blog article</desc>
+                                    <g>
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                                    </g>
+                                </svg>
+                                <span
+                                    className={`${styles.bubble} ${ralewayBold.className}`}
+                                >
+                                    {t('readArticle')}
+                                </span>
+                            </LocalizedLink>
+                        )}
+                        {project.blogCategorySlug && (
+                            <LocalizedLink
+                                href={`/blog?cat=${project.blogCategorySlug}`}
+                                style={
+                                    {
+                                        '--color': 'rgb(147, 130, 216)',
+                                    } as React.CSSProperties
+                                }
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <desc>See related blog articles</desc>
+                                    <g>
+                                        <path d="M12 2 2 7l10 5 10-5-10-5z" />
+                                        <path d="M2 17l10 5 10-5" />
+                                        <path d="M2 12l10 5 10-5" />
+                                    </g>
+                                </svg>
+                                <span
+                                    className={`${styles.bubble} ${ralewayBold.className}`}
+                                >
+                                    {t('seeArticles')}
+                                </span>
+                            </LocalizedLink>
                         )}
                     </div>
                 </div>
