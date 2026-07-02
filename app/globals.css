@@ -2,6 +2,13 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
+/* Tailwind v4 auto source-detection skips the bracketed dynamic-route dirs
+   (app/[locale]/blog/…) — the brackets read as a glob character class — and the
+   blog's _components, so their utility classes weren't generated. These `**`
+   globs descend into [locale]/[slug] by wildcard, forcing a full scan. */
+@source "../app/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
