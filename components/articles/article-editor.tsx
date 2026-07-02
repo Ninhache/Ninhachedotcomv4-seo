@@ -300,8 +300,10 @@ export function ArticleEditor({
                                                 Shiki) + composants&nbsp;:{' '}
                                                 <code>{'<Callout>'}</code>,{' '}
                                                 <code>{'<Figure>'}</code>,{' '}
-                                                <code>{'<Chart>'}</code>.
-                                                Échappe un <code>{'<'}</code> ou{' '}
+                                                <code>{'<Chart>'}</code>, inline{' '}
+                                                <code>{'<U>'}</code>,{' '}
+                                                <code>{'<Mark>'}</code>. Échappe
+                                                un <code>{'<'}</code> ou{' '}
                                                 <code>{'{'}</code> isolé (
                                                 <code>{'\\<'}</code>,{' '}
                                                 <code>{'\\{'}</code>).
