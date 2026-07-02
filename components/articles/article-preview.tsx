@@ -84,10 +84,10 @@ export function ArticlePreview({ data }: { data: ArticlePreviewData }) {
             )}
 
             {data.body.trim() ? (
-                {/* No `prose-pre:bg-transparent` here (unlike the public page):
-                    that page relies on Shiki painting the code background, but
-                    this client preview has no Shiki — so we keep prose's default
-                    dark code-block styling instead of a transparent (broken) one. */}
+                // No `prose-pre:bg-transparent` (unlike the public page, which
+                // relies on Shiki painting the code background): this client
+                // preview has no Shiki, so we keep prose's default dark
+                // code-block styling instead of a transparent (broken) one.
                 <div className="prose prose-invert mt-8 max-w-none">
                     <ReactMarkdown
                         remarkPlugins={[
