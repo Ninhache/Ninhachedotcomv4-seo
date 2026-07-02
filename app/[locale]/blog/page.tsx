@@ -93,11 +93,7 @@ export default async function BlogListPage(props: Props) {
 
             {chips.length > 0 && (
                 <div className="mb-8">
-                    <CategoryFilter
-                        categories={chips}
-                        active={cat}
-                        allLabel={t('allCategories')}
-                    />
+                    <CategoryFilter categories={chips} active={cat} />
                 </div>
             )}
 
