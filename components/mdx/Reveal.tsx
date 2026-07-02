@@ -1,46 +1,40 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { Eye } from 'lucide-react';
+import { type ReactNode, useState } from 'react';
 
 /**
- * Inline MDX `<Reveal>` - hides `children` behind a blur until clicked, for
- * "devine d'abord" moments mid-sentence (a shock stat, a punchline):
- * `le score final : <Reveal>175901/175901</Reveal>`. Renders as a single
- * accessible `<button>` (keyboard-reachable, no separate click target) so it
- * stays inline-friendly. `label` overrides the hint shown before reveal
- * (defaults to "Cliquer pour révéler").
+ * Inline MDX `<Reveal>` - a "devine d'abord" spoiler for a shock stat or
+ * punchline mid-sentence: `le score : <Reveal>175901/175901</Reveal>`. Before
+ * click it's a discreet cyan pill (eye icon + `label`, default "Révéler") that
+ * leaks neither the value nor its length; clicking swaps in the answer in a
+ * cyan highlight so it reads as the payoff. `label` overrides the pill text.
  */
 export function Reveal({
     children,
-    label,
+    label = 'Révéler',
 }: {
     children?: ReactNode;
     label?: string;
 }) {
     const [revealed, setRevealed] = useState(false);
-    const hint = label ?? 'Cliquer pour révéler';
 
     if (revealed) {
-        return <span>{children}</span>;
+        return (
+            <span className="rounded-md bg-primary/15 px-1.5 py-0.5 font-semibold text-foreground [box-decoration-break:clone]">
+                {children}
+            </span>
+        );
     }
 
     return (
         <button
             type="button"
             onClick={() => setRevealed(true)}
-            aria-label={hint}
-            className="relative inline-flex cursor-pointer select-none items-center rounded align-baseline"
+            className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-primary/40 bg-primary/10 px-2 py-0.5 align-baseline text-primary text-sm transition-colors hover:bg-primary/20"
         >
-            <span aria-hidden="true" className="blur-[6px]">
-                {children}
-            </span>
-            <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 flex items-center justify-center whitespace-nowrap rounded bg-black/40 px-1.5 font-medium text-[0.85em] text-white/80"
-            >
-                {hint}
-            </span>
+            <Eye className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+            {label}
         </button>
     );
 }

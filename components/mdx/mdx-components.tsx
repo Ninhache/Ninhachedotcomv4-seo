@@ -19,7 +19,8 @@ import { Step, Steps } from './Steps';
 import { DeltaE, Swatch } from './Swatch';
 import { Table, TruthTable } from './Table';
 import { Takeaways } from './Takeaways';
-import { Badge, Sidenote, Term, Tok } from './TextMarks';
+import { Term } from './Term';
+import { Badge, Sidenote, Tok } from './TextMarks';
 import { Timeline, TimelineItem } from './Timeline';
 
 /**

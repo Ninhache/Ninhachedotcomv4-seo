@@ -2,29 +2,8 @@ import type { ReactNode } from 'react';
 import { ralewaySemiBold } from '@/app/fonts';
 import { BLUE, CYAN, TONE, type Tone, toneSurface } from './tokens';
 
-/**
- * Inline MDX `<Term>`: an abbreviation / glossary term (ΔE, GiST, D65, LTO,
- * AST, ISR...). Renders a native `<abbr title>` with a dotted underline and a
- * help cursor, so hovering surfaces the definition through the browser's own
- * tooltip - no JS, no client component needed. `def` is the full expansion
- * or explanation shown on hover. Presentational.
- */
-export function Term({ children, def }: { children?: ReactNode; def: string }) {
-    return (
-        <abbr
-            title={def}
-            className="cursor-help"
-            style={{
-                textDecorationLine: 'underline',
-                textDecorationStyle: 'dotted',
-                textDecorationColor: 'currentColor',
-                textUnderlineOffset: '3px',
-            }}
-        >
-            {children}
-        </abbr>
-    );
-}
+// `<Term>` moved to its own client file (components/mdx/Term.tsx) for its styled
+// hover/focus tooltip.
 
 /**
  * Inline MDX `<Badge>`: a small semantic pill for statuses called out in
