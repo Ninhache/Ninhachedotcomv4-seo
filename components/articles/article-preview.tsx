@@ -1,13 +1,18 @@
 'use client';
 
+import { evaluate } from '@mdx-js/mdx';
 import { Calendar, Clock } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import { type ReactNode, useEffect, useState } from 'react';
+import * as runtime from 'react/jsx-runtime';
 import readingTime from 'reading-time';
+import rehypeSlug from 'rehype-slug';
 import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
 import { ralewaySemiBold } from '@/app/fonts';
+import { mdxComponents } from '@/components/mdx/mdx-components';
 import { mediaSrc } from '@/lib/baseurl';
 import { remarkCallouts } from '@/lib/markdown/remark-callouts';
+import { remarkStripImports } from '@/lib/markdown/remark-strip-imports';
 
 export type ArticlePreviewData = {
     title: string;
@@ -29,19 +34,55 @@ function formatDate(d?: Date): string {
 
 /**
  * Client-side preview of a blog article as readers will see it — the admin
- * counterpart to the public `app/[locale]/blog/[slug]/page.tsx`. Reuses the same
- * `prose prose-invert` typography + `.callout` styles from globals.css.
+ * counterpart to the public `app/[locale]/blog/[slug]/page.tsx`. Compiles the
+ * MDX body **in the browser** (`@mdx-js/mdx` `evaluate`) with the same component
+ * map, so `<Callout>`/`<Figure>`/`<Chart>` + GFM + `:::` callouts all render.
  *
- * NOTE: the public page renders Markdown server-side with Shiki syntax
- * highlighting (`lib/markdown/render-article.ts` is `server-only`). Here we use
- * `react-markdown` on the client, so GFM + `:::` callouts render but code blocks
- * are plain (unhighlighted) — the published article will have Shiki.
+ * Differences from the published page: no Shiki highlighting (server-only), and
+ * a compile error (bad JSX) is shown inline instead of crashing.
  */
 export function ArticlePreview({ data }: { data: ArticlePreviewData }) {
     const minutes = Math.max(
         1,
         Math.ceil(readingTime(data.body || '').minutes)
     );
+
+    const [rendered, setRendered] = useState<ReactNode>(null);
+    const [error, setError] = useState<string | null>(null);
+    const body = data.body;
+
+    useEffect(() => {
+        let cancelled = false;
+        if (!body.trim()) {
+            setRendered(null);
+            setError(null);
+            return;
+        }
+        (async () => {
+            try {
+                const { default: MDXContent } = await evaluate(body, {
+                    ...runtime,
+                    remarkPlugins: [
+                        remarkStripImports,
+                        remarkGfm,
+                        remarkDirective,
+                        remarkCallouts,
+                    ],
+                    rehypePlugins: [rehypeSlug],
+                });
+                if (cancelled) return;
+                setError(null);
+                setRendered(<MDXContent components={mdxComponents} />);
+            } catch (err) {
+                if (cancelled) return;
+                setRendered(null);
+                setError(err instanceof Error ? err.message : String(err));
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [body]);
 
     return (
         <div className="dark rounded-lg border bg-[#0b1422] p-6 text-[#e8eef7]">
@@ -83,21 +124,16 @@ export function ArticlePreview({ data }: { data: ArticlePreviewData }) {
                 />
             )}
 
-            {data.body.trim() ? (
-                // No `prose-pre:bg-transparent` (unlike the public page, which
-                // relies on Shiki painting the code background): this client
-                // preview has no Shiki, so we keep prose's default dark
-                // code-block styling instead of a transparent (broken) one.
+            {error ? (
+                <div className="mt-8 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-300">
+                    <p className="font-semibold">Erreur de compilation MDX</p>
+                    <pre className="mt-2 whitespace-pre-wrap text-xs">
+                        {error}
+                    </pre>
+                </div>
+            ) : rendered ? (
                 <div className="prose prose-invert mt-8 max-w-none">
-                    <ReactMarkdown
-                        remarkPlugins={[
-                            remarkGfm,
-                            remarkDirective,
-                            remarkCallouts,
-                        ]}
-                    >
-                        {data.body}
-                    </ReactMarkdown>
+                    {rendered}
                 </div>
             ) : (
                 <p className="mt-8 text-sm text-[#8ea3c0]">

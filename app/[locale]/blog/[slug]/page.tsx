@@ -74,7 +74,7 @@ export default async function ArticlePage(props: Props) {
     const tr = articleTranslation(article, loc);
     if (!tr) notFound();
 
-    const { html, toc, readingMinutes } = await renderArticle(tr.body);
+    const { Content, toc, readingMinutes } = await renderArticle(tr.body);
     const cover = article.coverImageUrl
         ? mediaSrc(article.coverImageUrl)
         : null;
@@ -139,11 +139,10 @@ export default async function ArticlePage(props: Props) {
                             />
                         )}
 
-                        {/* Body is server-rendered, sanitized-by-construction HTML. */}
-                        <div
-                            className="prose prose-lg prose-invert mt-8 max-w-none leading-relaxed prose-headings:scroll-mt-24 prose-pre:bg-transparent prose-pre:p-0"
-                            dangerouslySetInnerHTML={{ __html: html }}
-                        />
+                        {/* Body is server-compiled MDX (components already bound). */}
+                        <div className="prose prose-lg prose-invert mt-8 max-w-none leading-relaxed prose-headings:scroll-mt-24 prose-pre:bg-transparent prose-pre:p-0">
+                            {Content}
+                        </div>
                     </article>
 
                     <aside className="hidden lg:block">

@@ -294,13 +294,24 @@ export function ArticleEditor({
                                             />
                                         </div>
                                         <div className="grid gap-2">
-                                            <Label>Corps (Markdown)</Label>
+                                            <Label>Corps (MDX)</Label>
+                                            <p className="text-xs text-muted-foreground">
+                                                Markdown (GFM, `:::tip`, code
+                                                Shiki) + composants&nbsp;:{' '}
+                                                <code>{'<Callout>'}</code>,{' '}
+                                                <code>{'<Figure>'}</code>,{' '}
+                                                <code>{'<Chart>'}</code>.
+                                                Échappe un <code>{'<'}</code> ou{' '}
+                                                <code>{'{'}</code> isolé (
+                                                <code>{'\\<'}</code>,{' '}
+                                                <code>{'\\{'}</code>).
+                                            </p>
                                             <Textarea
                                                 {...form.register(
                                                     `translations.${loc}.body` as any
                                                 )}
                                                 placeholder={
-                                                    '## Introduction\n\nÉcris en Markdown — GFM, `:::tip` callouts, blocs de code…'
+                                                    '## Introduction\n\nÉcris en MDX — GFM, `:::tip`, blocs de code, et <Callout type="tip">…</Callout>'
                                                 }
                                                 className="min-h-[32rem] resize-y font-mono text-sm leading-relaxed"
                                             />
