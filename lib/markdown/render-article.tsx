@@ -68,7 +68,7 @@ const CODE_THEME = 'github-dark';
 
 /**
  * Compile an article's **MDX** body to a React node on the server (build/ISR
- * time only — `server-only`, so the MDX compiler + Shiki never reach the client
+ * time only - `server-only`, so the MDX compiler + Shiki never reach the client
  * bundle). Articles may reference the curated components in
  * `components/mdx/mdx-components.tsx` (`<Callout>`, `<Figure>`, `<Chart>`);
  * imports are stripped so only those are available. `:::` directive callouts

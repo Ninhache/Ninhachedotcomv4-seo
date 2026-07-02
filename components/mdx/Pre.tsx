@@ -7,7 +7,7 @@ import { type ComponentPropsWithoutRef, useRef, useState } from 'react';
  * `pre` override for article code blocks. Wraps the `rehype-pretty-code` output
  * (Shiki-highlighted on the server; plain in the client preview) to add a
  * **copy button** and a **language badge**. Registered as `pre` in
- * `mdx-components.tsx`, so every fenced code block gets it — line highlighting,
+ * `mdx-components.tsx`, so every fenced code block gets it - line highlighting,
  * diffs and focus come from the `@shikijs/transformers` notation + globals.css.
  */
 export function Pre({ children, ...props }: ComponentPropsWithoutRef<'pre'>) {
@@ -24,7 +24,7 @@ export function Pre({ children, ...props }: ComponentPropsWithoutRef<'pre'>) {
             setCopied(true);
             setTimeout(() => setCopied(false), 1500);
         } catch {
-            // Clipboard denied (no permission / insecure context) — no-op.
+            // Clipboard denied (no permission / insecure context) - no-op.
         }
     };
 

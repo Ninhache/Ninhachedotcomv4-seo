@@ -9,9 +9,9 @@ import { CYAN } from './tokens';
 
 type StepProps = {
     title?: string;
-    /** Injected by `<Steps>` — do not pass manually. */
+    /** Injected by `<Steps>` - do not pass manually. */
     n?: number;
-    /** Injected by `<Steps>` — hides the connector under the last step. */
+    /** Injected by `<Steps>` - hides the connector under the last step. */
     isLast?: boolean;
     children?: ReactNode;
 };
@@ -48,7 +48,7 @@ export function Step({ title, n, isLast, children }: StepProps) {
 }
 
 /**
- * MDX `<Steps>` — a numbered, vertical pipeline. Wraps `<Step>` children and
+ * MDX `<Steps>` - a numbered, vertical pipeline. Wraps `<Step>` children and
  * auto-numbers them (via `React.Children`, ignoring whitespace), drawing a
  * connector line between badges. For the ordered processes these articles are
  * full of (sRGB→linéaire→XYZ→Lab, `make bump`, the 3-piece de-obfuscation).

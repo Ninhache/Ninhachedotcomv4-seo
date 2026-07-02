@@ -80,7 +80,7 @@ function interpretDeltaE(de: number): string {
 }
 
 /**
- * MDX `<Swatch>` — a color chip: a rounded square filled with `hex` next to a
+ * MDX `<Swatch>` - a color chip: a rounded square filled with `hex` next to a
  * caption showing the hex code and its CIELAB triplet (rounded to integers).
  * `lab` can be passed in to reuse an already-computed triplet (see
  * `<DeltaE>`); otherwise it's derived from `hex`. Presentational.
@@ -114,7 +114,7 @@ export function Swatch({
 }
 
 /**
- * MDX `<DeltaE>` — two swatches (`a`, `b`, hex strings) side by side with
+ * MDX `<DeltaE>` - two swatches (`a`, `b`, hex strings) side by side with
  * their CIE76 ΔE and a one-line reading of how perceptible the gap is. The
  * demo behind "two hex codes can be numerically close but perceptually far".
  */

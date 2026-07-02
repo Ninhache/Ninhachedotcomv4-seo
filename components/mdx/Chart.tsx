@@ -11,7 +11,7 @@ const ACCENT = '#56dcfc';
 const ACCENT2 = '#197dff';
 
 /**
- * MDX `<Chart>` — a small, dependency-free, interactive SVG chart (bar or line)
+ * MDX `<Chart>` - a small, dependency-free, interactive SVG chart (bar or line)
  * fed by inline data: `<Chart type="bar" data={[{label:'A',value:3}, …]} />`.
  * Client component: hovering a bar/point reveals a value tooltip.
  */

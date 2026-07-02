@@ -1,7 +1,7 @@
 import { mediaSrc } from '@/lib/baseurl';
 
 /**
- * MDX `<Figure>` — a centered image with an optional caption/credit. `src`
+ * MDX `<Figure>` - a centered image with an optional caption/credit. `src`
  * accepts an `/uploads/…` path, a `public/` path, or an absolute URL (resolved
  * via `mediaSrc`). `not-prose` so the surrounding `.prose` doesn't fight the
  * figure's own spacing.

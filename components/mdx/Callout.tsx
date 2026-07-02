@@ -47,7 +47,7 @@ function normalizeKind(type: string): CalloutKind {
 }
 
 /**
- * MDX `<Callout>` — a richer version of the `:::tip` directive callouts: adds a
+ * MDX `<Callout>` - a richer version of the `:::tip` directive callouts: adds a
  * titled header with a type icon. Reuses the `.callout` / `.callout-<kind>`
  * styles from `app/globals.css` (accent border + tint via `--callout-accent`),
  * so it matches the directive callouts and works both server- and client-side.

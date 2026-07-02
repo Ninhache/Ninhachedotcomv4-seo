@@ -1,22 +1,27 @@
 import { Callout } from './Callout';
 import { Chart } from './Chart';
 import { Compare, Side } from './Compare';
+import { Details } from './Details';
 import { Figure } from './Figure';
 import { HexDump } from './HexDump';
 import { Mark, U } from './Inline';
 import { Pre } from './Pre';
+import { Reveal } from './Reveal';
+import { Ext, SmartAnchor } from './SmartAnchor';
 import { Step, Steps } from './Steps';
 import { DeltaE, Swatch } from './Swatch';
 import { Table, TruthTable } from './Table';
+import { Badge, Sidenote, Term, Tok } from './TextMarks';
+import { Timeline, TimelineItem } from './Timeline';
 
 /**
- * The component map exposed to article MDX. An article body references these by
- * name (`<Callout>`, `<Figure>`, `<Chart>`, `<Steps>`, `<Compare>`, inline
- * `<U>`/`<Mark>`); anything not listed here is a plain Markdown element (styled
- * by `.prose`). `pre` overrides every fenced code block (copy button + language
- * badge). Shared by the server render (`lib/markdown/render-article.tsx`) and
- * the admin client preview (`components/articles/article-preview.tsx`), so all
- * entries must be client-safe.
+ * The component map exposed to article MDX. An article references these by name;
+ * anything not listed is a plain Markdown element (styled by `.prose`). Element
+ * overrides: `pre` (copy button + language badge), `table` (horizontal scroll),
+ * `a` (external links open in a new tab with an icon; `#slug`/relative stay
+ * plain). Shared by the server render (`lib/markdown/render-article.tsx`) and
+ * the admin client preview (`components/articles/article-preview.tsx`), so every
+ * entry must be client-safe.
  */
 export const mdxComponents = {
     // block
@@ -31,10 +36,20 @@ export const mdxComponents = {
     Swatch,
     DeltaE,
     TruthTable,
+    Details,
+    Timeline,
+    TimelineItem,
     // inline
     U,
     Mark,
+    Reveal,
+    Term,
+    Badge,
+    Tok,
+    Sidenote,
+    Ext,
     // element overrides
     pre: Pre,
     table: Table,
+    a: SmartAnchor,
 };

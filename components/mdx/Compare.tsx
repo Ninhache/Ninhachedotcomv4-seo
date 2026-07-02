@@ -39,7 +39,7 @@ export function Side({
 }
 
 /**
- * MDX `<Compare>` — two panels side by side (stacked on mobile) for the blog's
+ * MDX `<Compare>` - two panels side by side (stacked on mobile) for the blog's
  * signature narrative: avant/après, candidat A vs B, chiffres qui tranchent.
  * Wrap two `<Side label tone>` inside. Presentational.
  */
