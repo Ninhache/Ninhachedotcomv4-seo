@@ -208,11 +208,14 @@ export function mapTimelineToEmployers(
         const rawLogo =
             mission.imageUrl ||
             (mission.clientCompanyId
-                ? (companyLogoById.get(mission.clientCompanyId) ?? '')
+                ? companyLogoById.get(mission.clientCompanyId) ||
+                  (owner.backgroundUrl ?? '')
                 : (owner.backgroundUrl ?? ''));
-        // Where it happened: the client's city at-client, else the employer's.
+        // Where it happened: the client's city at-client, else the employer's
+        // (a client without its own localisation falls back to the employer).
         const location = mission.clientCompanyId
-            ? (companyLocationById.get(mission.clientCompanyId) ?? '')
+            ? companyLocationById.get(mission.clientCompanyId) ||
+              (owner.localisation ?? '')
             : (owner.localisation ?? '');
 
         return {

@@ -197,6 +197,121 @@ export type ResumeDTO = {
     translations: ResumeTranslationDTO[];
 };
 
+/* ---------------- CV GENERATOR ---------------- */
+
+// Which sections render, and per-entity allow-lists of ids to include. An
+// `undefined` id-list means "include everything"; a present list narrows it.
+export type CvSelection = {
+    sections?: {
+        experience?: boolean;
+        education?: boolean;
+        skills?: boolean;
+        projects?: boolean;
+        contact?: boolean;
+    };
+    includeIds?: {
+        companies?: string[];
+        missions?: string[];
+        education?: string[];
+        skills?: string[];
+        projects?: string[];
+        contacts?: string[];
+    };
+    // Operator-written professional summary per locale (not the portfolio's
+    // catchy Profile.description). Empty => no summary line on the CV.
+    summary?: { fr?: string; en?: string };
+    // Per-mission CV bullet overrides (achievement-framed), keyed by mission id.
+    // When set for a locale, they replace the portfolio's duty-phrased tasks.
+    bulletsByMission?: Record<string, { fr?: string[]; en?: string[] }>;
+    // Per-project bullet overrides + role line, keyed by project id.
+    bulletsByProject?: Record<string, { fr?: string[]; en?: string[] }>;
+    roleByProject?: Record<string, { fr?: string; en?: string }>;
+    // Operator-written spoken-languages line (no portfolio entity backs it).
+    spokenLanguages?: { fr?: string; en?: string };
+    // "Leadership & Activities" entries (e.g. ESN) — org/dates locale-independent,
+    // role/bullets per locale.
+    activities?: {
+        org: string;
+        dates?: string;
+        role?: { fr?: string; en?: string };
+        bullets?: { fr?: string[]; en?: string[] };
+    }[];
+    // Phone shown first in the header (plain text, rendered as a tel: link).
+    phone?: string;
+    // Extra header links appended after contacts (e.g. Github relabel, portfolio).
+    extraLinks?: { label: string; url: string }[];
+    // One-line note under Projects, per locale (+ optional clickable URL).
+    projectsNote?: { fr?: string; en?: string };
+    projectsNoteUrl?: string;
+    // References section: named referents and/or a note ("available on request").
+    references?: {
+        name: string;
+        title?: string;
+        org?: string;
+        contact?: string;
+        url?: string;
+    }[];
+    referencesNote?: { fr?: string; en?: string };
+};
+
+// Selectable inventory (ids + labels) returned by GET /cv/data — drives the
+// builder's checkboxes.
+export type CvInventoryDTO = {
+    locale: Locale;
+    templates: string[];
+    companies: {
+        id: string;
+        name: string;
+        start?: string | null;
+        end?: string | null;
+        missions: {
+            id: string;
+            title: string;
+            start?: string | null;
+            end?: string | null;
+            // Portfolio default bullets (per inventory locale) — prefill source.
+            tasks: string[];
+        }[];
+    }[];
+    education: {
+        id: string;
+        label: string;
+        start?: string | null;
+        end?: string | null;
+    }[];
+    skillCategories: {
+        id: string;
+        name: string;
+        skills: { id: string; name: string }[];
+    }[];
+    projects: {
+        id: string;
+        name: string;
+        start?: string | null;
+        end?: string | null;
+    }[];
+    contacts: { id: string; label: string }[];
+};
+
+export type CvConfigDTO = {
+    id: string;
+    template: string;
+    selection: CvSelection;
+    generatedFrUrl: string | null;
+    generatedEnUrl: string | null;
+    updatedAt: string; // ISO
+};
+
+export type GenerateCvDTO = {
+    locale?: 'fr' | 'en' | 'both';
+    template?: string;
+    selection?: CvSelection;
+    publish?: boolean;
+    save?: boolean;
+};
+
+export type CvGenerateResultDTO = { urls: { fr?: string; en?: string } };
+
 export type SkillTranslationDTO = { id?: string; locale: Locale; name: string };
 export type SkillCategoryTranslationDTO = {
     id?: string;

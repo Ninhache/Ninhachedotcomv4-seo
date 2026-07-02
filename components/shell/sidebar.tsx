@@ -15,6 +15,7 @@ const items = [
     { href: '/admin/contacts', label: 'Contacts' },
     { href: '/admin/aliases', label: 'Aliases' },
     { href: '/admin/resume', label: 'Resume' },
+    { href: '/admin/cv', label: 'Générateur CV' },
     { href: '/admin/users', label: 'Users', wip: true },
 ];
 

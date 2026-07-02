@@ -37,7 +37,17 @@ function renderIntroduction(text: string, projectsHref: string) {
     });
 }
 
-export default function About({ profile }: { profile?: ProfileDTO | null }) {
+// Static CV bundled in /public/documents — last-resort fallback used only when
+// the backend has no uploaded resume for the current locale.
+const STATIC_RESUME_FALLBACK = '/documents/CV_ALMEIDA_Neo_FR-web.pdf';
+
+export default function About({
+    profile,
+    resumeUrl,
+}: {
+    profile?: ProfileDTO | null;
+    resumeUrl?: string | null;
+}) {
     const t = useTranslations('about');
     const tProjects = useTranslations('projects');
     const locale = useLocale() as Locale;
@@ -96,7 +106,7 @@ export default function About({ profile }: { profile?: ProfileDTO | null }) {
 
                             <Link
                                 className={`${ralewaySemiBold.className} ${styles.download_resume}`}
-                                href="/documents/CV_ALMEIDA_Neo_FR-web.pdf"
+                                href={resumeUrl || STATIC_RESUME_FALLBACK}
                                 target="_blank"
                             >
                                 <span>{t('resumeLink')}</span>

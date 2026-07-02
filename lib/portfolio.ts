@@ -3,6 +3,7 @@ import type {
     ContactDTO,
     ProfileDTO,
     ProjectDTO,
+    ResumeDTO,
     SkillCategoryDTO,
     TimelinePayloadDTO,
 } from './types';
@@ -80,3 +81,10 @@ export const getProfile = () =>
         [...localeTags('profile'), 'greeting'],
         null
     );
+
+// Current CV/resume PDFs (one URL per locale). Tagged `resume`/`resume:fr|en`
+// to match the back's @RevalidateContent('resume'), so re-uploading a CV in the
+// admin busts this cache entry. Falls back to null -> the public site then uses
+// its static /public/documents PDF.
+export const getResume = () =>
+    fetchPublic<ResumeDTO | null>('/resume', localeTags('resume'), null);

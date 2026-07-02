@@ -23,9 +23,11 @@ import {
     getContacts,
     getProfile,
     getProjects,
+    getResume,
     getSkillCategories,
     getTimeline,
 } from '@/lib/portfolio';
+import { resolveResumeUrl } from '@/lib/resume/resolve-url';
 
 export const revalidate = 3600;
 
@@ -41,14 +43,25 @@ export default async function Page(props: Props) {
     const messages = await getMessages();
     const tJobs = await getTranslations('jobs');
 
-    const [rawProjects, rawTimeline, rawCategories, rawContacts, profile] =
-        await Promise.all([
-            getProjects(),
-            getTimeline(),
-            getSkillCategories(),
-            getContacts(),
-            getProfile().catch(() => null),
-        ]);
+    const [
+        rawProjects,
+        rawTimeline,
+        rawCategories,
+        rawContacts,
+        profile,
+        resume,
+    ] = await Promise.all([
+        getProjects(),
+        getTimeline(),
+        getSkillCategories(),
+        getContacts(),
+        getProfile().catch(() => null),
+        getResume(),
+    ]);
+
+    // Locale-specific CV uploaded via the admin; null when none exists, in
+    // which case <About> falls back to its static /public/documents PDF.
+    const resumeUrl = resolveResumeUrl(resume, locale);
 
     const projects = rawProjects
         .filter(p => p.isVisible)
@@ -71,7 +84,7 @@ export default async function Page(props: Props) {
             <main className="main">
                 <Header />
                 <Home profile={profile} locale={locale} />
-                <About profile={profile} />
+                <About profile={profile} resumeUrl={resumeUrl} />
                 <Projects data={projects} />
                 <Skills data={skillCategories} />
                 <Experience data={employerTimeline} />
