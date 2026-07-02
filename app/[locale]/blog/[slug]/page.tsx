@@ -2,9 +2,9 @@ import { Calendar, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { BlogHeader } from '@/app/_components/blog/BlogHeader';
 import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
 import { TableOfContents } from '@/app/_components/blog/TableOfContents';
+import Header from '@/app/_components/header/header';
 import { ralewaySemiBold } from '@/app/fonts';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
@@ -88,9 +88,9 @@ export default async function ArticlePage(props: Props) {
     return (
         <>
             <ReadingProgressBar targetId={ARTICLE_ID} />
-            <BlogHeader />
+            <Header />
 
-            <main className="mx-auto max-w-6xl px-4 py-10">
+            <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
                 <Link
                     href="/blog"
                     className="mb-6 inline-block text-sm text-muted-foreground transition-colors hover:text-foreground"

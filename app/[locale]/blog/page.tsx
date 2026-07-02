@@ -1,8 +1,8 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import readingTime from 'reading-time';
-import { BlogHeader } from '@/app/_components/blog/BlogHeader';
 import { CategoryFilter } from '@/app/_components/blog/CategoryFilter';
 import { PostCard, type PostCardData } from '@/app/_components/blog/PostCard';
+import Header from '@/app/_components/header/header';
 import { ralewaySemiBold } from '@/app/fonts';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
@@ -80,8 +80,8 @@ export default async function BlogListPage(props: Props) {
 
     return (
         <>
-            <BlogHeader />
-            <main className="mx-auto max-w-6xl px-4 py-12">
+            <Header />
+            <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
                 <header className="mb-10">
                     <h1
                         className={`text-4xl font-bold tracking-tight sm:text-5xl ${ralewaySemiBold.className}`}

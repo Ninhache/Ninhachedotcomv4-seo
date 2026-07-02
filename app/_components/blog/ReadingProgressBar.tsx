@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
  * Concave easing so the bar fills FAST early then slows down — a deliberate
  * cognitive nudge (early momentum) without overdoing it. `p^0.7` maps, e.g.,
  * 10% real scroll → ~20% shown, 50% → ~62%, and still resolves to exactly 100%
- * at the end. Tune the exponent down for a stronger early boost.
+ * at the end. Lower the exponent for a stronger early boost.
  */
 const EASE = 0.7;
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
@@ -17,10 +17,12 @@ const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
  * through the article element `#{targetId}` (not the whole document, so the
  * header/footer don't skew it).
  *
- * Rendered via a portal to `document.body`: a `position: fixed` element nested
- * under an ancestor with a CSS `transform` (as `AnimatedComponent` sets) would
- * be positioned relative to that ancestor instead of the viewport — the portal
- * sidesteps that trap entirely.
+ * Rendered via a portal to `document.body` — a `position: fixed` element nested
+ * under a `transform`ed ancestor (as `AnimatedComponent` sets) would be
+ * positioned relative to that ancestor, not the viewport. Because the portal
+ * lives OUTSIDE the blog's themed wrapper, the colour is set explicitly (the
+ * portfolio cyan→blue accents) rather than via the `--primary` token, which
+ * doesn't reach `document.body`.
  */
 export function ReadingProgressBar({ targetId }: { targetId: string }) {
     const [progress, setProgress] = useState(0);
@@ -61,11 +63,24 @@ export function ReadingProgressBar({ targetId }: { targetId: string }) {
     return createPortal(
         <div
             aria-hidden
-            className="fixed inset-x-0 top-0 z-50 h-1 bg-transparent"
+            style={{
+                position: 'fixed',
+                insetInline: 0,
+                top: 0,
+                height: 3,
+                // Above the fixed portfolio header (z-index: 100).
+                zIndex: 200,
+                pointerEvents: 'none',
+            }}
         >
             <div
-                className="h-full origin-left bg-primary transition-[width] duration-75 ease-out"
-                style={{ width: `${(progress * 100).toFixed(2)}%` }}
+                style={{
+                    height: '100%',
+                    width: `${(progress * 100).toFixed(2)}%`,
+                    background: 'linear-gradient(90deg, #56dcfc, #197dff)',
+                    boxShadow: '0 0 8px rgba(86, 220, 252, 0.6)',
+                    transition: 'width 90ms linear',
+                }}
             />
         </div>,
         document.body
