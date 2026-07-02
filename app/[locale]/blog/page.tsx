@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import readingTime from 'reading-time';
+import AnimatedComponent from '@/app/_components/AnimatedComponent';
 import { CategoryFilter } from '@/app/_components/blog/CategoryFilter';
 import { PostCard, type PostCardData } from '@/app/_components/blog/PostCard';
 import { ralewaySemiBold } from '@/app/fonts';
@@ -114,11 +115,16 @@ export default async function BlogListPage(props: Props) {
                 >
                     {posts.map((post, i) => (
                         <div key={post.slug} className={bentoSpan(i)}>
-                            <PostCard
-                                post={post}
-                                readMinutesLabel={t('minutesShort')}
-                                featured={i === 0}
-                            />
+                            <AnimatedComponent
+                                delay={Math.min(i, 6) * 70}
+                                customCss={{ height: '100%' }}
+                            >
+                                <PostCard
+                                    post={post}
+                                    readMinutesLabel={t('minutesShort')}
+                                    featured={i === 0}
+                                />
+                            </AnimatedComponent>
                         </div>
                     ))}
                 </div>
