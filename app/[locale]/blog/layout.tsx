@@ -5,7 +5,7 @@ import '@/app/globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import type { CSSProperties } from 'react';
-import Footer from '@/app/_components/footer';
+import { BlogFooter } from '@/app/_components/blog/BlogFooter';
 import Header from '@/app/_components/header/header';
 import { calibreRegular } from '@/app/fonts';
 import type { Locale } from '@/config';
@@ -58,7 +58,7 @@ export default async function BlogLayout(props: {
                     re-mounting per page. */}
                 <Header />
                 <div className="flex-1">{props.children}</div>
-                <Footer />
+                <BlogFooter />
             </div>
         </NextIntlClientProvider>
     );
