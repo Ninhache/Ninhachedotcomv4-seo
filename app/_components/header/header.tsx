@@ -157,9 +157,9 @@ export default function Header() {
                                             </a>
                                         </li>
                                         <li>
-                                            <Link
+                                            <a
                                                 className={`button ${styles.button}`}
-                                                href={`#${t('contactAnchor')}`}
+                                                href={`/${locale}#${t('contactAnchor')}`}
                                             >
                                                 <p>{t('contact')}</p>
                                                 <svg
@@ -180,7 +180,7 @@ export default function Header() {
                                                         />
                                                     </g>
                                                 </svg>
-                                            </Link>
+                                            </a>
                                         </li>
                                         <li>
                                             <LocaleSwitcher
@@ -247,9 +247,9 @@ export default function Header() {
                             </a>
                         </li>
                         <li>
-                            <Link
+                            <a
                                 className={`button ${styles.button} `}
-                                href="#contact"
+                                href={`/${locale}#${t('contactAnchor')}`}
                             >
                                 <p>{t('contact')}</p>
                                 <svg
@@ -268,7 +268,7 @@ export default function Header() {
                                         />
                                     </g>
                                 </svg>
-                            </Link>
+                            </a>
                         </li>
                         <li>
                             <LocaleSwitcher localeNames={localeNames} />

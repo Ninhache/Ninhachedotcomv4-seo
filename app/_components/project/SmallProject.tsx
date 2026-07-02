@@ -63,49 +63,6 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                                     </svg>
                                 </Link>
                             )}
-                            {project.blogArticleSlug && (
-                                <a
-                                    aria-label={t('readArticle')}
-                                    href={`/${locale}/blog/${project.blogArticleSlug}`}
-                                    style={
-                                        {
-                                            '--color': 'rgb(147, 130, 216)',
-                                        } as React.CSSProperties
-                                    }
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <g>
-                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                                        </g>
-                                    </svg>
-                                </a>
-                            )}
-                            {project.blogCategorySlug && (
-                                <a
-                                    aria-label={t('seeArticles')}
-                                    href={`/${locale}/blog?cat=${project.blogCategorySlug}`}
-                                    style={
-                                        {
-                                            '--color': 'rgb(147, 130, 216)',
-                                        } as React.CSSProperties
-                                    }
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <g>
-                                            <path d="M12 2 2 7l10 5 10-5-10-5z" />
-                                            <path d="M2 17l10 5 10-5" />
-                                            <path d="M2 12l10 5 10-5" />
-                                        </g>
-                                    </svg>
-                                </a>
-                            )}
                         </div>
                     </div>
                     <Link
@@ -125,6 +82,32 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                     <p className={`${styles.text} ${calibreRegular.className}`}>
                         {project.translations[locale].description}
                     </p>
+                    {(project.blogArticleSlug || project.blogCategorySlug) && (
+                        <a
+                            className={ralewaySemiBold.className}
+                            href={
+                                project.blogArticleSlug
+                                    ? `/${locale}/blog/${project.blogArticleSlug}`
+                                    : `/${locale}/blog?cat=${project.blogCategorySlug}`
+                            }
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 6,
+                                marginTop: 10,
+                                padding: '6px 14px',
+                                border: '1px solid #56dcfc',
+                                borderRadius: 999,
+                                color: '#56dcfc',
+                                fontSize: 13,
+                                textDecoration: 'none',
+                                width: 'fit-content',
+                            }}
+                        >
+                            {t('discoverMore')}
+                            <span aria-hidden>→</span>
+                        </a>
+                    )}
                 </div>
                 <div className={`${styles.tags} ${ralewaySemiBold.className}`}>
                     {project.tags.map(tag =>

@@ -2,10 +2,9 @@
 const isDev = process.env.NODE_ENV === 'development';
 
 const config = {
+    allowedDevOrigins: ['localhost', '172.20.10.2'],
     // Pin the workspace root: a stray lockfile in a parent dir made Turbopack
     // infer the wrong root. Without this, Next warns and may resolve from there.
-    turbopack: { root: __dirname },
-
     images: {
         dangerouslyAllowLocalIP: isDev,
         remotePatterns: [

@@ -5,6 +5,8 @@ import '@/app/globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import type { CSSProperties } from 'react';
+import Footer from '@/app/_components/footer';
+import Header from '@/app/_components/header/header';
 import { calibreRegular } from '@/app/fonts';
 import type { Locale } from '@/config';
 
@@ -48,10 +50,15 @@ export default async function BlogLayout(props: {
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>
             <div
-                className={`dark min-h-screen bg-background text-foreground ${calibreRegular.className}`}
+                className={`dark flex min-h-screen flex-col bg-background text-foreground ${calibreRegular.className}`}
                 style={PORTFOLIO_THEME}
             >
-                {props.children}
+                {/* Header + Footer live in the layout so they're a single shared
+                    instance across blog navigation (list ↔ article), instead of
+                    re-mounting per page. */}
+                <Header />
+                <div className="flex-1">{props.children}</div>
+                <Footer />
             </div>
         </NextIntlClientProvider>
     );

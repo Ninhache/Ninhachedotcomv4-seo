@@ -2,7 +2,6 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import readingTime from 'reading-time';
 import { CategoryFilter } from '@/app/_components/blog/CategoryFilter';
 import { PostCard, type PostCardData } from '@/app/_components/blog/PostCard';
-import Header from '@/app/_components/header/header';
 import { ralewaySemiBold } from '@/app/fonts';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
@@ -79,54 +78,51 @@ export default async function BlogListPage(props: Props) {
         .map(c => ({ slug: c.slug, name: categoryName(c, loc) }));
 
     return (
-        <>
-            <Header />
-            <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
-                <header className="mb-10">
-                    <h1
-                        className={`text-4xl font-bold tracking-tight sm:text-5xl ${ralewaySemiBold.className}`}
-                    >
-                        {t('title')}
-                    </h1>
-                    <p className="mt-3 max-w-2xl text-muted-foreground">
-                        {t('intro')}
-                    </p>
-                </header>
+        <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
+            <header className="mb-10">
+                <h1
+                    className={`text-4xl font-bold tracking-tight sm:text-5xl ${ralewaySemiBold.className}`}
+                >
+                    {t('title')}
+                </h1>
+                <p className="mt-3 max-w-2xl text-muted-foreground">
+                    {t('intro')}
+                </p>
+            </header>
 
-                {chips.length > 0 && (
-                    <div className="mb-8">
-                        <CategoryFilter
-                            categories={chips}
-                            active={cat}
-                            allLabel={t('allCategories')}
-                        />
-                    </div>
-                )}
+            {chips.length > 0 && (
+                <div className="mb-8">
+                    <CategoryFilter
+                        categories={chips}
+                        active={cat}
+                        allLabel={t('allCategories')}
+                    />
+                </div>
+            )}
 
-                {posts.length === 0 ? (
-                    <p className="rounded-2xl border border-dashed border-border py-20 text-center text-muted-foreground">
-                        {t('empty')}
-                    </p>
-                ) : (
-                    <div
-                        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-                        style={{
-                            gridAutoRows: '13rem',
-                            gridAutoFlow: 'dense',
-                        }}
-                    >
-                        {posts.map((post, i) => (
-                            <div key={post.slug} className={bentoSpan(i)}>
-                                <PostCard
-                                    post={post}
-                                    readMinutesLabel={t('minutesShort')}
-                                    featured={i === 0}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </main>
-        </>
+            {posts.length === 0 ? (
+                <p className="rounded-2xl border border-dashed border-border py-20 text-center text-muted-foreground">
+                    {t('empty')}
+                </p>
+            ) : (
+                <div
+                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                    style={{
+                        gridAutoRows: '13rem',
+                        gridAutoFlow: 'dense',
+                    }}
+                >
+                    {posts.map((post, i) => (
+                        <div key={post.slug} className={bentoSpan(i)}>
+                            <PostCard
+                                post={post}
+                                readMinutesLabel={t('minutesShort')}
+                                featured={i === 0}
+                            />
+                        </div>
+                    ))}
+                </div>
+            )}
+        </main>
     );
 }

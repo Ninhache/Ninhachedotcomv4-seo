@@ -51,7 +51,8 @@
             "random": "Aléatoire"
         },
         "readArticle": "Lire l'article",
-        "seeArticles": "Voir les articles"
+        "seeArticles": "Voir les articles",
+        "discoverMore": "En découvrir plus"
     },
     "skills": {
         "anchor": "competences",

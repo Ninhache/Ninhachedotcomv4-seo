@@ -51,7 +51,8 @@
             "random": "Random"
         },
         "readArticle": "Read the article",
-        "seeArticles": "See the articles"
+        "seeArticles": "See the articles",
+        "discoverMore": "Discover more"
     },
     "skills": {
         "anchor": "skills",

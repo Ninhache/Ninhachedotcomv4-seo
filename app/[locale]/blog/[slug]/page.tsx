@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
 import { TableOfContents } from '@/app/_components/blog/TableOfContents';
-import Header from '@/app/_components/header/header';
 import { ralewaySemiBold } from '@/app/fonts';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
@@ -88,7 +87,6 @@ export default async function ArticlePage(props: Props) {
     return (
         <>
             <ReadingProgressBar targetId={ARTICLE_ID} />
-            <Header />
 
             <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
                 <Link
