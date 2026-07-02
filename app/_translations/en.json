@@ -15,7 +15,8 @@
         "projectsAnchor": "projects",
         "skillsAnchor": "skills",
         "experienceAnchor": "experiences",
-        "contactAnchor": "contact"
+        "contactAnchor": "contact",
+        "blog": "Blog"
     },
     "home": {
         "anchor": "home",
@@ -86,5 +87,15 @@
     },
     "LocaleSwitcher": {
         "switchLocale": "Switch to {locale, select, de {English} in {French} other {Unknown}}"
+    },
+    "blog": {
+        "title": "Blog",
+        "intro": "Experience reports and notes on my projects and various technical topics.",
+        "empty": "No articles yet.",
+        "allCategories": "All",
+        "minutesShort": "min read",
+        "tocLabel": "Contents",
+        "backHome": "Portfolio",
+        "backToList": "All articles"
     }
 }

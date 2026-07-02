@@ -10,6 +10,7 @@ import AnimatedComponent from '@/app/_components/AnimatedComponent';
 import useLocaleNames from '@/app/_hooks/useLocaleNames';
 import useMobileView from '@/app/_hooks/useMobileView';
 import { ralewaySemiBold } from '@/app/fonts';
+import { Link as LocalizedLink } from '@/navigation';
 import styles from '@/styles/header.module.css';
 import LocaleSwitcher from '../LocaleSwitcher';
 
@@ -144,6 +145,14 @@ export default function Header() {
                                             </li>
                                         ))}
                                         <li>
+                                            <LocalizedLink
+                                                className={styles.not_button}
+                                                href="/blog"
+                                            >
+                                                {t('blog')}
+                                            </LocalizedLink>
+                                        </li>
+                                        <li>
                                             <Link
                                                 className={`button ${styles.button}`}
                                                 href={`#${t('contactAnchor')}`}
@@ -224,6 +233,15 @@ export default function Header() {
                                 />
                             </li>
                         ))}
+                        <li>
+                            <LocalizedLink
+                                className={styles.not_button}
+                                href="/blog"
+                                onClick={closeMobileMenu}
+                            >
+                                {t('blog')}
+                            </LocalizedLink>
+                        </li>
                         <li>
                             <Link
                                 className={`button ${styles.button} `}

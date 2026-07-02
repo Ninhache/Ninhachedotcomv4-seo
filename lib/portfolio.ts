@@ -19,7 +19,7 @@ import type {
  * a page never 500s. With ISR, the last good version keeps being served while a
  * background regeneration recovers.
  */
-async function fetchPublic<T>(
+export async function fetchPublic<T>(
     path: string,
     tags: string[],
     fallback: T
@@ -47,7 +47,11 @@ async function fetchPublic<T>(
 // Cache-tag convention — MUST match the backend exactly: `<entity>` plus a
 // variant per locale. One response carries both locales, so any locale-scoped
 // invalidation busts the shared cache entry.
-const localeTags = (entity: string) => [entity, `${entity}:fr`, `${entity}:en`];
+export const localeTags = (entity: string) => [
+    entity,
+    `${entity}:fr`,
+    `${entity}:en`,
+];
 
 export const getProjects = () =>
     fetchPublic<ProjectDTO[]>('/project', localeTags('projects'), []);

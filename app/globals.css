@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -117,4 +118,33 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* Blog callouts — output of lib/markdown/remark-callouts.ts (`:::tip … :::`).
+   Rendered inside `.prose`; the accent colour is themed per kind. */
+.callout {
+    --callout-accent: oklch(0.7 0.04 260);
+    margin: 1.5rem 0;
+    border-left: 3px solid var(--callout-accent);
+    border-radius: 0.5rem;
+    padding: 0.25rem 1rem;
+    background: color-mix(in oklch, var(--callout-accent) 12%, transparent);
+}
+.callout > :first-child {
+    margin-top: 0.75rem;
+}
+.callout > :last-child {
+    margin-bottom: 0.75rem;
+}
+.callout-info {
+    --callout-accent: oklch(0.7 0.13 235);
+}
+.callout-tip {
+    --callout-accent: oklch(0.72 0.16 155);
+}
+.callout-warning {
+    --callout-accent: oklch(0.78 0.15 80);
+}
+.callout-danger {
+    --callout-accent: oklch(0.65 0.2 25);
 }
