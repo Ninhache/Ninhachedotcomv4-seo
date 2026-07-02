@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { ralewaySemiBold } from '@/app/fonts';
 import { CYAN } from './tokens';
 
 type DetailsProps = {
@@ -16,8 +17,10 @@ type DetailsProps = {
  */
 export function Details({ summary = 'Détails', children }: DetailsProps) {
     return (
-        <details className="group my-6 rounded-xl border border-border bg-muted/20 p-4 open:pb-4">
-            <summary className="not-prose flex cursor-pointer list-none items-center gap-2 font-semibold [&::-webkit-details-marker]:hidden">
+        <details className="group my-6 rounded-2xl border border-border bg-card p-5 transition-colors open:pb-4 hover:border-primary/40">
+            <summary
+                className={`not-prose flex cursor-pointer list-none items-center gap-2 ${ralewaySemiBold.className} [&::-webkit-details-marker]:hidden`}
+            >
                 <ChevronRight
                     aria-hidden
                     className="h-4 w-4 shrink-0 transition-transform duration-200 group-open:rotate-90"

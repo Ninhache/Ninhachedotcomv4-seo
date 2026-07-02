@@ -33,3 +33,14 @@ export function toneSurface(tone: Tone) {
         background: `color-mix(in oklch, ${accent} 10%, transparent)`,
     };
 }
+
+/**
+ * Utility classes for a panel body inside a `not-prose` container. `not-prose`
+ * (needed on panels so the ambient `.prose` doesn't fight custom layout, and so
+ * `<Steps>`/`<Timeline>` suppress prose's own `<ol>` counters) also strips list
+ * bullets and paragraph spacing via Tailwind's reset. This restores markdown
+ * basics (lists, paragraph rhythm, links) plus trims the first/last margin so
+ * content sits flush inside the panel.
+ */
+export const PANEL_BODY =
+    '[&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_a]:text-primary [&_a]:underline';

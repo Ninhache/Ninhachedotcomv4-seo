@@ -5,7 +5,8 @@ import {
     type ReactElement,
     type ReactNode,
 } from 'react';
-import { CYAN } from './tokens';
+import { ralewaySemiBold } from '@/app/fonts';
+import { CYAN, PANEL_BODY } from './tokens';
 
 type StepProps = {
     title?: string;
@@ -39,10 +40,12 @@ export function Step({ title, n, isLast, children }: StepProps) {
             >
                 {n}
             </span>
-            {title && <p className="mt-1 mb-1 font-semibold">{title}</p>}
-            <div className="[&>:first-child]:mt-0 [&>:last-child]:mb-0">
-                {children}
-            </div>
+            {title && (
+                <p className={`mt-1 mb-1 ${ralewaySemiBold.className}`}>
+                    {title}
+                </p>
+            )}
+            <div className={PANEL_BODY}>{children}</div>
         </li>
     );
 }

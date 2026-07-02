@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { type Tone, toneSurface } from './tokens';
+import { ralewaySemiBold } from '@/app/fonts';
+import { PANEL_BODY, type Tone, toneSurface } from './tokens';
 
 /**
  * One panel of a `<Compare>`. `tone` colors the label chip + border:
@@ -17,12 +18,12 @@ export function Side({
     const s = toneSurface(tone);
     return (
         <div
-            className="rounded-lg border p-4"
+            className="rounded-2xl border p-5"
             style={{ borderColor: s.borderColor, background: s.background }}
         >
             {label && (
                 <div
-                    className="mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold text-xs"
+                    className={`mb-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs uppercase tracking-wide ${ralewaySemiBold.className}`}
                     style={{
                         color: s.accent,
                         background: `color-mix(in oklch, ${s.accent} 15%, transparent)`,
@@ -31,9 +32,7 @@ export function Side({
                     {label}
                 </div>
             )}
-            <div className="[&>:first-child]:mt-0 [&>:last-child]:mb-0">
-                {children}
-            </div>
+            <div className={PANEL_BODY}>{children}</div>
         </div>
     );
 }

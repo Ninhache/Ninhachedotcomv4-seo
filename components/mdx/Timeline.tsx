@@ -5,7 +5,8 @@ import {
     type ReactElement,
     type ReactNode,
 } from 'react';
-import { CYAN } from './tokens';
+import { ralewaySemiBold } from '@/app/fonts';
+import { CYAN, PANEL_BODY } from './tokens';
 
 type TimelineItemProps = {
     date?: string;
@@ -40,14 +41,18 @@ export function TimelineItem({
                 style={{ background: '#0f1d30', borderColor: CYAN }}
             />
             {date && (
-                <p className="mt-0 mb-0.5 text-muted-foreground text-xs">
+                <p
+                    className={`mt-0 mb-0.5 text-muted-foreground text-xs uppercase tracking-wide ${ralewaySemiBold.className}`}
+                >
                     {date}
                 </p>
             )}
-            {title && <p className="mt-0 mb-1 font-semibold">{title}</p>}
-            <div className="[&>:first-child]:mt-0 [&>:last-child]:mb-0">
-                {children}
-            </div>
+            {title && (
+                <p className={`mt-0 mb-1 ${ralewaySemiBold.className}`}>
+                    {title}
+                </p>
+            )}
+            <div className={PANEL_BODY}>{children}</div>
         </li>
     );
 }

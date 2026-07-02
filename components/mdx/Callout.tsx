@@ -8,6 +8,7 @@ import {
     StickyNote,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { ralewaySemiBold } from '@/app/fonts';
 
 // Canonical ASCII kinds (accented author input like "piège" is normalized to these).
 type CalloutKind =
@@ -70,7 +71,7 @@ export function Callout({
     return (
         <div className={`callout callout-${kind}`}>
             <p
-                className="mt-0 mb-2 flex items-center gap-2 font-semibold"
+                className={`mt-0 mb-2 flex items-center gap-2 ${ralewaySemiBold.className}`}
                 style={{ color: 'var(--callout-accent)' }}
             >
                 <Icon className="h-4 w-4 shrink-0" />

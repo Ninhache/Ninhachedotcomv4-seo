@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { ralewaySemiBold } from '@/app/fonts';
 import { BLUE, CYAN, TONE, type Tone, toneSurface } from './tokens';
 
 /**
@@ -42,7 +43,7 @@ export function Badge({
     const s = toneSurface(tone);
     return (
         <span
-            className="inline-flex items-center rounded-full px-2 py-0.5 font-medium text-xs"
+            className={`inline-flex items-center rounded-full px-2 py-0.5 text-[0.7rem] uppercase tracking-wide ${ralewaySemiBold.className}`}
             style={{
                 color: s.accent,
                 background: s.background,

@@ -123,7 +123,7 @@ export function DeltaE({ a, b }: { a: string; b: string }) {
     const labB = hexToLab(b);
     const de = deltaE76(labA, labB);
     return (
-        <div className="not-prose my-6 rounded-xl border border-border p-4">
+        <div className="not-prose my-6 rounded-2xl border border-border p-5 transition-colors hover:border-primary/40">
             <div className="flex flex-wrap items-center gap-6">
                 <Swatch hex={a} lab={labA} label="A" />
                 <Swatch hex={b} lab={labB} label="B" />
