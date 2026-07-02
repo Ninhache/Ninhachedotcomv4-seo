@@ -2,9 +2,12 @@ import { Callout } from './Callout';
 import { Chart } from './Chart';
 import { Compare, Side } from './Compare';
 import { Figure } from './Figure';
+import { HexDump } from './HexDump';
 import { Mark, U } from './Inline';
 import { Pre } from './Pre';
 import { Step, Steps } from './Steps';
+import { DeltaE, Swatch } from './Swatch';
+import { Table, TruthTable } from './Table';
 
 /**
  * The component map exposed to article MDX. An article body references these by
@@ -24,9 +27,14 @@ export const mdxComponents = {
     Step,
     Compare,
     Side,
+    HexDump,
+    Swatch,
+    DeltaE,
+    TruthTable,
     // inline
     U,
     Mark,
     // element overrides
     pre: Pre,
+    table: Table,
 };

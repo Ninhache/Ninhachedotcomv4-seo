@@ -259,3 +259,16 @@ code[data-line-numbers] > [data-line]::before {
     text-align: right;
     color: #4a5c74;
 }
+
+/* Blog tables — enhance the prose defaults (header tint + zebra) for the
+   truth/risk tables these articles lean on. Wide tables scroll via the
+   <Table> element override (components/mdx/Table.tsx). */
+.prose thead {
+    background: color-mix(in srgb, #56dcfc 9%, transparent);
+}
+.prose tbody tr:nth-child(even) {
+    background: color-mix(in srgb, #ffffff 3%, transparent);
+}
+.prose th {
+    font-weight: 600;
+}
