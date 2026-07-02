@@ -19,15 +19,23 @@ import type {
  * a page never 500s. With ISR, the last good version keeps being served while a
  * background regeneration recovers.
  */
+// In dev, Next's data cache + `revalidateTag` don't reliably purge, so edits
+// wouldn't show without restarting. Skip the cache in dev (local backend is
+// fast); keep the tagged ISR cache in production.
+const isDev = process.env.NODE_ENV === 'development';
+
 export async function fetchPublic<T>(
     path: string,
     tags: string[],
     fallback: T
 ): Promise<T> {
     try {
-        const res = await fetch(`${baseUrl}${path}`, {
-            next: { tags, revalidate: 86400 },
-        });
+        const res = await fetch(
+            `${baseUrl}${path}`,
+            isDev
+                ? { cache: 'no-store' }
+                : { next: { tags, revalidate: 86400 } }
+        );
         if (!res.ok) {
             console.warn(
                 `Portfolio API error: ${res.status} on ${path} — serving fallback`
