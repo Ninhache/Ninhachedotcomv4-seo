@@ -3,6 +3,7 @@
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Pencil, Plus, RefreshCcw, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import {
     AdminCard,
@@ -11,8 +12,6 @@ import {
     AdminToolbar,
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
-import { ArticleForm } from '@/components/articles/form';
-import { useAutoSaveDialog } from '@/components/forms/use-auto-save-dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -27,12 +26,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import {
     Table,
@@ -67,9 +60,7 @@ export default function ArticlesPage() {
     const [items, setItems] = useState<ArticleDTO[]>([]);
     const [categories, setCategories] = useState<ArticleCategoryDTO[]>([]);
     const [q, setQ] = useState('');
-    const [open, setOpen] = useState(false);
-    const [current, setCurrent] = useState<ArticleDTO | null>(null);
-    const { register, onOpenChange, closeWithoutSaving } = useAutoSaveDialog();
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [visibilityPending, setVisibilityPending] = useState<string | null>(
         null
@@ -141,10 +132,7 @@ export default function ArticlesPage() {
                         </Button>
                         <Button
                             size="sm"
-                            onClick={() => {
-                                setCurrent(null);
-                                setOpen(true);
-                            }}
+                            onClick={() => router.push('/admin/articles/new')}
                         >
                             <Plus className="mr-1 h-4 w-4" /> Nouveau
                         </Button>
@@ -187,10 +175,11 @@ export default function ArticlesPage() {
                                 {filtered.map(it => (
                                     <TableRow
                                         key={it.id}
-                                        onDoubleClick={() => {
-                                            setCurrent(it);
-                                            setOpen(true);
-                                        }}
+                                        onDoubleClick={() =>
+                                            router.push(
+                                                `/admin/articles/${it.id}`
+                                            )
+                                        }
                                         className="cursor-pointer hover:bg-muted/50"
                                     >
                                         <TableCell className="font-medium">
@@ -294,10 +283,11 @@ export default function ArticlesPage() {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    onClick={() => {
-                                                        setCurrent(it);
-                                                        setOpen(true);
-                                                    }}
+                                                    onClick={() =>
+                                                        router.push(
+                                                            `/admin/articles/${it.id}`
+                                                        )
+                                                    }
                                                     aria-label="Éditer"
                                                 >
                                                     <Pencil className="h-4 w-4" />
@@ -373,30 +363,6 @@ export default function ArticlesPage() {
                     </div>
                 </CardContent>
             </AdminCard>
-
-            <Dialog open={open} onOpenChange={onOpenChange(setOpen)}>
-                <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-hidden">
-                    <DialogHeader>
-                        <DialogTitle>
-                            {current ? 'Éditer un article' : 'Créer un article'}
-                        </DialogTitle>
-                    </DialogHeader>
-                    <div className="max-h-[70vh] overflow-y-auto py-2 pr-1">
-                        <ArticleForm
-                            initial={current}
-                            categories={categories}
-                            onRegister={register}
-                            onCancel={() =>
-                                closeWithoutSaving(() => setOpen(false))
-                            }
-                            onSaved={() => {
-                                closeWithoutSaving(() => setOpen(false));
-                                load();
-                            }}
-                        />
-                    </div>
-                </DialogContent>
-            </Dialog>
         </AdminPageShell>
     );
 }

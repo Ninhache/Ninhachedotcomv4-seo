@@ -1,4 +1,8 @@
+'use client';
+
+import { ChevronDown } from 'lucide-react';
 import type React from 'react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 /**
@@ -42,23 +46,47 @@ export function FormSection({
     description,
     children,
     className,
+    collapsible = false,
+    defaultOpen = true,
 }: {
     icon: React.ElementType;
     title: string;
     description?: string;
     children: React.ReactNode;
     className?: string;
+    // When true, the header becomes a toggle that collapses the card body.
+    // The body stays MOUNTED (hidden via CSS) so form field state is preserved.
+    collapsible?: boolean;
+    defaultOpen?: boolean;
 }) {
+    const [open, setOpen] = useState(defaultOpen);
+    const heading = (
+        <SectionHeading icon={icon} title={title} description={description} />
+    );
     return (
         <section className="space-y-4">
-            <SectionHeading
-                icon={icon}
-                title={title}
-                description={description}
-            />
+            {collapsible ? (
+                <button
+                    type="button"
+                    onClick={() => setOpen(o => !o)}
+                    aria-expanded={open}
+                    className="flex w-full items-center justify-between gap-2 text-left"
+                >
+                    {heading}
+                    <ChevronDown
+                        className={cn(
+                            'h-4 w-4 shrink-0 text-muted-foreground transition-transform',
+                            !open && '-rotate-90'
+                        )}
+                    />
+                </button>
+            ) : (
+                heading
+            )}
             <div
                 className={cn(
                     'rounded-lg border bg-muted/30 p-4 space-y-4',
+                    collapsible && !open && 'hidden',
                     className
                 )}
             >

@@ -262,6 +262,7 @@ export function ArticleForm({
         <form ref={formElRef} onSubmit={handleFormSubmit} className="space-y-8">
             {/* ── Section 1: Informations ── */}
             <FormSection
+                collapsible
                 icon={Globe}
                 title="Informations"
                 description="Identifiant, publication, visibilité et image de couverture."
@@ -342,6 +343,7 @@ export function ArticleForm({
 
             {/* ── Section 2: Catégories & tags ── */}
             <FormSection
+                collapsible
                 icon={Tag}
                 title="Catégories & tags"
                 description="Classement dans le blog et mots-clés libres."
@@ -377,6 +379,7 @@ export function ArticleForm({
 
             {/* ── Section 3: Contenu ── */}
             <FormSection
+                collapsible
                 icon={FileText}
                 title="Contenu"
                 description="Titre, extrait et corps (Markdown) dans chaque langue."
