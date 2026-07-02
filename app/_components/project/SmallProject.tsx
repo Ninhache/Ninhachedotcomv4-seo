@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import { calibreRegular, calibreSemibold, ralewaySemiBold } from '@/app/fonts';
 import { Locale } from '@/config';
 import { Project } from '@/jsons/jsonUtils';
-import { Link as LocalizedLink } from '@/navigation';
 import styles from '@/styles/projects/smallproject.module.css';
 
 export interface SmallProjectProps {
@@ -65,9 +64,9 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                                 </Link>
                             )}
                             {project.blogArticleSlug && (
-                                <LocalizedLink
+                                <a
                                     aria-label={t('readArticle')}
-                                    href={`/blog/${project.blogArticleSlug}`}
+                                    href={`/${locale}/blog/${project.blogArticleSlug}`}
                                     style={
                                         {
                                             '--color': 'rgb(147, 130, 216)',
@@ -83,12 +82,12 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                                             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                         </g>
                                     </svg>
-                                </LocalizedLink>
+                                </a>
                             )}
                             {project.blogCategorySlug && (
-                                <LocalizedLink
+                                <a
                                     aria-label={t('seeArticles')}
-                                    href={`/blog?cat=${project.blogCategorySlug}`}
+                                    href={`/${locale}/blog?cat=${project.blogCategorySlug}`}
                                     style={
                                         {
                                             '--color': 'rgb(147, 130, 216)',
@@ -105,7 +104,7 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                                             <path d="M2 12l10 5 10-5" />
                                         </g>
                                     </svg>
-                                </LocalizedLink>
+                                </a>
                             )}
                         </div>
                     </div>

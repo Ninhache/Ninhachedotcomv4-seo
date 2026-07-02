@@ -4,13 +4,12 @@ import throttle from 'lodash.throttle'; // lodash throttle function
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import AnimatedComponent from '@/app/_components/AnimatedComponent';
 import useLocaleNames from '@/app/_hooks/useLocaleNames';
 import useMobileView from '@/app/_hooks/useMobileView';
 import { ralewaySemiBold } from '@/app/fonts';
-import { Link as LocalizedLink } from '@/navigation';
 import styles from '@/styles/header.module.css';
 import LocaleSwitcher from '../LocaleSwitcher';
 
@@ -23,6 +22,7 @@ interface menuItemObject {
 
 export default function Header() {
     const t = useTranslations('header');
+    const locale = useLocale();
     const localeNames = useLocaleNames();
 
     const menuItems: menuItemObject[] = [
@@ -145,12 +145,16 @@ export default function Header() {
                                             </li>
                                         ))}
                                         <li>
-                                            <LocalizedLink
+                                            {/* Hard nav: crosses the CSS-modules
+                                                site → Tailwind blog boundary, so
+                                                a full load guarantees the blog's
+                                                stylesheet is applied. */}
+                                            <a
                                                 className={styles.not_button}
-                                                href="/blog"
+                                                href={`/${locale}/blog`}
                                             >
                                                 {t('blog')}
-                                            </LocalizedLink>
+                                            </a>
                                         </li>
                                         <li>
                                             <Link
@@ -234,13 +238,13 @@ export default function Header() {
                             </li>
                         ))}
                         <li>
-                            <LocalizedLink
+                            <a
                                 className={styles.not_button}
-                                href="/blog"
+                                href={`/${locale}/blog`}
                                 onClick={closeMobileMenu}
                             >
                                 {t('blog')}
-                            </LocalizedLink>
+                            </a>
                         </li>
                         <li>
                             <Link

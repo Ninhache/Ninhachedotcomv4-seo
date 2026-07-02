@@ -14,7 +14,6 @@ import {
 } from '@/app/fonts';
 import { Locale } from '@/config';
 import { Project } from '@/jsons/jsonUtils';
-import { Link as LocalizedLink } from '@/navigation';
 import styles from '@/styles/projects/bigproject.module.css';
 
 export interface BigProjectProps {
@@ -212,8 +211,8 @@ export const BigProject: React.FC<BigProjectProps> = ({
                             </Link>
                         )}
                         {project.blogArticleSlug && (
-                            <LocalizedLink
-                                href={`/blog/${project.blogArticleSlug}`}
+                            <a
+                                href={`/${locale}/blog/${project.blogArticleSlug}`}
                                 style={
                                     {
                                         '--color': 'rgb(147, 130, 216)',
@@ -235,11 +234,11 @@ export const BigProject: React.FC<BigProjectProps> = ({
                                 >
                                     {t('readArticle')}
                                 </span>
-                            </LocalizedLink>
+                            </a>
                         )}
                         {project.blogCategorySlug && (
-                            <LocalizedLink
-                                href={`/blog?cat=${project.blogCategorySlug}`}
+                            <a
+                                href={`/${locale}/blog?cat=${project.blogCategorySlug}`}
                                 style={
                                     {
                                         '--color': 'rgb(147, 130, 216)',
@@ -262,7 +261,7 @@ export const BigProject: React.FC<BigProjectProps> = ({
                                 >
                                     {t('seeArticles')}
                                 </span>
-                            </LocalizedLink>
+                            </a>
                         )}
                     </div>
                 </div>
