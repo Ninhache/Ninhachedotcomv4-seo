@@ -9,6 +9,7 @@ import { Details } from './Details';
 import { Divider } from './Divider';
 import { FadeIn } from './FadeIn';
 import { Figure } from './Figure';
+import { Flow } from './Flow';
 import { Cols, Grid } from './Grid';
 import { HexDump } from './HexDump';
 import { Mark, U } from './Inline';
@@ -80,6 +81,7 @@ export const mdxComponents = {
     Wide: withFadeIn(Wide),
     Banner: withFadeIn(Banner),
     ArticleLink: withFadeIn(ArticleLink),
+    Flow: withFadeIn(Flow),
     // block, no fade (children of the above, or layout containers)
     Step,
     Side,
