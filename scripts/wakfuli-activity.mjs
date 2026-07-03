@@ -14,14 +14,25 @@
  * Output: data/commits/<slug>.json  (then register it in components/mdx/commit-data.ts)
  */
 import { execSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 
 const US = '\x1f'; // unit separator: safe field delimiter (never in commit text)
 const [slugArg, ...repoArgs] = process.argv.slice(2);
 const slug = slugArg || 'wakfuli-builder';
-const repos = repoArgs.length
+const wanted = repoArgs.length
     ? repoArgs
     : [`${process.env.HOME}/projects/${slug}`];
+
+// Prod-safe: the private repo only exists on the author's machine. When it's
+// absent (CI / deploy), keep the already-committed snapshot instead of writing
+// an empty one, so this can run as a guarded `prebuild` hook.
+const repos = wanted.filter(r => existsSync(`${r}/.git`));
+if (repos.length === 0) {
+    console.log(
+        `[${slug}] no local repo (${wanted.join(', ')}); keeping committed data/commits/${slug}.json`
+    );
+    process.exit(0);
+}
 
 const seen = new Set();
 const punchcard = Array.from({ length: 7 }, () => new Array(24).fill(0));
