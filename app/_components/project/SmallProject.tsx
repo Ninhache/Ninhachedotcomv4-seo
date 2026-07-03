@@ -82,18 +82,51 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                     <p className={`${styles.text} ${calibreRegular.className}`}>
                         {project.translations[locale].description}
                     </p>
+                    {(project.blogArticleSlug || project.blogCategorySlug) && (
+                        <a
+                            className={ralewaySemiBold.className}
+                            href={
+                                project.blogArticleSlug
+                                    ? `/${locale}/blog/${project.blogArticleSlug}`
+                                    : `/${locale}/blog?cat=${project.blogCategorySlug}`
+                            }
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 6,
+                                marginTop: 10,
+                                padding: '6px 14px',
+                                border: '1px solid #56dcfc',
+                                borderRadius: 999,
+                                color: '#56dcfc',
+                                fontSize: 13,
+                                textDecoration: 'none',
+                                width: 'fit-content',
+                            }}
+                        >
+                            {t('discoverMore')}
+                            <span aria-hidden>→</span>
+                        </a>
+                    )}
                 </div>
                 <div className={`${styles.tags} ${ralewaySemiBold.className}`}>
-                    {project.tags.map(tag => (
-                        <Link
-                            key={tag.name}
-                            className={`${styles.tag}`}
-                            href={`${tag.url}`}
-                            target="_blank"
-                        >
-                            {tag.name}
-                        </Link>
-                    ))}
+                    {project.tags.map(tag =>
+                        tag.url && tag.url !== '#' ? (
+                            <Link
+                                key={tag.name}
+                                className={`${styles.tag}`}
+                                href={`${tag.url}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {tag.name}
+                            </Link>
+                        ) : (
+                            <span key={tag.name} className={`${styles.tag}`}>
+                                {tag.name}
+                            </span>
+                        )
+                    )}
                 </div>
             </div>
         </>

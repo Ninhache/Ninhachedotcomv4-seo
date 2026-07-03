@@ -150,15 +150,20 @@ export const BigProject: React.FC<BigProjectProps> = ({
                     <div
                         className={`${styles.tags} ${ralewaySemiBold.className}`}
                     >
-                        {project.tags.map(tag => (
-                            <Link
-                                key={tag.name}
-                                href={`${tag.url}`}
-                                target="_blank"
-                            >
-                                {tag.name}
-                            </Link>
-                        ))}
+                        {project.tags.map(tag =>
+                            tag.url && tag.url !== '#' ? (
+                                <Link
+                                    key={tag.name}
+                                    href={`${tag.url}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {tag.name}
+                                </Link>
+                            ) : (
+                                <span key={tag.name}>{tag.name}</span>
+                            )
+                        )}
                     </div>
                     <div className={`${styles.links}`}>
                         {project.links.git !== 'none' && (
@@ -206,6 +211,32 @@ export const BigProject: React.FC<BigProjectProps> = ({
                             </Link>
                         )}
                     </div>
+                    {(project.blogArticleSlug || project.blogCategorySlug) && (
+                        <a
+                            className={ralewaySemiBold.className}
+                            href={
+                                project.blogArticleSlug
+                                    ? `/${locale}/blog/${project.blogArticleSlug}`
+                                    : `/${locale}/blog?cat=${project.blogCategorySlug}`
+                            }
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: 8,
+                                marginTop: 18,
+                                padding: '9px 18px',
+                                border: '1px solid #56dcfc',
+                                borderRadius: 999,
+                                color: '#56dcfc',
+                                fontSize: 14,
+                                textDecoration: 'none',
+                                width: 'fit-content',
+                            }}
+                        >
+                            {t('discoverMore')}
+                            <span aria-hidden>→</span>
+                        </a>
+                    )}
                 </div>
                 {!isMobile && (
                     <div className={`${styles.project_view}`}>

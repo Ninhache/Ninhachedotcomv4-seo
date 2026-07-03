@@ -2,6 +2,7 @@
 
 import type { AxiosInstance } from 'axios';
 import { signOut } from 'next-auth/react';
+import { clearAccessToken } from './session-token';
 
 // Guards against concurrent 401s triggering multiple sign-outs.
 let signingOut = false;
@@ -23,6 +24,7 @@ export function handleUnauthorized(api: AxiosInstance) {
                 typeof window !== 'undefined'
             ) {
                 signingOut = true;
+                clearAccessToken();
                 signOut({ callbackUrl: '/admin/login' });
             }
             return Promise.reject(error);

@@ -1,11 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ImageIcon } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import type { EditFormHandle } from '@/components/forms/edit-form-handle';
+import { FormSection } from '@/components/forms/form-section';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
+import { MediaUploadField } from '@/components/forms/media-upload-field';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,7 +24,9 @@ const TranslationSchema = z.object({ name: z.string().min(1, 'Requis') });
 
 const FormSchema = z.object({
     contactUrl: z.string().url('URL invalide'),
-    imageUrl: z.string().url('URL invalide'),
+    // Accepts a remote URL, an uploaded `/uploads/…` path, or a static
+    // `public/` ref — same as every other media field (resolved by mediaSrc).
+    imageUrl: z.string().min(1, 'Image requise'),
     isVisible: z.boolean(),
     translations: z.record(z.string(), TranslationSchema),
 });
@@ -145,23 +150,6 @@ export function ContactForm({
                     </p>
                 </div>
 
-                <div className="grid gap-2">
-                    <Label>Image URL</Label>
-                    <Input
-                        value={form.watch('imageUrl') || ''}
-                        onChange={e =>
-                            form.setValue('imageUrl', e.target.value, {
-                                shouldDirty: true,
-                                shouldValidate: true,
-                            })
-                        }
-                        placeholder="https://..."
-                    />
-                    <p className="text-xs text-destructive">
-                        {form.formState.errors.imageUrl?.message}
-                    </p>
-                </div>
-
                 <div className="flex items-center gap-3 rounded-md border px-3 py-2">
                     <Switch
                         checked={!!form.watch('isVisible')}
@@ -180,6 +168,29 @@ export function ContactForm({
                     </div>
                 </div>
             </div>
+
+            {/* Image — same media card as every other admin form */}
+            <FormSection
+                icon={ImageIcon}
+                title="Image"
+                description="Importez un fichier ou collez une URL."
+            >
+                <MediaUploadField
+                    ariaLabel="Image"
+                    value={form.watch('imageUrl') || ''}
+                    onChange={url =>
+                        form.setValue('imageUrl', url, {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                        })
+                    }
+                />
+                {form.formState.errors.imageUrl?.message && (
+                    <p className="text-xs text-destructive">
+                        {form.formState.errors.imageUrl.message}
+                    </p>
+                )}
+            </FormSection>
 
             <div className="space-y-3">
                 <Label>Libellés</Label>

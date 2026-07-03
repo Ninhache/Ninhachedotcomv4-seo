@@ -1,23 +1,21 @@
 'use client';
 
-import { Loader2, RefreshCcw, Save, Upload } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { ImageIcon, RefreshCcw, Save } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
     AdminCard,
     AdminHeader,
     AdminPageShell,
 } from '@/components/admin/page-shell';
+import { FormSection } from '@/components/forms/form-section';
+import { MediaUploadField } from '@/components/forms/media-upload-field';
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { mediaSrc } from '@/lib/baseurl';
 import { ProfileApi } from '@/lib/profile/profile.api';
-import { ProjectApi } from '@/lib/project/project.api';
 import type { ProfileDTO } from '@/lib/types';
-
-const DEFAULT_PHOTO = '/images/Photo.webp';
 
 const LOCALES = ['fr', 'en'] as const;
 const LOCALE_LABELS = { fr: 'Français', en: 'English' };
@@ -72,27 +70,6 @@ export default function ProfilePage() {
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
-    const [uploading, setUploading] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleImageUpload = async (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        e.target.value = '';
-        setUploading(true);
-        try {
-            // Reuses the generic media upload (POST /media) — no projectId.
-            const uploaded = await ProjectApi.uploadMedia(file, 'IMAGE');
-            setForm(p => ({ ...p, imageUrl: uploaded.mediaUrl }));
-            setSaved(false);
-        } catch (err) {
-            console.error('Image upload failed:', err);
-        } finally {
-            setUploading(false);
-        }
-    };
 
     const load = async () => {
         setLoading(true);
@@ -182,41 +159,21 @@ export default function ProfilePage() {
                         </p>
                     </div>
 
-                    <div className="space-y-2">
-                        <Label>Photo (« Qui suis-je ? »)</Label>
-                        <div className="flex items-center gap-4">
-                            <img
-                                src={
-                                    form.imageUrl
-                                        ? mediaSrc(form.imageUrl)
-                                        : DEFAULT_PHOTO
-                                }
-                                alt="Aperçu de la photo de profil"
-                                className="h-20 w-20 rounded-full border object-cover"
-                            />
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={handleImageUpload}
-                            />
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                disabled={uploading}
-                                onClick={() => fileInputRef.current?.click()}
-                            >
-                                {uploading ? (
-                                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                                ) : (
-                                    <Upload className="mr-1 h-4 w-4" />
-                                )}
-                                {uploading ? 'Envoi…' : 'Changer la photo'}
-                            </Button>
-                        </div>
-                    </div>
+                    {/* Photo — same media card as every other admin form */}
+                    <FormSection
+                        icon={ImageIcon}
+                        title="Photo (« Qui suis-je ? »)"
+                        description="Importez un fichier ou collez une URL."
+                    >
+                        <MediaUploadField
+                            ariaLabel="Photo"
+                            value={form.imageUrl}
+                            onChange={url => {
+                                setForm(p => ({ ...p, imageUrl: url }));
+                                setSaved(false);
+                            }}
+                        />
+                    </FormSection>
 
                     <div className="grid gap-6 md:grid-cols-2">
                         {LOCALES.map(loc => (

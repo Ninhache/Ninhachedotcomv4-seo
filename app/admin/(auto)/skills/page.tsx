@@ -22,7 +22,6 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import {
@@ -149,9 +148,6 @@ export default function SkillsPage() {
                                     <TableHead className="hidden md:table-cell">
                                         Wiki URL
                                     </TableHead>
-                                    <TableHead className="hidden md:table-cell">
-                                        Tags
-                                    </TableHead>
                                     <TableHead>Visible</TableHead>
                                     <TableHead className="text-right">
                                         Actions
@@ -211,38 +207,6 @@ export default function SkillsPage() {
                                                     —
                                                 </span>
                                             )}
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell">
-                                            <div className="flex flex-wrap gap-1">
-                                                {skill.tags
-                                                    ?.slice(0, 3)
-                                                    .map(tag => (
-                                                        <Badge
-                                                            key={tag.id}
-                                                            variant="secondary"
-                                                            style={
-                                                                tag.hexColor
-                                                                    ? {
-                                                                          backgroundColor:
-                                                                              tag.hexColor,
-                                                                      }
-                                                                    : undefined
-                                                            }
-                                                        >
-                                                            {tag.nameByLocale
-                                                                ?.fr ??
-                                                                tag.nameByLocale
-                                                                    ?.en ??
-                                                                tag.id}
-                                                        </Badge>
-                                                    ))}
-                                                {(skill.tags?.length ?? 0) >
-                                                    3 && (
-                                                    <Badge variant="outline">
-                                                        +{skill.tags.length - 3}
-                                                    </Badge>
-                                                )}
-                                            </div>
                                         </TableCell>
                                         <TableCell>
                                             <Switch

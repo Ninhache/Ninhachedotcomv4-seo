@@ -1,14 +1,16 @@
 import axios from 'axios';
-import { getSession } from 'next-auth/react';
 import { handleUnauthorized } from '../auth/on-unauthorized';
+import { getAccessToken } from '../auth/session-token';
 import { baseUrl } from '../baseurl';
 import type { SkillCategoryDTO, SkillDTO } from '../types';
 
 export type CreateSkillPayload = {
-    image: string;
+    // Optional since the Skill/Tag merge — skills migrated from the former TECH
+    // tag pool have no SVG icon yet. `null` explicitly clears an existing icon
+    // (an omitted/undefined field is left unchanged by the PATCH).
+    image?: string | null;
     wikiUrl?: string;
     isVisible: boolean;
-    tagIds: string[];
     categoryIds: string[];
     translations: { locale: string; name: string }[];
 };
@@ -20,8 +22,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async config => {
-    const session = await getSession();
-    const token = (session as any)?.accessToken;
+    const token = await getAccessToken();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

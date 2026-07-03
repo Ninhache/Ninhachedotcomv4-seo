@@ -4,7 +4,7 @@ import throttle from 'lodash.throttle'; // lodash throttle function
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import AnimatedComponent from '@/app/_components/AnimatedComponent';
 import useLocaleNames from '@/app/_hooks/useLocaleNames';
@@ -22,6 +22,7 @@ interface menuItemObject {
 
 export default function Header() {
     const t = useTranslations('header');
+    const locale = useLocale();
     const localeNames = useLocaleNames();
 
     const menuItems: menuItemObject[] = [
@@ -144,9 +145,21 @@ export default function Header() {
                                             </li>
                                         ))}
                                         <li>
-                                            <Link
+                                            {/* Hard nav: crosses the CSS-modules
+                                                site → Tailwind blog boundary, so
+                                                a full load guarantees the blog's
+                                                stylesheet is applied. */}
+                                            <a
+                                                className={styles.not_button}
+                                                href={`/${locale}/blog`}
+                                            >
+                                                {t('blog')}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
                                                 className={`button ${styles.button}`}
-                                                href={`#${t('contactAnchor')}`}
+                                                href={`/${locale}#${t('contactAnchor')}`}
                                             >
                                                 <p>{t('contact')}</p>
                                                 <svg
@@ -167,7 +180,7 @@ export default function Header() {
                                                         />
                                                     </g>
                                                 </svg>
-                                            </Link>
+                                            </a>
                                         </li>
                                         <li>
                                             <LocaleSwitcher
@@ -225,9 +238,18 @@ export default function Header() {
                             </li>
                         ))}
                         <li>
-                            <Link
+                            <a
+                                className={styles.not_button}
+                                href={`/${locale}/blog`}
+                                onClick={closeMobileMenu}
+                            >
+                                {t('blog')}
+                            </a>
+                        </li>
+                        <li>
+                            <a
                                 className={`button ${styles.button} `}
-                                href="#contact"
+                                href={`/${locale}#${t('contactAnchor')}`}
                             >
                                 <p>{t('contact')}</p>
                                 <svg
@@ -246,7 +268,7 @@ export default function Header() {
                                         />
                                     </g>
                                 </svg>
-                            </Link>
+                            </a>
                         </li>
                         <li>
                             <LocaleSwitcher localeNames={localeNames} />

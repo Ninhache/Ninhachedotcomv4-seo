@@ -16,17 +16,9 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { ContactApi } from '@/lib/contact/contact.api';
-import { ExperienceApi } from '@/lib/experience/experience.api';
 import { ProjectApi } from '@/lib/project/project.api';
 import { SkillApi } from '@/lib/skill/skill.api';
-import { TagApi } from '@/lib/tag/tag.api';
-import type {
-    ContactDTO,
-    ExperienceDTO,
-    ProjectDTO,
-    SkillDTO,
-    TagDTO,
-} from '@/lib/types';
+import type { ContactDTO, ProjectDTO, SkillDTO } from '@/lib/types';
 import {
     computeHealth,
     countVisibility,
@@ -40,11 +32,9 @@ const EMPTY: Visibility = { total: 0, visible: 0, hidden: 0 };
 /** How many offending items to name inline before collapsing to "+N autres". */
 const MAX_NAMED_OFFENDERS = 4;
 
-type ResourceKey = 'experiences' | 'tags' | 'projects' | 'skills' | 'contacts';
+type ResourceKey = 'projects' | 'skills' | 'contacts';
 
 const summaryCards: { key: ResourceKey; label: string; href: string }[] = [
-    { key: 'experiences', label: 'Experiences', href: '/admin/experiences' },
-    { key: 'tags', label: 'Tags', href: '/admin/tags' },
     { key: 'projects', label: 'Projets', href: '/admin/projects' },
     { key: 'skills', label: 'Skills', href: '/admin/skills' },
     { key: 'contacts', label: 'Contacts', href: '/admin/contacts' },
@@ -65,8 +55,6 @@ function OffenderList({ offenders }: { offenders: Offender[] }) {
 
 export default function AdminHome() {
     const [stats, setStats] = useState<Stats>({
-        experiences: EMPTY,
-        tags: EMPTY,
         projects: EMPTY,
         skills: EMPTY,
         contacts: EMPTY,
@@ -79,14 +67,11 @@ export default function AdminHome() {
         const loadStats = async () => {
             setLoading(true);
             try {
-                const [experiences, tags, projects, skills, contacts] =
-                    await Promise.allSettled([
-                        ExperienceApi.findAll(),
-                        TagApi.findAll(),
-                        ProjectApi.findAll(),
-                        SkillApi.findAll(),
-                        ContactApi.findAll(),
-                    ]);
+                const [projects, skills, contacts] = await Promise.allSettled([
+                    ProjectApi.findAll(),
+                    SkillApi.findAll(),
+                    ContactApi.findAll(),
+                ]);
 
                 const failed = new Set<ResourceKey>();
                 const value = <T,>(
@@ -98,17 +83,11 @@ export default function AdminHome() {
                     return [];
                 };
 
-                const experiencesList = value<ExperienceDTO>(
-                    experiences,
-                    'experiences'
-                );
                 const projectsList = value<ProjectDTO>(projects, 'projects');
                 const skillsList = value<SkillDTO>(skills, 'skills');
                 const contactsList = value<ContactDTO>(contacts, 'contacts');
 
                 setStats({
-                    experiences: countVisibility(experiencesList),
-                    tags: countVisibility(value<TagDTO>(tags, 'tags')),
                     projects: countVisibility(projectsList),
                     skills: countVisibility(skillsList),
                     contacts: countVisibility(contactsList),
@@ -116,7 +95,6 @@ export default function AdminHome() {
                 setHealth(
                     computeHealth({
                         projects: projectsList,
-                        experiences: experiencesList,
                         skills: skillsList,
                         contacts: contactsList,
                     })

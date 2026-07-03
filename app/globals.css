@@ -1,5 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+/* Tailwind v4 auto source-detection skips the bracketed dynamic-route dirs
+   (app/[locale]/blog/…) — the brackets read as a glob character class — and the
+   blog's _components, so their utility classes weren't generated. These `**`
+   globs descend into [locale]/[slug] by wildcard, forcing a full scan. */
+@source "../app/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -117,4 +125,207 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* Blog callouts — output of lib/markdown/remark-callouts.ts (`:::tip … :::`).
+   Rendered inside `.prose`; the accent colour is themed per kind. */
+.callout {
+    --callout-accent: oklch(0.7 0.04 260);
+    margin: 1.5rem 0;
+    border-left: 3px solid var(--callout-accent);
+    border-radius: 0.5rem;
+    padding: 0.25rem 1rem;
+    background: color-mix(in oklch, var(--callout-accent) 12%, transparent);
+}
+.callout > :first-child {
+    margin-top: 0.75rem;
+}
+.callout > :last-child {
+    margin-bottom: 0.75rem;
+}
+.callout-info {
+    --callout-accent: oklch(0.7 0.13 235);
+}
+.callout-tip {
+    --callout-accent: oklch(0.72 0.16 155);
+}
+.callout-warning {
+    --callout-accent: oklch(0.78 0.15 80);
+}
+.callout-danger {
+    --callout-accent: oklch(0.65 0.2 25);
+}
+.callout-piege {
+    --callout-accent: oklch(0.7 0.19 45);
+}
+.callout-lecon {
+    --callout-accent: oklch(0.62 0.19 300);
+}
+
+/* Blog code blocks — rehype-pretty-code (Shiki) + @shikijs/transformers.
+   Only the server render emits these attributes/classes (the client preview
+   has no Shiki); the <Pre> wrapper adds the copy button + language badge. */
+figure[data-rehype-pretty-code-figure] {
+    margin: 1.5rem 0;
+}
+[data-rehype-pretty-code-title] {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom: 1px solid color-mix(in srgb, #56dcfc 20%, transparent);
+    background: #0f1d30;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    color: #8ea3c0;
+}
+[data-rehype-pretty-code-title] + pre {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+figure[data-rehype-pretty-code-figure] pre {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    padding: 0.85rem 0;
+}
+figure[data-rehype-pretty-code-figure] code {
+    display: grid; /* one row per line so highlights span full width */
+    counter-reset: line;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+figure[data-rehype-pretty-code-figure] [data-line] {
+    position: relative;
+    padding: 0 1rem;
+    border-left: 2px solid transparent;
+}
+/* highlighted lines: meta `{1,3-5}` OR notation `// [!code highlight]` */
+[data-highlighted-line],
+[data-line].highlighted {
+    background: color-mix(in srgb, #56dcfc 12%, transparent);
+    border-left-color: #56dcfc;
+}
+/* highlighted words: `// [!code word:foo]` or /foo/ meta */
+[data-highlighted-chars],
+.highlighted-word {
+    border-radius: 0.25rem;
+    background: color-mix(in srgb, #56dcfc 22%, transparent);
+    padding: 0.1rem 0.2rem;
+}
+/* diff: `// [!code ++]` / `// [!code --]` */
+[data-line].diff.add {
+    background: color-mix(in srgb, oklch(0.72 0.16 155) 16%, transparent);
+    border-left-color: oklch(0.72 0.16 155);
+}
+[data-line].diff.remove {
+    background: color-mix(in srgb, oklch(0.65 0.2 25) 16%, transparent);
+    border-left-color: oklch(0.65 0.2 25);
+    opacity: 0.75;
+}
+[data-line].diff::before {
+    position: absolute;
+    left: 0.3rem;
+    font-weight: 600;
+}
+[data-line].diff.add::before {
+    content: '+';
+    color: oklch(0.72 0.16 155);
+}
+[data-line].diff.remove::before {
+    content: '-';
+    color: oklch(0.65 0.2 25);
+}
+/* focus: `// [!code focus]` dims the rest until hover */
+pre:has([data-line].focused) [data-line]:not(.focused) {
+    opacity: 0.4;
+    filter: blur(0.015rem);
+    transition:
+        opacity 0.2s,
+        filter 0.2s;
+}
+pre:has([data-line].focused):hover [data-line]:not(.focused) {
+    opacity: 1;
+    filter: none;
+}
+/* opt-in line numbers: ```lang showLineNumbers (rare overlap with diff: number wins) */
+code[data-line-numbers] {
+    counter-reset: line;
+}
+code[data-line-numbers] > [data-line]::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1rem;
+    margin-right: 1rem;
+    text-align: right;
+    color: #4a5c74;
+}
+
+/* Blog tables — enhance the prose defaults (header tint + zebra) for the
+   truth/risk tables these articles lean on. Wide tables scroll via the
+   <Table> element override (components/mdx/Table.tsx). */
+.prose thead {
+    background: color-mix(in srgb, #56dcfc 9%, transparent);
+}
+.prose tbody tr:nth-child(even) {
+    background: color-mix(in srgb, #ffffff 3%, transparent);
+}
+.prose th {
+    font-weight: 600;
+}
+
+/* Cross-highlight on hover: the hovered cell lights up its whole ROW (a row
+   background) and its whole COLUMN (a tall pseudo bar clipped to the table by
+   the scroll wrapper's `overflow-y: hidden`). Both are faint cyan tints; the
+   bar is `pointer-events: none` so it never blocks clicks. */
+.prose td,
+.prose th {
+    position: relative;
+}
+.prose tbody tr {
+    transition: background-color 0.15s ease;
+}
+.prose tbody tr:hover {
+    background: color-mix(in srgb, #56dcfc 8%, transparent);
+}
+.prose td:hover::after,
+.prose th:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -5000px;
+    width: 100%;
+    height: 10000px;
+    background: color-mix(in srgb, #56dcfc 8%, transparent);
+    pointer-events: none;
+}
+
+/* Section footnotes (from lib/markdown/remark-sidenotes): a numbered list at the
+   end of a section, plus the inline superscript refs and their back-links. */
+.prose .section-footnotes {
+    margin-top: 2rem;
+    border-top: 1px solid rgba(86, 220, 252, 0.14);
+    padding-top: 1rem;
+    font-size: 0.875rem;
+    color: #8ea3c0;
+}
+.prose .section-footnotes li {
+    margin: 0.35rem 0;
+}
+.prose [id^='fn-'],
+.prose [id^='fnref-'] {
+    scroll-margin-top: 6rem;
+}
+.prose .fn-ref {
+    color: #56dcfc;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0 0.15em;
+}
+.prose .fn-ref:hover {
+    text-decoration: underline;
+}
+.prose .fn-back {
+    margin-left: 0.35rem;
+    color: #56dcfc;
+    text-decoration: none;
 }

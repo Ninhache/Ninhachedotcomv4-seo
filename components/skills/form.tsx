@@ -1,28 +1,42 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ImageIcon } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import type { EditFormHandle } from '@/components/forms/edit-form-handle';
+import { FormSection } from '@/components/forms/form-section';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
-import { TagMultiSelect } from '@/components/forms/tag-multi-select';
+import { MediaUploadField } from '@/components/forms/media-upload-field';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { LocalesApi } from '@/lib/locales/locales.api';
 import { type CreateSkillPayload, SkillApi } from '@/lib/skill/skill.api';
-import { TagApi } from '@/lib/tag/tag.api';
-import type { Locale, SkillDTO, TagDTO } from '@/lib/types';
+import type { Locale, SkillDTO } from '@/lib/types';
 
 const TranslationSchema = z.object({ name: z.string().min(1, 'Requis') });
 
+// The image field accepts both a remote URL (https://…) and a local asset path
+// served from the front's `public/` folder (e.g. `svg/skills/C.svg`) — exactly
+// the two cases `mediaSrc` resolves. So we can't use `z.string().url()`, which
+// only accepts absolute URLs. Accept an http(s) URL OR a relative-ish path that
+// ends in a known image extension; still rejects obvious typos.
+const IMAGE_SRC =
+    /^(https?:\/\/.+|\/?[\w.@\-]+(\/[\w.@\-]+)*\.(svg|png|jpe?g|webp|gif|avif))$/i;
+
 const FormSchema = z.object({
-    image: z.string().url('URL invalide'),
+    // Optional since the Skill/Tag merge — a skill migrated from a TECH tag may
+    // have no icon yet. Empty string is allowed and sent as "no image".
+    image: z
+        .string()
+        .regex(IMAGE_SRC, 'URL ou chemin invalide')
+        .or(z.literal(''))
+        .optional(),
     wikiUrl: z.string().url('URL invalide').or(z.literal('')).optional(),
     isVisible: z.boolean(),
-    tagIds: z.array(z.string()),
     translations: z.record(z.string(), TranslationSchema),
 });
 
@@ -45,7 +59,6 @@ export function SkillForm({
         'fr',
         'en',
     ]);
-    const [tags, setTags] = useState<TagDTO[]>([]);
 
     useEffect(() => {
         if (!dialogOpen) return;
@@ -53,9 +66,6 @@ export function SkillForm({
             .then(ls => {
                 if (Array.isArray(ls) && ls.length) setLocales(ls);
             })
-            .catch(() => {});
-        TagApi.findAll({ type: 'TECH' })
-            .then(ts => setTags(ts ?? []))
             .catch(() => {});
     }, [dialogOpen]);
 
@@ -73,7 +83,6 @@ export function SkillForm({
             image: initial?.image ?? '',
             wikiUrl: initial?.wikiUrl ?? '',
             isVisible: initial?.isVisible ?? true,
-            tagIds: initial?.tags?.map(t => t.id) ?? [],
             translations,
         };
     }, [initial, locales]);
@@ -107,10 +116,11 @@ export function SkillForm({
         setSaving(true);
         try {
             const payload: CreateSkillPayload = {
-                image: raw.image,
+                // null (not undefined) so removing the icon persists — an
+                // omitted field is treated as "unchanged" by the PATCH.
+                image: raw.image || null,
                 wikiUrl: raw.wikiUrl || undefined,
                 isVisible: raw.isVisible,
-                tagIds: raw.tagIds,
                 categoryIds: [],
                 translations: Object.entries(raw.translations).map(
                     ([locale, data]) => ({
@@ -134,23 +144,6 @@ export function SkillForm({
     return (
         <form ref={formElRef} onSubmit={onSubmit} className="space-y-6">
             <div className="grid gap-4 md:grid-cols-2">
-                <div className="grid gap-2">
-                    <Label>Image URL</Label>
-                    <Input
-                        value={form.watch('image') || ''}
-                        onChange={e =>
-                            form.setValue('image', e.target.value, {
-                                shouldDirty: true,
-                                shouldValidate: true,
-                            })
-                        }
-                        placeholder="https://..."
-                    />
-                    <p className="text-xs text-destructive">
-                        {form.formState.errors.image?.message}
-                    </p>
-                </div>
-
                 <div className="grid gap-2">
                     <Label>Wiki URL</Label>
                     <Input
@@ -187,18 +180,29 @@ export function SkillForm({
                 </div>
             </div>
 
-            <div className="grid gap-2">
-                <Label>Tags (Tech)</Label>
-                <TagMultiSelect
-                    value={form.watch('tagIds')}
-                    onChange={ids =>
-                        form.setValue('tagIds', ids, { shouldDirty: true })
+            {/* Image — same media card as every other admin form */}
+            <FormSection
+                icon={ImageIcon}
+                title="Image"
+                description="Importez un fichier ou collez une URL."
+            >
+                <MediaUploadField
+                    ariaLabel="Image"
+                    value={form.watch('image') || ''}
+                    onChange={url =>
+                        form.setValue('image', url, {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                        })
                     }
-                    options={tags}
-                    locale="fr"
-                    placeholder="Sélectionner des tags…"
+                    placeholder="https://… ou svg/skills/C.svg"
                 />
-            </div>
+                {form.formState.errors.image?.message && (
+                    <p className="text-xs text-destructive">
+                        {form.formState.errors.image.message}
+                    </p>
+                )}
+            </FormSection>
 
             <div className="space-y-3">
                 <Label>Libellés</Label>

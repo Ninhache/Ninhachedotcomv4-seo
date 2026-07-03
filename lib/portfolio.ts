@@ -1,10 +1,11 @@
 import { baseUrl } from './baseurl';
 import type {
     ContactDTO,
-    ExperienceDTO,
     ProfileDTO,
     ProjectDTO,
+    ResumeDTO,
     SkillCategoryDTO,
+    TimelinePayloadDTO,
 } from './types';
 
 /**
@@ -18,15 +19,23 @@ import type {
  * a page never 500s. With ISR, the last good version keeps being served while a
  * background regeneration recovers.
  */
-async function fetchPublic<T>(
+// In dev, Next's data cache + `revalidateTag` don't reliably purge, so edits
+// wouldn't show without restarting. Skip the cache in dev (local backend is
+// fast); keep the tagged ISR cache in production.
+const isDev = process.env.NODE_ENV === 'development';
+
+export async function fetchPublic<T>(
     path: string,
     tags: string[],
     fallback: T
 ): Promise<T> {
     try {
-        const res = await fetch(`${baseUrl}${path}`, {
-            next: { tags, revalidate: 86400 },
-        });
+        const res = await fetch(
+            `${baseUrl}${path}`,
+            isDev
+                ? { cache: 'no-store' }
+                : { next: { tags, revalidate: 86400 } }
+        );
         if (!res.ok) {
             console.warn(
                 `Portfolio API error: ${res.status} on ${path} — serving fallback`
@@ -46,13 +55,25 @@ async function fetchPublic<T>(
 // Cache-tag convention — MUST match the backend exactly: `<entity>` plus a
 // variant per locale. One response carries both locales, so any locale-scoped
 // invalidation busts the shared cache entry.
-const localeTags = (entity: string) => [entity, `${entity}:fr`, `${entity}:en`];
+export const localeTags = (entity: string) => [
+    entity,
+    `${entity}:fr`,
+    `${entity}:en`,
+];
 
 export const getProjects = () =>
     fetchPublic<ProjectDTO[]>('/project', localeTags('projects'), []);
 
-export const getExperiences = () =>
-    fetchPublic<ExperienceDTO[]>('/experiences', localeTags('experiences'), []);
+// Unified "where I've worked" data: employers + their missions in one request.
+// Tagged on both underlying entities (companies/missions) plus the dedicated
+// `timeline` tag the back emits on any mutation, so an admin edit to either
+// busts this cache entry.
+export const getTimeline = () =>
+    fetchPublic<TimelinePayloadDTO>(
+        '/timeline',
+        [...localeTags('companies'), ...localeTags('missions'), 'timeline'],
+        { companies: [], missions: [], educations: [], positions: [] }
+    );
 
 export const getSkillCategories = () =>
     fetchPublic<SkillCategoryDTO[]>(
@@ -72,3 +93,10 @@ export const getProfile = () =>
         [...localeTags('profile'), 'greeting'],
         null
     );
+
+// Current CV/resume PDFs (one URL per locale). Tagged `resume`/`resume:fr|en`
+// to match the back's @RevalidateContent('resume'), so re-uploading a CV in the
+// admin busts this cache entry. Falls back to null -> the public site then uses
+// its static /public/documents PDF.
+export const getResume = () =>
+    fetchPublic<ResumeDTO | null>('/resume', localeTags('resume'), null);

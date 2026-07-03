@@ -73,6 +73,18 @@ export default function Home({ profile, locale }: Props) {
                             <Link
                                 className={`button ${styles.button} ${ralewaySemiBold.className}`}
                                 href={`#${t_about('anchor')}`}
+                                onClick={e => {
+                                    // Scroll programmatiquement plutôt que de
+                                    // laisser le navigateur gérer l'ancre : un
+                                    // 2e clic sur « Commençons » ne ferait rien
+                                    // si le hash #apropos est déjà dans l'URL.
+                                    e.preventDefault();
+                                    document
+                                        .getElementById(t_about('anchor'))
+                                        ?.scrollIntoView({
+                                            behavior: 'smooth',
+                                        });
+                                }}
                             >
                                 <p>{t('start')}</p>
                                 <svg

@@ -11,6 +11,12 @@
     background-color: var(--dark_purple);
 }
 
+.empty {
+    color: var(--fade_white);
+    font-size: 18px;
+    text-align: center;
+}
+
 .experience_end {
     background-color: var(--dark_purple);
 }

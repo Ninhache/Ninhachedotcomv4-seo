@@ -28,28 +28,54 @@ export interface Project {
     translations: ProjectTranslations;
     tags: Tag[];
     links: outLink;
+    // Optional links from a project to the blog. A project may point at a
+    // flagship article and/or a whole category (both, per the admin's choice).
+    blogArticleSlug?: string; // → /blog/{slug}
+    blogCategorySlug?: string; // → /blog?cat={slug}
     videoUrl?: string;
     image: string;
     logo: string;
     sortCategories: SortType[];
 }
 
-export interface ExperienceTranslation {
-    type: string;
-    description: string;
-    jobtitle: string;
+// View-models for the public "where I've worked" mini-timeline. Built from the
+// unified Company/Mission model (GET /timeline) by `mapTimelineToEmployers`,
+// already locale-resolved server-side — no per-locale translation maps here.
+export interface MissionView {
+    title: string;
+    context: string; // localized; '' when the locale has no context
+    tasks: string[]; // localized task bullets; [] when none
+    date: string; // display label: "Jan 2024 - Mar 2025" / "Jan 2024 - Present"
+    start: string; // ISO — used to group a mission under the role(s) it spans
+    end: string | null; // ISO, or null when ongoing
+    client: string; // client company name; '' for in-house missions (no client)
+    clientDescription: string; // the client company's OWN blurb; '' if none / in-house
+    location: string; // client's localisation at-client, else the employer's; '' if none
+    logoUrl: string; // client logo when at-client, else the employer logo; '' if none
+    tags: Tag[];
 }
 
-export type ExperienceTranslations = Record<Locale, ExperienceTranslation>;
+// One step of an employer-level job-title progression (e.g. PIT: Apprentice
+// Dev → +DevOps → Engineer). A single-entry array means a mono-role employer.
+export interface PositionView {
+    title: string; // localized job title
+    date: string; // period label: "Sep 2024 - Sep 2025" / "Sep 2024 - Present"
+    start: string; // ISO — used to match missions falling within this role
+    end: string | null; // ISO, or null when ongoing (the current role)
+    current: boolean; // true when open-ended (endDate null) — the active title
+}
 
-export interface Experience {
-    title: string;
-    date: string;
-    translations: ExperienceTranslations;
-    tags: Tag[];
-    link: string;
-    videoUrl?: string;
-    image: string;
+export interface EmployerWithMissions {
+    companyName: string;
+    contractType: string; // localized contract label; '' when absent
+    date: string; // employer-level period label
+    siteUrl: string; // '#' when none
+    logoUrl: string; // '' when none — also the card's screenshot/visual
+    roleTitle: string; // current/most-recent job title; '' when no positions
+    description: string; // card blurb: the in-house mission's context; '' when none
+    cardTags: Tag[]; // unique tech tags across the employer's missions
+    positions: PositionView[]; // title progression, chronological; [] when none
+    missions: MissionView[];
 }
 
 export interface Skill {

@@ -1,5 +1,9 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import {
+    getMessages,
+    getTranslations,
+    setRequestLocale,
+} from 'next-intl/server';
 import About from '@/app/_components/about';
 import Contact from '@/app/_components/contact';
 import Experience from '@/app/_components/experience/experience';
@@ -11,17 +15,19 @@ import Skills from '@/app/_components/skills';
 import { Locale } from '@/config';
 import {
     mapContact,
-    mapExperience,
     mapProject,
     mapSkillCategory,
+    mapTimelineToEmployers,
 } from '@/lib/mappers';
 import {
     getContacts,
-    getExperiences,
     getProfile,
     getProjects,
+    getResume,
     getSkillCategories,
+    getTimeline,
 } from '@/lib/portfolio';
+import { resolveResumeUrl } from '@/lib/resume/resolve-url';
 
 export const revalidate = 3600;
 
@@ -35,22 +41,36 @@ export default async function Page(props: Props) {
     setRequestLocale(locale);
 
     const messages = await getMessages();
+    const tJobs = await getTranslations('jobs');
 
-    const [rawProjects, rawExperiences, rawCategories, rawContacts, profile] =
-        await Promise.all([
-            getProjects(),
-            getExperiences(),
-            getSkillCategories(),
-            getContacts(),
-            getProfile().catch(() => null),
-        ]);
+    const [
+        rawProjects,
+        rawTimeline,
+        rawCategories,
+        rawContacts,
+        profile,
+        resume,
+    ] = await Promise.all([
+        getProjects(),
+        getTimeline(),
+        getSkillCategories(),
+        getContacts(),
+        getProfile().catch(() => null),
+        getResume(),
+    ]);
+
+    // Locale-specific CV uploaded via the admin; null when none exists, in
+    // which case <About> falls back to its static /public/documents PDF.
+    const resumeUrl = resolveResumeUrl(resume, locale);
 
     const projects = rawProjects
         .filter(p => p.isVisible)
         .map(p => mapProject(p, locale as Locale));
-    const experiences = rawExperiences
-        .filter(e => e.isVisible)
-        .map(e => mapExperience(e));
+    const employerTimeline = mapTimelineToEmployers(
+        rawTimeline,
+        locale as Locale,
+        tJobs('present')
+    );
     const skillCategories = [...rawCategories]
         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
         .map(c => mapSkillCategory(c));
@@ -64,10 +84,10 @@ export default async function Page(props: Props) {
             <main className="main">
                 <Header />
                 <Home profile={profile} locale={locale} />
-                <About profile={profile} />
+                <About profile={profile} resumeUrl={resumeUrl} />
                 <Projects data={projects} />
                 <Skills data={skillCategories} />
-                <Experience data={experiences} />
+                <Experience data={employerTimeline} />
                 <Contact data={contacts} />
                 <Footer />
             </main>

@@ -2,10 +2,12 @@
 const isDev = process.env.NODE_ENV === 'development';
 
 const config = {
-    // Pin the workspace root: a stray lockfile in a parent dir made Turbopack
-    // infer the wrong root. Without this, Next warns and may resolve from there.
-    turbopack: { root: __dirname },
-
+    // Pin the workspace root to THIS project. A stray lockfile in a parent dir
+    // (/home/neo/package-lock.json) made Turbopack infer /home/neo as the root
+    // and scan the whole home directory → very slow compiles / hangs in dev.
+    turbopack: {
+        root: __dirname,
+    },
     images: {
         dangerouslyAllowLocalIP: isDev,
         remotePatterns: [

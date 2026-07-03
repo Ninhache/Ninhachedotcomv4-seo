@@ -1,147 +1,204 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import useMobileView from '@/app/_hooks/useMobileView';
 import {
     calibreRegular,
     calibreSemibold,
     ralewayMedium,
     ralewaySemiBold,
 } from '@/app/fonts';
-import { Experience } from '@/jsons/jsonUtils';
-
+import type { EmployerWithMissions } from '@/jsons/jsonUtils';
 import styles from '@/styles/experience/experienceItem.module.css';
 import '@/styles/globals.css';
-
-import Image from 'next/image';
-import Link from 'next/link';
-import { useLocale } from 'next-intl';
-import { Fragment } from 'react';
-import useMobileView from '@/app/_hooks/useMobileView';
-import { Locale } from '@/config';
+import MissionModal from './MissionModal';
 
 interface ExperienceItemProps {
-    inverted: Boolean;
-    experience: Experience;
+    inverted: boolean;
+    employer: EmployerWithMissions;
 }
 
+/**
+ * One employer rendered as the classic zigzag card: a screenshot on one side,
+ * its details (period, contract · role, blurb, tech tags) on the other, with the
+ * left/right orientation alternating per row. A CTA opens a modal listing that
+ * employer's missions in full. On mobile the screenshot becomes the card's
+ * background with the details overlaid.
+ *
+ * Consumes the live mapped {@link EmployerWithMissions} (no more static JSON);
+ * the blurb is the in-house mission's context and the role line is the current
+ * job title — both derived in `lib/mappers.ts`. Client Component: owns the
+ * modal open/close state.
+ */
 export const ExperienceItem: React.FC<ExperienceItemProps> = ({
     inverted,
-    experience,
+    employer,
 }) => {
-    const parts = experience.date.split('<br>');
-
+    const t = useTranslations('jobs');
     const isMobile = useMobileView();
-    const locale = useLocale() as Locale;
+    const [modalOpen, setModalOpen] = useState(false);
 
-    return isMobile ? (
-        <div
-            className={`${styles.content}`}
-            style={{ backgroundImage: `url(${experience.image})` }}
+    const hasLink = employer.siteUrl !== '#' && employer.siteUrl !== '';
+    const hasMissions = employer.missions.length > 0;
+    // Localize the contract type (backend stores raw English keys like
+    // "Workstudy"); fall back to the raw value for any unmapped key.
+    const contractKey = `contractTypes.${employer.contractType}`;
+    const contractLabel = employer.contractType
+        ? t.has(contractKey)
+            ? t(contractKey)
+            : employer.contractType
+        : '';
+    // "Alternance - Ingénieur Full-Stack & DevOps" — contract then current role.
+    const roleLine = [contractLabel, employer.roleTitle]
+        .filter(Boolean)
+        .join(' - ');
+
+    const title = hasLink ? (
+        <Link
+            className={`${styles.title} ${calibreSemibold.className}`}
+            href={employer.siteUrl}
+            target="_blank"
         >
-            <div className={`${styles.information}`}>
-                <div className={`${styles.type} ${ralewayMedium.className}`}>
-                    <span>{experience.translations[locale].type}</span>
-                    <span>
-                        {experience.date.split('<br>').map((part, index) => (
-                            <Fragment key={index}>
-                                {part}
-                                {index !==
-                                    experience.date.split('<br>').length -
-                                        1 && <br />}
-                            </Fragment>
-                        ))}
-                    </span>
-                </div>
-                <Link
-                    className={`${styles.title} ${calibreSemibold.className}`}
-                    href={experience.link}
-                    target="_blank"
-                >
-                    {experience.title}
-                </Link>
-                <div className={`${styles.text} ${calibreRegular.className}`}>
-                    <p>{experience.translations[locale].description}</p>
-                </div>
-                <div className={`tags ${styles.tags}`}>
-                    {experience.tags.map(tag => (
-                        <Link
-                            className={`${ralewaySemiBold.className}`}
-                            key={tag.name}
-                            href={`${tag.url}`}
-                            target="_blank"
-                        >
-                            {tag.name}
-                        </Link>
-                    ))}
-                </div>
-            </div>
-        </div>
+            {employer.companyName}
+        </Link>
     ) : (
+        <span className={`${styles.title} ${calibreSemibold.className}`}>
+            {employer.companyName}
+        </span>
+    );
+
+    const tags = employer.cardTags.length > 0 && (
+        <div className={styles.tags}>
+            {employer.cardTags.map(tag =>
+                tag.url && tag.url !== '#' ? (
+                    <Link
+                        className={ralewaySemiBold.className}
+                        key={tag.name}
+                        href={tag.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {tag.name}
+                    </Link>
+                ) : (
+                    <span className={ralewaySemiBold.className} key={tag.name}>
+                        {tag.name}
+                    </span>
+                )
+            )}
+        </div>
+    );
+
+    const cta = hasMissions && (
+        <button
+            type="button"
+            className={`${styles.cta} ${ralewaySemiBold.className}`}
+            onClick={() => setModalOpen(true)}
+        >
+            {t('showMissions')} ({employer.missions.length})
+        </button>
+    );
+
+    const modal = modalOpen && (
+        <MissionModal
+            employerName={employer.companyName}
+            subtitle={t('missionsCount', { count: employer.missions.length })}
+            closeLabel={t('close')}
+            missions={employer.missions}
+            onClose={() => setModalOpen(false)}
+        />
+    );
+
+    if (isMobile) {
+        return (
+            <div
+                className={styles.content}
+                style={{ backgroundImage: `url(${employer.logoUrl})` }}
+            >
+                <div className={styles.information}>
+                    <div
+                        className={`${styles.type} ${ralewayMedium.className}`}
+                    >
+                        <span>{employer.date}</span>
+                        {roleLine && (
+                            <span>
+                                <i>{roleLine}</i>
+                            </span>
+                        )}
+                    </div>
+                    {title}
+                    {employer.description && (
+                        <div
+                            className={`${styles.text} ${calibreRegular.className}`}
+                        >
+                            <p>{employer.description}</p>
+                        </div>
+                    )}
+                    {tags}
+                    {cta}
+                </div>
+                {modal}
+            </div>
+        );
+    }
+
+    return (
         <div className={`${styles.content} ${inverted ? styles.inverted : ''}`}>
-            <div className={`${styles.information}`}>
+            <div className={styles.information}>
                 <div
-                    className={`${styles.type}`}
-                    style={{
-                        marginLeft: inverted ? 'unset' : '15px',
-                    }}
+                    className={styles.type}
+                    style={{ marginLeft: inverted ? 'unset' : '15px' }}
                 >
                     <span
-                        className={`${ralewayMedium.className}`}
-                        style={{
-                            marginRight: inverted ? '15px' : 'unset',
-                        }}
+                        className={ralewayMedium.className}
+                        style={{ marginRight: inverted ? '15px' : 'unset' }}
                     >
-                        {parts.map((part, index) => (
-                            <Fragment key={index}>
-                                {part}
-                                {index !== parts.length - 1 && <br />}
-                            </Fragment>
-                        ))}
+                        {employer.date}
                     </span>
-                    {experience.translations[locale].type && (
+                    {roleLine && (
                         <span
                             className={`${styles.type} ${ralewayMedium.className}`}
                         >
-                            <i>
-                                {experience.translations[locale].type} -{' '}
-                                {experience.translations[locale].jobtitle}
-                            </i>
+                            <i>{roleLine}</i>
                         </span>
                     )}
                 </div>
-                <Link
-                    className={`${styles.title} ${calibreSemibold.className}`}
-                    href={`${experience.link}`}
-                    target="_blank"
-                >
-                    {experience.title}
-                </Link>
-                <div className={`${styles.text} ${calibreRegular.className}`}>
-                    <p>{experience.translations[locale].description}</p>
-                </div>
-                <div className={`${styles.tags}`}>
-                    {experience.tags.map(tag => (
-                        <Link
-                            className={`${ralewaySemiBold.className}`}
-                            key={tag.name}
-                            href={`${tag.url}`}
-                            target="_blank"
-                        >
-                            {tag.name}
-                        </Link>
-                    ))}
-                </div>
+                {title}
+                {employer.description && (
+                    <div
+                        className={`${styles.text} ${calibreRegular.className}`}
+                    >
+                        <p>{employer.description}</p>
+                    </div>
+                )}
+                {tags}
+                {cta}
             </div>
-            <div className={`${styles.view}`}>
-                <Link href={`${experience.link}`} target="_blank">
+            <div className={styles.view}>
+                {hasLink ? (
+                    <Link href={employer.siteUrl} target="_blank">
+                        <Image
+                            src={employer.logoUrl}
+                            alt={employer.companyName}
+                            width={600}
+                            height={340}
+                            style={{ width: '600px', height: '340px' }}
+                        />
+                    </Link>
+                ) : (
                     <Image
-                        src={`${experience.image}`}
-                        alt={`${experience.title}`}
+                        src={employer.logoUrl}
+                        alt={employer.companyName}
                         width={600}
                         height={340}
                         style={{ width: '600px', height: '340px' }}
                     />
-                </Link>
+                )}
             </div>
+            {modal}
         </div>
     );
 };

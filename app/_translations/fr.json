@@ -15,7 +15,8 @@
         "projectsAnchor": "projets",
         "skillsAnchor": "competences",
         "experienceAnchor": "experiences",
-        "contactAnchor": "contact"
+        "contactAnchor": "contact",
+        "blog": "Blog"
     },
     "home": {
         "anchor": "accueil",
@@ -48,7 +49,10 @@
             "web": "Web",
             "simulations": "Simulations",
             "random": "Aléatoire"
-        }
+        },
+        "readArticle": "Lire l'article",
+        "seeArticles": "Voir les articles",
+        "discoverMore": "En découvrir plus"
     },
     "skills": {
         "anchor": "competences",
@@ -56,7 +60,25 @@
     },
     "jobs": {
         "anchor": "experiences",
-        "title": "Où j'ai travaillé"
+        "title": "Où j'ai travaillé",
+        "present": "Aujourd'hui",
+        "noExperiences": "Aucune expérience à afficher pour le moment.",
+        "showMissions": "Voir les missions",
+        "hideMissions": "Masquer les missions",
+        "atClient": "chez",
+        "missionClient": "Client",
+        "missionInternal": "Interne",
+        "roleProgression": "Évolution du poste",
+        "currentRole": "Actuel",
+        "missionsCount": "{count, plural, one {# mission} other {# missions}}",
+        "close": "Fermer",
+        "contractTypes": {
+            "Permanent": "CDI",
+            "Fixed": "CDD",
+            "Internship": "Stage",
+            "Workstudy": "Alternance",
+            "Freelance": "Freelance"
+        }
     },
     "contact": {
         "anchor": "contact",
@@ -68,5 +90,15 @@
     },
     "LocaleSwitcher": {
         "switchLocale": "Changer la langue de {locale, select, de {Français} en {Anglais} other {Inconnu}} wechseln"
+    },
+    "blog": {
+        "title": "Blog",
+        "intro": "Retours d'expérience et notes sur mes projets et divers sujets techniques.",
+        "empty": "Aucun article pour le moment.",
+        "allCategories": "Tous",
+        "minutesShort": "min de lecture",
+        "tocLabel": "Sommaire",
+        "backHome": "Portfolio",
+        "backToList": "Tous les articles"
     }
 }
