@@ -298,3 +298,34 @@ code[data-line-numbers] > [data-line]::before {
     background: color-mix(in srgb, #56dcfc 8%, transparent);
     pointer-events: none;
 }
+
+/* Section footnotes (from lib/markdown/remark-sidenotes): a numbered list at the
+   end of a section, plus the inline superscript refs and their back-links. */
+.prose .section-footnotes {
+    margin-top: 2rem;
+    border-top: 1px solid rgba(86, 220, 252, 0.14);
+    padding-top: 1rem;
+    font-size: 0.875rem;
+    color: #8ea3c0;
+}
+.prose .section-footnotes li {
+    margin: 0.35rem 0;
+}
+.prose [id^='fn-'],
+.prose [id^='fnref-'] {
+    scroll-margin-top: 6rem;
+}
+.prose .fn-ref {
+    color: #56dcfc;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0 0.15em;
+}
+.prose .fn-ref:hover {
+    text-decoration: underline;
+}
+.prose .fn-back {
+    margin-left: 0.35rem;
+    color: #56dcfc;
+    text-decoration: none;
+}

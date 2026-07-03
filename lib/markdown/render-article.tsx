@@ -18,6 +18,7 @@ import remarkGfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
 import { mdxComponents } from '@/components/mdx/mdx-components';
 import { remarkCallouts } from './remark-callouts';
+import { remarkSidenotes } from './remark-sidenotes';
 import { remarkStripImports } from './remark-strip-imports';
 
 /** A heading entry for the table of contents. Depth is 2 (h2) or 3 (h3). */
@@ -91,6 +92,7 @@ export async function renderArticle(mdx: string): Promise<RenderedArticle> {
                 remarkGfm,
                 remarkDirective,
                 remarkCallouts,
+                remarkSidenotes,
             ],
             rehypePlugins: [
                 rehypeSlug,

@@ -12,6 +12,7 @@ import { ralewaySemiBold } from '@/app/fonts';
 import { mdxComponents } from '@/components/mdx/mdx-components';
 import { mediaSrc } from '@/lib/baseurl';
 import { remarkCallouts } from '@/lib/markdown/remark-callouts';
+import { remarkSidenotes } from '@/lib/markdown/remark-sidenotes';
 import { remarkStripImports } from '@/lib/markdown/remark-strip-imports';
 
 export type ArticlePreviewData = {
@@ -67,6 +68,7 @@ export function ArticlePreview({ data }: { data: ArticlePreviewData }) {
                         remarkGfm,
                         remarkDirective,
                         remarkCallouts,
+                        remarkSidenotes,
                     ],
                     rehypePlugins: [rehypeSlug],
                 });
