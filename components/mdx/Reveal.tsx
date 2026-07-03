@@ -34,7 +34,7 @@ export function Reveal({
             className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-primary/40 bg-primary/10 px-2.5 py-1 align-middle text-primary text-sm leading-none transition-colors hover:bg-primary/20"
         >
             <Eye className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-            <span className="translate-y-[1px]">{label}</span>
+            <span className="translate-y-px">{label}</span>
         </button>
     );
 }
