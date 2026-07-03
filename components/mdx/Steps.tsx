@@ -38,7 +38,7 @@ export function Step({ title, n, isLast, children }: StepProps) {
                     border: `1px solid ${CYAN}`,
                 }}
             >
-                {n}
+                <span className="translate-y-[1px]">{n}</span>
             </span>
             {title && (
                 <p className={`mt-1 mb-1 ${ralewaySemiBold.className}`}>
