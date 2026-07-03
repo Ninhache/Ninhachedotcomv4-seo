@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { Banner } from './Banner';
 import { Callout } from './Callout';
 import { Card } from './Card';
 import { Chart } from './Chart';
@@ -13,9 +14,11 @@ import { Mark, U } from './Inline';
 import { Lead } from './Lead';
 import { Pre } from './Pre';
 import { Reveal } from './Reveal';
+import { Center, SectionHeader } from './SectionHeader';
 import { Sidenote } from './Sidenote';
 import { Ext, SmartAnchor } from './SmartAnchor';
 import { Spec, Specs } from './Specs';
+import { Split } from './Split';
 import { Step, Steps } from './Steps';
 import { DeltaE, Swatch } from './Swatch';
 import { Table, TruthTable } from './Table';
@@ -23,6 +26,7 @@ import { Takeaways } from './Takeaways';
 import { Term } from './Term';
 import { Badge, Tok } from './TextMarks';
 import { Timeline, TimelineItem } from './Timeline';
+import { Wide } from './Wide';
 
 /**
  * Wrap a block component so it fades in on scroll (`FadeIn` is the client
@@ -70,6 +74,10 @@ export const mdxComponents = {
     Card: withFadeIn(Card),
     Takeaways: withFadeIn(Takeaways),
     Specs: withFadeIn(Specs),
+    Split: withFadeIn(Split),
+    SectionHeader: withFadeIn(SectionHeader),
+    Wide: withFadeIn(Wide),
+    Banner: withFadeIn(Banner),
     // block, no fade (children of the above, or layout containers)
     Step,
     Side,
@@ -77,6 +85,7 @@ export const mdxComponents = {
     Spec,
     Grid,
     Cols,
+    Center,
     Swatch,
     Lead,
     Divider,
