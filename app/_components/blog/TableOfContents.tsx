@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { TocItem } from '@/lib/markdown/render-article';
 import { cn } from '@/lib/utils';
 
@@ -14,11 +14,16 @@ import { cn } from '@/lib/utils';
 export function TableOfContents({ toc }: { toc: TocItem[] }) {
     const t = useTranslations('blog');
     const [activeId, setActiveId] = useState<string>('');
+    // While a click-triggered smooth scroll is running, freeze the active
+    // highlight on the clicked entry so the observer doesn't flicker it back
+    // through every heading the scroll passes over.
+    const clickScrollingRef = useRef(false);
 
     useEffect(() => {
         if (!toc.length) return;
         const observer = new IntersectionObserver(
             entries => {
+                if (clickScrollingRef.current) return;
                 // Prefer the topmost heading currently intersecting the band.
                 const visible = entries
                     .filter(e => e.isIntersecting)
@@ -44,10 +49,21 @@ export function TableOfContents({ toc }: { toc: TocItem[] }) {
         e.preventDefault();
         const el = document.getElementById(id);
         if (!el) return;
+        // Lock the highlight on the clicked entry for the duration of the scroll.
+        clickScrollingRef.current = true;
         setActiveId(id);
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         // Reflect the target in the URL without a jump.
         history.replaceState(null, '', `#${id}`);
+        // Release when the scroll settles (`scrollend`), with a timeout fallback
+        // for browsers that don't emit it.
+        const release = () => {
+            clickScrollingRef.current = false;
+            window.removeEventListener('scrollend', release);
+            clearTimeout(timer);
+        };
+        const timer = setTimeout(release, 1200);
+        window.addEventListener('scrollend', release);
     };
 
     return (
