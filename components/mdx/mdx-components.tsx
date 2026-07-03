@@ -4,6 +4,7 @@ import { Banner } from './Banner';
 import { Callout } from './Callout';
 import { Card } from './Card';
 import { Chart } from './Chart';
+import { CommitHeatmap } from './CommitHeatmap';
 import { Compare, Side } from './Compare';
 import { Details } from './Details';
 import { Divider } from './Divider';
@@ -15,6 +16,7 @@ import { HexDump } from './HexDump';
 import { Mark, U } from './Inline';
 import { Lead } from './Lead';
 import { Pre } from './Pre';
+import { Punchcard } from './Punchcard';
 import { Reveal } from './Reveal';
 import { Center, SectionHeader } from './SectionHeader';
 import { Sidenote } from './Sidenote';
@@ -82,6 +84,8 @@ export const mdxComponents = {
     Banner: withFadeIn(Banner),
     ArticleLink: withFadeIn(ArticleLink),
     Flow: withFadeIn(Flow),
+    Punchcard: withFadeIn(Punchcard),
+    CommitHeatmap: withFadeIn(CommitHeatmap),
     // block, no fade (children of the above, or layout containers)
     Step,
     Side,
