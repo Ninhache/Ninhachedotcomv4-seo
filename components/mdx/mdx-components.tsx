@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { ArticleLink } from './ArticleLink';
 import { Banner } from './Banner';
 import { Callout } from './Callout';
 import { Card } from './Card';
@@ -78,6 +79,7 @@ export const mdxComponents = {
     SectionHeader: withFadeIn(SectionHeader),
     Wide: withFadeIn(Wide),
     Banner: withFadeIn(Banner),
+    ArticleLink: withFadeIn(ArticleLink),
     // block, no fade (children of the above, or layout containers)
     Step,
     Side,
