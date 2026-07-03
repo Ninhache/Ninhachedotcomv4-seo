@@ -67,11 +67,22 @@ export function remarkSidenotes() {
         let counter = 0;
         let pending: Node[] = [];
         const out: Node[] = [];
+        // A `<Divider>` or `---` that ends a section: notes belong BEFORE it, so
+        // the order reads content -> notes -> separator -> next section.
+        const isSeparator = (n: Node) =>
+            n?.type === 'thematicBreak' ||
+            ((n?.type === 'mdxJsxFlowElement' ||
+                n?.type === 'mdxJsxTextElement') &&
+                n?.name === 'Divider');
         const flush = () => {
-            if (pending.length) {
-                out.push(footnotesList(pending));
-                pending = [];
+            if (!pending.length) return;
+            const trailing: Node[] = [];
+            while (out.length && isSeparator(out[out.length - 1])) {
+                trailing.unshift(out.pop());
             }
+            out.push(footnotesList(pending));
+            out.push(...trailing);
+            pending = [];
         };
         for (const node of tree.children ?? []) {
             if (node.type === 'heading' && node.depth <= 2) {
