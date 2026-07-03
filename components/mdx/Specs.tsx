@@ -16,7 +16,7 @@ export function Spec({
     children?: ReactNode;
 }) {
     return (
-        <div className="grid gap-1 px-4 py-2.5 sm:grid-cols-[minmax(7rem,12rem)_1fr] sm:items-baseline sm:gap-4">
+        <div className="grid gap-1 px-4 py-2.5 transition-colors hover:bg-primary/5 sm:grid-cols-[minmax(7rem,12rem)_1fr] sm:items-baseline sm:gap-4">
             <dt
                 className={`text-muted-foreground ${ralewaySemiBold.className}`}
             >

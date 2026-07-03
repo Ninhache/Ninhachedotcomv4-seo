@@ -31,7 +31,7 @@ export function Step({ title, n, isLast, children }: StepProps) {
                 />
             )}
             <span
-                className="absolute top-0 left-0 flex h-8 w-8 items-center justify-center rounded-full font-semibold text-sm"
+                className="absolute top-0 left-0 flex h-8 w-8 items-center justify-center rounded-full text-center font-semibold text-sm leading-none tabular-nums"
                 style={{
                     background: '#0f1d30',
                     color: CYAN,

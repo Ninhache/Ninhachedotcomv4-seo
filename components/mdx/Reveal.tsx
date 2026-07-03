@@ -31,7 +31,7 @@ export function Reveal({
         <button
             type="button"
             onClick={() => setRevealed(true)}
-            className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-primary/40 bg-primary/10 px-2 py-0.5 align-baseline text-primary text-sm transition-colors hover:bg-primary/20"
+            className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-primary/40 bg-primary/10 px-2 py-0.5 align-middle text-primary text-sm leading-none transition-colors hover:bg-primary/20"
         >
             <Eye className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             {label}

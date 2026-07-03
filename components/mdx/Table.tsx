@@ -43,7 +43,7 @@ export function Table({
     ...props
 }: ComponentPropsWithoutRef<'table'>) {
     return (
-        <div className="not-prose my-6 overflow-x-auto">
+        <div className="not-prose my-6 overflow-x-auto overflow-y-hidden">
             <table
                 className="w-full border-collapse text-sm [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 [&_th]:border [&_th]:border-border [&_th]:bg-muted/50 [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold"
                 {...props}
@@ -72,7 +72,7 @@ export function TruthTable({
     const fn = OPS[op];
     return (
         <figure className="not-prose my-8">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto overflow-y-hidden">
                 <table className="mx-auto border-collapse text-center font-mono text-sm">
                     <thead>
                         <tr>

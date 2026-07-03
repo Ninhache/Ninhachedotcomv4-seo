@@ -96,17 +96,16 @@ export function Sidenote({
     const marker = n ?? '*';
     return (
         <>
-            <sup className="ml-0.5 font-semibold" style={{ color: CYAN }}>
+            <sup
+                className="ml-0.5 font-semibold text-[0.7em]"
+                style={{ color: CYAN }}
+            >
                 {marker}
             </sup>
+            {/* One element, rendered once: a full-width block note on mobile that
+                becomes a right-floated margin note (text wraps around it) from md up. */}
             <span
-                className="float-right clear-right mt-1 mb-2 ml-4 hidden w-48 border-l-2 pl-3 text-muted-foreground text-sm lg:block"
-                style={{ borderColor: CYAN }}
-            >
-                {children}
-            </span>
-            <span
-                className="mt-1 mb-2 block border-l-2 pl-3 text-muted-foreground text-sm lg:hidden"
+                className="my-2 block border-l-2 pl-3 text-muted-foreground text-sm md:float-right md:clear-right md:my-1 md:ml-6 md:w-56"
                 style={{ borderColor: CYAN }}
             >
                 {children}
