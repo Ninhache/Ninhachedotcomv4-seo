@@ -74,42 +74,5 @@ export function Tok({
     );
 }
 
-/**
- * Inline MDX `<Sidenote>`: a Tufte-style side note, e.g.
- * `texte<Sidenote n={1}>la remarque</Sidenote>`. Renders a superscript marker
- * (`n`, or `*` if omitted) at the point of use, followed by the note itself.
- *
- * No page-level gutter is assumed to exist outside the prose column, so
- * instead of a true margin note this floats *within* the column on `lg+`
- * screens (`float-right`, text wraps around it) and drops to a normal
- * bordered block below `lg`. Both variants are always rendered and toggled
- * with `hidden`/`lg:hidden`, so there's no client JS or layout measurement
- * involved - robust across containers, at the cost of a true margin note.
- */
-export function Sidenote({
-    children,
-    n,
-}: {
-    children?: ReactNode;
-    n?: number | string;
-}) {
-    const marker = n ?? '*';
-    return (
-        <>
-            <sup
-                className="ml-0.5 font-semibold text-[0.7em]"
-                style={{ color: CYAN }}
-            >
-                {marker}
-            </sup>
-            {/* One element, rendered once: a full-width block note on mobile that
-                becomes a right-floated margin note (text wraps around it) from md up. */}
-            <span
-                className="my-2 block border-l-2 pl-3 text-muted-foreground text-sm md:float-right md:clear-right md:my-1 md:ml-6 md:w-56"
-                style={{ borderColor: CYAN }}
-            >
-                {children}
-            </span>
-        </>
-    );
-}
+// `<Sidenote>` moved to its own client file (components/mdx/Sidenote.tsx) for
+// its on-demand popover (hover/click), which keeps the sentence unbroken.

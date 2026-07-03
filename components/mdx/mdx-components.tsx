@@ -13,6 +13,7 @@ import { Mark, U } from './Inline';
 import { Lead } from './Lead';
 import { Pre } from './Pre';
 import { Reveal } from './Reveal';
+import { Sidenote } from './Sidenote';
 import { Ext, SmartAnchor } from './SmartAnchor';
 import { Spec, Specs } from './Specs';
 import { Step, Steps } from './Steps';
@@ -20,7 +21,7 @@ import { DeltaE, Swatch } from './Swatch';
 import { Table, TruthTable } from './Table';
 import { Takeaways } from './Takeaways';
 import { Term } from './Term';
-import { Badge, Sidenote, Tok } from './TextMarks';
+import { Badge, Tok } from './TextMarks';
 import { Timeline, TimelineItem } from './Timeline';
 
 /**
