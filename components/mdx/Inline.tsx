@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 // Default accent = the blog's cyan DA token, reused across inline marks.
@@ -87,5 +88,48 @@ export function Mark({
         >
             {children}
         </mark>
+    );
+}
+
+type ArrowDir = 'right' | 'left' | 'up' | 'down';
+const ARROW_ROTATION: Record<ArrowDir, number> = {
+    right: 0,
+    down: 90,
+    left: 180,
+    up: 270,
+};
+
+/**
+ * Inline MDX `<Arrow>` - a styled cyan arrow replacing bare `→` glyphs in prose,
+ * used mid-sentence or inside Step titles to show a flow/transformation:
+ * `contrôleur <Arrow/> service <Arrow/> port`. `dir` rotates it (default right).
+ * The icon is decorative (`aria-hidden`); an `sr-only` word keeps the meaning for
+ * screen readers. Sized to the surrounding text (`0.95em`). Presentational.
+ */
+export function Arrow({
+    dir = 'right',
+    color = ACCENT,
+}: {
+    dir?: ArrowDir;
+    color?: string;
+}) {
+    return (
+        <span
+            style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                verticalAlign: '-0.1em',
+                margin: '0 0.18em',
+                color,
+            }}
+        >
+            <span className="sr-only">{dir === 'right' ? 'to' : ''}</span>
+            <ArrowRight
+                aria-hidden
+                size="0.95em"
+                strokeWidth={2.5}
+                style={{ transform: `rotate(${ARROW_ROTATION[dir]}deg)` }}
+            />
+        </span>
     );
 }

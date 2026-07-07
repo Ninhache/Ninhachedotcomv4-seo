@@ -1,9 +1,12 @@
-.menuOpen {
+/* Compound selectors (.menu_div.menuOpen) so these beat .menu_div's own
+   `transform` further down the file — same specificity would otherwise let the
+   later .menu_div rule win and the panel would never slide in. */
+.menu_div.menuOpen {
     transform: translateX(0px);
     box-shadow: -10px 0px 30px rgba(0, 0, 0, 0.7);
 }
 
-.menuClosed {
+.menu_div.menuClosed {
     transform: translateX(clamp(0px, 100%, 400px));
     box-shadow: none;
 }
@@ -52,6 +55,7 @@
 
 .menu_div .menu_icon {
     display: block;
+    box-sizing: content-box;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -127,6 +131,13 @@
     align-items: center;
     color: var(--light_blue);
     padding: 13.5px 30px 13.5px 34.5px;
+    border: 2px solid var(--light_blue);
+    border-radius: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.menu_div .menu .button:hover {
+    background-color: var(--fade_light_blue);
 }
 
 .menu_div .menu .button .button_arrow {
@@ -135,6 +146,11 @@
     -webkit-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
     transform: rotate(-90deg);
+    fill: none;
+    stroke: var(--light_blue);
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /**
@@ -177,7 +193,6 @@
         box-shadow 0.4s ease-in-out,
         top 0.5s ease-in-out,
         -webkit-box-shadow 0.4s ease-in-out;
-    height: 70px;
     pointer-events: all;
     top: 0px;
 }
@@ -259,12 +274,27 @@
     align-items: center;
     color: var(--light_blue);
     padding: 9px 20px;
+    /* Border/pill lived only in the global `.button` (styles/globals.css, home
+       only). Declared here so the shared header keeps its outline on the blog
+       too, which imports app/globals.css instead. */
+    border: 2px solid var(--light_blue);
+    border-radius: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.header .menu .button:hover {
+    background-color: var(--fade_light_blue);
 }
 
 .header .menu .button .button_arrow {
     height: 12px;
     margin-left: 12px;
     transform: rotate(-90deg);
+    fill: none;
+    stroke: var(--light_blue);
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 /* Between the mobile breakpoint (780px) and comfortable desktop, the longer FR
@@ -286,8 +316,22 @@
     }
 }
 
+.hamburger_button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
 .hamburger_icon {
     display: block;
+    /* Tailwind's global reset (app/globals.css, loaded on the blog) sets
+       box-sizing: border-box, which would collapse this icon's content box to
+       0 (height 30 - 40px padding) and hide the lines. Force content-box. */
+    box-sizing: content-box;
     pointer-events: all;
     padding: 20px 20px 20px 20px;
     margin-right: -20px;
@@ -300,8 +344,35 @@
     transition: stroke 0.2s ease;
 }
 
+/* Backdrop behind the mobile slide-out panel: tap anywhere to close. */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Desktop/mobile switch driven by CSS (not JS) so there is no flash of the
+   desktop nav before hydration on phones. 780px mirrors useMobileView. */
+@media (max-width: 779px) {
+    .header .menu {
+        display: none;
+    }
+}
+
+@media (min-width: 780px) {
+    .hamburger_button {
+        display: none;
+    }
+}
+
 .menu_icon {
     display: block;
+    box-sizing: content-box;
     pointer-events: all;
     padding: 20px 20px 20px 20px;
     /* margin-right: -20px; */

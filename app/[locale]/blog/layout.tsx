@@ -31,6 +31,14 @@ const PORTFOLIO_THEME = {
     '--border': 'rgba(86, 220, 252, 0.14)',
     '--input': 'rgba(86, 220, 252, 0.14)',
     '--ring': '#56dcfc',
+    // Legacy CSS-module vars the shared <Header/> relies on. They live in
+    // styles/globals.css (home page only); the blog imports app/globals.css, so
+    // without these the header's hamburger/panel/text render colorless here.
+    '--white': '#e8eef7',
+    '--light_blue': '#56dcfc',
+    '--fade_light_blue': 'rgba(86, 220, 252, 0.15)',
+    '--dark_blue': '#101d30',
+    '--fade_dark_blue': 'rgba(16, 29, 48, 0.9)',
 } as CSSProperties;
 
 /**

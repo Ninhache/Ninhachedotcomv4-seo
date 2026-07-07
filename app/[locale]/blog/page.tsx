@@ -79,7 +79,7 @@ export default async function BlogListPage(props: Props) {
         .map(c => ({ slug: c.slug, name: categoryName(c, loc) }));
 
     return (
-        <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
+        <main className="mx-auto max-w-6xl px-4 pb-16 pt-32">
             <header className="mb-10">
                 <h1
                     className={`text-4xl font-bold tracking-tight sm:text-5xl ${ralewaySemiBold.className}`}

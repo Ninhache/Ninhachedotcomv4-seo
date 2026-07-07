@@ -63,7 +63,9 @@ export function PostCard({
                     className={cn(
                         'font-semibold leading-tight text-foreground transition-colors group-hover:text-primary',
                         ralewaySemiBold.className,
-                        featured ? 'text-2xl sm:text-3xl' : 'text-lg'
+                        featured
+                            ? 'line-clamp-2 text-2xl sm:text-3xl'
+                            : 'line-clamp-3 text-lg'
                     )}
                 >
                     {post.title}

@@ -8,7 +8,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import AnimatedComponent from '@/app/_components/AnimatedComponent';
 import useLocaleNames from '@/app/_hooks/useLocaleNames';
-import useMobileView from '@/app/_hooks/useMobileView';
 import { ralewaySemiBold } from '@/app/fonts';
 import styles from '@/styles/header.module.css';
 import LocaleSwitcher from '../LocaleSwitcher';
@@ -48,24 +47,26 @@ export default function Header() {
         },
     ];
 
-    const isMobile = useMobileView();
-    const menuDivRef = useRef<HTMLDivElement>(null);
+    // Mobile slide-out menu state. Desktop-vs-hamburger visibility is handled in
+    // CSS (@media in header.module.css) so there is no pre-hydration flash.
+    const [menuOpen, setMenuOpen] = useState(false);
+    const openMobileMenu = () => setMenuOpen(true);
+    const closeMobileMenu = () => setMenuOpen(false);
 
-    const openMobileMenu = () => {
-        if (menuDivRef.current) {
-            menuDivRef.current.style.transform = 'translateX(0px)';
-            menuDivRef.current.style.boxShadow =
-                '-10px 0px 30px rgba(0, 0, 0, 0.7)';
-        }
-    };
-
-    const closeMobileMenu = () => {
-        if (menuDivRef.current) {
-            menuDivRef.current.style.transform =
-                'translateX(clamp(0px, 100%, 400px))';
-            menuDivRef.current.style.boxShadow = 'none';
-        }
-    };
+    // Lock body scroll while the panel is open, and close it on Escape.
+    useEffect(() => {
+        if (!menuOpen) return;
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setMenuOpen(false);
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => {
+            document.body.style.overflow = prevOverflow;
+            window.removeEventListener('keydown', onKeyDown);
+        };
+    }, [menuOpen]);
 
     const [isVisible, setIsVisible] = useState(true);
     const [isTop, setIsTop] = useState(true);
@@ -127,24 +128,28 @@ export default function Header() {
                                 />
                             </Link>
                         </div>
-                        {!isMobile && (
-                            <AnimatedComponent delay={100}>
-                                <div className={styles.menu}>
-                                    <ol>
-                                        {menuItems.map((item, index) => (
-                                            <li
-                                                key={`${item.name}-${item.anchor}`}
-                                            >
-                                                <HeaderItem
-                                                    name={item.name}
-                                                    anchor={item.anchor}
-                                                    delay={calculateDelay(
-                                                        index
-                                                    )}
-                                                />
-                                            </li>
-                                        ))}
-                                        <li>
+                        <AnimatedComponent delay={100}>
+                            <div className={styles.menu}>
+                                <ol>
+                                    {menuItems.map((item, index) => (
+                                        <li key={`${item.name}-${item.anchor}`}>
+                                            <HeaderItem
+                                                name={item.name}
+                                                anchor={item.anchor}
+                                                delay={calculateDelay(index)}
+                                            />
+                                        </li>
+                                    ))}
+                                    <li>
+                                        {/* Wrapped like HeaderItem so "Blog"
+                                            fades in with the same staggered
+                                            animation as the other nav items
+                                            (delay continues the sequence). */}
+                                        <AnimatedComponent
+                                            delay={calculateDelay(
+                                                menuItems.length
+                                            )}
+                                        >
                                             {/* Hard nav: crosses the CSS-modules
                                                 site → Tailwind blog boundary, so
                                                 a full load guarantees the blog's
@@ -155,46 +160,51 @@ export default function Header() {
                                             >
                                                 {t('blog')}
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                className={`button ${styles.button}`}
-                                                href={`/${locale}#${t('contactAnchor')}`}
+                                        </AnimatedComponent>
+                                    </li>
+                                    <li>
+                                        <a
+                                            className={`button ${styles.button}`}
+                                            href={`/${locale}#${t('contactAnchor')}`}
+                                        >
+                                            <p>{t('contact')}</p>
+                                            <svg
+                                                role="button"
+                                                aria-label="Open header"
+                                                className={`button_arrow ${styles.button_arrow}`}
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 17.69 17.39"
                                             >
-                                                <p>{t('contact')}</p>
-                                                <svg
-                                                    role="button"
-                                                    aria-label="Open header"
-                                                    className={`button_arrow ${styles.button_arrow}`}
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 17.69 17.39"
-                                                >
-                                                    <g>
-                                                        <path
-                                                            className="path_1"
-                                                            d="M8.9 12.4 L8.9 12.4"
-                                                        />
-                                                        <path
-                                                            className="path_2"
-                                                            d="M16.2 5 8.9 12.4 1.5 5"
-                                                        />
-                                                    </g>
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <LocaleSwitcher
-                                                localeNames={localeNames}
-                                            />
-                                        </li>
-                                    </ol>
-                                </div>
-                            </AnimatedComponent>
-                        )}
+                                                <g>
+                                                    <path
+                                                        className="path_1"
+                                                        d="M8.9 12.4 L8.9 12.4"
+                                                    />
+                                                    <path
+                                                        className="path_2"
+                                                        d="M16.2 5 8.9 12.4 1.5 5"
+                                                    />
+                                                </g>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <LocaleSwitcher
+                                            localeNames={localeNames}
+                                        />
+                                    </li>
+                                </ol>
+                            </div>
+                        </AnimatedComponent>
 
-                        {isMobile && (
+                        <button
+                            type="button"
+                            className={styles.hamburger_button}
+                            aria-label="Open menu"
+                            aria-expanded={menuOpen}
+                            onClick={openMobileMenu}
+                        >
                             <svg
-                                onClick={openMobileMenu}
                                 className={`${styles.hamburger_icon}`}
                                 viewBox="0 0 140 100"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -203,15 +213,22 @@ export default function Header() {
                                 <line x1="30" y1="50" x2="130" y2="50" />
                                 <line x1="50" y1="90" x2="130" y2="90" />
                             </svg>
-                        )}
+                        </button>
                     </nav>
                 </header>
             </div>
 
+            {menuOpen && (
+                <div
+                    className={styles.backdrop}
+                    onClick={closeMobileMenu}
+                    aria-hidden="true"
+                />
+            )}
+
             <div
                 id="menu_div"
-                className={`${styles.menu_div} ${ralewaySemiBold.className}`}
-                ref={menuDivRef}
+                className={`${styles.menu_div} ${menuOpen ? styles.menuOpen : styles.menuClosed} ${ralewaySemiBold.className}`}
             >
                 <svg
                     role="button"
@@ -238,18 +255,23 @@ export default function Header() {
                             </li>
                         ))}
                         <li>
-                            <a
-                                className={styles.not_button}
-                                href={`/${locale}/blog`}
-                                onClick={closeMobileMenu}
+                            <AnimatedComponent
+                                delay={calculateDelay(menuItems.length)}
                             >
-                                {t('blog')}
-                            </a>
+                                <a
+                                    className={styles.not_button}
+                                    href={`/${locale}/blog`}
+                                    onClick={closeMobileMenu}
+                                >
+                                    {t('blog')}
+                                </a>
+                            </AnimatedComponent>
                         </li>
                         <li>
                             <a
                                 className={`button ${styles.button} `}
                                 href={`/${locale}#${t('contactAnchor')}`}
+                                onClick={closeMobileMenu}
                             >
                                 <p>{t('contact')}</p>
                                 <svg
