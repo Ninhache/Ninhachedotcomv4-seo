@@ -1,11 +1,10 @@
-import { Calendar, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
 import { TableOfContents } from '@/app/_components/blog/TableOfContents';
 import { ralewaySemiBold } from '@/app/fonts';
-import { Arrow } from '@/components/mdx/Inline';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
@@ -98,7 +97,7 @@ export default async function ArticlePage(props: Props) {
                     className="mb-6 rounded-full border-border bg-card text-muted-foreground hover:border-primary/40 hover:bg-card hover:text-foreground"
                 >
                     <Link href="/blog">
-                        <Arrow dir="left" color="currentColor" />
+                        <ArrowLeft />
                         {t('backToList')}
                     </Link>
                 </Button>

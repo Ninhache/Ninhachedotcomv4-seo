@@ -181,6 +181,10 @@
     text-decoration: none;
     display: flex;
     gap: 15px;
+    /* Guaranteed breathing room above the tags — otherwise, when a card carries
+       the "En découvrir plus" blog button, the header fills the card and the
+       button ends up glued to the tags (the .content column is space-between). */
+    margin-top: 18px;
 }
 
 .tag {

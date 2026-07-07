@@ -1,4 +1,7 @@
-.section_title {
+/* Scoped so it beats the global `.section_title { color: var(--black_title) }`
+   (same specificity → previously lost by CSS load order, rendering a dark navy
+   title on the dark-purple projects background). */
+.projects_section .section_title {
     color: var(--white);
     margin-bottom: 60px;
 }
