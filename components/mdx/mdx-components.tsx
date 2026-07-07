@@ -13,7 +13,7 @@ import { Figure } from './Figure';
 import { Flow } from './Flow';
 import { Cols, Grid } from './Grid';
 import { HexDump } from './HexDump';
-import { Mark, U } from './Inline';
+import { Arrow, Mark, U } from './Inline';
 import { Lead } from './Lead';
 import { Pre } from './Pre';
 import { Punchcard } from './Punchcard';
@@ -100,6 +100,7 @@ export const mdxComponents = {
     // inline
     U,
     Mark,
+    Arrow,
     Reveal,
     Term,
     Badge,

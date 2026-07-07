@@ -5,6 +5,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
 import { TableOfContents } from '@/app/_components/blog/TableOfContents';
 import { ralewaySemiBold } from '@/app/fonts';
+import { Arrow } from '@/components/mdx/Inline';
+import { Button } from '@/components/ui/button';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
 import {
@@ -88,13 +90,18 @@ export default async function ArticlePage(props: Props) {
         <>
             <ReadingProgressBar targetId={ARTICLE_ID} />
 
-            <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
-                <Link
-                    href="/blog"
-                    className="mb-6 inline-block text-sm text-muted-foreground transition-colors hover:text-foreground"
+            <main className="mx-auto max-w-6xl px-4 pb-16 pt-32">
+                <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="mb-6 rounded-full border-border bg-card text-muted-foreground hover:border-primary/40 hover:bg-card hover:text-foreground"
                 >
-                    ← {t('backToList')}
-                </Link>
+                    <Link href="/blog">
+                        <Arrow dir="left" color="currentColor" />
+                        {t('backToList')}
+                    </Link>
+                </Button>
 
                 <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-10">
                     <article id={ARTICLE_ID} className="min-w-0 max-w-3xl">
