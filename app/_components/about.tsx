@@ -67,11 +67,11 @@ export default function About({
                 className={`section ${styles.about_section}`}
             >
                 <div className={`content ${styles.content}`}>
-                    <span
+                    <h2
                         className={`section_title ${proximaNovaBold.className}`}
                     >
                         {t('title')}
-                    </span>
+                    </h2>
                     <div className={styles.about_content}>
                         <div className={styles.left_content}>
                             <p

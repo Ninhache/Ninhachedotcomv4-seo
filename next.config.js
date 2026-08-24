@@ -21,6 +21,19 @@ const config = {
             },
         ],
     },
+    async rewrites() {
+        return [
+            // Convenience alias for the plain-Markdown twin of an article:
+            // `/fr/blog/slug.md` serves what `/fr/blog/slug/raw` serves. The
+            // `/raw` route stays the guaranteed address; this is the one people
+            // (and assistants) actually guess. next-intl's proxy matcher skips
+            // any path containing a dot, so this never gets locale-prefixed.
+            {
+                source: '/:locale(en|fr)/blog/:slug.md',
+                destination: '/:locale/blog/:slug/raw',
+            },
+        ];
+    },
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

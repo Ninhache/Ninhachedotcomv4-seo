@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import {
     getMessages,
@@ -11,6 +12,7 @@ import Footer from '@/app/_components/footer';
 import Header from '@/app/_components/header/header';
 import Home from '@/app/_components/home';
 import Projects from '@/app/_components/project/projects';
+import { JsonLd } from '@/app/_components/seo/JsonLd';
 import Skills from '@/app/_components/skills';
 import { Locale } from '@/config';
 import {
@@ -28,12 +30,38 @@ import {
     getTimeline,
 } from '@/lib/portfolio';
 import { resolveResumeUrl } from '@/lib/resume/resolve-url';
+import {
+    graph,
+    profileIdentity,
+    profilePageJsonLd,
+    projectListJsonLd,
+} from '@/lib/seo/json-ld';
+import { pageMetadata } from '@/lib/seo/metadata';
+import { ogImagePath } from '@/lib/seo/og';
 
 export const revalidate = 3600;
 
 type Props = {
     params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+    const { locale } = await props.params;
+    const loc = locale as Locale;
+    const profile = await getProfile();
+    const { name, jobTitle, description } = profileIdentity(profile, loc);
+
+    return pageMetadata({
+        locale: loc,
+        title: `${name} · ${jobTitle}`,
+        // The home page title already carries the full name; suffixing it would
+        // read as "Néo Almeida · … · Néo Almeida".
+        absoluteTitle: true,
+        description,
+        type: 'profile',
+        image: ogImagePath('home', loc),
+    });
+}
 
 export default async function Page(props: Props) {
     const { locale } = await props.params;
@@ -82,6 +110,17 @@ export default async function Page(props: Props) {
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>
             <main className="main">
+                {/* Only describes what this page actually renders: the profile
+                    it is about, and the project list visible below. */}
+                <JsonLd
+                    data={graph([
+                        profilePageJsonLd(profile, locale as Locale),
+                        projectListJsonLd(
+                            rawProjects.filter(p => p.isVisible),
+                            locale as Locale
+                        ),
+                    ])}
+                />
                 <Header />
                 <Home profile={profile} locale={locale} />
                 <About profile={profile} resumeUrl={resumeUrl} />

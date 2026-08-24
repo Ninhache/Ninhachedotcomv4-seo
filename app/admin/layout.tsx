@@ -5,8 +5,15 @@ import type { ReactNode } from 'react';
 import Providers from './providers';
 
 export const metadata: Metadata = {
-    title: 'Admin',
-    description: 'Admin desc',
+    title: {
+        default: 'Admin',
+        template: '%s \u00b7 Admin',
+    },
+    description:
+        "Back-office de ninhache.fr, r\u00e9serv\u00e9 \u00e0 l'administration du contenu.",
+    // The back-office has no business in a search index or an AI answer. It is
+    // auth-gated, but /admin/login itself is public and was fully crawlable.
+    robots: { index: false, follow: false },
 };
 
 // Document shell for the whole /admin subtree. The authenticated app shell

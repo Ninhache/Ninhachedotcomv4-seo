@@ -56,18 +56,27 @@ export const ExperienceItem: React.FC<ExperienceItemProps> = ({
         .filter(Boolean)
         .join(' - ');
 
-    const title = hasLink ? (
-        <Link
-            className={`${styles.title} ${calibreSemibold.className}`}
-            href={employer.siteUrl}
-            target="_blank"
-        >
-            {employer.companyName}
-        </Link>
-    ) : (
-        <span className={`${styles.title} ${calibreSemibold.className}`}>
-            {employer.companyName}
-        </span>
+    // h3 under the section's h2 - see the note in BigProject: the wrapper is
+    // structural only, and .title_heading keeps it a flex container so the
+    // inner .title stays a flex item.
+    const title = (
+        <h3 className="title_heading">
+            {hasLink ? (
+                <Link
+                    className={`${styles.title} ${calibreSemibold.className}`}
+                    href={employer.siteUrl}
+                    target="_blank"
+                >
+                    {employer.companyName}
+                </Link>
+            ) : (
+                <span
+                    className={`${styles.title} ${calibreSemibold.className}`}
+                >
+                    {employer.companyName}
+                </span>
+            )}
+        </h3>
     );
 
     const tags = employer.cardTags.length > 0 && (

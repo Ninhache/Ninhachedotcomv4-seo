@@ -48,11 +48,14 @@ export default function Home({ profile, locale }: Props) {
                         delay={200}
                         customCss={{ marginTop: 25 }}
                     >
-                        <span
+                        {/* The page's only h1. Sits in a fixed 100vh section,
+                            so its box cannot push anything below it - see the
+                            h1..h6 reset in styles/globals.css. */}
+                        <h1
                             className={`${styles.name} ${calibreSemibold.className}`}
                         >
                             {name}
-                        </span>
+                        </h1>
                     </AnimatedComponent>
                     <AnimatedComponent delay={300}>
                         <span

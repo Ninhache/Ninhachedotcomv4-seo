@@ -1,6 +1,0 @@
-User-Agent: *
-Allow: *
-# Private review links for unpublished articles. The pages also send
-# `noindex, nofollow`, which is the actual guarantee; this only keeps
-# well-behaved crawlers from fetching them at all.
-Disallow: /*/blog/preview/

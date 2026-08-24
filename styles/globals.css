@@ -18,6 +18,27 @@ body {
     padding: 0;
 }
 
+/*
+ * The public site never loads Tailwind (app/globals.css is imported by the blog
+ * and admin layouts only), so nothing here neutralises the browser's default
+ * heading styles. Section titles are real h1/h2/h3 for the sake of document
+ * structure - crawlers, and the AI retrievers that split a page into passages
+ * by heading, need the hierarchy - and this keeps that change invisible.
+ *
+ * Element selectors on purpose: specificity (0,0,1) loses to .section_title
+ * (0,1,0), so the existing classes still decide how a title looks. Writing
+ * `.main h2 { ... }` instead would outrank them and break the sizing.
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
@@ -219,4 +240,22 @@ ol {
     margin-bottom: 70px;
     text-align: center;
     color: var(--black_title);
+}
+
+/*
+ * Transparent wrapper for a heading whose visual styling lives on its child
+ * (project titles, employer names: the `.title` class carries the font size,
+ * colour and hover on the <a>, which must stay an <a>).
+ *
+ * It has to be a flex container, not a plain block. Those `.title` elements
+ * were direct flex items of `.project_text` / `.information`, so they were
+ * blockified and their `margin-bottom: 12px` shaped the column. Wrapped in a
+ * plain block heading they would turn back into inline boxes, silently
+ * dropping that margin and pulling every card 12px shorter. Keeping the
+ * wrapper a column flex container keeps the child a flex item, so the layout
+ * is byte-identical to the pre-heading markup.
+ */
+.title_heading {
+    display: flex;
+    flex-direction: column;
 }

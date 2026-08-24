@@ -30,9 +30,9 @@ export default function Contact({ data }: ContactProps) {
                 <div
                     className={`content leaning ${styles.content} ${styles.leaning}`}
                 >
-                    <span className={`section_title ${styles.section_title}`}>
+                    <h2 className={`section_title ${styles.section_title}`}>
                         How to contact me?
-                    </span>
+                    </h2>
 
                     <div className={styles.contact_content}>
                         {socialArray.map((test, index) => {
