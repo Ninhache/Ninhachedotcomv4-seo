@@ -65,4 +65,20 @@ export const ArticleApi = {
 
     remove: (id: string): Promise<void> =>
         unwrap(api.delete(`/articles/${id}`)),
+
+    /**
+     * Issues, or rotates, the article's private review link. Rotating
+     * invalidates the URL already shared, which is how a link gets revoked
+     * without unpublishing anything.
+     */
+    issuePreviewToken: (id: string): Promise<{ previewToken: string }> =>
+        unwrap(
+            api.post<{ previewToken: string }>(`/articles/${id}/preview-token`)
+        ),
+
+    /** Drops the review link: the shared URL 404s from then on. */
+    revokePreviewToken: (id: string): Promise<{ previewToken: null }> =>
+        unwrap(
+            api.delete<{ previewToken: null }>(`/articles/${id}/preview-token`)
+        ),
 };

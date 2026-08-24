@@ -99,6 +99,8 @@
         "minutesShort": "min de lecture",
         "tocLabel": "Sommaire",
         "backHome": "Portfolio",
-        "backToList": "Tous les articles"
+        "backToList": "Tous les articles",
+        "previewBadge": "Brouillon",
+        "previewNotice": "Version de relecture. Cet article n'est pas publié, ce lien est privé et la page n'est pas indexée."
     }
 }

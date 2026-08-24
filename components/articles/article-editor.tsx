@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ArticlePreview } from '@/components/articles/article-preview';
+import { PreviewLinkField } from '@/components/articles/preview-link-field';
 import { ArticleCategoryMultiSelect } from '@/components/forms/article-category-multi-select';
 import { DateField } from '@/components/forms/date-field';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
@@ -39,11 +40,27 @@ function slugify(input: string): string {
 const toDate = (raw: unknown): Date | undefined =>
     raw ? (raw instanceof Date ? raw : new Date(raw as string)) : undefined;
 
+// Per-field emptiness is checked in the superRefine, not here: a locale tab is
+// all-or-nothing (see `isBlankTranslation`), so "empty" is a valid state that
+// the shape itself must not reject.
 const translationShape = z.object({
-    title: z.string().min(1, 'Requis'),
-    excerpt: z.string().min(1, 'Requis'),
-    body: z.string().min(1, 'Requis'),
+    title: z.string(),
+    excerpt: z.string(),
+    body: z.string(),
 });
+
+const TRANSLATION_FIELDS = ['title', 'excerpt', 'body'] as const;
+
+/**
+ * A locale tab left entirely blank means "this article does not exist in that
+ * language": it is dropped from the payload rather than saved empty. A tab
+ * that is only partly filled is a mistake, not an intent, and still errors.
+ */
+const isBlankTranslation = (t: {
+    title?: string;
+    excerpt?: string;
+    body?: string;
+}) => TRANSLATION_FIELDS.every(f => !t?.[f]?.trim());
 
 /**
  * Full-page, CMS-style article editor: a main content column (per-locale, with
@@ -101,16 +118,29 @@ export function ArticleEditor({
                 translations: z.record(z.string(), translationShape),
             })
             .superRefine((data, ctx) => {
-                const missing = locales.filter(
-                    loc => !data.translations?.[loc]
-                );
-                missing.forEach(loc =>
+                // Only the primary locale is mandatory: the article has to
+                // exist in at least one language. Any other locale is optional,
+                // which is what allows a French-only article.
+                if (!data.translations?.[primaryLocale]) {
                     ctx.addIssue({
                         code: z.ZodIssueCode.custom,
-                        path: ['translations', loc],
-                        message: `Traduction ${String(loc).toUpperCase()} requise`,
-                    })
-                );
+                        path: ['translations', primaryLocale],
+                        message: `Traduction ${primaryLocale.toUpperCase()} requise`,
+                    });
+                }
+                Object.entries(data.translations ?? {}).forEach(([loc, t]) => {
+                    const started =
+                        loc === primaryLocale || !isBlankTranslation(t);
+                    if (!started) return;
+                    TRANSLATION_FIELDS.forEach(field => {
+                        if (t?.[field]?.trim()) return;
+                        ctx.addIssue({
+                            code: z.ZodIssueCode.custom,
+                            path: ['translations', loc, field],
+                            message: 'Requis',
+                        });
+                    });
+                });
                 const extras = Object.keys(data.translations ?? {}).filter(
                     k => !locales.includes(k)
                 );
@@ -122,7 +152,7 @@ export function ArticleEditor({
                     });
                 }
             });
-    }, [locales]);
+    }, [locales, primaryLocale]);
 
     type FormInput = z.input<typeof FormSchema>;
     type FormOutput = z.output<typeof FormSchema>;
@@ -185,14 +215,18 @@ export function ArticleEditor({
                     coverImageUrl: values.coverImageUrl ?? null,
                     tags: values.tags ?? [],
                     categoryIds: values.categoryIds ?? [],
-                    translations: Object.entries(values.translations).map(
-                        ([locale, t]) => ({
+                    // Blank locales are omitted. PATCH replaces translations
+                    // wholesale, so clearing a tab on a bilingual article does
+                    // delete that translation: that is the intended way to
+                    // walk an article back to a single language.
+                    translations: Object.entries(values.translations)
+                        .filter(([, t]) => !isBlankTranslation(t))
+                        .map(([locale, t]) => ({
                             locale: locale as Locale,
                             title: t.title,
                             excerpt: t.excerpt,
                             body: t.body,
-                        })
-                    ),
+                        })),
                 };
                 const saved: ArticleDTO = initial
                     ? await ArticleApi.update(initial.id, payload)
@@ -403,6 +437,12 @@ export function ArticleEditor({
                             {isVisible ? 'Visible' : 'Masqué (brouillon)'}
                         </Label>
                     </div>
+
+                    <PreviewLinkField
+                        articleId={initial?.id}
+                        initialToken={initial?.previewToken}
+                        locale={primaryLocale}
+                    />
 
                     <MediaUploadField
                         label="Image de couverture"
