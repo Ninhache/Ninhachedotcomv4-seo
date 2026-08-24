@@ -94,6 +94,7 @@
     "blog": {
         "title": "Blog",
         "intro": "Retours d'expérience et notes sur mes projets et divers sujets techniques.",
+        "categoryIntro": "Tous les articles de la catégorie {category}.",
         "empty": "Aucun article pour le moment.",
         "allCategories": "Tous",
         "minutesShort": "min de lecture",

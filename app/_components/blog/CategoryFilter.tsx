@@ -14,6 +14,9 @@ const DARK_PURPLE = 'rgb(41, 41, 85)';
  * No "all" chip: everything shows by default (no active chip). Clicking a chip
  * restricts to that category; clicking the active chip clears the filter. Each
  * chip is a locale-aware link, so filtering is a real server round-trip.
+ *
+ * The target is a route segment (`/blog/c/<slug>`), not a query string: a
+ * prerendered page per category rather than one dynamic page per request.
  */
 export function CategoryFilter({
     categories,
@@ -42,7 +45,7 @@ export function CategoryFilter({
                         href={
                             isActive
                                 ? '/blog'
-                                : `/blog?cat=${encodeURIComponent(c.slug)}`
+                                : `/blog/c/${encodeURIComponent(c.slug)}`
                         }
                         aria-pressed={isActive}
                         style={{

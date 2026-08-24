@@ -94,6 +94,7 @@
     "blog": {
         "title": "Blog",
         "intro": "Experience reports and notes on my projects and various technical topics.",
+        "categoryIntro": "All the articles in the {category} category.",
         "empty": "No articles yet.",
         "allCategories": "All",
         "minutesShort": "min read",
