@@ -380,6 +380,9 @@ export type ArticleDTO = {
     slug: string;
     isVisible: boolean;
     publishedAt: string | null; // ISO; null = draft/never published
+    // Private review link (see /blog/preview/<token>). Only ever present on the
+    // authenticated admin reads; the public endpoints strip it.
+    previewToken?: string | null;
     coverImageUrl: string | null;
     tags: string[];
     order: number;

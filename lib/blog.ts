@@ -1,4 +1,5 @@
 import type { Locale } from '@/config';
+import { baseUrl } from './baseurl';
 import { fetchPublic, localeTags } from './portfolio';
 import type {
     ArticleCategoryDTO,
@@ -29,6 +30,31 @@ export const getArticleBySlug = (slug: string) =>
         localeTags('articles'),
         null
     );
+
+/**
+ * Private review read: resolves an article by its preview token, draft or not.
+ *
+ * Deliberately bypasses `fetchPublic`. A review link exists to show the *current*
+ * state of a draft, so it must never be served from the 24h ISR data cache, and
+ * it must never be tagged (a draft has no business in the public cache graph).
+ * Same failure posture as the public path: a backend blip returns null, which
+ * the route turns into a 404 rather than a 500.
+ */
+export async function getArticleByPreviewToken(
+    token: string
+): Promise<ArticleDTO | null> {
+    try {
+        const res = await fetch(
+            `${baseUrl}/articles/preview/${encodeURIComponent(token)}`,
+            { cache: 'no-store' }
+        );
+        if (!res.ok) return null;
+        return (await res.json()) as ArticleDTO;
+    } catch (err) {
+        console.warn('Article preview fetch failed', err);
+        return null;
+    }
+}
 
 /** Visible blog categories, used for the /blog filter chips. */
 export const getArticleCategories = () =>

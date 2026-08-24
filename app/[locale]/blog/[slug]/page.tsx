@@ -1,27 +1,12 @@
-import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
-import { TableOfContents } from '@/app/_components/blog/TableOfContents';
-import { ralewaySemiBold } from '@/app/fonts';
-import { Button } from '@/components/ui/button';
+import { setRequestLocale } from 'next-intl/server';
+import { ArticleView } from '@/app/_components/blog/ArticleView';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
-import {
-    articleTranslation,
-    categoryName,
-    formatArticleDate,
-    getArticleBySlug,
-    getArticles,
-} from '@/lib/blog';
-import { renderArticle } from '@/lib/markdown/render-article';
-import { Link } from '@/navigation';
+import { articleTranslation, getArticleBySlug, getArticles } from '@/lib/blog';
 
 export const revalidate = 86400;
-
-// The article id the progress bar measures against.
-const ARTICLE_ID = 'blog-article';
 
 type Props = {
     params: Promise<{ locale: string; slug: string }>;
@@ -59,15 +44,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 /**
- * Public article page. The Markdown body is rendered to HTML entirely on the
- * server (build/ISR time) — none of the markdown toolchain ships to the client.
- * The reading-progress bar and TOC are the only client islands.
+ * Public article page. The backend only serves visible articles here, so a
+ * draft slug 404s; drafts are reachable through `/blog/preview/[token]` only.
  */
 export default async function ArticlePage(props: Props) {
     const { locale, slug } = await props.params;
     setRequestLocale(locale as Locale);
     const loc = locale as Locale;
-    const t = await getTranslations('blog');
 
     const article = await getArticleBySlug(slug);
     if (!article) notFound();
@@ -75,89 +58,5 @@ export default async function ArticlePage(props: Props) {
     const tr = articleTranslation(article, loc);
     if (!tr) notFound();
 
-    const { Content, toc, readingMinutes } = await renderArticle(tr.body);
-    const cover = article.coverImageUrl
-        ? mediaSrc(article.coverImageUrl)
-        : null;
-    const dateLabel = formatArticleDate(article.publishedAt, loc);
-    const categories = (article.categories ?? []).map(c => ({
-        slug: c.slug,
-        name: categoryName(c, loc),
-    }));
-
-    return (
-        <>
-            <ReadingProgressBar targetId={ARTICLE_ID} />
-
-            <main className="mx-auto max-w-6xl px-4 pb-16 pt-32">
-                <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                    className="mb-6 rounded-full border-border bg-card text-muted-foreground hover:border-primary/40 hover:bg-card hover:text-foreground"
-                >
-                    <Link href="/blog">
-                        <ArrowLeft />
-                        {t('backToList')}
-                    </Link>
-                </Button>
-
-                <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-10">
-                    <article id={ARTICLE_ID} className="min-w-0 max-w-3xl">
-                        {categories.length > 0 && (
-                            <div className="mb-3 flex flex-wrap gap-1.5">
-                                {categories.map(c => (
-                                    <Link
-                                        key={c.slug}
-                                        href={`/blog?cat=${encodeURIComponent(c.slug)}`}
-                                        className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary hover:bg-primary/20"
-                                    >
-                                        {c.name}
-                                    </Link>
-                                ))}
-                            </div>
-                        )}
-
-                        <h1
-                            className={`text-3xl font-bold leading-tight tracking-tight sm:text-4xl ${ralewaySemiBold.className}`}
-                        >
-                            {tr.title}
-                        </h1>
-
-                        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                            {dateLabel && (
-                                <span className="inline-flex items-center gap-1.5">
-                                    <Calendar className="h-4 w-4" />
-                                    {dateLabel}
-                                </span>
-                            )}
-                            <span className="inline-flex items-center gap-1.5">
-                                <Clock className="h-4 w-4" />
-                                {readingMinutes} {t('minutesShort')}
-                            </span>
-                        </div>
-
-                        {cover && (
-                            <img
-                                src={cover}
-                                alt=""
-                                className="mt-6 aspect-[16/9] w-full rounded-xl object-cover"
-                            />
-                        )}
-
-                        {/* Body is server-compiled MDX (components already bound). */}
-                        <div className="prose prose-lg prose-invert mt-8 max-w-none leading-relaxed prose-headings:scroll-mt-24 prose-pre:bg-transparent prose-pre:p-0">
-                            {Content}
-                        </div>
-                    </article>
-
-                    <aside className="hidden lg:block">
-                        <div className="sticky top-24">
-                            <TableOfContents toc={toc} />
-                        </div>
-                    </aside>
-                </div>
-            </main>
-        </>
-    );
+    return <ArticleView article={article} translation={tr} locale={loc} />;
 }

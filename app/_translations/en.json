@@ -99,6 +99,8 @@
         "minutesShort": "min read",
         "tocLabel": "Contents",
         "backHome": "Portfolio",
-        "backToList": "All articles"
+        "backToList": "All articles",
+        "previewBadge": "Draft",
+        "previewNotice": "Review version. This article is not published, this link is private and the page is not indexed."
     }
 }
