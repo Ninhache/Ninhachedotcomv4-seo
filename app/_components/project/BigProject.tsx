@@ -127,21 +127,29 @@ export const BigProject: React.FC<BigProjectProps> = ({
                             </>
                         )}
                     </div>
-                    {project.links.redirect === 'none' ? (
-                        <span
-                            className={`${styles.title} ${calibreSemibold.className}`}
-                        >
-                            {project.title}
-                        </span>
-                    ) : (
-                        <Link
-                            className={`${styles.title} ${calibreSemibold.className}`}
-                            href={project.links.redirect}
-                            target="_blank"
-                        >
-                            {project.title}
-                        </Link>
-                    )}
+                    {/* h3 under the section's h2: project and employer names are the
+                        page's real subheadings, and the retrievers behind AI
+                        answers split a page into passages along that hierarchy.
+                        .title stays on the inner element (it has to remain an
+                        <a>), so the wrapper carries .title_heading to stay a
+                        flex container - see that rule in styles/globals.css. */}
+                    <h3 className="title_heading">
+                        {project.links.redirect === 'none' ? (
+                            <span
+                                className={`${styles.title} ${calibreSemibold.className}`}
+                            >
+                                {project.title}
+                            </span>
+                        ) : (
+                            <Link
+                                className={`${styles.title} ${calibreSemibold.className}`}
+                                href={project.links.redirect}
+                                target="_blank"
+                            >
+                                {project.title}
+                            </Link>
+                        )}
+                    </h3>
                     <div
                         className={`${styles.text} ${calibreRegular.className}`}
                     >

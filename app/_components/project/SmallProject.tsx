@@ -65,13 +65,15 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                             )}
                         </div>
                     </div>
-                    <Link
-                        href={`${project.links.redirect}`}
-                        target="_blank"
-                        className={`${styles.title} ${calibreSemibold.className}`}
-                    >
-                        {project.title}
-                    </Link>
+                    <h3 className="title_heading">
+                        <Link
+                            href={`${project.links.redirect}`}
+                            target="_blank"
+                            className={`${styles.title} ${calibreSemibold.className}`}
+                        >
+                            {project.title}
+                        </Link>
+                    </h3>
                     {project.ongoing && (
                         <span
                             className={`${styles.devPill} ${ralewaySemiBold.className}`}

@@ -40,11 +40,11 @@ const SkillsComponent: React.FC<SkillsComponentProps> = ({ data }) => {
             className={`section ${styles.skills_section}`}
         >
             <div className={`content leaning`}>
-                <span
+                <h2
                     className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}
                 >
                     {t('title')}
-                </span>
+                </h2>
                 <div className={styles.skills_content}>
                     <div className={`${styles.box}`}>
                         {!isMobile ? (
@@ -137,11 +137,11 @@ const NarrowScreenView: React.FC<NarrowScreenViewProps> = ({ data }) => {
         <>
             {data.map((category, index) => (
                 <Fragment key={index}>
-                    <div
+                    <h3
                         className={`${styles.category_title} ${proximaNovaBold.className}`}
                     >
                         {categoryName(category, locale)}
-                    </div>
+                    </h3>
                     <div className={`${styles.box_content}`}>
                         <SkillsList skills={category.skills} isVisible={true} />
                     </div>

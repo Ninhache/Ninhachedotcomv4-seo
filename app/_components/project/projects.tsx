@@ -183,11 +183,11 @@ const Projects: React.FC<ProjectsProps> = ({ data }) => {
                 className={`section ${styles.projects_section}`}
             >
                 <div className={`content leaning`}>
-                    <span
+                    <h2
                         className={`section_title ${styles.section_title} ${proximaNovaBold.className}`}
                     >
                         {t('title')}
-                    </span>
+                    </h2>
                     <div className={styles.sort_choices}>
                         <span
                             className={`${styles.label} ${ralewaySemiBold.className}`}

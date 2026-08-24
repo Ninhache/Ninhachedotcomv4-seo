@@ -23,11 +23,11 @@ export default function Experience({ data }: ExperienceProps) {
         <>
             <section id={t('anchor')} className={`section ${styles.section}`}>
                 <div className={`content leaning`}>
-                    <span
+                    <h2
                         className={`section_title ${styles.title} ${proximaNovaBold.className}`}
                     >
                         {t('title')}
-                    </span>
+                    </h2>
 
                     {data.length === 0 ? (
                         <p
