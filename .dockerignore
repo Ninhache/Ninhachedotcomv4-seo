@@ -1,0 +1,46 @@
+# Le `dockerfile` fait `COPY . .` : sans ce fichier, le node_modules de l'hote
+# ecrase celui que le `npm install` de l'etape builder vient de produire (binaires
+# compiles pour la mauvaise architecture, sans le moindre avertissement), le
+# contexte envoye au demon depasse le gigaoctet, et le .env de l'hote atterrit
+# dans une couche de l'etape builder.
+
+# Dependances : reinstallees dans l'image, jamais copiees depuis l'hote.
+node_modules
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Sorties de build : regenerees par `npm run build` dans l'etape builder.
+.next
+out
+build
+*.tsbuildinfo
+
+# Historique et metadonnees de depot.
+.git
+.gitignore
+.github
+.vercel
+
+# Secrets. Les variables sont fournies au conteneur a l'execution, pas cuites
+# dans une couche d'image.
+.env
+.env.*
+!.env.example
+
+# Outillage et documentation : sans effet sur l'application servie.
+docs
+tasks
+README.md
+CLAUDE.md
+CONTENT-REVIEW.md
+LICENSE
+coverage
+
+# Bruit local.
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+*.pem
