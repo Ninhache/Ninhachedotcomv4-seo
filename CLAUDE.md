@@ -66,12 +66,48 @@ Blog article **bodies are MDX** (stored as strings in the backend, compiled at I
 
 ### Components (`components/mdx/`)
 - **Blocks**: `<Callout type="note|info|tip|warning|danger|piège|leçon" title?>`, `<Figure src caption? credit?>`, `<Chart type="bar|line" data caption?>`, `<Steps>`/`<Step title>`, `<Compare>`/`<Side label tone="bad|good|neutral">`, `<Card title?>`, `<Grid cols=2|3|4>` (alias `<Cols>`), `<Takeaways title?>`, `<Specs>`/`<Spec label>`, `<HexDump data fields driftDemo?>`, `<Swatch hex lab?>`/`<DeltaE a b>`, `<TruthTable op="and|or">`, `<Details summary?>`, `<Timeline>`/`<TimelineItem date title>`, `<Flow nodes={[{label,sub?,edge?}]} caption?>` (simplified pipeline/architecture diagram, horizontal md+ / stacked mobile; `edge` annotates the arrow *leaving* that node, for pipelines where the transition matters as much as the state), `<Punchcard project>` (commit weekday×hour matrix) + `<CommitHeatmap project>` (GitHub-style daily calendar) — both cyan-intensity, read the `commit-data` registry (per-project JSON in `data/commits/<slug>.json`, generated **locally, no GitHub API/token** by `scripts/wakfuli-activity.mjs <slug> [repo]`; add a project = run the script + one line in `components/mdx/commit-data.ts`), `<Lead>`, `<Divider label?>`.
-- **Editorial layout**: `<Split image side="left|right" ratio? caption?>text</Split>`, `<SectionHeader kicker? title subtitle?>` + `<Center>`, `<Wide src caption?>` (breakout image, `xl`+), `<Banner image? kicker? title subtitle?>` (hero, breakout), `<ArticleLink slug title? label?>` (prominent card cross-linking to another article; `slug` is a sibling slug, relative href keeps the locale).
+- **Editorial layout**: `<Split image side="left|right" ratio? caption?>text</Split>`, `<SectionHeader kicker? title subtitle?>` + `<Center>`, `<Wide src caption?>` (breakout image, `xl`+), `<Banner image? kicker? title subtitle?>` (hero, breakout), `<ArticleLink slug title? label?>` (prominent card cross-linking to another article; `slug` is a sibling slug, relative href keeps the locale), `<Repo url title? description?>` (card-style link to a GitHub repository; label defaults to the `owner/name` read off the URL; **nothing is fetched**, no GitHub API at build or runtime, same rule as the commit data).
 - **Inline**: `<U type="dashed|dotted|wavy|solid|double" color?>`, `<Mark color?>`, `<Arrow dir="right|left|up|down">` (styled cyan arrow, replaces bare `→` glyphs in prose or Step titles via `title={<>a <Arrow/> b</>}`), `<Term def>` (tooltip), `<Badge tone?>`, `<Tok kind="param|nav|cond|math">`, `<Reveal>` (spoiler), `<Ext href>`, `<Sidenote n?>` (footnote).
-- **Element overrides**: fenced code → `<Pre>` (copy button + language badge; meta `title="…" {1,3} showLineNumbers`, and `// [!code highlight|++|--|focus]`). Markdown tables → styled + horizontal scroll + row/column hover cross-highlight. Links → `<SmartAnchor>` (external `http(s)` open in a new tab with a `↗` icon; `#anchor`/relative stay plain).
+- **Element overrides**: fenced code → `<Pre>` (copy button + language badge; meta `title="…" {1,3} showLineNumbers`, and `// [!code highlight|++|--|focus]`). Markdown tables → styled + horizontal scroll + row/column hover cross-highlight. Links → `<SmartAnchor>` (external `http(s)` open in a new tab with a trailing icon: the **GitHub mark** for `github.com` links, a `↗` arrow elsewhere; `#anchor`/relative stay plain). So an ordinary markdown link to a repo gets the GitHub icon for free, and `<Repo>` is only for when the repository *is* the point.
 
 ### Directives & footnotes
 - `:::tip[Titre] … :::` renders **identically** to `<Callout type="tip" title="Titre">` (`lib/markdown/remark-callouts.ts`, kinds note/info/tip/warning/danger).
 - `<Sidenote n?>note</Sidenote>` → **numbered section-bottom footnote**: an inline `¹` ref link + the note moved to an `<ol class="section-footnotes">` at the section end (before the next `h1`/`h2` and before a trailing `<Divider>`/`---`) with a `↩` back-link (`lib/markdown/remark-sidenotes.ts`).
 
 MDX is stricter than Markdown: a bare `<` or `{` in prose breaks compilation (escape `\<`/`\{` or wrap in backticks); `import` is stripped; a compile error renders an inline error block, not a 500. The **`demo-mdx`** article showcases every component.
+
+## Reader identity, comments and moderation
+
+Blog articles carry reactions and comments. The identity behind them is **not**
+the back-office NextAuth session and must never become it.
+
+- **The session lives on the API.** `api.ninhache.fr` runs the Google / GitHub /
+  Discord OAuth dance itself and sets its own `ninhache_reader` cookie, signed
+  with `READER_JWT_SECRET`. The front's NextAuth is untouched: two cookies, two
+  secrets, no way for a reader token to open `/admin`. Being signed in as a
+  reader and as an admin at the same time is normal.
+- **`lib/reader/reader.api.ts`** is the browser client: native `fetch` with
+  `credentials: 'include'`, deliberately *not* the admin axios instance, which
+  injects the NextAuth bearer token. Login buttons are full-page `<a>`
+  navigations to `${baseUrl}/reader/auth/<provider>?returnTo=…`, because an OAuth
+  consent screen needs a top-level navigation. `baseUrl` (`lib/baseurl.ts`,
+  `NEXT_PUBLIC_BACKOFFICE_URL`) is already the API origin, so there is no second
+  public API env var.
+- **Where it renders.** `ArticleView` has a `footer?: ReactNode` slot filled only
+  by `app/[locale]/blog/[slug]/page.tsx` with `<ArticleFooter>`; the private
+  review route `/blog/preview/[token]` leaves it empty, so a draft shows neither
+  widget without needing a flag. The slot sits **outside** `<article>`: the
+  reading-progress bar measures `#blog-article` and would count a comment thread
+  as article left to read.
+- **Everything is client-side on purpose**: a comment or a reaction must never
+  invalidate the article's ISR cache. The API's comment controller carries no
+  `@RevalidateContent` for the same reason.
+- **Comment bodies are plain text**, 1 to 2000 characters, stored as typed and
+  rendered by React (so escaped) with `whitespace-pre-wrap`. No Markdown, no
+  HTML: that is the XSS surface this refuses to open.
+- **Moderation** is a posteriori, in `app/admin/(auto)/comments/`, through
+  `lib/moderation/moderation.api.ts`. Its routes are under **`/moderation`**, not
+  `/admin`: the API's `AdminController` owns `GET /admin/:id`, which would
+  swallow `/admin/comments` as an id. Deleting a comment and banning its author
+  are separate actions; a banned reader keeps their comments until they are
+  explicitly removed.
