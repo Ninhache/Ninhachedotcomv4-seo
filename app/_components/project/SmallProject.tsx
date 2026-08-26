@@ -90,7 +90,7 @@ export const SmallProject: React.FC<SmallProjectProps> = ({ project }) => {
                             href={
                                 project.blogArticleSlug
                                     ? `/${locale}/blog/${project.blogArticleSlug}`
-                                    : `/${locale}/blog?cat=${project.blogCategorySlug}`
+                                    : `/${locale}/blog/c/${project.blogCategorySlug}`
                             }
                             style={{
                                 display: 'inline-flex',

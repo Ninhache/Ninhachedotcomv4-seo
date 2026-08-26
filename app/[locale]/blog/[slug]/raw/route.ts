@@ -1,5 +1,5 @@
 import { type Locale, locales } from '@/config';
-import { articleTranslation, getArticleBySlug } from '@/lib/blog';
+import { articleSlug, articleTranslation, getArticleBySlug } from '@/lib/blog';
 import { toPlainMarkdown } from '@/lib/markdown/to-plain-markdown';
 import { absoluteUrl, localePath } from '@/lib/seo/site';
 
@@ -14,6 +14,11 @@ import { absoluteUrl, localePath } from '@/lib/seo/site';
  *
  * Advertised from three places: `alternates.types['text/markdown']` on the
  * article page, `llms.txt`, and the `/:locale/blog/:slug.md` rewrite.
+ *
+ * Unlike the HTML page, a slug belonging to the other locale is served here
+ * rather than redirected. The twin is `noindex` and its canonical already names
+ * the article page, so there is no duplicate to collapse; and a client that
+ * asked for Markdown is better served the Markdown than a hop.
  */
 
 /** Same window as the article page it mirrors, and busted by the same tag. */
@@ -39,13 +44,18 @@ export async function GET(
 
     // The public endpoint only serves visible articles, so a draft 404s here
     // exactly as it does on the page. It also strips `previewToken`.
-    const article = await getArticleBySlug(slug);
+    const article = await getArticleBySlug(slug, loc);
     const tr = article ? articleTranslation(article, loc) : undefined;
     if (!article || !tr) {
         return new Response('Not found', { status: 404 });
     }
 
-    const canonical = absoluteUrl(localePath(loc, `/blog/${article.slug}`));
+    // Always this locale's own slug, even when the twin was reached through
+    // another one: the canonical is the whole point of the front matter, and
+    // pointing it at a URL that redirects would defeat the attribution.
+    const canonical = absoluteUrl(
+        localePath(loc, `/blog/${articleSlug(article, loc)}`)
+    );
     const header = frontMatter({
         title: tr.title,
         description: tr.excerpt ?? undefined,

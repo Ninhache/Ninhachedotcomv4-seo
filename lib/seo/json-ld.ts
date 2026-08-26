@@ -12,6 +12,7 @@ import type {
 } from 'schema-dts';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
+import { articleSlug } from '@/lib/blog';
 import type {
     ArticleDTO,
     ArticleTranslationDTO,
@@ -271,7 +272,7 @@ export function blogJsonLd(
         publisher: { '@id': PERSON_ID },
         blogPost: articles.map(article => ({
             '@type': 'BlogPosting' as const,
-            '@id': `${absoluteUrl(localePath(locale, `/blog/${article.slug}`))}#article`,
+            '@id': `${absoluteUrl(localePath(locale, `/blog/${articleSlug(article, locale)}`))}#article`,
         })),
     };
 }
@@ -308,7 +309,7 @@ export function articleCollectionJsonLd(args: {
                 '@type': 'ListItem' as const,
                 position: index + 1,
                 item: {
-                    '@id': `${absoluteUrl(localePath(locale, `/blog/${article.slug}`))}#article`,
+                    '@id': `${absoluteUrl(localePath(locale, `/blog/${articleSlug(article, locale)}`))}#article`,
                 },
             })),
         },
@@ -325,7 +326,9 @@ export function blogPostingJsonLd(args: {
     wordCount: number;
 }): BlogPosting {
     const { article, translation, locale, readingMinutes, wordCount } = args;
-    const url = absoluteUrl(localePath(locale, `/blog/${article.slug}`));
+    const url = absoluteUrl(
+        localePath(locale, `/blog/${articleSlug(article, locale)}`)
+    );
     const section = article.categories?.[0];
     const sectionName =
         section?.translations.find(t => t.locale === locale)?.name ??

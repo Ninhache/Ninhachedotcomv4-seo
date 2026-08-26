@@ -30,8 +30,9 @@ export interface Project {
     links: outLink;
     // Optional links from a project to the blog. A project may point at a
     // flagship article and/or a whole category (both, per the admin's choice).
+    // Already resolved for the rendering locale by `mapProject`.
     blogArticleSlug?: string; // → /blog/{slug}
-    blogCategorySlug?: string; // → /blog?cat={slug}
+    blogCategorySlug?: string; // → /blog/c/{slug}
     videoUrl?: string;
     image: string;
     logo: string;

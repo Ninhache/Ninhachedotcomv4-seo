@@ -31,6 +31,12 @@ export type PageMetadataInput = {
     locale: Locale;
     /** Route path **without** the locale segment; `''` for the home. */
     path?: string;
+    /**
+     * Per-locale paths, when the URL differs between locales (article slugs are
+     * translated). Only the `hreflang` map reads it; `path` still drives this
+     * page's own canonical, which must stay the current locale's URL.
+     */
+    paths?: LocalePaths;
     title: string;
     description: string;
     /** Skip the `· Néo Almeida` suffix (the home already carries the full name). */
@@ -49,19 +55,34 @@ export type PageMetadataInput = {
     robots?: Metadata['robots'];
 };
 
+/** Per-locale path overrides, for routes whose URL is not the same in every
+ * locale (blog articles: their slug is translated). */
+export type LocalePaths = Partial<Record<Locale, string>>;
+
 /**
  * `hreflang` map for a path: every locale plus `x-default`.
  *
  * Derived from `locales` so adding one needs no change here. The cast is the
  * price of that: Next types the keys as a closed union of BCP-47 codes, which a
  * loop cannot produce as literals.
+ *
+ * Most routes share one path across locales, so `path` alone is enough. Article
+ * slugs are translated, so those pass `paths` and each locale gets its own URL.
+ * Getting this wrong is worse than emitting nothing: an hreflang pointing at a
+ * URL that redirects, or at the wrong page, tells a search engine the two pages
+ * are the same when they are not.
  */
-export function languageAlternates(path = ''): LanguageMap {
+export function languageAlternates(
+    path = '',
+    paths?: LocalePaths
+): LanguageMap {
     const map: Record<string, string> = {};
     for (const locale of locales) {
-        map[locale] = absoluteUrl(localePath(locale, path));
+        map[locale] = absoluteUrl(localePath(locale, paths?.[locale] ?? path));
     }
-    map['x-default'] = absoluteUrl(localePath(xDefaultLocale, path));
+    map['x-default'] = absoluteUrl(
+        localePath(xDefaultLocale, paths?.[xDefaultLocale] ?? path)
+    );
     return map as LanguageMap;
 }
 
@@ -69,6 +90,7 @@ export function pageMetadata(input: PageMetadataInput): Metadata {
     const {
         locale,
         path = '',
+        paths,
         title,
         description,
         absoluteTitle = false,
@@ -126,7 +148,7 @@ export function pageMetadata(input: PageMetadataInput): Metadata {
         description,
         alternates: {
             canonical,
-            languages: languageAlternates(path),
+            languages: languageAlternates(path, paths),
             ...(types ? { types } : {}),
         },
         openGraph,

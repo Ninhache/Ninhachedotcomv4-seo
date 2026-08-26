@@ -9,6 +9,7 @@ import { BlogFooter } from '@/app/_components/blog/BlogFooter';
 import Header from '@/app/_components/header/header';
 import { calibreRegular } from '@/app/fonts';
 import type { Locale } from '@/config';
+import { articleSlugMap, getArticles } from '@/lib/blog';
 
 // Reskin the shadcn tokens to the portfolio's art direction (deep navy + cyan/
 // blue accents). Every `bg-card` / `text-primary` / `border-border` in the blog
@@ -46,6 +47,11 @@ const PORTFOLIO_THEME = {
  * interactive pieces — header, TOC, progress bar — use `useTranslations`),
  * applies the portfolio's body font, and reskins the shadcn tokens to the
  * portfolio's navy/cyan palette so the blog shares the site's art direction.
+ *
+ * It also hands the header the per-locale slug table. The locale switcher lives
+ * in the header, so it is a sibling of the article page rather than a child of
+ * it: the page cannot pass it the alternate slug. The list is already ISR-cached
+ * under the `articles` tag, so reading it here costs nothing extra.
  */
 export default async function BlogLayout(props: {
     children: React.ReactNode;
@@ -54,6 +60,7 @@ export default async function BlogLayout(props: {
     const { locale } = await props.params;
     setRequestLocale(locale as Locale);
     const messages = await getMessages();
+    const articles = await getArticles();
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>
@@ -64,7 +71,7 @@ export default async function BlogLayout(props: {
                 {/* Header + Footer live in the layout so they're a single shared
                     instance across blog navigation (list ↔ article), instead of
                     re-mounting per page. */}
-                <Header />
+                <Header articleSlugs={articleSlugMap(articles)} />
                 <div className="flex-1">{props.children}</div>
                 <BlogFooter />
             </div>

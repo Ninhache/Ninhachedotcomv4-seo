@@ -79,7 +79,7 @@ export async function ArticleView({
                                 {categories.map(c => (
                                     <Link
                                         key={c.slug}
-                                        href={`/blog?cat=${encodeURIComponent(c.slug)}`}
+                                        href={`/blog/c/${encodeURIComponent(c.slug)}`}
                                         className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary hover:bg-primary/20"
                                     >
                                         {c.name}
@@ -96,10 +96,17 @@ export async function ArticleView({
 
                         <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                             {dateLabel && (
-                                <span className="inline-flex items-center gap-1.5">
+                                // `dateTime` carries the machine-readable date the
+                                // visible label localises away: it is what a crawler
+                                // reads to place the article in time without parsing
+                                // "2 juillet 2026" in one locale and "July 2" in the other.
+                                <time
+                                    dateTime={article.publishedAt ?? undefined}
+                                    className="inline-flex items-center gap-1.5"
+                                >
                                     <Calendar className="h-4 w-4" />
                                     {dateLabel}
-                                </span>
+                                </time>
                             )}
                             <span className="inline-flex items-center gap-1.5">
                                 <Clock className="h-4 w-4" />

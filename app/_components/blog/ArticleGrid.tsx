@@ -4,6 +4,7 @@ import { PostCard, type PostCardData } from '@/app/_components/blog/PostCard';
 import type { Locale } from '@/config';
 import { mediaSrc } from '@/lib/baseurl';
 import {
+    articleSlug,
     articleTranslation,
     categoryName,
     formatArticleDate,
@@ -29,7 +30,9 @@ export function toPostCards(
         .map(a => {
             const tr = articleTranslation(a, locale);
             return {
-                slug: a.slug,
+                // This locale's public slug, not the internal key: a card
+                // linking to the other locale's URL would 301 on every click.
+                slug: articleSlug(a, locale),
                 title: tr?.title ?? a.slug,
                 excerpt: tr?.excerpt ?? '',
                 dateLabel: formatArticleDate(a.publishedAt, locale),

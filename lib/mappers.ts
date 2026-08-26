@@ -7,6 +7,7 @@ import type {
     SkillCategory,
 } from '@/jsons/jsonUtils';
 import { mediaSrc } from '@/lib/baseurl';
+import { articleSlug } from '@/lib/blog';
 import {
     projectTypeLabel,
     SORT_TYPE,
@@ -119,7 +120,11 @@ export function mapProject(dto: ProjectDTO, locale: Locale): Project {
         },
         // Blog cross-links: prefer the included object's slug, tolerate an
         // id-only payload (undefined slug then, so the link is simply omitted).
-        blogArticleSlug: dto.blogArticle?.slug,
+        // The backend ships the article's translations with the project, so the
+        // locale's own slug is resolvable here without a second request.
+        blogArticleSlug: dto.blogArticle
+            ? articleSlug(dto.blogArticle, locale)
+            : undefined,
         blogCategorySlug: dto.blogCategory?.slug,
         videoUrl: videoMedia?.mediaUrl ? mediaSrc(videoMedia.mediaUrl) : 'none',
         image: imageMedia?.mediaUrl ? mediaSrc(imageMedia.mediaUrl) : '',
