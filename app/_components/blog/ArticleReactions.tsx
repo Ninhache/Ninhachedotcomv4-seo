@@ -73,7 +73,11 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
             let next = await ReaderApi.findReactions(articleId).catch(
                 () => null
             );
-            const replay = takePendingReaction();
+            // Left in the URL while the name is still missing, so choosing one
+            // re-runs this effect and the reaction is not silently dropped
+            // between the provider round-trip and the naming step.
+            const replay =
+                reader && !reader.needsName ? takePendingReaction() : null;
             if (next && reader && replay && !next.mine.includes(replay)) {
                 next = await ReaderApi.toggleReaction(articleId, replay).catch(
                     () => next
@@ -89,7 +93,10 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
     }, [articleId, reader, sessionLoading]);
 
     const toggle = async (kind: ReactionKind) => {
-        if (!reader) {
+        // Signed out and "signed in but unnamed" both send the visitor to the
+        // block at the bottom of the page, which shows whichever of the two
+        // steps is missing. The API refuses in both cases.
+        if (!reader || reader.needsName) {
             promptLogin(kind);
             return;
         }

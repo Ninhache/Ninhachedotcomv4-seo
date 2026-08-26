@@ -128,6 +128,56 @@
             "love": "Coup de coeur",
             "insightful": "Instructif",
             "funny": "Amusant"
-        }
+        },
+        "deletedAuthor": "Compte supprimé"
+    },
+    "account": {
+        "namePrompt": {
+            "title": "Choisissez votre nom d'affichage",
+            "intro": "Ce nom apparaîtra sous vos commentaires et vos réactions. Le nom de votre compte {provider} n'est jamais publié, il sert seulement de proposition.",
+            "label": "Nom d'affichage",
+            "hint": "De 2 à 32 caractères. Modifiable à tout moment depuis votre compte.",
+            "submit": "Valider ce nom",
+            "saving": "Enregistrement…"
+        },
+        "title": "Mon compte",
+        "intro": "Ce que le site sait de vous, et ce que vous pouvez en faire.",
+        "signedOutTitle": "Vous n'êtes pas connecté",
+        "signedOutBody": "Connectez-vous depuis le pied d'un article pour retrouver cette page. Pour toute autre demande relative à vos données, écrivez à l'adresse indiquée dans les mentions légales.",
+        "profileTitle": "Votre profil",
+        "profileIntro": "Le nom ci-dessous est le seul élément de votre compte visible par les autres lecteurs.",
+        "provider": "Connecté via",
+        "joined": "Inscrit le",
+        "save": "Enregistrer",
+        "saved": "Nom mis à jour.",
+        "dataTitle": "Vos données",
+        "dataIntro": "Voici l'intégralité de ce qui est conservé à votre sujet.",
+        "dataItems": {
+            "identity": "Le nom que votre fournisseur renvoie, conservé pour la modération et jamais publié.",
+            "displayName": "Le nom d'affichage que vous avez choisi, visible publiquement.",
+            "email": "L'adresse de votre compte {provider}, jamais publiée et jamais utilisée pour vous écrire.",
+            "avatar": "L'adresse de votre image de profil chez votre fournisseur.",
+            "account": "L'identifiant de votre compte chez ce fournisseur, qui sert à vous reconnaître à la connexion suivante.",
+            "content": "Vos commentaires et vos réactions, avec leur date."
+        },
+        "download": "Télécharger mes données (JSON)",
+        "downloadHint": "Un fichier lisible contenant votre fiche, vos commentaires et vos réactions.",
+        "deleteTitle": "Supprimer mon compte",
+        "deleteBody": "Votre compte, votre nom, votre adresse et vos réactions sont effacés immédiatement et définitivement. Vos commentaires restent en ligne, signés « Compte supprimé », pour ne pas trouer les discussions auxquelles d'autres ont participé.",
+        "deleteConfirmLabel": "Pour confirmer, saisissez votre nom d'affichage",
+        "deleteButton": "Supprimer définitivement mon compte",
+        "deleting": "Suppression…",
+        "deleted": "Votre compte a été supprimé.",
+        "error": "Une erreur est survenue.",
+        "deletedBody": "Votre fiche, votre adresse et vos réactions ont été effacées. Vos commentaires restent en ligne, signés « Compte supprimé »."
+    },
+    "legal": {
+        "consent": "En vous connectant, vous acceptez les <cgu>conditions générales d'utilisation</cgu> et la <privacy>politique de confidentialité</privacy>.",
+        "cgu": "Conditions générales d'utilisation",
+        "cguShort": "CGU",
+        "mentions": "Mentions légales",
+        "privacy": "Politique de confidentialité",
+        "privacyShort": "Confidentialité",
+        "account": "Mon compte"
     }
 }

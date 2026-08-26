@@ -28,9 +28,11 @@ export function ReaderIdentity() {
                     className="h-8 w-8 rounded-full object-cover"
                 />
             )}
-            <span className="text-foreground text-sm">
-                {reader.displayName}
-            </span>
+            {reader.displayName && (
+                <span className="text-foreground text-sm">
+                    {reader.displayName}
+                </span>
+            )}
             <Button
                 variant="ghost"
                 size="sm"

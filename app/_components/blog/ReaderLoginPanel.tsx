@@ -3,14 +3,13 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import { useReaderSession } from '@/app/_components/blog/reader-session';
-import { loginUrl, READER_PROVIDERS } from '@/lib/reader/reader.api';
+import {
+    loginUrl,
+    PROVIDER_LABEL,
+    READER_PROVIDERS,
+} from '@/lib/reader/reader.api';
 import { cn } from '@/lib/utils';
-
-const PROVIDER_LABEL = {
-    google: 'Google',
-    github: 'GitHub',
-    discord: 'Discord',
-} as const;
+import { Link } from '@/navigation';
 
 /**
  * The way in, shown where a signed-out visitor would otherwise find the comment
@@ -27,6 +26,7 @@ const PROVIDER_LABEL = {
  */
 export function ReaderLoginPanel({ returnTo }: { returnTo: string }) {
     const t = useTranslations('comments');
+    const tLegal = useTranslations('legal');
     const { prompting, pendingReaction, dismissPrompt } = useReaderSession();
     const ref = useRef<HTMLDivElement>(null);
 
@@ -65,6 +65,26 @@ export function ReaderLoginPanel({ returnTo }: { returnTo: string }) {
                     </a>
                 ))}
             </div>
+            <p className="mx-auto mt-6 max-w-md text-muted-foreground text-xs leading-relaxed">
+                {tLegal.rich('consent', {
+                    cgu: chunks => (
+                        <Link
+                            href="/legal/cgu"
+                            className="underline underline-offset-2 hover:text-primary"
+                        >
+                            {chunks}
+                        </Link>
+                    ),
+                    privacy: chunks => (
+                        <Link
+                            href="/legal/confidentialite"
+                            className="underline underline-offset-2 hover:text-primary"
+                        >
+                            {chunks}
+                        </Link>
+                    ),
+                })}
+            </p>
         </div>
     );
 }

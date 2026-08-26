@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { CommentComposer } from '@/app/_components/blog/CommentComposer';
 import { ReaderIdentity } from '@/app/_components/blog/ReaderIdentity';
 import { ReaderLoginPanel } from '@/app/_components/blog/ReaderLoginPanel';
+import { ReaderNamePrompt } from '@/app/_components/blog/ReaderNamePrompt';
 import { useReaderSession } from '@/app/_components/blog/reader-session';
 import { ralewaySemiBold } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
@@ -52,7 +53,7 @@ function CommentCard({
     return (
         <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
             <div className="flex gap-4">
-                {comment.reader.avatarUrl ? (
+                {comment.reader?.avatarUrl ? (
                     <img
                         src={comment.reader.avatarUrl}
                         alt=""
@@ -65,8 +66,15 @@ function CommentCard({
                 )}
                 <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className="font-medium text-base text-foreground">
-                            {comment.reader.displayName}
+                        <span
+                            className={cn(
+                                'font-medium text-base',
+                                comment.reader
+                                    ? 'text-foreground'
+                                    : 'text-muted-foreground italic'
+                            )}
+                        >
+                            {comment.reader?.displayName ?? t('deletedAuthor')}
                         </span>
                         <time
                             dateTime={comment.createdAt}
@@ -214,7 +222,10 @@ export function ArticleComments({
     };
 
     const openReply = (id: string) => {
-        if (!reader) {
+        // `needsName` lands on the same prompt as being signed out: in both
+        // cases something has to happen at the bottom of the page before a
+        // reply can be written, and the API refuses either way.
+        if (!reader || reader.needsName) {
             promptLogin();
             return;
         }
@@ -261,7 +272,13 @@ export function ArticleComments({
                 )}
 
                 {!sessionLoading &&
-                    (reader ? (
+                    (!reader ? (
+                        <div className="mt-5">
+                            <ReaderLoginPanel returnTo={returnTo} />
+                        </div>
+                    ) : reader.needsName ? (
+                        <ReaderNamePrompt className="mt-5" />
+                    ) : (
                         <CommentComposer
                             id="comment-body"
                             className="mt-5"
@@ -271,10 +288,6 @@ export function ArticleComments({
                             onChange={setBody}
                             onSubmit={submit}
                         />
-                    ) : (
-                        <div className="mt-5">
-                            <ReaderLoginPanel returnTo={returnTo} />
-                        </div>
                     ))}
             </div>
 
@@ -293,7 +306,9 @@ export function ArticleComments({
                             <CommentCard
                                 comment={root}
                                 locale={locale}
-                                canDelete={reader?.id === root.reader.id}
+                                canDelete={
+                                    !!reader && reader.id === root.reader?.id
+                                }
                                 onRemove={() => remove(root.id)}
                                 onReply={() => openReply(root.id)}
                             >
@@ -306,8 +321,9 @@ export function ArticleComments({
                                                 comment={reply}
                                                 locale={locale}
                                                 canDelete={
-                                                    reader?.id ===
-                                                    reply.reader.id
+                                                    !!reader &&
+                                                    reader.id ===
+                                                        reply.reader?.id
                                                 }
                                                 onRemove={() =>
                                                     remove(reply.id)

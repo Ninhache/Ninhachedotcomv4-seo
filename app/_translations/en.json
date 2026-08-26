@@ -128,6 +128,56 @@
             "love": "Loved it",
             "insightful": "Insightful",
             "funny": "Funny"
-        }
+        },
+        "deletedAuthor": "Deleted account"
+    },
+    "account": {
+        "namePrompt": {
+            "title": "Choose your display name",
+            "intro": "This name will appear under your comments and reactions. The name on your {provider} account is never published, it is only a starting suggestion.",
+            "label": "Display name",
+            "hint": "Between 2 and 32 characters. You can change it at any time from your account.",
+            "submit": "Use this name",
+            "saving": "Saving…"
+        },
+        "title": "My account",
+        "intro": "What this site knows about you, and what you can do about it.",
+        "signedOutTitle": "You are not signed in",
+        "signedOutBody": "Sign in from the footer of any article to reach this page. For any other request about your data, write to the address listed in the legal notice.",
+        "profileTitle": "Your profile",
+        "profileIntro": "The name below is the only part of your account other readers can see.",
+        "provider": "Signed in with",
+        "joined": "Joined on",
+        "save": "Save",
+        "saved": "Name updated.",
+        "dataTitle": "Your data",
+        "dataIntro": "Here is everything that is kept about you.",
+        "dataItems": {
+            "identity": "The name your provider returns, kept for moderation and never published.",
+            "displayName": "The display name you chose, publicly visible.",
+            "email": "The address on your {provider} account, never published and never used to write to you.",
+            "avatar": "The address of your profile picture at your provider.",
+            "account": "Your account id at that provider, used to recognise you on your next sign-in.",
+            "content": "Your comments and reactions, with their dates."
+        },
+        "download": "Download my data (JSON)",
+        "downloadHint": "A readable file containing your record, your comments and your reactions.",
+        "deleteTitle": "Delete my account",
+        "deleteBody": "Your account, your name, your address and your reactions are erased immediately and permanently. Your comments stay online, signed “Deleted account”, so the discussions other people took part in are not left full of holes.",
+        "deleteConfirmLabel": "To confirm, type your display name",
+        "deleteButton": "Permanently delete my account",
+        "deleting": "Deleting…",
+        "deleted": "Your account has been deleted.",
+        "error": "Something went wrong.",
+        "deletedBody": "Your record, your address and your reactions have been erased. Your comments stay online, signed “Deleted account”."
+    },
+    "legal": {
+        "consent": "By signing in, you accept the <cgu>terms of use</cgu> and the <privacy>privacy policy</privacy>.",
+        "cgu": "Terms of use",
+        "cguShort": "Terms",
+        "mentions": "Legal notice",
+        "privacy": "Privacy policy",
+        "privacyShort": "Privacy",
+        "account": "My account"
     }
 }
