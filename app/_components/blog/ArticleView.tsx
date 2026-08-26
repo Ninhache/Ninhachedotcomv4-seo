@@ -2,6 +2,7 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
+import { SidebarContacts } from '@/app/_components/blog/SidebarContacts';
 import { TableOfContents } from '@/app/_components/blog/TableOfContents';
 import { ralewaySemiBold } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
@@ -138,6 +139,7 @@ export async function ArticleView({
                     <aside className="hidden lg:block">
                         <div className="sticky top-24">
                             <TableOfContents toc={toc} />
+                            <SidebarContacts locale={locale} />
                         </div>
                     </aside>
                 </div>

@@ -133,7 +133,9 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
                             disabled={pending === kind}
                             onClick={() => toggle(kind)}
                             aria-pressed={mine}
-                            className="group flex w-20 flex-col items-center gap-2"
+                            aria-label={t(`reactions.${kind}`)}
+                            title={t(`reactions.${kind}`)}
+                            className="group flex w-16 flex-col items-center gap-2"
                         >
                             <span
                                 className={cn(
@@ -152,9 +154,6 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
                                 )}
                             >
                                 {summary.counts[kind] ?? 0}
-                            </span>
-                            <span className="text-muted-foreground text-xs">
-                                {t(`reactions.${kind}`)}
                             </span>
                         </button>
                     );

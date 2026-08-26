@@ -102,7 +102,8 @@
         "backHome": "Portfolio",
         "backToList": "All articles",
         "previewBadge": "Draft",
-        "previewNotice": "Review version. This article is not published, this link is private and the page is not indexed."
+        "previewNotice": "Review version. This article is not published, this link is private and the page is not indexed.",
+        "contactLabel": "Get in touch"
     },
     "comments": {
         "reactTitle": "Reactions",

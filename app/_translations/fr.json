@@ -102,7 +102,8 @@
         "backHome": "Portfolio",
         "backToList": "Tous les articles",
         "previewBadge": "Brouillon",
-        "previewNotice": "Version de relecture. Cet article n'est pas publié, ce lien est privé et la page n'est pas indexée."
+        "previewNotice": "Version de relecture. Cet article n'est pas publié, ce lien est privé et la page n'est pas indexée.",
+        "contactLabel": "Me contacter"
     },
     "comments": {
         "reactTitle": "Réactions",
