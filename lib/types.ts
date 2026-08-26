@@ -450,14 +450,21 @@ export type OAuthProvider = 'google' | 'github' | 'discord';
 
 export type ModerationReaderDTO = {
     id: string;
-    displayName: string;
+    /** Null while the person has signed in but not yet chosen a public name. */
+    displayName: string | null;
+    // Moderation-only fields: they identify a repeat offender across renames
+    // and must never be echoed into a public response.
+    providerName: string;
+    email: string | null;
     avatarUrl: string | null;
     provider: OAuthProvider;
-    // Moderation-only field: it identifies a repeat offender across renames
-    // and must never be echoed into a public response.
-    email: string | null;
     isBanned: boolean;
     createdAt: string; // ISO
+};
+
+/** A reader as the readers table shows them: the record plus what they wrote. */
+export type ModerationReaderRowDTO = ModerationReaderDTO & {
+    _count: { comments: number; reactions: number };
 };
 
 export type ModerationCommentDTO = {
@@ -468,7 +475,8 @@ export type ModerationCommentDTO = {
     articleId: string;
     /** Null on a thread root, the answered comment's id on a reply. */
     parentId: string | null;
-    reader: ModerationReaderDTO;
+    /** Null once the author closed their account: the message outlives them. */
+    reader: ModerationReaderDTO | null;
     article: {
         id: string;
         slug: string;

@@ -30,13 +30,8 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { ModerationApi } from '@/lib/moderation/moderation.api';
+import { PROVIDER_LABEL } from '@/lib/reader/reader.api';
 import type { ModerationCommentDTO } from '@/lib/types';
-
-const PROVIDER_LABEL = {
-    google: 'Google',
-    github: 'GitHub',
-    discord: 'Discord',
-} as const;
 
 function articleTitle(comment: ModerationCommentDTO) {
     const translations = comment.article.translations ?? [];
@@ -45,6 +40,16 @@ function articleTitle(comment: ModerationCommentDTO) {
         translations[0]?.title ??
         comment.article.slug
     );
+}
+
+/**
+ * How to name the author in the table. A null reader is an account that was
+ * closed: the message stays, so moderation still needs a row for it, but there
+ * is nobody left to ban or rename.
+ */
+function readerName(comment: ModerationCommentDTO) {
+    if (!comment.reader) return 'Compte supprimé';
+    return comment.reader.displayName ?? comment.reader.providerName;
 }
 
 function formatDate(iso: string) {
@@ -90,7 +95,7 @@ export default function CommentsPage() {
         return items.filter(
             comment =>
                 comment.body.toLowerCase().includes(needle) ||
-                comment.reader.displayName.toLowerCase().includes(needle) ||
+                readerName(comment).toLowerCase().includes(needle) ||
                 articleTitle(comment).toLowerCase().includes(needle)
         );
     }, [items, q]);
@@ -100,7 +105,7 @@ export default function CommentsPage() {
     const applyBan = (readerId: string, isBanned: boolean) =>
         setItems(prev =>
             prev.map(item =>
-                item.reader.id === readerId
+                item.reader?.id === readerId
                     ? { ...item, reader: { ...item.reader, isBanned } }
                     : item
             )
@@ -164,7 +169,7 @@ export default function CommentsPage() {
                                     <TableRow key={comment.id}>
                                         <TableCell className="align-top">
                                             <div className="flex items-center gap-2">
-                                                {comment.reader.avatarUrl ? (
+                                                {comment.reader?.avatarUrl ? (
                                                     // Avatars are hosted on the
                                                     // providers' CDNs, which are
                                                     // not in next/image's
@@ -184,20 +189,17 @@ export default function CommentsPage() {
                                                 )}
                                                 <div>
                                                     <div className="font-medium">
-                                                        {
-                                                            comment.reader
-                                                                .displayName
-                                                        }
+                                                        {readerName(comment)}
                                                     </div>
                                                     <p className="text-xs text-muted-foreground">
-                                                        {
-                                                            PROVIDER_LABEL[
-                                                                comment.reader
-                                                                    .provider
-                                                            ]
-                                                        }
                                                         {comment.reader
-                                                            .isBanned &&
+                                                            ? PROVIDER_LABEL[
+                                                                  comment.reader
+                                                                      .provider
+                                                              ]
+                                                            : 'compte supprimé'}
+                                                        {comment.reader
+                                                            ?.isBanned &&
                                                             ' · banni'}
                                                     </p>
                                                 </div>
@@ -228,24 +230,30 @@ export default function CommentsPage() {
                                         </TableCell>
                                         <TableCell className="text-right align-top">
                                             <div className="inline-flex items-center gap-1">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    aria-label={
-                                                        comment.reader.isBanned
-                                                            ? 'Réhabiliter le lecteur'
-                                                            : 'Bannir le lecteur'
-                                                    }
-                                                    onClick={() =>
-                                                        setBanTarget(comment)
-                                                    }
-                                                >
-                                                    {comment.reader.isBanned ? (
-                                                        <ShieldCheck className="h-4 w-4" />
-                                                    ) : (
-                                                        <ShieldBan className="h-4 w-4" />
-                                                    )}
-                                                </Button>
+                                                {comment.reader && (
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        aria-label={
+                                                            comment.reader
+                                                                .isBanned
+                                                                ? 'Réhabiliter le lecteur'
+                                                                : 'Bannir le lecteur'
+                                                        }
+                                                        onClick={() =>
+                                                            setBanTarget(
+                                                                comment
+                                                            )
+                                                        }
+                                                    >
+                                                        {comment.reader
+                                                            .isBanned ? (
+                                                            <ShieldCheck className="h-4 w-4" />
+                                                        ) : (
+                                                            <ShieldBan className="h-4 w-4" />
+                                                        )}
+                                                    </Button>
+                                                )}
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
@@ -299,7 +307,7 @@ export default function CommentsPage() {
                         </AlertDialogTitle>
                         <AlertDialogDescription>
                             {deleteTarget
-                                ? `Le message de ${deleteTarget.reader.displayName} sera définitivement supprimé.`
+                                ? `Le message de ${readerName(deleteTarget)} sera définitivement supprimé.`
                                 : ''}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
@@ -343,15 +351,15 @@ export default function CommentsPage() {
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            {banTarget?.reader.isBanned
+                            {banTarget?.reader?.isBanned
                                 ? 'Réhabiliter ce lecteur ?'
                                 : 'Bannir ce lecteur ?'}
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            {banTarget?.reader.isBanned
-                                ? `${banTarget.reader.displayName} pourra de nouveau commenter et réagir.`
+                            {banTarget?.reader?.isBanned
+                                ? `${readerName(banTarget)} pourra de nouveau commenter et réagir.`
                                 : banTarget
-                                  ? `${banTarget.reader.displayName} ne pourra plus commenter ni réagir. Ses commentaires existants restent visibles jusqu'à suppression.`
+                                  ? `${readerName(banTarget)} ne pourra plus commenter ni réagir. Ses commentaires existants restent visibles jusqu'à suppression.`
                                   : ''}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
@@ -362,7 +370,7 @@ export default function CommentsPage() {
                         <AlertDialogAction
                             disabled={pending}
                             onClick={async () => {
-                                if (!banTarget) return;
+                                if (!banTarget?.reader) return;
                                 const next = !banTarget.reader.isBanned;
                                 setPending(true);
                                 try {
@@ -377,7 +385,7 @@ export default function CommentsPage() {
                                 }
                             }}
                         >
-                            {banTarget?.reader.isBanned
+                            {banTarget?.reader?.isBanned
                                 ? 'Réhabiliter'
                                 : 'Bannir'}
                         </AlertDialogAction>
