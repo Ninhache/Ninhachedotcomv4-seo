@@ -441,3 +441,36 @@ export type Alias = {
     key: string; // slug
     bodies: AliasBody[];
 };
+
+// --- Reader-authored content (comments, reactions) -----------------------
+// Written by visitors signed in through the API's own OAuth session, not by
+// the back-office. Only the moderation shapes live here; the public blog
+// shapes live next to their client in `lib/reader/`.
+export type OAuthProvider = 'google' | 'github' | 'discord';
+
+export type ModerationReaderDTO = {
+    id: string;
+    displayName: string;
+    avatarUrl: string | null;
+    provider: OAuthProvider;
+    // Moderation-only field: it identifies a repeat offender across renames
+    // and must never be echoed into a public response.
+    email: string | null;
+    isBanned: boolean;
+    createdAt: string; // ISO
+};
+
+export type ModerationCommentDTO = {
+    id: string;
+    body: string;
+    locale: Locale;
+    createdAt: string; // ISO
+    articleId: string;
+    reader: ModerationReaderDTO;
+    article: {
+        id: string;
+        slug: string;
+        isVisible: boolean;
+        translations: { locale: Locale; title: string }[];
+    };
+};
