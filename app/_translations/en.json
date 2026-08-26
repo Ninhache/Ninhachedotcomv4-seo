@@ -178,6 +178,9 @@
         "mentions": "Legal notice",
         "privacy": "Privacy policy",
         "privacyShort": "Privacy",
-        "account": "My account"
+        "account": "My account",
+        "cguDescription": "The rules for using ninhache.fr, its comments and its reader accounts.",
+        "mentionsDescription": "Publisher, publication director, host and contact for ninhache.fr.",
+        "privacyDescription": "What ninhache.fr collects, why, for how long, and how to erase it."
     }
 }

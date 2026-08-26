@@ -1,11 +1,29 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { proximaNovaBold } from '@/app/fonts';
 import styles from '@/styles/footer.module.css';
 
 export default function Footer() {
     const t = useTranslations('footer');
+    const tLegal = useTranslations('legal');
+    const locale = useLocale();
+
+    // Hard navigations, like the header's "Blog" link: these pages live in the
+    // Tailwind subtree and a client-side transition out of the CSS-modules
+    // site would render them before their stylesheet applies.
+    const legalLinks = [
+        { href: `/${locale}/legal/cgu`, label: tLegal('cguShort') },
+        {
+            href: `/${locale}/legal/mentions-legales`,
+            label: tLegal('mentions'),
+        },
+        {
+            href: `/${locale}/legal/confidentialite`,
+            label: tLegal('privacyShort'),
+        },
+        { href: `/${locale}/compte`, label: tLegal('account') },
+    ];
 
     return (
         <footer
@@ -44,6 +62,15 @@ export default function Footer() {
                 </div>
                 <div className={`${styles.footer_content}`}>
                     <p>{t('text')}</p>
+                </div>
+                <div
+                    className={`${styles.footer_content} ${styles.footer_legal}`}
+                >
+                    {legalLinks.map(link => (
+                        <a key={link.href} href={link.href}>
+                            {link.label}
+                        </a>
+                    ))}
                 </div>
             </div>
         </footer>

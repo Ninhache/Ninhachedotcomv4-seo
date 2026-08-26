@@ -178,6 +178,9 @@
         "mentions": "Mentions légales",
         "privacy": "Politique de confidentialité",
         "privacyShort": "Confidentialité",
-        "account": "Mon compte"
+        "account": "Mon compte",
+        "cguDescription": "Les règles d'utilisation du site ninhache.fr, des commentaires et des comptes lecteur.",
+        "mentionsDescription": "Éditeur, directeur de publication, hébergeur et contact du site ninhache.fr.",
+        "privacyDescription": "Quelles données ninhache.fr collecte, pourquoi, combien de temps, et comment les effacer."
     }
 }

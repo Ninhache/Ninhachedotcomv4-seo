@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { type Locale, locales } from '@/config';
 import { articleSlug, getArticles } from '@/lib/blog';
+import { LEGAL_SLUGS } from '@/lib/legal';
 import { getProfile } from '@/lib/portfolio';
 import { absoluteUrl, localePath, xDefaultLocale } from '@/lib/seo/site';
 
@@ -97,6 +98,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
     ]);
 
+    // The legal pages are the same URL in both languages and change only when
+    // the policy itself does, hence git's own history rather than a stamp: with
+    // nothing better to declare, the build date is the honest answer.
+    const legalEntries: MetadataRoute.Sitemap = locales.flatMap(locale =>
+        LEGAL_SLUGS.map(slug => ({
+            url: absoluteUrl(localePath(locale, `/legal/${slug}`)),
+            changeFrequency: 'yearly' as const,
+            priority: 0.2,
+            alternates: alternates(() => `/legal/${slug}`),
+        }))
+    );
+
     const articleEntries: MetadataRoute.Sitemap = articles.flatMap(article => {
         // An article only exists in the locales it was translated into;
         // advertising a missing translation would send crawlers to a 404.
@@ -118,5 +131,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }));
     });
 
-    return [...staticEntries, ...articleEntries];
+    return [...staticEntries, ...legalEntries, ...articleEntries];
 }

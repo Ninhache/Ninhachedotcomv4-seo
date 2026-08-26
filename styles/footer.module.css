@@ -98,3 +98,29 @@
         gap: 50px;
     }
 }
+
+/* Legal row: the three notices plus the account page, on one centred line.
+   Its links are hard navigations into the Tailwind subtree, so they get the
+   underline the CSS-modules footer links never have. */
+.footer_section .footer_legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.footer_section .footer_legal a {
+    font-size: 14px;
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding: 4px 12px;
+}
+
+@media screen and (max-width: 730px) {
+    .footer_section .footer_legal {
+        flex-direction: row;
+        gap: 0;
+    }
+}
