@@ -1,3 +1,5 @@
+import type { SeoBrief } from '@/lib/seo/terms.mjs';
+
 export type Locale = 'fr' | 'en';
 export type ContractType =
     | 'Permanent'
@@ -370,13 +372,27 @@ export type ArticleCategoryDTO = {
 export type ArticleTranslationDTO = {
     id?: string;
     locale: Locale;
+    // The public URL segment for this locale. `ArticleDTO.slug` is the internal
+    // key; this is what /:locale/blog/<...> actually serves. Read it through
+    // `articleSlug()` rather than directly.
+    slug: string;
     title: string;
     excerpt: string;
     // Raw Markdown source (GFM + `:::` directives). Rendered server-side.
     body: string;
+    // Writing-desk artefacts, present only on the admin read path: the backend
+    // strips them from every public response, the way it strips `previewToken`.
+    // `seoQuery` is the search query this locale targets, `seoBrief` the lexical
+    // brief computed from that query's live SERP, which feeds the score panel in
+    // the article editor. Per locale, because FR and EN rank against two
+    // different sets of competing pages.
+    seoQuery?: string | null;
+    seoBrief?: SeoBrief | null;
 };
 export type ArticleDTO = {
     id: string;
+    // Internal, locale-agnostic key (admin list, cross-article references).
+    // The public URL lives on each translation.
     slug: string;
     isVisible: boolean;
     publishedAt: string | null; // ISO; null = draft/never published

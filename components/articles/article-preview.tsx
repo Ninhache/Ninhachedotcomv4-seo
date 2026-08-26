@@ -1,19 +1,10 @@
 'use client';
 
-import { evaluate } from '@mdx-js/mdx';
 import { Calendar, Clock } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
-import * as runtime from 'react/jsx-runtime';
 import readingTime from 'reading-time';
-import rehypeSlug from 'rehype-slug';
-import remarkDirective from 'remark-directive';
-import remarkGfm from 'remark-gfm';
 import { ralewaySemiBold } from '@/app/fonts';
-import { mdxComponents } from '@/components/mdx/mdx-components';
 import { mediaSrc } from '@/lib/baseurl';
-import { remarkCallouts } from '@/lib/markdown/remark-callouts';
-import { remarkSidenotes } from '@/lib/markdown/remark-sidenotes';
-import { remarkStripImports } from '@/lib/markdown/remark-strip-imports';
+import { useCompiledMdx } from '@/lib/markdown/use-compiled-mdx';
 
 export type ArticlePreviewData = {
     title: string;
@@ -34,10 +25,11 @@ function formatDate(d?: Date): string {
 }
 
 /**
- * Client-side preview of a blog article as readers will see it — the admin
- * counterpart to the public `app/[locale]/blog/[slug]/page.tsx`. Compiles the
- * MDX body **in the browser** (`@mdx-js/mdx` `evaluate`) with the same component
- * map, so `<Callout>`/`<Figure>`/`<Chart>` + GFM + `:::` callouts all render.
+ * Client-side preview of a blog article as readers will see it, the admin
+ * counterpart to the public `app/[locale]/blog/[slug]/page.tsx`. The MDX body is
+ * compiled in the browser by `useCompiledMdx`, the same hook the SEO score panel
+ * measures its word counts on: preview and score can therefore never disagree
+ * about what the article actually says.
  *
  * Differences from the published page: no Shiki highlighting (server-only), and
  * a compile error (bad JSX) is shown inline instead of crashing.
@@ -48,43 +40,7 @@ export function ArticlePreview({ data }: { data: ArticlePreviewData }) {
         Math.ceil(readingTime(data.body || '').minutes)
     );
 
-    const [rendered, setRendered] = useState<ReactNode>(null);
-    const [error, setError] = useState<string | null>(null);
-    const body = data.body;
-
-    useEffect(() => {
-        let cancelled = false;
-        if (!body.trim()) {
-            setRendered(null);
-            setError(null);
-            return;
-        }
-        (async () => {
-            try {
-                const { default: MDXContent } = await evaluate(body, {
-                    ...runtime,
-                    remarkPlugins: [
-                        remarkStripImports,
-                        remarkGfm,
-                        remarkDirective,
-                        remarkCallouts,
-                        remarkSidenotes,
-                    ],
-                    rehypePlugins: [rehypeSlug],
-                });
-                if (cancelled) return;
-                setError(null);
-                setRendered(<MDXContent components={mdxComponents} />);
-            } catch (err) {
-                if (cancelled) return;
-                setRendered(null);
-                setError(err instanceof Error ? err.message : String(err));
-            }
-        })();
-        return () => {
-            cancelled = true;
-        };
-    }, [body]);
+    const { rendered, error } = useCompiledMdx(data.body);
 
     return (
         <div className="dark rounded-lg border bg-[#0b1422] p-6 text-[#e8eef7]">
