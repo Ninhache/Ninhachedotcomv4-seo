@@ -117,3 +117,46 @@ the back-office NextAuth session and must never become it.
   swallow `/admin/comments` as an id. Deleting a comment and banning its author
   are separate actions; a banned reader keeps their comments until they are
   explicitly removed.
+- **The published name is chosen, never inherited.** The provider's name lands
+  in `providerName`; `displayName` stays `null` until the reader picks one, and
+  that null is what `ReaderNamePrompt` reacts to. Until it is filled, the API
+  refuses comments and reactions with a 403, so the front must gate on
+  `reader.needsName` everywhere it gates on `reader` (see the pending-reaction
+  replay in `ArticleReactions`, which must *not* consume `?react=` early).
+  `providerName` is moderation-only: it appears in `ModerationReaderDTO` and in
+  `/admin/readers`, never in a public comment payload.
+- **A deleted account leaves its comments standing.** `Comment.reader` is
+  nullable (`onDelete: SetNull`), so `comment.reader === null` means the author
+  closed their account: render the translated `comments.deletedAuthor`, no
+  avatar link, no delete button. Reactions cascade away instead, being counters.
+- **`/compte` is the GDPR surface**, `app/[locale]/compte/` +
+  `app/_components/account/AccountView.tsx`: read, rename, export as JSON,
+  delete. There is no request queue and no mailer, deliberately. Someone who
+  signed in but never chose a name must still be able to export and delete,
+  which is why `GET /reader/me/export` is guarded by `ReaderSessionGuard` rather
+  than `ReaderGuard`.
+
+## Legal pages
+
+`content/legal/<slug>.<locale>.mdx`, three slugs (`cgu`, `mentions-legales`,
+`confidentialite`) x two locales, read by `lib/legal.ts` and rendered through
+the article MDX pipeline by `app/[locale]/legal/[slug]/page.tsx`. Git is the
+version history, which is the point: knowing what a policy said the day someone
+signed up.
+
+- **The slug is French in both languages.** Only the text is translated, so the
+  locale switcher's default path-preserving behaviour is already right and the
+  blog's per-locale slug resolver stays out of it.
+- **The Docker trap**: the runtime image copies only `.next`, `public`, `fonts`
+  and now `content`. The page is `force-static` so the read happens at build
+  time; the `COPY --from=builder /app/content ./content` line is the second
+  belt. Removing either one alone still works, which is exactly why both are
+  documented here.
+- **The pages describe what the code does**, not a template. Changing what is
+  stored, which cookies are set, or how deletion behaves means editing
+  `confidentialite.*.mdx` in the same commit. The privacy page states in writing
+  that no consent banner is required *because* there is no analytics; adding
+  analytics makes that sentence false.
+- `TODO:` markers stand in for the five values only the site owner can supply
+  (publisher status, address, host, GDPR contact, effective date). Never replace
+  one with a plausible-looking value.
