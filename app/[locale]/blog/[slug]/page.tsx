@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import readingTime from 'reading-time';
+import { ArticleFooter } from '@/app/_components/blog/ArticleFooter';
 import { ArticleView } from '@/app/_components/blog/ArticleView';
 import { JsonLd } from '@/app/_components/seo/JsonLd';
 import { type Locale, locales } from '@/config';
@@ -153,7 +154,18 @@ export default async function ArticlePage(props: Props) {
                     ),
                 ])}
             />
-            <ArticleView article={article} translation={tr} locale={loc} />
+            <ArticleView
+                article={article}
+                translation={tr}
+                locale={loc}
+                footer={
+                    <ArticleFooter
+                        articleId={article.id}
+                        locale={loc}
+                        returnTo={localePath(loc, `/blog/${canonical}`)}
+                    />
+                }
+            />
         </>
     );
 }

@@ -103,5 +103,23 @@
         "backToList": "All articles",
         "previewBadge": "Draft",
         "previewNotice": "Review version. This article is not published, this link is private and the page is not indexed."
+    },
+    "comments": {
+        "title": "Comments",
+        "signInPrompt": "Sign in to comment and react:",
+        "signInHint": "Sign in to react",
+        "logout": "Sign out",
+        "placeholder": "Your comment",
+        "submit": "Post",
+        "loading": "Loading comments…",
+        "empty": "No comments yet.",
+        "delete": "Delete my comment",
+        "error": "Something went wrong.",
+        "reactions": {
+            "like": "Useful",
+            "love": "Loved it",
+            "insightful": "Insightful",
+            "funny": "Funny"
+        }
     }
 }

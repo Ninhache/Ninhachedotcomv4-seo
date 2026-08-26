@@ -22,6 +22,12 @@ type Props = {
     locale: Locale;
     /** Slot above the article, used by the private review route for its notice. */
     banner?: ReactNode;
+    /**
+     * Slot below the article, used by the public route for reactions and
+     * comments. Outside `<article>` on purpose: the reading-progress bar
+     * measures that element and would count a comment thread as article.
+     */
+    footer?: ReactNode;
 };
 
 /**
@@ -38,6 +44,7 @@ export async function ArticleView({
     translation,
     locale,
     banner,
+    footer,
 }: Props) {
     const t = await getTranslations('blog');
 
@@ -134,6 +141,8 @@ export async function ArticleView({
                         </div>
                     </aside>
                 </div>
+
+                {footer}
             </main>
         </>
     );

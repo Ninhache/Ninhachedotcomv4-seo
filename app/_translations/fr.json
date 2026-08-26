@@ -103,5 +103,23 @@
         "backToList": "Tous les articles",
         "previewBadge": "Brouillon",
         "previewNotice": "Version de relecture. Cet article n'est pas publié, ce lien est privé et la page n'est pas indexée."
+    },
+    "comments": {
+        "title": "Commentaires",
+        "signInPrompt": "Connecte-toi pour commenter et réagir :",
+        "signInHint": "Connecte-toi pour réagir",
+        "logout": "Se déconnecter",
+        "placeholder": "Ton commentaire",
+        "submit": "Publier",
+        "loading": "Chargement des commentaires…",
+        "empty": "Aucun commentaire pour le moment.",
+        "delete": "Supprimer mon commentaire",
+        "error": "Une erreur est survenue.",
+        "reactions": {
+            "like": "Utile",
+            "love": "Coup de coeur",
+            "insightful": "Instructif",
+            "funny": "Amusant"
+        }
     }
 }
