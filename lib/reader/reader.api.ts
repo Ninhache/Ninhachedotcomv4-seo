@@ -22,7 +22,11 @@ export type CommentDTO = {
     body: string;
     locale: Locale;
     createdAt: string; // ISO
+    /** Null on a thread root, the root's id on a reply. */
+    parentId: string | null;
     reader: PublicReader;
+    /** Replies to this comment, oldest first. Always empty on a reply itself. */
+    replies: CommentDTO[];
 };
 
 export type ReactionSummary = {
@@ -75,10 +79,15 @@ export const ReaderApi = {
             `/articles/${articleId}/comments`
         ),
 
-    createComment: (articleId: string, body: string, locale: Locale) =>
+    createComment: (
+        articleId: string,
+        body: string,
+        locale: Locale,
+        parentId?: string
+    ) =>
         request<CommentDTO>(`/articles/${articleId}/comments`, {
             method: 'POST',
-            body: JSON.stringify({ body, locale }),
+            body: JSON.stringify({ body, locale, parentId }),
         }),
 
     removeComment: (id: string) =>

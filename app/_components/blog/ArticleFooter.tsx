@@ -1,11 +1,8 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { ArticleComments } from '@/app/_components/blog/ArticleComments';
 import { ArticleReactions } from '@/app/_components/blog/ArticleReactions';
-import { ReaderIdentity } from '@/app/_components/blog/ReaderIdentity';
 import { ReaderSessionProvider } from '@/app/_components/blog/reader-session';
-import { ralewaySemiBold } from '@/app/fonts';
 import type { Locale } from '@/config';
 
 /**
@@ -25,23 +22,16 @@ export function ArticleFooter({
     locale: Locale;
     returnTo: string;
 }) {
-    const t = useTranslations('comments');
-
     return (
         <ReaderSessionProvider>
-            <section className="mt-12 max-w-3xl border-t border-border pt-8">
+            <section className="mt-16 max-w-3xl border-border border-t pt-14 pb-4">
                 <ArticleReactions articleId={articleId} />
-
-                <h2
-                    className={`mt-10 text-xl font-semibold ${ralewaySemiBold.className}`}
-                >
-                    {t('title')}
-                </h2>
-                <div className="mt-4">
-                    <ReaderIdentity returnTo={returnTo} />
-                </div>
-                <div className="mt-6">
-                    <ArticleComments articleId={articleId} locale={locale} />
+                <div className="mt-16">
+                    <ArticleComments
+                        articleId={articleId}
+                        locale={locale}
+                        returnTo={returnTo}
+                    />
                 </div>
             </section>
         </ReaderSessionProvider>

@@ -9,23 +9,38 @@ import {
     useMemo,
     useState,
 } from 'react';
-import { type PublicReader, ReaderApi } from '@/lib/reader/reader.api';
+import {
+    type PublicReader,
+    type ReactionKind,
+    ReaderApi,
+} from '@/lib/reader/reader.api';
 
 type ReaderSession = {
     reader: PublicReader | null;
     loading: boolean;
     logout: () => Promise<void>;
+    /** True while the sign-in panel is asking the visitor to pick a provider. */
+    prompting: boolean;
+    /** The reaction that triggered the prompt, replayed after the round-trip. */
+    pendingReaction: ReactionKind | null;
+    promptLogin: (reaction?: ReactionKind) => void;
+    dismissPrompt: () => void;
 };
 
 const Context = createContext<ReaderSession>({
     reader: null,
     loading: true,
     logout: async () => {},
+    prompting: false,
+    pendingReaction: null,
+    promptLogin: () => {},
+    dismissPrompt: () => {},
 });
 
 /**
  * Resolves the API's reader cookie once for the whole article footer, so the
- * reactions and the comments do not each ask who is signed in.
+ * reactions and the comments do not each ask who is signed in, and owns the
+ * sign-in prompt they both open.
  *
  * This identity is entirely separate from the back-office NextAuth session:
  * different cookie, different secret, different table. Being signed in here
@@ -34,6 +49,10 @@ const Context = createContext<ReaderSession>({
 export function ReaderSessionProvider({ children }: { children: ReactNode }) {
     const [reader, setReader] = useState<PublicReader | null>(null);
     const [loading, setLoading] = useState(true);
+    const [prompting, setPrompting] = useState(false);
+    const [pendingReaction, setPendingReaction] = useState<ReactionKind | null>(
+        null
+    );
 
     useEffect(() => {
         let cancelled = false;
@@ -57,9 +76,35 @@ export function ReaderSessionProvider({ children }: { children: ReactNode }) {
         setReader(null);
     }, []);
 
+    const promptLogin = useCallback((reaction?: ReactionKind) => {
+        setPendingReaction(reaction ?? null);
+        setPrompting(true);
+    }, []);
+
+    const dismissPrompt = useCallback(() => {
+        setPrompting(false);
+        setPendingReaction(null);
+    }, []);
+
     const value = useMemo(
-        () => ({ reader, loading, logout }),
-        [reader, loading, logout]
+        () => ({
+            reader,
+            loading,
+            logout,
+            prompting,
+            pendingReaction,
+            promptLogin,
+            dismissPrompt,
+        }),
+        [
+            reader,
+            loading,
+            logout,
+            prompting,
+            pendingReaction,
+            promptLogin,
+            dismissPrompt,
+        ]
     );
 
     return <Context.Provider value={value}>{children}</Context.Provider>;

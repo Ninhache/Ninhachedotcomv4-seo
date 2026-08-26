@@ -204,6 +204,11 @@ export default function CommentsPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="max-w-md align-top">
+                                            {comment.parentId && (
+                                                <p className="mb-1 text-muted-foreground text-xs">
+                                                    Réponse
+                                                </p>
+                                            )}
                                             <p className="whitespace-pre-wrap text-sm">
                                                 {comment.body}
                                             </p>

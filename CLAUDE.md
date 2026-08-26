@@ -105,6 +105,12 @@ the back-office NextAuth session and must never become it.
 - **Comment bodies are plain text**, 1 to 2000 characters, stored as typed and
   rendered by React (so escaped) with `whitespace-pre-wrap`. No Markdown, no
   HTML: that is the XSS surface this refuses to open.
+- **One level of replies.** A comment answers a thread root and nothing deeper:
+  the API re-parents an answer to an answer onto its root, so `ArticleComments`
+  renders roots with a single indented list of `replies` and never recurses. The
+  count line reads roots and replies separately because pagination counts roots
+  only. `CommentComposer` is the same textarea for both, so a reply obeys the
+  same 2000-character rule as a root without a second form.
 - **Moderation** is a posteriori, in `app/admin/(auto)/comments/`, through
   `lib/moderation/moderation.api.ts`. Its routes are under **`/moderation`**, not
   `/admin`: the API's `AdminController` owns `GET /admin/:id`, which would

@@ -466,6 +466,8 @@ export type ModerationCommentDTO = {
     locale: Locale;
     createdAt: string; // ISO
     articleId: string;
+    /** Null on a thread root, the answered comment's id on a reply. */
+    parentId: string | null;
     reader: ModerationReaderDTO;
     article: {
         id: string;
