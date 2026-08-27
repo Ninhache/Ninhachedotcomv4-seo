@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronDown, ChevronRight, Reply, Trash2 } from 'lucide-react';
+import { ChevronRight, Reply, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { type ReactNode, useState } from 'react';
 import { CommentComposer } from '@/app/_components/blog/CommentComposer';
@@ -79,7 +79,7 @@ function CommentCard({
                     alt=""
                     width={44}
                     height={44}
-                    className="h-11 w-11 shrink-0 rounded-full object-cover"
+                    className="h-11 w-11 shrink-0 rounded-full object-cover ring-0 ring-primary/30 transition-all duration-300 group-hover:ring-4 motion-reduce:transition-none"
                 />
             ) : (
                 <div className="h-11 w-11 shrink-0 rounded-full bg-muted" />
@@ -134,7 +134,7 @@ function CommentCard({
                     // column of bins. Kept unconditionally visible below `sm`:
                     // a touch screen never hovers, and a control that only
                     // appears on hover is a control that does not exist there.
-                    className="opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+                    className="opacity-100 transition-all hover:scale-110 active:scale-95 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                 >
                     <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
@@ -220,11 +220,12 @@ function CommentThread({
                             disabled={busy}
                             onClick={() => context.onToggle(comment.id)}
                         >
-                            {open ? (
-                                <ChevronDown className="mr-1.5 h-4 w-4" />
-                            ) : (
-                                <ChevronRight className="mr-1.5 h-4 w-4" />
-                            )}
+                            <ChevronRight
+                                className={cn(
+                                    'mr-1.5 h-4 w-4 transition-transform duration-300 ease-out motion-reduce:transition-none',
+                                    open && 'rotate-90'
+                                )}
+                            />
                             {busy
                                 ? t('loadingReplies')
                                 : open
@@ -236,38 +237,58 @@ function CommentThread({
                     )
                 }
             />
-            {((open && comment.replies.length > 0) || composerOpen) && (
+            {(comment.replyCount > 0 || composerOpen) && (
+                // A branch has no height anyone can name in advance, and
+                // `height: auto` is not a value CSS can animate towards. A grid
+                // whose single row goes from `0fr` to `1fr` does animate, and
+                // it measures the content itself. The inner clip is what turns
+                // that row into a wipe rather than a squash.
                 <div
                     className={cn(
-                        'mt-6 space-y-6',
-                        depth < MAX_INDENT_DEPTH &&
-                            'border-border border-l pl-5',
-                        // Only the first level clears the avatar; below that the
-                        // indent already starts past it.
-                        depth === 0 && 'sm:ml-15'
+                        'grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none',
+                        open || composerOpen
+                            ? 'grid-rows-[1fr]'
+                            : 'grid-rows-[0fr]'
                     )}
                 >
-                    {open &&
-                        comment.replies.map(reply => (
-                            <CommentThread
-                                key={reply.id}
-                                comment={reply}
-                                depth={depth + 1}
-                                context={context}
-                            />
-                        ))}
-                    {composerOpen && (
-                        <CommentComposer
-                            id={`reply-${comment.id}`}
-                            value={context.replyBody}
-                            placeholder={t('replyPlaceholder')}
-                            submitting={context.submitting}
-                            onChange={context.onReplyBodyChange}
-                            onSubmit={() => context.onSubmitReply(comment.id)}
-                            onCancel={context.onCancelReply}
-                            cancelLabel={t('cancel')}
-                        />
-                    )}
+                    <div className="overflow-hidden">
+                        <div
+                            className={cn(
+                                'mt-6 space-y-6',
+                                depth < MAX_INDENT_DEPTH &&
+                                    'border-border border-l pl-5',
+                                // Only the first level clears the avatar; below
+                                // that the indent already starts past it.
+                                depth === 0 && 'sm:ml-15'
+                            )}
+                        >
+                            {open &&
+                                comment.replies.map(reply => (
+                                    <CommentThread
+                                        key={reply.id}
+                                        comment={reply}
+                                        depth={depth + 1}
+                                        context={context}
+                                    />
+                                ))}
+                            {composerOpen && (
+                                <div className="fade-in-0 slide-in-from-top-1 animate-in duration-300 motion-reduce:animate-none">
+                                    <CommentComposer
+                                        id={`reply-${comment.id}`}
+                                        value={context.replyBody}
+                                        placeholder={t('replyPlaceholder')}
+                                        submitting={context.submitting}
+                                        onChange={context.onReplyBodyChange}
+                                        onSubmit={() =>
+                                            context.onSubmitReply(comment.id)
+                                        }
+                                        onCancel={context.onCancelReply}
+                                        cancelLabel={t('cancel')}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
@@ -623,8 +644,20 @@ export function ArticleComments({
                 </p>
             ) : (
                 <ul className="mt-10 divide-y divide-border">
-                    {items.map(root => (
-                        <li key={root.id} className="py-8 first:pt-0">
+                    {items.map((root, index) => (
+                        <li
+                            key={root.id}
+                            className="fade-in-0 slide-in-from-bottom-2 animate-in py-8 duration-500 first:pt-0 motion-reduce:animate-none"
+                            // Threads arrive a beat apart rather than all at
+                            // once, which reads as a list settling instead of a
+                            // block appearing. The delay restarts at every page
+                            // so the tenth thread of the third page does not
+                            // wait a second and a half for its turn.
+                            style={{
+                                animationDelay: `${(index % COMMENTS_PAGE_SIZE) * 45}ms`,
+                                animationFillMode: 'backwards',
+                            }}
+                        >
                             <CommentThread
                                 comment={root}
                                 depth={0}
@@ -639,7 +672,7 @@ export function ArticleComments({
                 <div className="mt-8 flex justify-center">
                     <Button
                         variant="outline"
-                        className="rounded-full"
+                        className="rounded-full transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transition-none"
                         disabled={loadingMore}
                         onClick={loadMore}
                     >

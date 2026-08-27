@@ -146,7 +146,7 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
                         >
                             <span
                                 className={cn(
-                                    'flex h-14 w-14 items-center justify-center rounded-full transition-all duration-200 group-hover:-translate-y-1',
+                                    'flex h-14 w-14 items-center justify-center rounded-full transition-all duration-200 group-hover:-translate-y-1 group-active:scale-90 motion-reduce:transition-none',
                                     mine
                                         ? 'bg-primary/15 text-primary'
                                         : 'bg-card text-muted-foreground group-hover:text-foreground'
@@ -156,7 +156,7 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
                             </span>
                             <span
                                 className={cn(
-                                    'text-base tabular-nums',
+                                    'text-base tabular-nums transition-colors duration-200',
                                     mine ? 'text-primary' : 'text-foreground'
                                 )}
                             >
