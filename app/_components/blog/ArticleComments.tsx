@@ -27,7 +27,12 @@ function formatDate(iso: string, locale: Locale) {
 
 /**
  * One message: the same card whether it opens a thread or answers one, only
- * narrower and without its own reply button when it is an answer.
+ * narrower when it is an answer.
+ *
+ * Answering an answer aims at the thread, not at the message: `onReply` is
+ * handed the root id in both cases. That is exactly what the API does with a
+ * reply-to-a-reply anyway (it re-attaches it to the root), so sending the root
+ * id keeps the list this component holds in step with what the server stored.
  *
  * Bodies are plain text end to end. They are stored as typed and rendered by
  * React, so they are escaped; `whitespace-pre-wrap` is the entire formatting
@@ -51,7 +56,7 @@ function CommentCard({
     const t = useTranslations('comments');
 
     return (
-        <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+        <div className="group rounded-2xl border border-border bg-card p-5 sm:p-6">
             <div className="flex gap-4">
                 {comment.reader?.avatarUrl ? (
                     <img
@@ -104,6 +109,12 @@ function CommentCard({
                         size="icon"
                         aria-label={t('delete')}
                         onClick={onRemove}
+                        // Hidden until the card is hovered or something in it
+                        // takes focus, so a thread reads as text and not as a
+                        // row of buttons. Kept unconditionally visible below
+                        // `sm`: a touch screen never hovers, and an invisible
+                        // delete button is the same as no delete button.
+                        className="opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                     >
                         <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
@@ -327,6 +338,9 @@ export function ArticleComments({
                                                 }
                                                 onRemove={() =>
                                                     remove(reply.id)
+                                                }
+                                                onReply={() =>
+                                                    openReply(root.id)
                                                 }
                                             />
                                         ))}
