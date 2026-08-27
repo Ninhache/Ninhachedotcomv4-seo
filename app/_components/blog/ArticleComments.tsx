@@ -14,6 +14,16 @@ import type { Locale } from '@/config';
 import { type CommentDTO, ReaderApi } from '@/lib/reader/reader.api';
 import { cn } from '@/lib/utils';
 
+/**
+ * How many times replies may shift right before the indent stops growing.
+ *
+ * The API lets a thread nest deeper than this, and it keeps nesting: past this
+ * depth the answers are still children in the markup and still read in order,
+ * they simply stop eating the width. On a phone the fifth indent would leave a
+ * column of about three words.
+ */
+const MAX_INDENT_DEPTH = 4;
+
 function formatDate(iso: string, locale: Locale) {
     return new Date(iso).toLocaleDateString(
         locale === 'fr' ? 'fr-FR' : 'en-US',
@@ -33,14 +43,9 @@ function formatDate(iso: string, locale: Locale) {
  * nest of borders that read as structure the conversation does not have. The
  * indent line on the replies carries that structure on its own.
  *
- * Being frameless is also what makes the hover honest: a reply is a sibling of
- * the message it answers, not a child of it, so `group` here covers exactly one
- * message and hovering an answer no longer lights up the whole thread.
- *
- * Answering an answer aims at the thread, not at the message: `onReply` is
- * handed the root id in both cases. That is exactly what the API does with a
- * reply-to-a-reply anyway (it re-attaches it to the root), so sending the root
- * id keeps the list this component holds in step with what the server stored.
+ * Being frameless is also what makes the hover honest: `group` here covers the
+ * message and nothing else, so hovering an answer no longer lights up the whole
+ * thread above it.
  *
  * Bodies are plain text end to end. They are stored as typed and rendered by
  * React, so they are escaped; `whitespace-pre-wrap` is the entire formatting
@@ -115,10 +120,10 @@ function CommentCard({
                     aria-label={t('delete')}
                     onClick={onRemove}
                     // Hidden until this message is hovered or something in it
-                    // takes focus, so a thread reads as text and not as a row
-                    // of buttons. Kept unconditionally visible below `sm`: a
-                    // touch screen never hovers, and an invisible delete button
-                    // is the same as no delete button.
+                    // takes focus, so a thread is a column of text and not a
+                    // column of bins. Kept unconditionally visible below `sm`:
+                    // a touch screen never hovers, and a control that only
+                    // appears on hover is a control that does not exist there.
                     className="opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                 >
                     <Trash2 className="h-4 w-4 text-destructive" />
@@ -129,11 +134,132 @@ function CommentCard({
 }
 
 /**
- * The discussion under an article: the way to add a message first, then the
- * threads, newest first, each with its replies.
+ * What every message in a thread needs and none of it depends on which message
+ * it is. Passed down whole rather than as ten props repeated at each level: the
+ * recursion below would otherwise thread the same arguments through by hand at
+ * every depth.
+ */
+type ThreadContext = {
+    locale: Locale;
+    /** Signed-in reader, or null. Only their own messages get a bin. */
+    readerId: string | null;
+    /** Id of the message whose reply box is open, if any. */
+    replyTo: string | null;
+    replyBody: string;
+    submitting: boolean;
+    onReply: (id: string) => void;
+    onRemove: (id: string) => void;
+    onReplyBodyChange: (value: string) => void;
+    onSubmitReply: (parentId: string) => void;
+    onCancelReply: () => void;
+};
+
+/**
+ * A message and everything written under it, recursively.
  *
- * Threads are one level deep. The API flattens an answer to an answer back onto
- * its root, so this only ever renders two levels no matter what is posted.
+ * The indent line is drawn by the parent around its children rather than by
+ * each child around itself, so one border spans the whole block of answers
+ * instead of one border per answer.
+ *
+ * `depth` exists only for that indent. It is not the tree's depth of record:
+ * the server decides how deep a reply actually sits and re-parents anything
+ * past its own cap, which is why replies are inserted by the `parentId` it
+ * returns and not by the one that was asked for.
+ */
+function CommentThread({
+    comment,
+    depth,
+    context,
+}: {
+    comment: CommentDTO;
+    depth: number;
+    context: ThreadContext;
+}) {
+    const t = useTranslations('comments');
+    const composerOpen = context.replyTo === comment.id;
+
+    return (
+        <div>
+            <CommentCard
+                comment={comment}
+                locale={context.locale}
+                canDelete={
+                    !!context.readerId &&
+                    context.readerId === comment.reader?.id
+                }
+                onRemove={() => context.onRemove(comment.id)}
+                onReply={() => context.onReply(comment.id)}
+            />
+            {(comment.replies.length > 0 || composerOpen) && (
+                <div
+                    className={cn(
+                        'mt-6 space-y-6',
+                        depth < MAX_INDENT_DEPTH &&
+                            'border-border border-l pl-5',
+                        // Only the first level clears the avatar; below that the
+                        // indent already starts past it.
+                        depth === 0 && 'sm:ml-15'
+                    )}
+                >
+                    {comment.replies.map(reply => (
+                        <CommentThread
+                            key={reply.id}
+                            comment={reply}
+                            depth={depth + 1}
+                            context={context}
+                        />
+                    ))}
+                    {composerOpen && (
+                        <CommentComposer
+                            id={`reply-${comment.id}`}
+                            value={context.replyBody}
+                            placeholder={t('replyPlaceholder')}
+                            submitting={context.submitting}
+                            onChange={context.onReplyBodyChange}
+                            onSubmit={() => context.onSubmitReply(comment.id)}
+                            onCancel={context.onCancelReply}
+                            cancelLabel={t('cancel')}
+                        />
+                    )}
+                </div>
+            )}
+        </div>
+    );
+}
+
+/**
+ * Inserts a freshly posted message under the one the server attached it to.
+ *
+ * It follows `created.parentId`, not the id the reply was aimed at: past the
+ * server's depth cap those two differ, and following the answer keeps this list
+ * showing the tree that was actually stored.
+ */
+function insertReply(nodes: CommentDTO[], created: CommentDTO): CommentDTO[] {
+    return nodes.map(node =>
+        node.id === created.parentId
+            ? { ...node, replies: [...node.replies, created] }
+            : { ...node, replies: insertReply(node.replies, created) }
+    );
+}
+
+/**
+ * Drops a message wherever it sits. Its answers go with it, which is what the
+ * database does too: the foreign key cascades down the branch.
+ */
+function removeFromTree(nodes: CommentDTO[], id: string): CommentDTO[] {
+    return nodes
+        .filter(node => node.id !== id)
+        .map(node => ({ ...node, replies: removeFromTree(node.replies, id) }));
+}
+
+/** Every message in the tree, at any depth. */
+function countAll(nodes: CommentDTO[]): number {
+    return nodes.reduce((sum, node) => sum + 1 + countAll(node.replies), 0);
+}
+
+/**
+ * The discussion under an article: the way to add a message first, then the
+ * threads, newest first, each with its answers nested underneath.
  */
 export function ArticleComments({
     articleId,
@@ -201,13 +327,7 @@ export function ArticleComments({
                 locale,
                 parentId
             );
-            setItems(prev =>
-                prev.map(root =>
-                    root.id === parentId
-                        ? { ...root, replies: [...root.replies, created] }
-                        : root
-                )
-            );
+            setItems(prev => insertReply(prev, created));
             setReplyBody('');
             setReplyTo(null);
         } catch (err) {
@@ -220,25 +340,13 @@ export function ArticleComments({
     const remove = async (id: string) => {
         try {
             await ReaderApi.removeComment(id);
-            // Deleting a root takes its replies with it on the API too, through
-            // the schema's cascade.
-            setItems(prev =>
-                prev
-                    .filter(root => root.id !== id)
-                    .map(root => ({
-                        ...root,
-                        replies: root.replies.filter(r => r.id !== id),
-                    }))
-            );
+            setItems(prev => removeFromTree(prev, id));
         } catch (err) {
             setError(err instanceof Error ? err.message : t('error'));
         }
     };
 
     const openReply = (id: string) => {
-        // `needsName` lands on the same prompt as being signed out: in both
-        // cases something has to happen at the bottom of the page before a
-        // reply can be written, and the API refuses either way.
         if (!reader || reader.needsName) {
             promptLogin();
             return;
@@ -247,10 +355,20 @@ export function ArticleComments({
         setReplyTo(id);
     };
 
-    const replyTotal = items.reduce(
-        (sum, root) => sum + root.replies.length,
-        0
-    );
+    const context: ThreadContext = {
+        locale,
+        readerId: reader?.id ?? null,
+        replyTo,
+        replyBody,
+        submitting,
+        onReply: openReply,
+        onRemove: remove,
+        onReplyBodyChange: setReplyBody,
+        onSubmitReply: submitReply,
+        onCancelReply: () => setReplyTo(null),
+    };
+
+    const replyTotal = countAll(items) - items.length;
 
     return (
         <div>
@@ -317,47 +435,11 @@ export function ArticleComments({
                 <ul className="mt-10 divide-y divide-border">
                     {items.map(root => (
                         <li key={root.id} className="py-8 first:pt-0">
-                            <CommentCard
+                            <CommentThread
                                 comment={root}
-                                locale={locale}
-                                canDelete={
-                                    !!reader && reader.id === root.reader?.id
-                                }
-                                onRemove={() => remove(root.id)}
-                                onReply={() => openReply(root.id)}
+                                depth={0}
+                                context={context}
                             />
-                            {(root.replies.length > 0 ||
-                                replyTo === root.id) && (
-                                <div className="mt-6 space-y-6 border-border border-l pl-5 sm:ml-15">
-                                    {root.replies.map(reply => (
-                                        <CommentCard
-                                            key={reply.id}
-                                            comment={reply}
-                                            locale={locale}
-                                            canDelete={
-                                                !!reader &&
-                                                reader.id === reply.reader?.id
-                                            }
-                                            onRemove={() => remove(reply.id)}
-                                            onReply={() => openReply(root.id)}
-                                        />
-                                    ))}
-                                    {replyTo === root.id && (
-                                        <CommentComposer
-                                            id={`reply-${root.id}`}
-                                            value={replyBody}
-                                            placeholder={t('replyPlaceholder')}
-                                            submitting={submitting}
-                                            onChange={setReplyBody}
-                                            onSubmit={() =>
-                                                submitReply(root.id)
-                                            }
-                                            onCancel={() => setReplyTo(null)}
-                                            cancelLabel={t('cancel')}
-                                        />
-                                    )}
-                                </div>
-                            )}
                         </li>
                     ))}
                 </ul>

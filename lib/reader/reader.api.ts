@@ -58,11 +58,11 @@ export type CommentDTO = {
     body: string;
     locale: Locale;
     createdAt: string; // ISO
-    /** Null on a thread root, the root's id on a reply. */
+    /** Null on a thread root, the id of the answered message otherwise. */
     parentId: string | null;
     /** Null once the author deleted their account: the message stays, they go. */
     reader: PublicReader | null;
-    /** Replies to this comment, oldest first. Always empty on a reply itself. */
+    /** Direct answers to this comment, oldest first, nested the same way. */
     replies: CommentDTO[];
 };
 
