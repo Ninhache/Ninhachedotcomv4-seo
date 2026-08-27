@@ -1,6 +1,12 @@
 'use client';
 
-import { ChevronRight, Reply, Trash2 } from 'lucide-react';
+import {
+    ChevronRight,
+    MessagesSquare,
+    Reply,
+    Trash2,
+    UserRound,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { type ReactNode, useState } from 'react';
 import { CommentComposer } from '@/app/_components/blog/CommentComposer';
@@ -9,7 +15,18 @@ import { ReaderLoginPanel } from '@/app/_components/blog/ReaderLoginPanel';
 import { ReaderNamePrompt } from '@/app/_components/blog/ReaderNamePrompt';
 import { useReaderSession } from '@/app/_components/blog/reader-session';
 import { ralewaySemiBold } from '@/app/fonts';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import {
+    Empty,
+    EmptyDescription,
+    EmptyHeader,
+    EmptyMedia,
+    EmptyTitle,
+} from '@/components/ui/empty';
+import { FieldError } from '@/components/ui/field';
+import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
 import type { Locale } from '@/config';
 import { COMMENTS_PAGE_SIZE, type CommentsPage } from '@/lib/comments';
 import { type CommentDTO, ReaderApi } from '@/lib/reader/reader.api';
@@ -24,6 +41,20 @@ import { cn } from '@/lib/utils';
  * column of about three words.
  */
 const MAX_INDENT_DEPTH = 4;
+
+/**
+ * The letters a face falls back to when there is no picture. Two at most: past
+ * that it stops reading as a monogram and starts reading as a truncated word.
+ */
+function initials(name: string) {
+    return name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part[0])
+        .join('')
+        .toUpperCase();
+}
 
 function formatDate(iso: string, locale: Locale) {
     return new Date(iso).toLocaleDateString(
@@ -73,17 +104,23 @@ function CommentCard({
 
     return (
         <div className="group flex gap-4">
-            {comment.reader?.avatarUrl ? (
-                <img
-                    src={comment.reader.avatarUrl}
+            {/* A reader without a picture used to get a plain grey disc, which
+                is the same disc for everyone and tells the eye nothing. The
+                fallback now carries their initials, so a thread with no
+                avatars in it is still a thread with distinguishable people. */}
+            <Avatar className="size-11 ring-0 ring-primary/30 transition-all duration-300 group-hover:ring-4 motion-reduce:transition-none">
+                <AvatarImage
+                    src={comment.reader?.avatarUrl ?? undefined}
                     alt=""
-                    width={44}
-                    height={44}
-                    className="h-11 w-11 shrink-0 rounded-full object-cover ring-0 ring-primary/30 transition-all duration-300 group-hover:ring-4 motion-reduce:transition-none"
                 />
-            ) : (
-                <div className="h-11 w-11 shrink-0 rounded-full bg-muted" />
-            )}
+                <AvatarFallback>
+                    {comment.reader?.displayName ? (
+                        initials(comment.reader.displayName)
+                    ) : (
+                        <UserRound className="size-5" />
+                    )}
+                </AvatarFallback>
+            </Avatar>
             <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span
@@ -103,7 +140,10 @@ function CommentCard({
                         {formatDate(comment.createdAt, locale)}
                     </time>
                 </div>
-                <p className="mt-2 whitespace-pre-wrap break-words text-base text-muted-foreground leading-relaxed">
+                {/* The body is the message, so it reads at full contrast.
+                    Muted is for the furniture around it: the date, the
+                    controls, the counter. */}
+                <p className="mt-2 whitespace-pre-wrap break-words text-base text-foreground/90 leading-relaxed">
                     {comment.body}
                 </p>
                 {(onReply || toggle) && (
@@ -115,7 +155,7 @@ function CommentCard({
                                 className="rounded-full text-muted-foreground hover:text-primary"
                                 onClick={onReply}
                             >
-                                <Reply className="mr-1.5 h-4 w-4" />
+                                <Reply />
                                 {t('reply')}
                             </Button>
                         )}
@@ -136,7 +176,7 @@ function CommentCard({
                     // appears on hover is a control that does not exist there.
                     className="opacity-100 transition-all hover:scale-110 active:scale-95 sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                 >
-                    <Trash2 className="h-4 w-4 text-destructive" />
+                    <Trash2 className="text-destructive" />
                 </Button>
             )}
         </div>
@@ -220,19 +260,26 @@ function CommentThread({
                             disabled={busy}
                             onClick={() => context.onToggle(comment.id)}
                         >
-                            <ChevronRight
-                                className={cn(
-                                    'mr-1.5 h-4 w-4 transition-transform duration-300 ease-out motion-reduce:transition-none',
-                                    open && 'rotate-90'
-                                )}
-                            />
-                            {busy
-                                ? t('loadingReplies')
-                                : open
-                                  ? t('hideReplies')
-                                  : t('showReplies', {
-                                        count: comment.replyCount,
-                                    })}
+                            {/* The label says what the click does and keeps
+                                saying it while the branch loads; only the
+                                icon changes. Swapping the words for
+                                "loading" moved the button under the cursor
+                                and lost the reader their target. */}
+                            {busy ? (
+                                <Spinner aria-label={t('loadingReplies')} />
+                            ) : (
+                                <ChevronRight
+                                    className={cn(
+                                        'transition-transform duration-300 ease-out motion-reduce:transition-none',
+                                        open && 'rotate-90'
+                                    )}
+                                />
+                            )}
+                            {open
+                                ? t('hideReplies')
+                                : t('showReplies', {
+                                      count: comment.replyCount,
+                                  })}
                         </Button>
                     )
                 }
@@ -263,7 +310,7 @@ function CommentThread({
                     >
                         <div
                             className={cn(
-                                'mt-6 space-y-6',
+                                'mt-6 flex flex-col gap-6',
                                 depth < MAX_INDENT_DEPTH &&
                                     'border-border border-l pl-5',
                                 // Only the first level clears the avatar; below
@@ -286,6 +333,7 @@ function CommentThread({
                                         value={context.replyBody}
                                         placeholder={t('replyPlaceholder')}
                                         submitting={context.submitting}
+                                        autoFocus
                                         onChange={context.onReplyBodyChange}
                                         onSubmit={() =>
                                             context.onSubmitReply(comment.id)
@@ -622,9 +670,7 @@ export function ArticleComments({
                     <ReaderIdentity />
                 </div>
 
-                {error && (
-                    <p className="mt-4 text-destructive text-sm">{error}</p>
-                )}
+                {error && <FieldError className="mt-4">{error}</FieldError>}
 
                 {!sessionLoading &&
                     (!reader ? (
@@ -647,11 +693,17 @@ export function ArticleComments({
             </div>
 
             {items.length === 0 ? (
-                <p className="mt-10 text-center text-muted-foreground text-sm">
-                    {t('empty')}
-                </p>
+                <Empty className="mt-10 border">
+                    <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                            <MessagesSquare />
+                        </EmptyMedia>
+                        <EmptyTitle>{t('empty')}</EmptyTitle>
+                        <EmptyDescription>{t('emptyHint')}</EmptyDescription>
+                    </EmptyHeader>
+                </Empty>
             ) : (
-                <ul className="mt-10 divide-y divide-border">
+                <ul className="mt-10 flex flex-col">
                     {items.map((root, index) => (
                         <li
                             key={root.id}
@@ -666,6 +718,10 @@ export function ArticleComments({
                                 animationFillMode: 'backwards',
                             }}
                         >
+                            {/* Pulled back over the padding so the rule sits
+                                exactly between two threads rather than
+                                inside the one below it. */}
+                            {index > 0 && <Separator className="-mt-8 mb-8" />}
                             <CommentThread
                                 comment={root}
                                 depth={0}
@@ -684,7 +740,10 @@ export function ArticleComments({
                         disabled={loadingMore}
                         onClick={loadMore}
                     >
-                        {loadingMore ? t('loadingReplies') : t('loadMore')}
+                        {loadingMore && (
+                            <Spinner aria-label={t('loadingReplies')} />
+                        )}
+                        {t('loadMore')}
                     </Button>
                 </div>
             )}
