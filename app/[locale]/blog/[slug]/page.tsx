@@ -12,6 +12,7 @@ import {
     getArticleBySlug,
     getArticles,
 } from '@/lib/blog';
+import { getArticleComments } from '@/lib/comments';
 import { blogPostingJsonLd, breadcrumbJsonLd, graph } from '@/lib/seo/json-ld';
 import { pageMetadata } from '@/lib/seo/metadata';
 import { ogImagePath } from '@/lib/seo/og';
@@ -132,6 +133,9 @@ export default async function ArticlePage(props: Props) {
 
     const t = await getTranslations('blog');
     const stats = readingTime(tr.body ?? '');
+    // Read here rather than inside the widget: the discussion is content, and
+    // content that only exists after hydration is content no crawler sees.
+    const comments = await getArticleComments(article.id);
 
     return (
         <>
@@ -161,6 +165,7 @@ export default async function ArticlePage(props: Props) {
                 footer={
                     <ArticleFooter
                         articleId={article.id}
+                        initialComments={comments}
                         locale={loc}
                         returnTo={localePath(loc, `/blog/${canonical}`)}
                     />

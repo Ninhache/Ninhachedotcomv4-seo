@@ -4,6 +4,7 @@ import { ArticleComments } from '@/app/_components/blog/ArticleComments';
 import { ArticleReactions } from '@/app/_components/blog/ArticleReactions';
 import { ReaderSessionProvider } from '@/app/_components/blog/reader-session';
 import type { Locale } from '@/config';
+import type { CommentsPage } from '@/lib/comments';
 
 /**
  * Reactions and comments, composed under a single reader session.
@@ -15,10 +16,13 @@ import type { Locale } from '@/config';
  */
 export function ArticleFooter({
     articleId,
+    initialComments,
     locale,
     returnTo,
 }: {
     articleId: string;
+    /** First page of the discussion, read on the server. */
+    initialComments: CommentsPage;
     locale: Locale;
     returnTo: string;
 }) {
@@ -29,6 +33,7 @@ export function ArticleFooter({
                 <div className="mt-16">
                     <ArticleComments
                         articleId={articleId}
+                        initialComments={initialComments}
                         locale={locale}
                         returnTo={returnTo}
                     />

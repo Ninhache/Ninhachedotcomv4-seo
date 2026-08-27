@@ -1,6 +1,7 @@
 'use client';
 
 import { baseUrl } from '../baseurl';
+import type { CommentsPage } from '../comments';
 import type { Locale } from '../types';
 
 export const REACTION_KINDS = ['like', 'love', 'insightful', 'funny'] as const;
@@ -62,6 +63,13 @@ export type CommentDTO = {
     parentId: string | null;
     /** Null once the author deleted their account: the message stays, they go. */
     reader: PublicReader | null;
+    /**
+     * Every descendant of this comment, at any depth, including the ones
+     * `replies` does not carry. A heavy thread ships with its answers left
+     * behind, so `replyCount > countAll(replies)` is how the UI knows a branch
+     * has to be fetched before it can be shown.
+     */
+    replyCount: number;
     /** Direct answers to this comment, oldest first, nested the same way. */
     replies: CommentDTO[];
 };
@@ -121,10 +129,22 @@ export const ReaderApi = {
 
     deleteAccount: () => request<void>('/reader/me', { method: 'DELETE' }),
 
-    findComments: (articleId: string) =>
-        request<{ items: CommentDTO[]; total: number }>(
-            `/articles/${articleId}/comments`
-        ),
+    findComments: (
+        articleId: string,
+        opts: { skip?: number; take?: number } = {}
+    ) => {
+        const query = new URLSearchParams();
+        if (opts.skip !== undefined) query.set('skip', String(opts.skip));
+        if (opts.take !== undefined) query.set('take', String(opts.take));
+        const suffix = query.size ? `?${query}` : '';
+        return request<CommentsPage>(
+            `/articles/${articleId}/comments${suffix}`
+        );
+    },
+
+    /** The whole branch under one message, untruncated. */
+    findReplies: (commentId: string) =>
+        request<CommentDTO[]>(`/comments/${commentId}/replies`),
 
     createComment: (
         articleId: string,

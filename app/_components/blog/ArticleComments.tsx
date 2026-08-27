@@ -2,7 +2,7 @@
 
 import { Reply, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CommentComposer } from '@/app/_components/blog/CommentComposer';
 import { ReaderIdentity } from '@/app/_components/blog/ReaderIdentity';
 import { ReaderLoginPanel } from '@/app/_components/blog/ReaderLoginPanel';
@@ -11,6 +11,7 @@ import { useReaderSession } from '@/app/_components/blog/reader-session';
 import { ralewaySemiBold } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/config';
+import type { CommentsPage } from '@/lib/comments';
 import { type CommentDTO, ReaderApi } from '@/lib/reader/reader.api';
 import { cn } from '@/lib/utils';
 
@@ -257,43 +258,47 @@ function countAll(nodes: CommentDTO[]): number {
     return nodes.reduce((sum, node) => sum + 1 + countAll(node.replies), 0);
 }
 
+/** The message with this id, wherever it sits, or null. */
+function findNode(nodes: CommentDTO[], id: string): CommentDTO | null {
+    for (const node of nodes) {
+        if (node.id === id) return node;
+        const found = findNode(node.replies, id);
+        if (found) return found;
+    }
+    return null;
+}
+
 /**
  * The discussion under an article: the way to add a message first, then the
  * threads, newest first, each with its answers nested underneath.
  */
 export function ArticleComments({
     articleId,
+    initialComments,
     locale,
     returnTo,
 }: {
     articleId: string;
+    initialComments: CommentsPage;
     locale: Locale;
     returnTo: string;
 }) {
     const t = useTranslations('comments');
     const { reader, loading: sessionLoading, promptLogin } = useReaderSession();
-    const [items, setItems] = useState<CommentDTO[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [items, setItems] = useState<CommentDTO[]>(initialComments.items);
+    // The two counts describe the whole discussion, `items` only the part
+    // currently on screen. They are kept by hand from here on: re-reading the
+    // page after every write would cost a round trip to learn what the write
+    // already told us.
+    const [totalRoots, setTotalRoots] = useState(initialComments.totalRoots);
+    const [totalComments, setTotalComments] = useState(
+        initialComments.totalComments
+    );
     const [body, setBody] = useState('');
     const [replyTo, setReplyTo] = useState<string | null>(null);
     const [replyBody, setReplyBody] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        let cancelled = false;
-        ReaderApi.findComments(articleId)
-            .then(({ items: comments }) => {
-                if (!cancelled) setItems(comments);
-            })
-            .catch(() => {})
-            .finally(() => {
-                if (!cancelled) setLoading(false);
-            });
-        return () => {
-            cancelled = true;
-        };
-    }, [articleId]);
 
     const submit = async () => {
         const trimmed = body.trim();
@@ -307,6 +312,8 @@ export function ArticleComments({
                 locale
             );
             setItems(prev => [created, ...prev]);
+            setTotalRoots(prev => prev + 1);
+            setTotalComments(prev => prev + 1);
             setBody('');
         } catch (err) {
             setError(err instanceof Error ? err.message : t('error'));
@@ -328,6 +335,7 @@ export function ArticleComments({
                 parentId
             );
             setItems(prev => insertReply(prev, created));
+            setTotalComments(prev => prev + 1);
             setReplyBody('');
             setReplyTo(null);
         } catch (err) {
@@ -338,9 +346,17 @@ export function ArticleComments({
     };
 
     const remove = async (id: string) => {
+        // Counted before the write: the branch goes with the message, and
+        // `replyCount` is the only honest size of it when part of that branch
+        // was never loaded.
+        const node = findNode(items, id);
+        const removed = node ? 1 + node.replyCount : 1;
+        const wasRoot = items.some(root => root.id === id);
         try {
             await ReaderApi.removeComment(id);
             setItems(prev => removeFromTree(prev, id));
+            setTotalComments(prev => Math.max(0, prev - removed));
+            if (wasRoot) setTotalRoots(prev => Math.max(0, prev - 1));
         } catch (err) {
             setError(err instanceof Error ? err.message : t('error'));
         }
@@ -368,8 +384,6 @@ export function ArticleComments({
         onCancelReply: () => setReplyTo(null),
     };
 
-    const replyTotal = countAll(items) - items.length;
-
     return (
         <div>
             <h2
@@ -381,9 +395,9 @@ export function ArticleComments({
                 {t('title')}
             </h2>
             <p className="mt-1 text-muted-foreground text-sm">
-                {t('commentCount', { count: items.length })}
+                {t('commentCount', { count: totalRoots })}
                 {' · '}
-                {t('replyCount', { count: replyTotal })}
+                {t('replyCount', { count: totalComments - totalRoots })}
             </p>
 
             <div className="mt-8">
@@ -423,11 +437,7 @@ export function ArticleComments({
                     ))}
             </div>
 
-            {loading ? (
-                <p className="mt-10 text-center text-muted-foreground text-sm">
-                    {t('loading')}
-                </p>
-            ) : items.length === 0 ? (
+            {items.length === 0 ? (
                 <p className="mt-10 text-center text-muted-foreground text-sm">
                     {t('empty')}
                 </p>
