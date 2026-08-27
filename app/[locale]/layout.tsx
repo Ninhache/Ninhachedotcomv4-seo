@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { JsonLd } from '@/app/_components/seo/JsonLd';
+import { calibreSemibold } from '@/app/fonts';
 import { type Locale, locales } from '@/config';
 import { getContacts, getProfile, getSkillCategories } from '@/lib/portfolio';
 import {
@@ -80,7 +81,19 @@ export default async function RootLayout(props: {
 
     return (
         <html lang={typedLocale}>
-            <body>
+            <body
+                // The font every control labels itself with, published once
+                // for the whole public site. It is a variable rather than a
+                // class because the primitives in `components/ui` are shared
+                // with the back-office, which runs its own root layout, its
+                // own fonts, and must keep them: a button reads this variable
+                // when there is one and inherits when there is not.
+                style={
+                    {
+                        '--font-ui': calibreSemibold.style.fontFamily,
+                    } as React.CSSProperties
+                }
+            >
                 <JsonLd
                     data={graph([
                         websiteJsonLd(profile, typedLocale),
