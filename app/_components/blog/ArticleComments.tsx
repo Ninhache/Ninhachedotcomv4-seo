@@ -251,7 +251,16 @@ function CommentThread({
                             : 'grid-rows-[0fr]'
                     )}
                 >
-                    <div className="overflow-hidden">
+                    <div
+                        className="overflow-hidden"
+                        // The replies stay mounted while the row closes: a
+                        // branch unmounted on the first frame leaves an empty
+                        // box to shrink, which is instant and reads as a
+                        // disappearance rather than a fold. `inert` is what
+                        // keeps the clipped copy out of the tab order and out
+                        // of the accessibility tree in the meantime.
+                        inert={!open && !composerOpen}
+                    >
                         <div
                             className={cn(
                                 'mt-6 space-y-6',
@@ -262,15 +271,14 @@ function CommentThread({
                                 depth === 0 && 'sm:ml-15'
                             )}
                         >
-                            {open &&
-                                comment.replies.map(reply => (
-                                    <CommentThread
-                                        key={reply.id}
-                                        comment={reply}
-                                        depth={depth + 1}
-                                        context={context}
-                                    />
-                                ))}
+                            {comment.replies.map(reply => (
+                                <CommentThread
+                                    key={reply.id}
+                                    comment={reply}
+                                    depth={depth + 1}
+                                    context={context}
+                                />
+                            ))}
                             {composerOpen && (
                                 <div className="fade-in-0 slide-in-from-top-1 animate-in duration-300 motion-reduce:animate-none">
                                     <CommentComposer
