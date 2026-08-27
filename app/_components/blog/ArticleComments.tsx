@@ -1,8 +1,8 @@
 'use client';
 
-import { Reply, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Reply, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { CommentComposer } from '@/app/_components/blog/CommentComposer';
 import { ReaderIdentity } from '@/app/_components/blog/ReaderIdentity';
 import { ReaderLoginPanel } from '@/app/_components/blog/ReaderLoginPanel';
@@ -11,7 +11,7 @@ import { useReaderSession } from '@/app/_components/blog/reader-session';
 import { ralewaySemiBold } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
 import type { Locale } from '@/config';
-import type { CommentsPage } from '@/lib/comments';
+import { COMMENTS_PAGE_SIZE, type CommentsPage } from '@/lib/comments';
 import { type CommentDTO, ReaderApi } from '@/lib/reader/reader.api';
 import { cn } from '@/lib/utils';
 
@@ -58,12 +58,16 @@ function CommentCard({
     canDelete,
     onRemove,
     onReply,
+    toggle,
 }: {
     comment: CommentDTO;
     locale: Locale;
     canDelete: boolean;
     onRemove: () => void;
     onReply?: () => void;
+    /** The fold control, when this message has answers. Sits next to "reply"
+     * rather than in a row of its own: both act on the same message. */
+    toggle?: ReactNode;
 }) {
     const t = useTranslations('comments');
 
@@ -102,16 +106,21 @@ function CommentCard({
                 <p className="mt-2 whitespace-pre-wrap break-words text-base text-muted-foreground leading-relaxed">
                     {comment.body}
                 </p>
-                {onReply && (
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="-ml-3 mt-2 rounded-full text-muted-foreground hover:text-primary"
-                        onClick={onReply}
-                    >
-                        <Reply className="mr-1.5 h-4 w-4" />
-                        {t('reply')}
-                    </Button>
+                {(onReply || toggle) && (
+                    <div className="-ml-3 mt-2 flex flex-wrap items-center gap-1">
+                        {onReply && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="rounded-full text-muted-foreground hover:text-primary"
+                                onClick={onReply}
+                            >
+                                <Reply className="mr-1.5 h-4 w-4" />
+                                {t('reply')}
+                            </Button>
+                        )}
+                        {toggle}
+                    </div>
                 )}
             </div>
             {canDelete && (
@@ -146,9 +155,14 @@ type ThreadContext = {
     readerId: string | null;
     /** Id of the message whose reply box is open, if any. */
     replyTo: string | null;
+    /** Ids whose branch the reader folded away by hand. */
+    collapsed: Set<string>;
+    /** Ids whose branch is being fetched right now. */
+    expanding: Set<string>;
     replyBody: string;
     submitting: boolean;
     onReply: (id: string) => void;
+    onToggle: (id: string) => void;
     onRemove: (id: string) => void;
     onReplyBodyChange: (value: string) => void;
     onSubmitReply: (parentId: string) => void;
@@ -178,6 +192,12 @@ function CommentThread({
 }) {
     const t = useTranslations('comments');
     const composerOpen = context.replyTo === comment.id;
+    const loaded = countAll(comment.replies);
+    // A branch is shown when it is loaded whole and nobody folded it. Two
+    // different reasons to be hidden, one control to undo either.
+    const open =
+        loaded >= comment.replyCount && !context.collapsed.has(comment.id);
+    const busy = context.expanding.has(comment.id);
 
     return (
         <div>
@@ -190,8 +210,33 @@ function CommentThread({
                 }
                 onRemove={() => context.onRemove(comment.id)}
                 onReply={() => context.onReply(comment.id)}
+                toggle={
+                    comment.replyCount > 0 && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="rounded-full text-muted-foreground hover:text-primary"
+                            aria-expanded={open}
+                            disabled={busy}
+                            onClick={() => context.onToggle(comment.id)}
+                        >
+                            {open ? (
+                                <ChevronDown className="mr-1.5 h-4 w-4" />
+                            ) : (
+                                <ChevronRight className="mr-1.5 h-4 w-4" />
+                            )}
+                            {busy
+                                ? t('loadingReplies')
+                                : open
+                                  ? t('hideReplies')
+                                  : t('showReplies', {
+                                        count: comment.replyCount,
+                                    })}
+                        </Button>
+                    )
+                }
             />
-            {(comment.replies.length > 0 || composerOpen) && (
+            {((open && comment.replies.length > 0) || composerOpen) && (
                 <div
                     className={cn(
                         'mt-6 space-y-6',
@@ -202,14 +247,15 @@ function CommentThread({
                         depth === 0 && 'sm:ml-15'
                     )}
                 >
-                    {comment.replies.map(reply => (
-                        <CommentThread
-                            key={reply.id}
-                            comment={reply}
-                            depth={depth + 1}
-                            context={context}
-                        />
-                    ))}
+                    {open &&
+                        comment.replies.map(reply => (
+                            <CommentThread
+                                key={reply.id}
+                                comment={reply}
+                                depth={depth + 1}
+                                context={context}
+                            />
+                        ))}
                     {composerOpen && (
                         <CommentComposer
                             id={`reply-${comment.id}`}
@@ -236,21 +282,75 @@ function CommentThread({
  * showing the tree that was actually stored.
  */
 function insertReply(nodes: CommentDTO[], created: CommentDTO): CommentDTO[] {
+    let changed = false;
+    // The array that comes back is the same one when nothing in this subtree
+    // moved. That identity is how each level learns whether the message landed
+    // underneath it, and therefore whether its own `replyCount` has to grow: a
+    // count left behind would offer to load answers already on screen.
+    const next = nodes.map(node => {
+        if (node.id === created.parentId) {
+            changed = true;
+            return {
+                ...node,
+                replyCount: node.replyCount + 1,
+                replies: [...node.replies, created],
+            };
+        }
+        const replies = insertReply(node.replies, created);
+        if (replies === node.replies) return node;
+        changed = true;
+        return { ...node, replyCount: node.replyCount + 1, replies };
+    });
+    return changed ? next : nodes;
+}
+
+/**
+ * Replaces a branch with the one just fetched for it.
+ *
+ * `replyCount` is recomputed rather than trusted: the fetch is the fresher of
+ * the two, and a thread that grew since the page was rendered would otherwise
+ * keep offering to load answers that are already there.
+ */
+function graftReplies(
+    nodes: CommentDTO[],
+    id: string,
+    replies: CommentDTO[]
+): CommentDTO[] {
     return nodes.map(node =>
-        node.id === created.parentId
-            ? { ...node, replies: [...node.replies, created] }
-            : { ...node, replies: insertReply(node.replies, created) }
+        node.id === id
+            ? { ...node, replyCount: countAll(replies), replies }
+            : { ...node, replies: graftReplies(node.replies, id, replies) }
     );
 }
 
 /**
  * Drops a message wherever it sits. Its answers go with it, which is what the
  * database does too: the foreign key cascades down the branch.
+ *
+ * `removed` is the size of what disappears, the message included. It is passed
+ * in rather than measured here because part of that branch may never have been
+ * loaded, and every ancestor has to shed exactly that many descendants.
  */
-function removeFromTree(nodes: CommentDTO[], id: string): CommentDTO[] {
-    return nodes
-        .filter(node => node.id !== id)
-        .map(node => ({ ...node, replies: removeFromTree(node.replies, id) }));
+function removeFromTree(
+    nodes: CommentDTO[],
+    id: string,
+    removed: number
+): CommentDTO[] {
+    if (nodes.some(node => node.id === id)) {
+        return nodes.filter(node => node.id !== id);
+    }
+    let changed = false;
+    const next = nodes.map(node => {
+        const replies = removeFromTree(node.replies, id, removed);
+        if (replies === node.replies) return node;
+        changed = true;
+        return {
+            ...node,
+            replyCount: Math.max(0, node.replyCount - removed),
+            replies,
+        };
+    });
+    return changed ? next : nodes;
 }
 
 /** Every message in the tree, at any depth. */
@@ -296,6 +396,14 @@ export function ArticleComments({
     );
     const [body, setBody] = useState('');
     const [replyTo, setReplyTo] = useState<string | null>(null);
+    const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+    const [expanding, setExpanding] = useState<Set<string>>(new Set());
+    // Root threads already read from the API, which is what the next page is
+    // offset by. Not `items.length`: a thread this reader just wrote sits at
+    // the top locally and also exists server-side, and counting it here would
+    // skip one.
+    const [fetched, setFetched] = useState(initialComments.items.length);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [replyBody, setReplyBody] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -354,7 +462,7 @@ export function ArticleComments({
         const wasRoot = items.some(root => root.id === id);
         try {
             await ReaderApi.removeComment(id);
-            setItems(prev => removeFromTree(prev, id));
+            setItems(prev => removeFromTree(prev, id, removed));
             setTotalComments(prev => Math.max(0, prev - removed));
             if (wasRoot) setTotalRoots(prev => Math.max(0, prev - 1));
         } catch (err) {
@@ -362,13 +470,82 @@ export function ArticleComments({
         }
     };
 
-    const openReply = (id: string) => {
+    /**
+     * Fetches a branch that was left behind, and puts it in place. Returns once
+     * the tree holds it, so a caller can rely on the branch being there.
+     */
+    const expand = async (id: string) => {
+        const node = findNode(items, id);
+        if (!node || countAll(node.replies) >= node.replyCount) return;
+        setExpanding(prev => new Set(prev).add(id));
+        try {
+            const replies = await ReaderApi.findReplies(id);
+            setItems(prev => graftReplies(prev, id, replies));
+        } catch (err) {
+            setError(err instanceof Error ? err.message : t('error'));
+        } finally {
+            setExpanding(prev => {
+                const next = new Set(prev);
+                next.delete(id);
+                return next;
+            });
+        }
+    };
+
+    /** One control, two reasons a branch can be hidden: folded, or not loaded. */
+    const toggle = async (id: string) => {
+        if (collapsed.has(id)) {
+            setCollapsed(prev => {
+                const next = new Set(prev);
+                next.delete(id);
+                return next;
+            });
+            return;
+        }
+        const node = findNode(items, id);
+        if (node && countAll(node.replies) < node.replyCount) {
+            await expand(id);
+            return;
+        }
+        setCollapsed(prev => new Set(prev).add(id));
+    };
+
+    const openReply = async (id: string) => {
         if (!reader || reader.needsName) {
             promptLogin();
             return;
         }
         setReplyBody('');
         setReplyTo(id);
+        // Answering a thread whose branch is hidden shows it first. Otherwise
+        // the reply is written into a conversation the writer cannot read, and
+        // lands in a branch that is not on screen.
+        setCollapsed(prev => {
+            if (!prev.has(id)) return prev;
+            const next = new Set(prev);
+            next.delete(id);
+            return next;
+        });
+        await expand(id);
+    };
+
+    const loadMore = async () => {
+        if (loadingMore) return;
+        setLoadingMore(true);
+        try {
+            const page = await ReaderApi.findComments(articleId, {
+                skip: fetched,
+                take: COMMENTS_PAGE_SIZE,
+            });
+            setItems(prev => [...prev, ...page.items]);
+            setFetched(prev => prev + page.items.length);
+            setTotalRoots(page.totalRoots);
+            setTotalComments(page.totalComments);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : t('error'));
+        } finally {
+            setLoadingMore(false);
+        }
     };
 
     const context: ThreadContext = {
@@ -377,7 +554,10 @@ export function ArticleComments({
         replyTo,
         replyBody,
         submitting,
+        collapsed,
+        expanding,
         onReply: openReply,
+        onToggle: toggle,
         onRemove: remove,
         onReplyBodyChange: setReplyBody,
         onSubmitReply: submitReply,
@@ -453,6 +633,19 @@ export function ArticleComments({
                         </li>
                     ))}
                 </ul>
+            )}
+
+            {items.length < totalRoots && (
+                <div className="mt-8 flex justify-center">
+                    <Button
+                        variant="outline"
+                        className="rounded-full"
+                        disabled={loadingMore}
+                        onClick={loadMore}
+                    >
+                        {loadingMore ? t('loadingReplies') : t('loadMore')}
+                    </Button>
+                </div>
             )}
         </div>
     );

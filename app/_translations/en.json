@@ -111,6 +111,9 @@
         "title": "Comments",
         "commentCount": "{count, plural, =0 {No comment} one {# comment} other {# comments}}",
         "replyCount": "{count, plural, =0 {no reply} one {# reply} other {# replies}}",
+        "showReplies": "{count, plural, one {Show # reply} other {Show # replies}}",
+        "hideReplies": "Hide replies",
+        "loadingReplies": "Loading…",
         "addTitle": "Add a comment",
         "reply": "Reply",
         "cancel": "Cancel",
@@ -121,6 +124,7 @@
         "submit": "Post",
         "loading": "Loading comments…",
         "empty": "No discussion yet.",
+        "loadMore": "Show more comments",
         "delete": "Delete my comment",
         "error": "Something went wrong.",
         "reactions": {

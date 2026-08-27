@@ -111,6 +111,9 @@
         "title": "Commentaires",
         "commentCount": "{count, plural, =0 {Aucun commentaire} one {# commentaire} other {# commentaires}}",
         "replyCount": "{count, plural, =0 {aucune réponse} one {# réponse} other {# réponses}}",
+        "showReplies": "{count, plural, one {Afficher # réponse} other {Afficher # réponses}}",
+        "hideReplies": "Masquer les réponses",
+        "loadingReplies": "Chargement…",
         "addTitle": "Ajouter un commentaire",
         "reply": "Répondre",
         "cancel": "Annuler",
@@ -121,6 +124,7 @@
         "submit": "Publier",
         "loading": "Chargement des commentaires…",
         "empty": "Aucune discussion pour le moment.",
+        "loadMore": "Afficher les commentaires suivants",
         "delete": "Supprimer mon commentaire",
         "error": "Une erreur est survenue.",
         "reactions": {
