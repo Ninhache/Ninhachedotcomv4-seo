@@ -36,12 +36,10 @@ export function CommentComposer({
     const t = useTranslations('comments');
 
     return (
-        <div
-            className={cn(
-                'space-y-3 rounded-2xl border border-border bg-card p-5 sm:p-6',
-                className
-            )}
-        >
+        // No frame of its own: the text box already has a border, and wrapping
+        // a bordered box in a bordered box was the double outline that made the
+        // whole thread look like a stack of panels.
+        <div className={cn('space-y-3', className)}>
             <label htmlFor={id} className="sr-only">
                 {placeholder}
             </label>

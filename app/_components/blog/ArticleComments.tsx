@@ -26,8 +26,16 @@ function formatDate(iso: string, locale: Locale) {
 }
 
 /**
- * One message: the same card whether it opens a thread or answers one, only
- * narrower when it is an answer.
+ * One message: the same block whether it opens a thread or answers one.
+ *
+ * No frame, no background, no padding. A comment is text with a face next to
+ * it; boxing each one, then boxing the answers inside that box, produced a
+ * nest of borders that read as structure the conversation does not have. The
+ * indent line on the replies carries that structure on its own.
+ *
+ * Being frameless is also what makes the hover honest: a reply is a sibling of
+ * the message it answers, not a child of it, so `group` here covers exactly one
+ * message and hovering an answer no longer lights up the whole thread.
  *
  * Answering an answer aims at the thread, not at the message: `onReply` is
  * handed the root id in both cases. That is exactly what the API does with a
@@ -44,83 +52,78 @@ function CommentCard({
     canDelete,
     onRemove,
     onReply,
-    children,
 }: {
     comment: CommentDTO;
     locale: Locale;
     canDelete: boolean;
     onRemove: () => void;
     onReply?: () => void;
-    children?: React.ReactNode;
 }) {
     const t = useTranslations('comments');
 
     return (
-        <div className="group rounded-2xl border border-border bg-card p-5 sm:p-6">
-            <div className="flex gap-4">
-                {comment.reader?.avatarUrl ? (
-                    <img
-                        src={comment.reader.avatarUrl}
-                        alt=""
-                        width={44}
-                        height={44}
-                        className="h-11 w-11 shrink-0 rounded-full object-cover"
-                    />
-                ) : (
-                    <div className="h-11 w-11 shrink-0 rounded-full bg-muted" />
-                )}
-                <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span
-                            className={cn(
-                                'font-medium text-base',
-                                comment.reader
-                                    ? 'text-foreground'
-                                    : 'text-muted-foreground italic'
-                            )}
-                        >
-                            {comment.reader?.displayName ?? t('deletedAuthor')}
-                        </span>
-                        <time
-                            dateTime={comment.createdAt}
-                            className="text-muted-foreground text-xs"
-                        >
-                            {formatDate(comment.createdAt, locale)}
-                        </time>
-                    </div>
-                    <p className="mt-2 whitespace-pre-wrap break-words text-base text-muted-foreground leading-relaxed">
-                        {comment.body}
-                    </p>
-                    {onReply && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="-ml-3 mt-2 rounded-full text-muted-foreground hover:text-primary"
-                            onClick={onReply}
-                        >
-                            <Reply className="mr-1.5 h-4 w-4" />
-                            {t('reply')}
-                        </Button>
-                    )}
+        <div className="group flex gap-4">
+            {comment.reader?.avatarUrl ? (
+                <img
+                    src={comment.reader.avatarUrl}
+                    alt=""
+                    width={44}
+                    height={44}
+                    className="h-11 w-11 shrink-0 rounded-full object-cover"
+                />
+            ) : (
+                <div className="h-11 w-11 shrink-0 rounded-full bg-muted" />
+            )}
+            <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span
+                        className={cn(
+                            'font-medium text-base',
+                            comment.reader
+                                ? 'text-foreground'
+                                : 'text-muted-foreground italic'
+                        )}
+                    >
+                        {comment.reader?.displayName ?? t('deletedAuthor')}
+                    </span>
+                    <time
+                        dateTime={comment.createdAt}
+                        className="text-muted-foreground text-xs"
+                    >
+                        {formatDate(comment.createdAt, locale)}
+                    </time>
                 </div>
-                {canDelete && (
+                <p className="mt-2 whitespace-pre-wrap break-words text-base text-muted-foreground leading-relaxed">
+                    {comment.body}
+                </p>
+                {onReply && (
                     <Button
                         variant="ghost"
-                        size="icon"
-                        aria-label={t('delete')}
-                        onClick={onRemove}
-                        // Hidden until the card is hovered or something in it
-                        // takes focus, so a thread reads as text and not as a
-                        // row of buttons. Kept unconditionally visible below
-                        // `sm`: a touch screen never hovers, and an invisible
-                        // delete button is the same as no delete button.
-                        className="opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+                        size="sm"
+                        className="-ml-3 mt-2 rounded-full text-muted-foreground hover:text-primary"
+                        onClick={onReply}
                     >
-                        <Trash2 className="h-4 w-4 text-destructive" />
+                        <Reply className="mr-1.5 h-4 w-4" />
+                        {t('reply')}
                     </Button>
                 )}
             </div>
-            {children}
+            {canDelete && (
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t('delete')}
+                    onClick={onRemove}
+                    // Hidden until this message is hovered or something in it
+                    // takes focus, so a thread reads as text and not as a row
+                    // of buttons. Kept unconditionally visible below `sm`: a
+                    // touch screen never hovers, and an invisible delete button
+                    // is the same as no delete button.
+                    className="opacity-100 transition-opacity sm:opacity-0 sm:group-focus-within:opacity-100 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+                >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+            )}
         </div>
     );
 }
@@ -311,9 +314,9 @@ export function ArticleComments({
                     {t('empty')}
                 </p>
             ) : (
-                <ul className="mt-10 space-y-4">
+                <ul className="mt-10 divide-y divide-border">
                     {items.map(root => (
-                        <li key={root.id}>
+                        <li key={root.id} className="py-8 first:pt-0">
                             <CommentCard
                                 comment={root}
                                 locale={locale}
@@ -322,49 +325,39 @@ export function ArticleComments({
                                 }
                                 onRemove={() => remove(root.id)}
                                 onReply={() => openReply(root.id)}
-                            >
-                                {(root.replies.length > 0 ||
-                                    replyTo === root.id) && (
-                                    <div className="mt-5 space-y-4 border-border border-l pl-5 sm:ml-15">
-                                        {root.replies.map(reply => (
-                                            <CommentCard
-                                                key={reply.id}
-                                                comment={reply}
-                                                locale={locale}
-                                                canDelete={
-                                                    !!reader &&
-                                                    reader.id ===
-                                                        reply.reader?.id
-                                                }
-                                                onRemove={() =>
-                                                    remove(reply.id)
-                                                }
-                                                onReply={() =>
-                                                    openReply(root.id)
-                                                }
-                                            />
-                                        ))}
-                                        {replyTo === root.id && (
-                                            <CommentComposer
-                                                id={`reply-${root.id}`}
-                                                value={replyBody}
-                                                placeholder={t(
-                                                    'replyPlaceholder'
-                                                )}
-                                                submitting={submitting}
-                                                onChange={setReplyBody}
-                                                onSubmit={() =>
-                                                    submitReply(root.id)
-                                                }
-                                                onCancel={() =>
-                                                    setReplyTo(null)
-                                                }
-                                                cancelLabel={t('cancel')}
-                                            />
-                                        )}
-                                    </div>
-                                )}
-                            </CommentCard>
+                            />
+                            {(root.replies.length > 0 ||
+                                replyTo === root.id) && (
+                                <div className="mt-6 space-y-6 border-border border-l pl-5 sm:ml-15">
+                                    {root.replies.map(reply => (
+                                        <CommentCard
+                                            key={reply.id}
+                                            comment={reply}
+                                            locale={locale}
+                                            canDelete={
+                                                !!reader &&
+                                                reader.id === reply.reader?.id
+                                            }
+                                            onRemove={() => remove(reply.id)}
+                                            onReply={() => openReply(root.id)}
+                                        />
+                                    ))}
+                                    {replyTo === root.id && (
+                                        <CommentComposer
+                                            id={`reply-${root.id}`}
+                                            value={replyBody}
+                                            placeholder={t('replyPlaceholder')}
+                                            submitting={submitting}
+                                            onChange={setReplyBody}
+                                            onSubmit={() =>
+                                                submitReply(root.id)
+                                            }
+                                            onCancel={() => setReplyTo(null)}
+                                            cancelLabel={t('cancel')}
+                                        />
+                                    )}
+                                </div>
+                            )}
                         </li>
                     ))}
                 </ul>
