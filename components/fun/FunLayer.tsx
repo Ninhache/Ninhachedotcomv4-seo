@@ -16,8 +16,6 @@ import {
     META_SECRET,
     NIGHT_END_HOUR,
     NIGHT_STAY_MS,
-    POKE_CLICKS,
-    POKE_GAP_MS,
     REGULAR_DAYS,
     SAFE_CODE,
     SECRET_IDS,
@@ -186,22 +184,6 @@ export function FunLayer() {
         };
         window.addEventListener('keydown', onKey);
         return () => window.removeEventListener('keydown', onKey);
-    }, []);
-
-    // Poke: quick clicks on the profile picture of the home page.
-    useEffect(() => {
-        let clicks = 0;
-        let last = 0;
-        const onClick = (event: MouseEvent) => {
-            const target = event.target as Element | null;
-            if (!target?.closest?.('#photo')) return;
-            const now = event.timeStamp;
-            clicks = now - last < POKE_GAP_MS ? clicks + 1 : 1;
-            last = now;
-            if (clicks >= POKE_CLICKS) unlock('poke');
-        };
-        document.addEventListener('click', onClick);
-        return () => document.removeEventListener('click', onClick);
     }, []);
 
     // Once per page: the console, the visit counters, the night owl.

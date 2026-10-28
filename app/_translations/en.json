@@ -33,7 +33,10 @@
         "employmentSeeking": "Currently employed, I remain curious and open to new opportunities. Feel free to reach out to connect!",
         "additionalInfo": "You may want more informations about me ?",
         "resumeLink": "Open my resume",
-        "altLink": "Icon representing an external link"
+        "altLink": "Icon representing an external link",
+        "photoAlt": "Photo of Néo",
+        "photoSwap": "Switch photo",
+        "photoBroken": "Broken. Reload the page."
     },
     "projects": {
         "anchor": "projects",
@@ -271,9 +274,9 @@
                 },
                 "poke": {
                     "name": "Poke",
-                    "description": "Five clicks on my face. Fine, I get it.",
+                    "description": "You blew my head up. Fine, I get it.",
                     "hint": "Nice face. Keep at it.",
-                    "clue": "Click the photo on the home page. Fast, several times."
+                    "clue": "Click the photo on the home page. Fast, and don't stop."
                 },
                 "konami": {
                     "name": "Old school",

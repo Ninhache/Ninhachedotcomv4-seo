@@ -120,7 +120,14 @@ export default function About({
                             </Link>
                         </div>
 
-                        <AnimatedProfilePicture src={profile?.imageUrl} />
+                        <AnimatedProfilePicture
+                            src={profile?.imageUrl}
+                            altSrcs={profile?.altImageUrls}
+                            hiddenSrc={profile?.hiddenImageUrl}
+                            alt={t('photoAlt')}
+                            swapLabel={t('photoSwap')}
+                            brokenLabel={t('photoBroken')}
+                        />
                     </div>
                 </div>
             </section>

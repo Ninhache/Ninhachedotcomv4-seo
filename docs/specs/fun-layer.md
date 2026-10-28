@@ -191,7 +191,7 @@ Les leviers de complétion :
 | | `lost` | Arriver sur une 404 |
 | | `polyglot` | Voir le site dans les deux langues |
 | Fouille | `breaker` | Finir le niveau 404 |
-| | `poke` | 5 clics sur la photo de l'accueil, chacun à moins de 1,5 s du précédent |
+| | `poke` | Faire sauter la photo de l'accueil : 20 clics en moins de 5 s (voir 3.3) |
 | | `konami` | Le code Konami |
 | | `xyzzy` | Taper `xyzzy` hors d'un champ (indice : commentaire HTML du layout) |
 | | `hired` | `ninhache.hire()` dans la console |
@@ -215,7 +215,36 @@ cachent :
 3. l'écran « Raté. » du faux WordPress ;
 4. `/humans.txt`.
 
-### 3.3 Faux admin
+### 3.3 La photo qui saute
+
+La photo de l'accueil est un bouton : un clic passe au visage suivant
+(`[photo principale, ...altImageUrls]`, en boucle ; sans photo alternative, le
+front sert `/images/Photo-alt.webp`). Le spammer la fait court-circuiter.
+
+- **Un débit, pas un total** (`lib/fun/overload.ts`) : seuls comptent les clics
+  des 5 dernières secondes. 20 dans la fenêtre font sauter la photo ; un clic
+  par seconde plafonne à 5 et peut durer indéfiniment.
+- **Les paliers d'alerte** à 7, 12 et 16 clics dans la fenêtre : le badge passe
+  orange puis rouge, l'image grésille, puis tout tremble. Les étincelles et les
+  secousses grossissent avec le palier, et retombent quand on arrête.
+- **Le court-circuit** : une demi-seconde de tremblement blanc, puis flash,
+  débris et fumée sur un canvas trois fois plus grand que la photo
+  (`lib/fun/blast.ts`, boucle active seulement tant qu'une particule vit). La
+  photo cachée (`hiddenImageUrl`, à défaut la photo principale) sort de la
+  fumée, nette, et `poke` se débloque une fois la fumée retombée.
+- **Cassé jusqu'au rechargement** : plus de changement de visage, le badge pend,
+  gris, et fume en continu ; toutes les 3,5 à 8 s la photo a encore 2 ou 3
+  spasmes (secousse, image qui grésille, étincelles, bouffée de fumée sur le
+  bord) ; un clic ne donne plus qu'un grésillement.
+  Rien n'est stocké : recharger répare.
+- **Mouvement réduit** : ni particules ni secousses, la photo cachée apparaît
+  directement, le secret se débloque quand même.
+
+Le back-office règle les visages dans **Profil** : photo principale, photos
+alternatives ordonnées, photo cachée (`Profile.altImageUrls`,
+`Profile.hiddenImageUrl` côté API).
+
+### 3.4 Faux admin
 
 - `app/[locale]/wp-admin/page.tsx` et `app/[locale]/admin/page.tsx`.
   - Le proxy redirige `/wp-admin` vers `/fr/wp-admin`.
