@@ -111,11 +111,6 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
         }
     };
 
-    const total = REACTION_KINDS.reduce(
-        (sum, kind) => sum + (summary.counts[kind] ?? 0),
-        0
-    );
-
     return (
         <div className="text-center">
             <h2
@@ -127,7 +122,7 @@ export function ArticleReactions({ articleId }: { articleId: string }) {
                 {t('reactTitle')}
             </h2>
             <p className="mt-1 text-muted-foreground text-sm">
-                {t('reactCount', { count: total })}
+                {t('reactHint')}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-x-10 gap-y-8 sm:gap-x-16">
                 {REACTION_KINDS.map(kind => {

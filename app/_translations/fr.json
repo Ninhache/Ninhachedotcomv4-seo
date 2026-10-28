@@ -110,7 +110,7 @@
     },
     "comments": {
         "reactTitle": "Réactions",
-        "reactCount": "{count, plural, =0 {Aucune réaction} one {# réaction} other {# réactions}}",
+        "reactHint": "Un clic sur une icône pour réagir.",
         "title": "Commentaires",
         "commentCount": "{count, plural, =0 {Aucun commentaire} one {# commentaire} other {# commentaires}}",
         "replyCount": "{count, plural, =0 {aucune réponse} one {# réponse} other {# réponses}}",
