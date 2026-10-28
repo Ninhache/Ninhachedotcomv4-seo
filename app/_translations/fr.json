@@ -196,14 +196,14 @@
         "notFound": {
             "title": "404. Rien ici.",
             "text": "La page n’existe pas. Les briques, si.",
-            "home": "Retour à l'accueil",
+            "home": "Retour à l’accueil",
             "blog": "Lire le blog"
         },
         "game": {
             "launch": "Espace, clic ou toucher pour lancer",
-            "controls": "← → ou souris pour bouger · Espace pour lancer · P pour la pause",
+            "controls": "← → ou souris pour bouger · Espace pour lancer · P ou Échap pour la pause",
             "paused": "Pause",
-            "resume": "Espace pour reprendre",
+            "resume": "Espace ou clic pour reprendre",
             "won": "Code {code} cassé.",
             "wonTime": "Temps : {time}",
             "newBest": "Nouveau record",
@@ -222,18 +222,18 @@
                 "500": "Ça clignote. Ça tient quand même.",
                 "403": "De l’acier dessous. Deux passages.",
                 "429": "Trop de requêtes. Deux coups chacune.",
-                "418": "Je suis une théière. Elle bouge."
+                "418": "Je suis une théière. Je tangue."
             },
-            "nearMiss": "{gap} s de trop. Il se passe quelque chose sous les 45."
+            "nearMiss": "{gap} s de trop. Passez sous 45 s : il se passe quelque chose."
         },
         "secrets": {
             "found": "Trouvé",
             "tierDone": "{tier} : terminé",
             "button": "Secrets {count}/{total}",
             "title": "Secrets",
-            "intro": "{count}/{total}. Tout reste sur cet appareil.",
+            "intro": "{count}/{total}. Encore {left} à trouver.",
             "introDone": "{total}/{total}. Il n’y a plus rien. Promis.",
-            "rule": "Finissez un palier : les indices du suivant deviennent clairs.",
+            "rule": "Finissez un palier pour rendre clairs les indices du suivant.",
             "unknown": "???",
             "close": "Fermer",
             "tiers": {
@@ -252,19 +252,19 @@
                     "name": "Terminal",
                     "description": "Vous avez ouvert le terminal. Il ne mord pas.",
                     "hint": "La touche sous Échap.",
-                    "clue": "La touche sous Échap, ou le bouton >_ en bas de page."
+                    "clue": "Appuyez sur la touche sous Échap, ou cliquez sur >_ en bas de page."
                 },
                 "lost": {
                     "name": "Perdu",
-                    "description": "Vous êtes allé là où il n’y avait rien.",
+                    "description": "Il n’y avait rien ici. Vous l’avez trouvé quand même.",
                     "hint": "Tapez n’importe quoi après le /.",
-                    "clue": "Tapez n’importe quoi après le /."
+                    "clue": "Ajoutez n’importe quoi après le / dans la barre d’adresse."
                 },
                 "polyglot": {
                     "name": "Bilingue",
                     "description": "Vous avez lu le site dans les deux langues.",
                     "hint": "FR, EN. En haut.",
-                    "clue": "Changez de langue, en haut de page."
+                    "clue": "Passez le site en anglais : EN, en haut de page."
                 },
                 "breaker": {
                     "name": "Casseur",
@@ -276,43 +276,43 @@
                     "name": "Insistant",
                     "description": "Vous avez fait sauter ma tête. Ça va, j’ai compris.",
                     "hint": "Il a une bonne tête. Insistez.",
-                    "clue": "Cliquez sur la photo de l’accueil. Vite, sans vous arrêter."
+                    "clue": "Cliquez sur la photo de l’accueil 20 fois en 5 secondes."
                 },
                 "konami": {
                     "name": "Vieille école",
                     "description": "↑ ↑ ↓ ↓ ← → ← → B A. Vous avez de la bouteille.",
                     "hint": "Trente vies, à l’époque.",
-                    "clue": "Haut, haut, bas, bas…"
+                    "clue": "Tapez ↑ ↑ ↓ ↓ ← → ← → B A, n’importe où."
                 },
                 "xyzzy": {
                     "name": "Source",
                     "description": "Vous lisez le code source pour le plaisir.",
                     "hint": "Tout n’est pas à l’écran.",
-                    "clue": "Il y a un commentaire HTML. Faites ce qu’il dit."
+                    "clue": "Ouvrez le code source (Ctrl+U) et lisez le commentaire HTML."
                 },
                 "hired": {
                     "name": "RH",
                     "description": "ninhache.hire(). Je prends ça pour un oui.",
                     "hint": "Les devs ouvrent F12 partout.",
-                    "clue": "Lisez la console, puis répondez-lui."
+                    "clue": "Ouvrez la console (F12) et tapez ninhache.help()."
                 },
                 "honeypot": {
                     "name": "Script kiddie",
                     "description": "Vous avez essayé /wp-admin. Il n’y a jamais eu de WordPress.",
                     "hint": "Tout le monde essaie la même porte.",
-                    "clue": "Les bots cherchent toujours /wp-admin."
+                    "clue": "Allez sur /wp-admin et essayez de vous connecter."
                 },
                 "root": {
                     "name": "Root",
                     "description": "Vous avez demandé les droits. Refusé, et noté.",
                     "hint": "Demandez poliment. Ou pas.",
-                    "clue": "Dans le terminal : sudo."
+                    "clue": "Tapez sudo dans le terminal."
                 },
                 "red-pill": {
                     "name": "Pilule rouge",
                     "description": "Vous avez pris la rouge.",
                     "hint": "Suivez le lapin blanc.",
-                    "clue": "Dans le terminal, choisissez une pilule."
+                    "clue": "Tapez « pilule rouge » dans le terminal."
                 },
                 "teapot": {
                     "name": "Théière",
@@ -330,37 +330,37 @@
                     "name": "Speedrun",
                     "description": "Le 404 en moins de 45 secondes.",
                     "hint": "Plus vite.",
-                    "clue": "Le premier niveau, en moins de 45 s."
+                    "clue": "Finissez le niveau 404 en moins de 45 s."
                 },
                 "bookworm": {
                     "name": "Lecteur",
                     "description": "Un article lu jusqu’au bout. Pour de vrai.",
                     "hint": "Personne ne lit jusqu’en bas.",
-                    "clue": "Lisez un article du blog jusqu’à la fin, sans sauter."
+                    "clue": "Lisez un article du blog jusqu’en bas, sans sauter de passage."
                 },
                 "regular": {
                     "name": "Habitué",
                     "description": "Trois jours, trois visites. On se connaît, maintenant.",
                     "hint": "Revenez. Pas aujourd’hui.",
-                    "clue": "Passez trois jours différents."
+                    "clue": "Revenez sur le site trois jours différents."
                 },
                 "night-owl": {
                     "name": "Oiseau de nuit",
                     "description": "Vous étiez là entre minuit et 5 h. Allez dormir.",
                     "hint": "Les meilleurs bugs sortent la nuit.",
-                    "clue": "Passez entre minuit et 5 h."
+                    "clue": "Ouvrez le site entre minuit et 5 h."
                 },
                 "safe": {
                     "name": "Coffre",
                     "description": "Quatre chiffres, quatre cachettes, un coffre.",
                     "hint": "Quatre chiffres traînent. Ils sont numérotés.",
-                    "clue": "La console, un fichier caché du terminal, le faux WordPress, /humans.txt. Tapez le code dans le terminal."
+                    "clue": "Un chiffre dans la console, un dans le fichier .env du terminal, un sur le faux WordPress, un dans /humans.txt. Tapez le code dans le terminal."
                 },
                 "completionist": {
                     "name": "Complétionniste",
                     "description": "Tout. Le terminal est à vous : vous êtes root.",
                     "hint": "Tout le reste.",
-                    "clue": "Tout le reste. Il n’y a rien d’autre."
+                    "clue": "Trouvez tous les autres secrets."
                 }
             }
         },
@@ -381,7 +381,7 @@
             "title": "Terminal",
             "close": "Fermer le terminal",
             "inputLabel": "Commande",
-            "welcome": "Shell en lecture seule. help liste les commandes. Le reste, c’est à vous de trouver.",
+            "welcome": "Tapez help pour voir les commandes.",
             "secretLine": "[secret] {name}, {count}/{total}"
         }
     }

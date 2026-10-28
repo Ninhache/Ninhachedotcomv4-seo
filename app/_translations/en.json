@@ -201,9 +201,9 @@
         },
         "game": {
             "launch": "Space, click or tap to launch",
-            "controls": "← → or mouse to move · Space to launch · P to pause",
+            "controls": "← → or mouse to move · Space to launch · P or Esc to pause",
             "paused": "Paused",
-            "resume": "Space to resume",
+            "resume": "Space or click to resume",
             "won": "Code {code} broken.",
             "wonTime": "Time: {time}",
             "newBest": "New record",
@@ -222,18 +222,18 @@
                 "500": "It flickers. It holds anyway.",
                 "403": "Steel underneath. Two ways in.",
                 "429": "Too many requests. Two hits each.",
-                "418": "I’m a teapot. It moves."
+                "418": "I’m a teapot. I wobble."
             },
-            "nearMiss": "{gap} s too slow. Something happens under 45."
+            "nearMiss": "{gap} s too slow. Get under 45 s: something happens."
         },
         "secrets": {
             "found": "Found",
             "tierDone": "{tier}: done",
             "button": "Secrets {count}/{total}",
             "title": "Secrets",
-            "intro": "{count}/{total}. Stored on this device only.",
+            "intro": "{count}/{total}. {left} to go.",
             "introDone": "{total}/{total}. Nothing left. Promise.",
-            "rule": "Finish a tier: the next one’s hints get clearer.",
+            "rule": "Finish a tier to make the next one’s hints clear.",
             "unknown": "???",
             "close": "Close",
             "tiers": {
@@ -252,19 +252,19 @@
                     "name": "Shell",
                     "description": "You opened the terminal. It doesn’t bite.",
                     "hint": "The key under Escape.",
-                    "clue": "The key under Escape, or the >_ button at the bottom."
+                    "clue": "Press the key under Escape, or click >_ at the bottom of the page."
                 },
                 "lost": {
                     "name": "Lost",
-                    "description": "You went where there was nothing.",
+                    "description": "There was nothing here. You found it anyway.",
                     "hint": "Type anything after the /.",
-                    "clue": "Type anything after the /."
+                    "clue": "Add anything after the / in the address bar."
                 },
                 "polyglot": {
                     "name": "Bilingual",
                     "description": "You read the site in both languages.",
                     "hint": "FR, EN. Up top.",
-                    "clue": "Switch language, at the top of the page."
+                    "clue": "Switch the site to French: FR, at the top of the page."
                 },
                 "breaker": {
                     "name": "Breaker",
@@ -273,46 +273,46 @@
                     "clue": "Clear the first level of the 404 page."
                 },
                 "poke": {
-                    "name": "Poke",
-                    "description": "You blew my head up. Fine, I get it.",
+                    "name": "Pushy",
+                    "description": "You blew up my face. Fine, I get it.",
                     "hint": "Nice face. Keep at it.",
-                    "clue": "Click the photo on the home page. Fast, and don't stop."
+                    "clue": "Click the photo on the home page 20 times in 5 seconds."
                 },
                 "konami": {
                     "name": "Old school",
-                    "description": "↑ ↑ ↓ ↓ ← → ← → B A. Someone grew up with a controller.",
+                    "description": "↑ ↑ ↓ ↓ ← → ← → B A. You’ve been around.",
                     "hint": "Thirty lives, back then.",
-                    "clue": "Up, up, down, down…"
+                    "clue": "Type ↑ ↑ ↓ ↓ ← → ← → B A, anywhere."
                 },
                 "xyzzy": {
                     "name": "Source",
                     "description": "You read the source for fun.",
                     "hint": "Not everything is on screen.",
-                    "clue": "There’s an HTML comment. Do what it says."
+                    "clue": "Open the page source (Ctrl+U) and read the HTML comment."
                 },
                 "hired": {
                     "name": "HR",
                     "description": "ninhache.hire(). I’ll take that as a yes.",
                     "hint": "Developers open F12 everywhere.",
-                    "clue": "Read the console, then answer it."
+                    "clue": "Open the console (F12) and type ninhache.help()."
                 },
                 "honeypot": {
                     "name": "Script kiddie",
                     "description": "You tried /wp-admin. There was never any WordPress.",
                     "hint": "Everyone tries the same door.",
-                    "clue": "Bots always look for /wp-admin."
+                    "clue": "Go to /wp-admin and try to log in."
                 },
                 "root": {
                     "name": "Root",
                     "description": "You asked for root. Denied, and noted.",
                     "hint": "Ask nicely. Or don’t.",
-                    "clue": "In the terminal: sudo."
+                    "clue": "Type sudo in the terminal."
                 },
                 "red-pill": {
                     "name": "Red pill",
                     "description": "You took the red one.",
                     "hint": "Follow the white rabbit.",
-                    "clue": "In the terminal, pick a pill."
+                    "clue": "Type “red pill” in the terminal."
                 },
                 "teapot": {
                     "name": "Teapot",
@@ -330,37 +330,37 @@
                     "name": "Speedrun",
                     "description": "The 404 in under 45 seconds.",
                     "hint": "Faster.",
-                    "clue": "The first level, in under 45 s."
+                    "clue": "Clear level 404 in under 45 s."
                 },
                 "bookworm": {
                     "name": "Bookworm",
                     "description": "An article read to the end. For real.",
                     "hint": "Nobody reads to the bottom.",
-                    "clue": "Read a blog article to the end, no skipping."
+                    "clue": "Read a blog article to the bottom, no skipping."
                 },
                 "regular": {
                     "name": "Regular",
                     "description": "Three days, three visits. We know each other now.",
                     "hint": "Come back. Not today.",
-                    "clue": "Visit on three different days."
+                    "clue": "Come back to the site on three different days."
                 },
                 "night-owl": {
                     "name": "Night owl",
                     "description": "You were here between midnight and 5 am. Go to bed.",
                     "hint": "The best bugs come out at night.",
-                    "clue": "Drop by between midnight and 5 am."
+                    "clue": "Open the site between midnight and 5 am."
                 },
                 "safe": {
                     "name": "Safe",
                     "description": "Four digits, four hiding places, one safe.",
                     "hint": "Four digits are lying around. They’re numbered.",
-                    "clue": "The console, a hidden file in the terminal, the fake WordPress, /humans.txt. Type the code in the terminal."
+                    "clue": "One digit in the console, one in the terminal’s .env file, one on the fake WordPress, one in /humans.txt. Type the code in the terminal."
                 },
                 "completionist": {
                     "name": "Completionist",
                     "description": "All of it. The terminal is yours: you are root.",
                     "hint": "Everything else.",
-                    "clue": "Everything else. There is nothing more."
+                    "clue": "Find every other secret."
                 }
             }
         },
@@ -381,7 +381,7 @@
             "title": "Terminal",
             "close": "Close the terminal",
             "inputLabel": "Command",
-            "welcome": "Read-only shell. help lists the commands. The rest is yours to find.",
+            "welcome": "Type help to see the commands.",
             "secretLine": "[secret] {name}, {count}/{total}"
         }
     }
