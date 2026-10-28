@@ -225,7 +225,7 @@ export const BigProject: React.FC<BigProjectProps> = ({
                             href={
                                 project.blogArticleSlug
                                     ? `/${locale}/blog/${project.blogArticleSlug}`
-                                    : `/${locale}/blog?cat=${project.blogCategorySlug}`
+                                    : `/${locale}/blog/c/${project.blogCategorySlug}`
                             }
                             style={{
                                 display: 'inline-flex',

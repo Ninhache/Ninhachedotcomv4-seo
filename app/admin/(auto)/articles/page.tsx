@@ -12,6 +12,11 @@ import {
     AdminToolbar,
 } from '@/components/admin/page-shell';
 import { ResourceSearchInput } from '@/components/admin/resource-search-input';
+import { SeoGradeBadge } from '@/components/articles/seo-grade-badge';
+import {
+    type MdxScoreInput,
+    useMdxScores,
+} from '@/components/articles/use-mdx-scores';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -37,18 +42,52 @@ import {
 } from '@/components/ui/table';
 import { ArticleApi } from '@/lib/article/article.api';
 import { ArticleCategoryApi } from '@/lib/article-category/article-category.api';
-import type { ArticleCategoryDTO, ArticleDTO } from '@/lib/types';
+import type {
+    ArticleCategoryDTO,
+    ArticleDTO,
+    ArticleTranslationDTO,
+    Locale,
+} from '@/lib/types';
 
-function getArticleTitle(article: ArticleDTO): string {
-    const frT = article.translations.find(t => t.locale === 'fr');
-    const enT = article.translations.find(t => t.locale === 'en');
-    return frT?.title || enT?.title || article.translations[0]?.title || '—';
+/** Les deux langues du site. L'ordre est celui de la bascule. */
+const LOCALES: Locale[] = ['fr', 'en'];
+
+const LOCALE_LABEL: Record<Locale, string> = {
+    fr: 'Français',
+    en: 'English',
+};
+
+/** La traduction demandee, ou `undefined` si l'article ne l'a pas encore. */
+function getTranslation(
+    article: ArticleDTO,
+    locale: Locale
+): ArticleTranslationDTO | undefined {
+    return article.translations.find(t => t.locale === locale);
 }
 
-function getArticleExcerpt(article: ArticleDTO): string {
-    const frT = article.translations.find(t => t.locale === 'fr');
-    return frT?.excerpt ?? article.translations[0]?.excerpt ?? '';
+/**
+ * Le titre a afficher pour la locale courante.
+ *
+ * Replis explicites : une traduction manquante ne doit pas laisser une ligne
+ * vide, sans quoi l'article devient introuvable dans la liste.
+ */
+function getArticleTitle(article: ArticleDTO, locale: Locale): string {
+    const wanted = getTranslation(article, locale);
+    const other = article.translations.find(t => t.locale !== locale);
+    return wanted?.title || other?.title || '—';
 }
+
+function getArticleExcerpt(article: ArticleDTO, locale: Locale): string {
+    return (
+        getTranslation(article, locale)?.excerpt ??
+        article.translations[0]?.excerpt ??
+        ''
+    );
+}
+
+/** Cle de note d'une traduction : l'article et la langue, pas l'id, absent en creation. */
+const scoreKey = (articleId: string, locale: Locale) =>
+    `${articleId}:${locale}`;
 
 /**
  * Admin CRUD page for blog articles. Modeled on `ProjectsPage`: list +
@@ -60,6 +99,7 @@ export default function ArticlesPage() {
     const [items, setItems] = useState<ArticleDTO[]>([]);
     const [categories, setCategories] = useState<ArticleCategoryDTO[]>([]);
     const [q, setQ] = useState('');
+    const [locale, setLocale] = useState<Locale>('fr');
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [visibilityPending, setVisibilityPending] = useState<string | null>(
@@ -99,6 +139,22 @@ export default function ArticlesPage() {
         );
     }, [items, q]);
 
+    // Toutes les traductions sont notees, pas seulement la langue affichee :
+    // l'objectif est un rang C dans les deux, donc les deux doivent se voir.
+    const scoreInputs = useMemo<MdxScoreInput[]>(
+        () =>
+            items.flatMap(a =>
+                a.translations.map(tr => ({
+                    key: scoreKey(a.id, tr.locale),
+                    title: tr.title,
+                    body: tr.body,
+                    brief: tr.seoBrief,
+                }))
+            ),
+        [items]
+    );
+    const { scores, pending } = useMdxScores(scoreInputs);
+
     const getArticleCategories = (
         article: ArticleDTO
     ): ArticleCategoryDTO[] => {
@@ -117,6 +173,10 @@ export default function ArticlesPage() {
                         {items.length
                             ? `${items.length} article${items.length > 1 ? 's' : ''}`
                             : 'Aucune donnée'}
+                        {pending > 0 &&
+                            ` · notation SEO en cours (${pending} restante${
+                                pending > 1 ? 's' : ''
+                            })`}
                     </p>
                 }
                 actions={
@@ -147,6 +207,27 @@ export default function ArticlesPage() {
                     placeholder="Rechercher un article..."
                     className="w-full max-w-xs"
                 />
+                {/* La recherche, elle, porte sur toutes les langues : on ne
+                    veut pas rater un article parce qu'on tape son titre
+                    anglais alors que la liste est en francais. */}
+                <div className="inline-flex overflow-hidden rounded-md border">
+                    {LOCALES.map(l => (
+                        <button
+                            key={l}
+                            type="button"
+                            onClick={() => setLocale(l)}
+                            aria-pressed={locale === l}
+                            title={LOCALE_LABEL[l]}
+                            className={`px-3 py-1.5 text-xs font-medium uppercase transition-colors ${
+                                locale === l
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'text-muted-foreground hover:bg-muted'
+                            }`}
+                        >
+                            {l}
+                        </button>
+                    ))}
+                </div>
             </AdminToolbar>
 
             <AdminCard>
@@ -155,10 +236,13 @@ export default function ArticlesPage() {
                         <Table>
                             <TableHeader className="sticky top-0 z-10 bg-muted/60 backdrop-blur supports-[backdrop-filter]:bg-muted/40">
                                 <TableRow>
-                                    <TableHead>Titre (FR)</TableHead>
-                                    <TableHead className="hidden md:table-cell">
-                                        Slug
+                                    <TableHead>
+                                        Titre ({locale.toUpperCase()})
                                     </TableHead>
+                                    <TableHead className="hidden md:table-cell">
+                                        Slug public
+                                    </TableHead>
+                                    <TableHead>SEO</TableHead>
                                     <TableHead className="hidden md:table-cell">
                                         Catégories
                                     </TableHead>
@@ -185,13 +269,54 @@ export default function ArticlesPage() {
                                         <TableCell className="font-medium">
                                             <span
                                                 className="line-clamp-1"
-                                                title={getArticleExcerpt(it)}
+                                                title={getArticleExcerpt(
+                                                    it,
+                                                    locale
+                                                )}
                                             >
-                                                {getArticleTitle(it)}
+                                                {getArticleTitle(it, locale)}
                                             </span>
                                         </TableCell>
                                         <TableCell className="hidden text-muted-foreground md:table-cell">
-                                            {it.slug}
+                                            {/* Le slug public change avec la
+                                                langue ; la cle interne de
+                                                l'article, elle, n'en a qu'une. */}
+                                            <span
+                                                title={`clé interne : ${it.slug}`}
+                                            >
+                                                {getTranslation(it, locale)
+                                                    ?.slug ?? '—'}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-wrap items-center gap-1">
+                                                {LOCALES.map(l =>
+                                                    getTranslation(it, l) ? (
+                                                        <SeoGradeBadge
+                                                            key={l}
+                                                            locale={l}
+                                                            active={
+                                                                l === locale
+                                                            }
+                                                            loading={Boolean(
+                                                                pending &&
+                                                                    getTranslation(
+                                                                        it,
+                                                                        l
+                                                                    )?.seoBrief
+                                                            )}
+                                                            score={
+                                                                scores.get(
+                                                                    scoreKey(
+                                                                        it.id,
+                                                                        l
+                                                                    )
+                                                                ) ?? null
+                                                            }
+                                                        />
+                                                    ) : null
+                                                )}
+                                            </div>
                                         </TableCell>
                                         <TableCell className="hidden md:table-cell">
                                             <div className="flex flex-wrap gap-1">
@@ -340,7 +465,7 @@ export default function ArticlesPage() {
                                 {!loading && filtered.length === 0 && (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={6}
+                                            colSpan={7}
                                             className="h-32 text-center text-muted-foreground"
                                         >
                                             Aucun résultat.
@@ -351,7 +476,7 @@ export default function ArticlesPage() {
                                 {loading && (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={6}
+                                            colSpan={7}
                                             className="h-32 text-center text-muted-foreground"
                                         >
                                             Chargement...

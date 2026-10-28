@@ -1,5 +1,5 @@
 import type { Locale } from '@/config';
-import { articleTranslation, getArticles } from '@/lib/blog';
+import { articleSlug, articleTranslation, getArticles } from '@/lib/blog';
 import { getContacts, getProfile, getProjects } from '@/lib/portfolio';
 import { profileIdentity } from '@/lib/seo/json-ld';
 import { absoluteUrl, localePath, SITE } from '@/lib/seo/site';
@@ -99,7 +99,7 @@ export async function GET() {
         for (const article of localized) {
             const tr = articleTranslation(article, locale);
             if (!tr) continue;
-            const path = `/blog/${article.slug}`;
+            const path = `/blog/${articleSlug(article, locale)}`;
             const url = absoluteUrl(localePath(locale, path));
             const date = (article.publishedAt ?? article.createdAt).slice(
                 0,

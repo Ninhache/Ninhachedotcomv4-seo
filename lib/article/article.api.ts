@@ -2,6 +2,7 @@ import axios from 'axios';
 import { handleUnauthorized } from '../auth/on-unauthorized';
 import { getAccessToken } from '../auth/session-token';
 import { baseUrl } from '../baseurl';
+import type { SeoBrief } from '../seo/terms.mjs';
 import type { ArticleDTO } from '../types';
 
 export type CreateArticlePayload = {
@@ -14,9 +15,17 @@ export type CreateArticlePayload = {
     categoryIds: string[];
     translations: {
         locale: string;
+        // Required by the backend: it is the article's public URL segment in
+        // that locale, and it is unique per locale.
+        slug: string;
         title: string;
         excerpt: string;
         body: string;
+        // Only ever written from the admin editor. The brief travels with the
+        // article like any other field: generating one changes nothing in the
+        // database until the form is saved.
+        seoQuery?: string | null;
+        seoBrief?: SeoBrief | null;
     }[];
 };
 export type UpdateArticlePayload = Partial<CreateArticlePayload>;

@@ -1,0 +1,432 @@
+/*
+ * The fun layer is mounted on pages with very different stylesheets (CSS
+ * modules on the home page, Tailwind elsewhere, nothing at all on the root
+ * 404), so everything here sets its own colours, fonts and box model.
+ */
+
+.toastStack {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2147482000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.toast {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: min(360px, calc(100vw - 32px));
+    padding: 12px 16px;
+    border: 1px solid rgba(86, 220, 252, 0.35);
+    border-radius: 14px;
+    background: #101d30;
+    color: #e8eef7;
+    font-family: var(--font-ui, system-ui, sans-serif);
+    font-size: 14px;
+    line-height: 1.35;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    animation: toastIn 220ms ease-out;
+}
+
+.toast[data-tier-done='true'] {
+    border-color: #56dcfc;
+}
+
+.toastIcon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(86, 220, 252, 0.14);
+    color: #56dcfc;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 700;
+}
+
+.toastBody {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.toastKicker {
+    color: #56dcfc;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.toastName {
+    font-weight: 700;
+}
+
+.toastCount {
+    margin-left: auto;
+    padding-left: 8px;
+    color: #8ea3c0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
+/* Dialogs: the secrets list and the terminal. */
+
+.dialog,
+.terminal {
+    box-sizing: border-box;
+    padding: 0;
+    border: 1px solid rgba(86, 220, 252, 0.3);
+    border-radius: 16px;
+    background: #0b1422;
+    color: #e8eef7;
+    font-family: var(--font-ui, system-ui, sans-serif);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+/* The home page's reset zeroes dialog margins, which pins them top-left. */
+.dialog[open],
+.terminal[open] {
+    margin: auto;
+    inset: 0;
+}
+
+.dialog::backdrop,
+.terminal::backdrop {
+    background: rgba(5, 10, 18, 0.7);
+}
+
+.dialog {
+    width: min(560px, calc(100vw - 32px));
+    max-height: min(760px, calc(100dvh - 32px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.dialogInner {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+}
+
+.dialogHead {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.dialogTitle {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.dialogIntro {
+    margin: 4px 0 0;
+    color: #8ea3c0;
+    font-size: 14px;
+}
+
+.dialogRule {
+    margin: 0;
+    color: #8ea3c0;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.tier {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tierHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 0;
+    color: #8ea3c0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.tierCount {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0;
+}
+
+.progress {
+    height: 6px;
+    border-radius: 3px;
+    background: #101d30;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #197dff, #56dcfc);
+}
+
+.secretList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.secret {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    border: 1px solid rgba(86, 220, 252, 0.14);
+    border-radius: 10px;
+    background: #101d30;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.secret[data-found='true'] {
+    border-color: rgba(86, 220, 252, 0.45);
+}
+
+.secretName {
+    color: #e8eef7;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.secret[data-found='true'] .secretName {
+    color: #56dcfc;
+}
+
+.secretProgress {
+    margin-left: 8px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: rgba(86, 220, 252, 0.14);
+    color: #56dcfc;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.secretText {
+    color: #8ea3c0;
+}
+
+.iconButton {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid rgba(86, 220, 252, 0.22);
+    border-radius: 8px;
+    background: transparent;
+    color: #e8eef7;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.iconButton:hover {
+    background: rgba(86, 220, 252, 0.1);
+}
+
+.iconButton:focus-visible,
+.footerButton:focus-visible {
+    outline: 2px solid #56dcfc;
+    outline-offset: 2px;
+}
+
+/* Terminal. */
+
+.terminal {
+    width: min(760px, calc(100vw - 32px));
+    height: min(480px, calc(100dvh - 32px));
+    overflow: hidden;
+}
+
+.terminal[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.termBar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 8px 8px 14px;
+    border-bottom: 1px solid rgba(86, 220, 252, 0.18);
+    background: #101d30;
+}
+
+.termDots {
+    display: flex;
+    gap: 6px;
+}
+
+.termDots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: rgba(86, 220, 252, 0.35);
+}
+
+.termTitle {
+    flex: 1;
+    color: #8ea3c0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+}
+
+.termOutput {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 14px 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: text;
+}
+
+.termLine {
+    display: block;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: #e8eef7;
+}
+
+a.termLine {
+    width: fit-content;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.tone_muted {
+    color: #8ea3c0;
+}
+
+.tone_accent {
+    color: #56dcfc;
+}
+
+.tone_error {
+    color: #ff7b8a;
+}
+
+.termInputRow {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.termPrompt {
+    flex: none;
+    color: #56dcfc;
+}
+
+.termInput {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #e8eef7;
+    font: inherit;
+    caret-color: #56dcfc;
+    outline: none;
+}
+
+@media (max-width: 520px) {
+    .termPrompt {
+        /* The full prompt eats half a phone screen. */
+        font-size: 0;
+    }
+
+    .termPrompt::after {
+        content: '$';
+        font-size: 14px;
+    }
+}
+
+/* Footer buttons, on the blue footer bar of every page. */
+
+.footerButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.footerButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    background: rgba(11, 20, 34, 0.18);
+    color: #fff;
+    font: inherit;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.footerButton:hover {
+    background: rgba(11, 20, 34, 0.35);
+}
+
+/* 100 %: the counter stops being a question. */
+.footerButton[data-complete='true'] {
+    border-color: #56dcfc;
+    background: #56dcfc;
+    color: #0b1422;
+    font-weight: 700;
+}
+
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .toast {
+        animation: none;
+    }
+
+    .footerButton {
+        transition: none;
+    }
+}

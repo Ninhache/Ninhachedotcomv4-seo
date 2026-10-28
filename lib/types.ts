@@ -1,3 +1,5 @@
+import type { SeoBrief } from '@/lib/seo/terms.mjs';
+
 export type Locale = 'fr' | 'en';
 export type ContractType =
     | 'Permanent'
@@ -370,13 +372,27 @@ export type ArticleCategoryDTO = {
 export type ArticleTranslationDTO = {
     id?: string;
     locale: Locale;
+    // The public URL segment for this locale. `ArticleDTO.slug` is the internal
+    // key; this is what /:locale/blog/<...> actually serves. Read it through
+    // `articleSlug()` rather than directly.
+    slug: string;
     title: string;
     excerpt: string;
     // Raw Markdown source (GFM + `:::` directives). Rendered server-side.
     body: string;
+    // Writing-desk artefacts, present only on the admin read path: the backend
+    // strips them from every public response, the way it strips `previewToken`.
+    // `seoQuery` is the search query this locale targets, `seoBrief` the lexical
+    // brief computed from that query's live SERP, which feeds the score panel in
+    // the article editor. Per locale, because FR and EN rank against two
+    // different sets of competing pages.
+    seoQuery?: string | null;
+    seoBrief?: SeoBrief | null;
 };
 export type ArticleDTO = {
     id: string;
+    // Internal, locale-agnostic key (admin list, cross-article references).
+    // The public URL lives on each translation.
     slug: string;
     isVisible: boolean;
     publishedAt: string | null; // ISO; null = draft/never published
@@ -424,4 +440,47 @@ export type Alias = {
     id: string;
     key: string; // slug
     bodies: AliasBody[];
+};
+
+// --- Reader-authored content (comments, reactions) -----------------------
+// Written by visitors signed in through the API's own OAuth session, not by
+// the back-office. Only the moderation shapes live here; the public blog
+// shapes live next to their client in `lib/reader/`.
+export type OAuthProvider = 'google' | 'github' | 'discord';
+
+export type ModerationReaderDTO = {
+    id: string;
+    /** Null while the person has signed in but not yet chosen a public name. */
+    displayName: string | null;
+    // Moderation-only fields: they identify a repeat offender across renames
+    // and must never be echoed into a public response.
+    providerName: string;
+    email: string | null;
+    avatarUrl: string | null;
+    provider: OAuthProvider;
+    isBanned: boolean;
+    createdAt: string; // ISO
+};
+
+/** A reader as the readers table shows them: the record plus what they wrote. */
+export type ModerationReaderRowDTO = ModerationReaderDTO & {
+    _count: { comments: number; reactions: number };
+};
+
+export type ModerationCommentDTO = {
+    id: string;
+    body: string;
+    locale: Locale;
+    createdAt: string; // ISO
+    articleId: string;
+    /** Null on a thread root, the answered comment's id on a reply. */
+    parentId: string | null;
+    /** Null once the author closed their account: the message outlives them. */
+    reader: ModerationReaderDTO | null;
+    article: {
+        id: string;
+        slug: string;
+        isVisible: boolean;
+        translations: { locale: Locale; title: string }[];
+    };
 };

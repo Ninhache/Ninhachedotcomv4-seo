@@ -25,6 +25,11 @@ COPY --from=builder /app/public ./public
 # cards (/api/og), so the runner needs the real files, not just the build's
 # bundled CSS. Without this the endpoint 500s and every og:image is broken.
 COPY --from=builder /app/fonts ./fonts
+# The legal pages are MDX files read from disk. They are prerendered at build
+# time (`force-static`), so this copy is a belt-and-braces measure: it keeps
+# `/fr/legal/cgu` working if that page ever stops being static, which is
+# exactly the failure the fonts line above documents.
+COPY --from=builder /app/content ./content
 
 EXPOSE 3000
 

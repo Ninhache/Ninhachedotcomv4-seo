@@ -9,6 +9,11 @@ import { ralewaySemiBold } from '@/app/fonts';
  * `title` is the headline to show (or children); `label` is the small kicker
  * (default "Article lié"). Hard `<a>` navigation, consistent with the rest of
  * the blog (which crosses the CSS-modules <-> Tailwind boundary).
+ *
+ * Slugs are per-locale, so `slug` must be the target's slug **in the locale of
+ * the body it is written in**: an English body carries English slugs. Get it
+ * wrong and the link still lands, but through a 301, which is exactly the
+ * crawl-budget waste the localised slugs were meant to remove.
  */
 export function ArticleLink({
     slug,

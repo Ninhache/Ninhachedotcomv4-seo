@@ -1,16 +1,28 @@
-'use client';
+import type { Metadata } from 'next';
+import fr from '@/app/_translations/fr.json';
+import { NotFoundView } from '@/components/breakout/NotFoundView';
+import { FunRoot } from '@/components/fun/FunRoot';
 
-import Error from 'next/error';
+export const metadata: Metadata = {
+    title: '404',
+    robots: { index: false },
+};
 
-// Render the default Next.js 404 page when a route
-// is requested that doesn't match the middleware and
-// therefore doesn't have a locale associated with it.
-
-export default function NotFound() {
+/**
+ * The 404 for paths the locale proxy never sees (anything with a dot, like
+ * `/.env` or `/wp-login.php`). There is no locale to read, so it speaks the
+ * default one; the root layout renders no document, hence the html and body.
+ */
+export default function RootNotFound() {
     return (
-        <html lang="en">
+        <html lang="fr">
             <body>
-                <Error statusCode={404} />
+                <NotFoundView
+                    locale="fr"
+                    messages={{ fun: fr.fun }}
+                    copy={fr.fun.notFound}
+                />
+                <FunRoot locale="fr" messages={{ fun: fr.fun }} />
             </body>
         </html>
     );

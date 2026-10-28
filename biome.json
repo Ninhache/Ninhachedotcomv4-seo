@@ -3,7 +3,13 @@
     "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
     "files": {
         "ignoreUnknown": false,
-        "includes": ["**", "!**/*.css", "!data/**"]
+        "includes": [
+            "**",
+            "!**/*.css",
+            "!data/**",
+            "!.agents/**",
+            "!skills-lock.json"
+        ]
     },
     "formatter": {
         "enabled": true,

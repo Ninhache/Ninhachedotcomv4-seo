@@ -2,6 +2,7 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { ReadingProgressBar } from '@/app/_components/blog/ReadingProgressBar';
+import { SidebarContacts } from '@/app/_components/blog/SidebarContacts';
 import { TableOfContents } from '@/app/_components/blog/TableOfContents';
 import { ralewaySemiBold } from '@/app/fonts';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,12 @@ type Props = {
     locale: Locale;
     /** Slot above the article, used by the private review route for its notice. */
     banner?: ReactNode;
+    /**
+     * Slot below the article, used by the public route for reactions and
+     * comments. Outside `<article>` on purpose: the reading-progress bar
+     * measures that element and would count a comment thread as article.
+     */
+    footer?: ReactNode;
 };
 
 /**
@@ -38,6 +45,7 @@ export async function ArticleView({
     translation,
     locale,
     banner,
+    footer,
 }: Props) {
     const t = await getTranslations('blog');
 
@@ -79,7 +87,7 @@ export async function ArticleView({
                                 {categories.map(c => (
                                     <Link
                                         key={c.slug}
-                                        href={`/blog?cat=${encodeURIComponent(c.slug)}`}
+                                        href={`/blog/c/${encodeURIComponent(c.slug)}`}
                                         className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary hover:bg-primary/20"
                                     >
                                         {c.name}
@@ -96,10 +104,17 @@ export async function ArticleView({
 
                         <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                             {dateLabel && (
-                                <span className="inline-flex items-center gap-1.5">
+                                // `dateTime` carries the machine-readable date the
+                                // visible label localises away: it is what a crawler
+                                // reads to place the article in time without parsing
+                                // "2 juillet 2026" in one locale and "July 2" in the other.
+                                <time
+                                    dateTime={article.publishedAt ?? undefined}
+                                    className="inline-flex items-center gap-1.5"
+                                >
                                     <Calendar className="h-4 w-4" />
                                     {dateLabel}
-                                </span>
+                                </time>
                             )}
                             <span className="inline-flex items-center gap-1.5">
                                 <Clock className="h-4 w-4" />
@@ -124,9 +139,12 @@ export async function ArticleView({
                     <aside className="hidden lg:block">
                         <div className="sticky top-24">
                             <TableOfContents toc={toc} />
+                            <SidebarContacts locale={locale} />
                         </div>
                     </aside>
                 </div>
+
+                {footer}
             </main>
         </>
     );

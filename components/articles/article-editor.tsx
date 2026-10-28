@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ArticlePreview } from '@/components/articles/article-preview';
 import { PreviewLinkField } from '@/components/articles/preview-link-field';
+import { SeoScorePanel } from '@/components/articles/seo-score-panel';
 import { ArticleCategoryMultiSelect } from '@/components/forms/article-category-multi-select';
 import { DateField } from '@/components/forms/date-field';
 import { LocaleTabs } from '@/components/forms/locale-tabs';
@@ -20,21 +21,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { ArticleApi } from '@/lib/article/article.api';
 import { LocalesApi } from '@/lib/locales/locales.api';
+import type { SeoBrief } from '@/lib/seo/terms.mjs';
+import { slugify } from '@/lib/slugify';
 import type { ArticleCategoryDTO, ArticleDTO, Locale } from '@/lib/types';
 
 // kebab-case: lowercase letters/digits, single hyphens, no leading/trailing hyphen.
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-/** Slugify a title client-side for the "Générer depuis le titre" shortcut. */
-function slugify(input: string): string {
-    return input
-        .normalize('NFD')
-        .replace(/[̀-ͯ]/g, '')
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-}
 
 // Coerce a watched RHF value (Date | string | undefined) into a Date.
 const toDate = (raw: unknown): Date | undefined =>
@@ -45,11 +37,28 @@ const toDate = (raw: unknown): Date | undefined =>
 // the shape itself must not reject.
 const translationShape = z.object({
     title: z.string(),
+    // The public URL segment, one per locale: /fr/blog/reseed-sans-downtime is
+    // /en/blog/zero-downtime-data-reseeding-with-a-custom-command. Empty passes
+    // the shape because a blank tab is a valid "no translation" state; the
+    // superRefine below is what makes it required once the tab is started.
+    slug: z
+        .string()
+        .refine(
+            v => !v || SLUG_RE.test(v),
+            'kebab-case uniquement (ex: mon-article)'
+        ),
     excerpt: z.string(),
     body: z.string(),
+    // Writing-desk artefacts, not content: the targeted search query and the
+    // lexical brief computed from its SERP. Declared here because zod strips
+    // keys it does not know about, which would drop them from the save payload
+    // in silence. Deliberately absent from `TRANSLATION_FIELDS`: a tab carrying
+    // only a brief is still an empty tab, and is still not saved.
+    seoQuery: z.string().optional(),
+    seoBrief: z.any().optional(),
 });
 
-const TRANSLATION_FIELDS = ['title', 'excerpt', 'body'] as const;
+const TRANSLATION_FIELDS = ['title', 'slug', 'excerpt', 'body'] as const;
 
 /**
  * A locale tab left entirely blank means "this article does not exist in that
@@ -58,6 +67,7 @@ const TRANSLATION_FIELDS = ['title', 'excerpt', 'body'] as const;
  */
 const isBlankTranslation = (t: {
     title?: string;
+    slug?: string;
     excerpt?: string;
     body?: string;
 }) => TRANSLATION_FIELDS.every(f => !t?.[f]?.trim());
@@ -82,6 +92,11 @@ export function ArticleEditor({
 }) {
     const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState<'edit' | 'preview'>('edit');
+    // The SEO panel sits above the locale tabs while a brief belongs to one
+    // translation, so the open locale has to travel back up here. Same initial
+    // value as `LocaleTabs`, otherwise the panel would score the wrong language
+    // on the first render.
+    const [activeLocale, setActiveLocale] = useState<string>('fr');
 
     // dynamic locales (fallback fr/en)
     const [locales, setLocales] = useState<Array<'fr' | 'en' | string>>([
@@ -164,8 +179,11 @@ export function ArticleEditor({
             );
             return {
                 title: t?.title ?? '',
+                slug: t?.slug ?? '',
                 excerpt: t?.excerpt ?? '',
                 body: t?.body ?? '',
+                seoQuery: t?.seoQuery ?? '',
+                seoBrief: t?.seoBrief ?? null,
             };
         };
         const translations = Object.fromEntries(
@@ -224,8 +242,11 @@ export function ArticleEditor({
                         .map(([locale, t]) => ({
                             locale: locale as Locale,
                             title: t.title,
+                            slug: t.slug,
                             excerpt: t.excerpt,
                             body: t.body,
+                            seoQuery: t.seoQuery?.trim() || null,
+                            seoBrief: (t.seoBrief as SeoBrief) ?? null,
                         })),
                 };
                 const saved: ArticleDTO = initial
@@ -248,6 +269,23 @@ export function ArticleEditor({
             shouldValidate: true,
         });
     };
+
+    /** Fill one locale's public slug from that locale's own title. */
+    const applyTranslationSlugFromTitle = (loc: string) => {
+        const title = form.getValues(`translations.${loc}.title` as any) as
+            | string
+            | undefined;
+        if (!title) return;
+        form.setValue(`translations.${loc}.slug` as any, slugify(title), {
+            shouldDirty: true,
+            shouldValidate: true,
+        });
+    };
+
+    const translationSlugError = (loc: string) =>
+        (form.formState.errors.translations as any)?.[loc]?.slug?.message as
+            | string
+            | undefined;
 
     const catNamesFor = (loc: string) =>
         (form.watch('categoryIds') ?? [])
@@ -278,12 +316,51 @@ export function ArticleEditor({
                 </Button>
             </div>
 
+            <SeoScorePanel
+                locale={activeLocale as Locale}
+                title={
+                    (form.watch(
+                        `translations.${activeLocale}.title` as any
+                    ) as string) ?? ''
+                }
+                body={
+                    (form.watch(
+                        `translations.${activeLocale}.body` as any
+                    ) as string) ?? ''
+                }
+                query={
+                    (form.watch(
+                        `translations.${activeLocale}.seoQuery` as any
+                    ) as string) ?? ''
+                }
+                brief={
+                    (form.watch(
+                        `translations.${activeLocale}.seoBrief` as any
+                    ) as SeoBrief | null) ?? null
+                }
+                onQueryChange={v =>
+                    form.setValue(
+                        `translations.${activeLocale}.seoQuery` as any,
+                        v,
+                        { shouldDirty: true }
+                    )
+                }
+                onBriefChange={b =>
+                    form.setValue(
+                        `translations.${activeLocale}.seoBrief` as any,
+                        b,
+                        { shouldDirty: true }
+                    )
+                }
+            />
+
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Main content column */}
                 <div className="lg:col-span-2">
                     <LocaleTabs
                         locales={locales as any}
                         defaultLocale={(locales[0] as any) ?? 'fr'}
+                        onActiveChange={setActiveLocale}
                         render={loc => (
                             <div className="pt-2">
                                 <Tabs
@@ -316,6 +393,44 @@ export function ArticleEditor({
                                                 placeholder="Titre de l'article"
                                                 className="text-lg font-semibold"
                                             />
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label>
+                                                Slug {loc.toUpperCase()} (URL
+                                                publique)
+                                            </Label>
+                                            <div className="flex gap-2">
+                                                <Input
+                                                    {...form.register(
+                                                        `translations.${loc}.slug` as any
+                                                    )}
+                                                    placeholder="mon-article"
+                                                    className="font-mono text-sm"
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={() =>
+                                                        applyTranslationSlugFromTitle(
+                                                            loc
+                                                        )
+                                                    }
+                                                >
+                                                    <Sparkles className="mr-1 h-4 w-4" />
+                                                    Depuis le titre
+                                                </Button>
+                                            </div>
+                                            <p className="text-xs text-muted-foreground">
+                                                {`/${loc}/blog/`}
+                                                {(form.watch(
+                                                    `translations.${loc}.slug` as any
+                                                ) as string) || '…'}
+                                            </p>
+                                            {translationSlugError(loc) && (
+                                                <p className="text-sm text-destructive">
+                                                    {translationSlugError(loc)}
+                                                </p>
+                                            )}
                                         </div>
                                         <div className="grid gap-2">
                                             <Label>Extrait</Label>
@@ -390,7 +505,11 @@ export function ArticleEditor({
                     <h3 className="text-sm font-semibold">Réglages</h3>
 
                     <div className="grid gap-2">
-                        <Label>Slug</Label>
+                        <Label>Clé interne</Label>
+                        <p className="text-xs text-muted-foreground">
+                            Identifiant admin, jamais servi au public : l'URL
+                            d'un article vient du slug de sa traduction.
+                        </p>
                         <Input
                             {...form.register('slug')}
                             placeholder="mon-article"

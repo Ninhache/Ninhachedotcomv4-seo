@@ -1,0 +1,13 @@
+/* TEAM */
+Dev: Neo Almeida
+Alias: ninhache
+Site: https://ninhache.fr
+GitHub: https://github.com/Ninhache
+
+/* SITE */
+Stack: Next.js, React, NestJS, PostgreSQL
+Languages: Français, English
+Easter eggs: oui / yes
+
+/* 4/4 */
+9

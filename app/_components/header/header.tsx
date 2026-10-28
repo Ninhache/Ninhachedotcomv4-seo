@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import AnimatedComponent from '@/app/_components/AnimatedComponent';
 import useLocaleNames from '@/app/_hooks/useLocaleNames';
 import { ralewaySemiBold } from '@/app/fonts';
+import type { ArticleSlugs } from '@/lib/blog';
 import styles from '@/styles/header.module.css';
 import LocaleSwitcher from '../LocaleSwitcher';
 
@@ -19,7 +20,16 @@ interface menuItemObject {
     anchor: string;
 }
 
-export default function Header() {
+/**
+ * `articleSlugs` is only supplied by the blog subtree, whose URLs carry a
+ * localised slug. It travels straight through to the locale switcher; the
+ * header itself has no use for it.
+ */
+export default function Header({
+    articleSlugs,
+}: {
+    articleSlugs?: ArticleSlugs[];
+} = {}) {
     const t = useTranslations('header');
     const locale = useLocale();
     const localeNames = useLocaleNames();
@@ -191,6 +201,7 @@ export default function Header() {
                                     <li>
                                         <LocaleSwitcher
                                             localeNames={localeNames}
+                                            articleSlugs={articleSlugs}
                                         />
                                     </li>
                                 </ol>
@@ -293,7 +304,10 @@ export default function Header() {
                             </a>
                         </li>
                         <li>
-                            <LocaleSwitcher localeNames={localeNames} />
+                            <LocaleSwitcher
+                                localeNames={localeNames}
+                                articleSlugs={articleSlugs}
+                            />
                         </li>
                     </ol>
                 </div>

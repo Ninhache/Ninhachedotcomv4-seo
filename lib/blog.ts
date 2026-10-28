@@ -1,4 +1,4 @@
-import type { Locale } from '@/config';
+import { type Locale, locales } from '@/config';
 import { baseUrl } from './baseurl';
 import { fetchPublic, localeTags } from './portfolio';
 import type {
@@ -23,10 +23,18 @@ export const getArticles = (category?: string) =>
         []
     );
 
-/** A single visible article by slug, or null (draft/unknown slug → 404 → null). */
-export const getArticleBySlug = (slug: string) =>
+/**
+ * A single visible article by slug, or null (draft/unknown slug → 404 → null).
+ *
+ * `locale` disambiguates: slugs are unique *within* a locale, so the same word
+ * can legitimately be a French article's slug and another English article's.
+ * The backend tries the requested locale first, then any locale (which is how
+ * a French slug under /en still resolves, so the page can redirect), then the
+ * internal key.
+ */
+export const getArticleBySlug = (slug: string, locale?: Locale) =>
     fetchPublic<ArticleDTO | null>(
-        `/articles/${encodeURIComponent(slug)}`,
+        `/articles/${encodeURIComponent(slug)}${locale ? `?locale=${locale}` : ''}`,
         localeTags('articles'),
         null
     );
@@ -75,6 +83,27 @@ export function articleTranslation(
     );
 }
 
+/**
+ * An article's public URL segment in `locale`.
+ *
+ * The slug lives on the translation, so it differs per locale: the same article
+ * is /fr/blog/reseed-sans-downtime and
+ * /en/blog/zero-downtime-data-reseeding-with-a-custom-command. Every article URL
+ * the site builds goes through here rather than reading `article.slug`, which is
+ * now only an internal key.
+ *
+ * The fallbacks matter for the admin preview path, where a draft may not have
+ * every translation yet: the requested locale's slug, else any translation's,
+ * else the internal key.
+ */
+export function articleSlug(article: ArticleDTO, locale: Locale): string {
+    return (
+        article.translations.find(t => t.locale === locale)?.slug ??
+        article.translations[0]?.slug ??
+        article.slug
+    );
+}
+
 /** Locale-aware display name of a blog category (falls back to its slug). */
 export function categoryName(
     category: ArticleCategoryDTO,
@@ -95,4 +124,23 @@ export function formatArticleDate(iso: string | null, locale: Locale): string {
         month: 'long',
         year: 'numeric',
     }).format(new Date(iso));
+}
+
+/** One article's slug in every locale, in the shape the locale switcher needs. */
+export type ArticleSlugs = Record<Locale, string>;
+
+/**
+ * The slug of every article in every locale.
+ *
+ * The locale switcher lives in the header, a sibling of the page content, so it
+ * cannot be handed the current article's alternate slug by the article page. It
+ * gets the whole (small, ISR-cached) table instead and looks its own path up.
+ */
+export function articleSlugMap(articles: ArticleDTO[]): ArticleSlugs[] {
+    return articles.map(
+        article =>
+            Object.fromEntries(
+                locales.map(locale => [locale, articleSlug(article, locale)])
+            ) as ArticleSlugs
+    );
 }

@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { proximaNovaBold } from '@/app/fonts';
+import { FunButtons } from '@/components/fun/FunButtons';
+import { Link } from '@/navigation';
 
 /**
  * Blog-subtree footer. Same content + blue bar as the shared home `Footer`, but
@@ -12,6 +14,18 @@ import { proximaNovaBold } from '@/app/fonts';
  */
 export function BlogFooter() {
     const t = useTranslations('footer');
+    const tLegal = useTranslations('legal');
+
+    // Kept short on purpose: three links, the short labels, in the order
+    // someone looks for them. The account page is here rather than in the nav
+    // because it is where the erasure button lives, and a policy that names it
+    // has to be one click away from every page.
+    const legalLinks = [
+        { href: '/legal/cgu', label: tLegal('cguShort') },
+        { href: '/legal/mentions-legales', label: tLegal('mentions') },
+        { href: '/legal/confidentialite', label: tLegal('privacyShort') },
+        { href: '/compte', label: tLegal('account') },
+    ];
 
     return (
         <footer
@@ -54,6 +68,18 @@ export function BlogFooter() {
                 <p className="max-w-lg text-center leading-relaxed">
                     {t('text')}
                 </p>
+                <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+                    {legalLinks.map(link => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="opacity-80 underline underline-offset-4 transition-opacity hover:opacity-60"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </nav>
+                <FunButtons />
             </div>
         </footer>
     );

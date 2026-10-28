@@ -102,6 +102,284 @@
         "backHome": "Portfolio",
         "backToList": "All articles",
         "previewBadge": "Draft",
-        "previewNotice": "Review version. This article is not published, this link is private and the page is not indexed."
+        "previewNotice": "Review version. This article is not published, this link is private and the page is not indexed.",
+        "contactLabel": "Get in touch"
+    },
+    "comments": {
+        "reactTitle": "Reactions",
+        "reactCount": "{count, plural, =0 {No reaction} one {# reaction} other {# reactions}}",
+        "title": "Comments",
+        "commentCount": "{count, plural, =0 {No comment} one {# comment} other {# comments}}",
+        "replyCount": "{count, plural, =0 {no reply} one {# reply} other {# replies}}",
+        "showReplies": "{count, plural, one {Show # reply} other {Show # replies}}",
+        "hideReplies": "Hide replies",
+        "loadingReplies": "Loading…",
+        "addTitle": "Add a comment",
+        "reply": "Reply",
+        "cancel": "Cancel",
+        "replyPlaceholder": "Your reply",
+        "signInRequired": "You need to be signed in to react or comment.",
+        "logout": "Sign out",
+        "placeholder": "Your comment",
+        "submit": "Post",
+        "submitHint": "Ctrl + Enter to post",
+        "loading": "Loading comments…",
+        "empty": "No discussion yet.",
+        "emptyHint": "Be the first to leave a comment.",
+        "loadMore": "Show more comments",
+        "delete": "Delete my comment",
+        "error": "Something went wrong.",
+        "reactions": {
+            "like": "Useful",
+            "love": "Loved it",
+            "insightful": "Insightful",
+            "funny": "Funny"
+        },
+        "deletedAuthor": "Deleted account"
+    },
+    "account": {
+        "namePrompt": {
+            "title": "Choose your display name",
+            "intro": "This name will appear under your comments and reactions. The name on your {provider} account is never published, it is only a starting suggestion.",
+            "label": "Display name",
+            "hint": "Between 2 and 32 characters. You can change it at any time from your account.",
+            "submit": "Use this name",
+            "saving": "Saving…"
+        },
+        "title": "My account",
+        "intro": "What this site knows about you, and what you can do about it.",
+        "signedOutTitle": "You are not signed in",
+        "signedOutBody": "Sign in from the footer of any article to reach this page. For any other request about your data, write to the address listed in the legal notice.",
+        "profileTitle": "Your profile",
+        "profileIntro": "The name below is the only part of your account other readers can see.",
+        "provider": "Signed in with",
+        "joined": "Joined on",
+        "save": "Save",
+        "saved": "Name updated.",
+        "dataTitle": "Your data",
+        "dataIntro": "Here is everything that is kept about you.",
+        "dataItems": {
+            "identity": "The name your provider returns, kept for moderation and never published.",
+            "displayName": "The display name you chose, publicly visible.",
+            "email": "The address on your {provider} account, never published and never used to write to you.",
+            "avatar": "The address of your profile picture at your provider.",
+            "account": "Your account id at that provider, used to recognise you on your next sign-in.",
+            "content": "Your comments and reactions, with their dates."
+        },
+        "download": "Download my data (JSON)",
+        "downloadHint": "A readable file containing your record, your comments and your reactions.",
+        "deleteTitle": "Delete my account",
+        "deleteBody": "Your account, your name, your address and your reactions are erased immediately and permanently. Your comments stay online, signed “Deleted account”, so the discussions other people took part in are not left full of holes.",
+        "deleteConfirmLabel": "To confirm, type your display name",
+        "deleteButton": "Permanently delete my account",
+        "deleting": "Deleting…",
+        "deleted": "Your account has been deleted.",
+        "error": "Something went wrong.",
+        "deletedBody": "Your record, your address and your reactions have been erased. Your comments stay online, signed “Deleted account”."
+    },
+    "legal": {
+        "consent": "By signing in, you accept the <cgu>terms of use</cgu> and the <privacy>privacy policy</privacy>.",
+        "cgu": "Terms of use",
+        "cguShort": "Terms",
+        "mentions": "Legal notice",
+        "privacy": "Privacy policy",
+        "privacyShort": "Privacy",
+        "account": "My account",
+        "cguDescription": "The rules for using ninhache.fr, its comments and its reader accounts.",
+        "mentionsDescription": "Publisher, publication director, host and contact for ninhache.fr.",
+        "privacyDescription": "What ninhache.fr collects, why, for how long, and how to erase it."
+    },
+    "fun": {
+        "notFound": {
+            "title": "404. Nothing here.",
+            "text": "The page doesn’t exist. The bricks do.",
+            "home": "Back to home",
+            "blog": "Read the blog"
+        },
+        "game": {
+            "launch": "Space, click or tap to launch",
+            "controls": "← → or mouse to move · Space to launch · P to pause",
+            "paused": "Paused",
+            "resume": "Space to resume",
+            "won": "Code {code} broken.",
+            "wonTime": "Time: {time}",
+            "newBest": "New record",
+            "next": "Next level",
+            "replay": "Play again",
+            "lost": "Out of lives.",
+            "retry": "Again",
+            "lives": "Lives",
+            "time": "Time",
+            "best": "Best",
+            "levels": "Levels",
+            "locked": "Locked: clear the previous level",
+            "canvasLabel": "Breakout: the bricks spell code {code}",
+            "hints": {
+                "404": "Bricks. Nothing else.",
+                "500": "It flickers. It holds anyway.",
+                "403": "Steel underneath. Two ways in.",
+                "429": "Too many requests. Two hits each.",
+                "418": "I’m a teapot. It moves."
+            },
+            "nearMiss": "{gap} s too slow. Something happens under 45."
+        },
+        "secrets": {
+            "found": "Found",
+            "tierDone": "{tier}: done",
+            "button": "Secrets {count}/{total}",
+            "title": "Secrets",
+            "intro": "{count}/{total}. Stored on this device only.",
+            "introDone": "{total}/{total}. Nothing left. Promise.",
+            "rule": "Finish a tier: the next one’s hints get clearer.",
+            "unknown": "???",
+            "close": "Close",
+            "tiers": {
+                "warmup": "Warm-up",
+                "digging": "Digging",
+                "obsession": "Obsession"
+            },
+            "items": {
+                "curious": {
+                    "name": "Nosy",
+                    "description": "You opened the list. That one was free.",
+                    "hint": "Open the list.",
+                    "clue": "Open the list."
+                },
+                "shell": {
+                    "name": "Shell",
+                    "description": "You opened the terminal. It doesn’t bite.",
+                    "hint": "The key under Escape.",
+                    "clue": "The key under Escape, or the >_ button at the bottom."
+                },
+                "lost": {
+                    "name": "Lost",
+                    "description": "You went where there was nothing.",
+                    "hint": "Type anything after the /.",
+                    "clue": "Type anything after the /."
+                },
+                "polyglot": {
+                    "name": "Bilingual",
+                    "description": "You read the site in both languages.",
+                    "hint": "FR, EN. Up top.",
+                    "clue": "Switch language, at the top of the page."
+                },
+                "breaker": {
+                    "name": "Breaker",
+                    "description": "The 404 fell. The page is still missing.",
+                    "hint": "A missing page can be broken.",
+                    "clue": "Clear the first level of the 404 page."
+                },
+                "poke": {
+                    "name": "Poke",
+                    "description": "Five clicks on my face. Fine, I get it.",
+                    "hint": "Nice face. Keep at it.",
+                    "clue": "Click the photo on the home page. Fast, several times."
+                },
+                "konami": {
+                    "name": "Old school",
+                    "description": "↑ ↑ ↓ ↓ ← → ← → B A. Someone grew up with a controller.",
+                    "hint": "Thirty lives, back then.",
+                    "clue": "Up, up, down, down…"
+                },
+                "xyzzy": {
+                    "name": "Source",
+                    "description": "You read the source for fun.",
+                    "hint": "Not everything is on screen.",
+                    "clue": "There’s an HTML comment. Do what it says."
+                },
+                "hired": {
+                    "name": "HR",
+                    "description": "ninhache.hire(). I’ll take that as a yes.",
+                    "hint": "Developers open F12 everywhere.",
+                    "clue": "Read the console, then answer it."
+                },
+                "honeypot": {
+                    "name": "Script kiddie",
+                    "description": "You tried /wp-admin. There was never any WordPress.",
+                    "hint": "Everyone tries the same door.",
+                    "clue": "Bots always look for /wp-admin."
+                },
+                "root": {
+                    "name": "Root",
+                    "description": "You asked for root. Denied, and noted.",
+                    "hint": "Ask nicely. Or don’t.",
+                    "clue": "In the terminal: sudo."
+                },
+                "red-pill": {
+                    "name": "Red pill",
+                    "description": "You took the red one.",
+                    "hint": "Follow the white rabbit.",
+                    "clue": "In the terminal, pick a pill."
+                },
+                "teapot": {
+                    "name": "Teapot",
+                    "description": "Five levels. The last one was a teapot.",
+                    "hint": "The last code isn’t an error. It’s a drink.",
+                    "clue": "Clear level 418."
+                },
+                "flawless": {
+                    "name": "Flawless",
+                    "description": "One level, no life lost.",
+                    "hint": "Three lives is two too many.",
+                    "clue": "Clear a level without losing a single life."
+                },
+                "speedrun": {
+                    "name": "Speedrun",
+                    "description": "The 404 in under 45 seconds.",
+                    "hint": "Faster.",
+                    "clue": "The first level, in under 45 s."
+                },
+                "bookworm": {
+                    "name": "Bookworm",
+                    "description": "An article read to the end. For real.",
+                    "hint": "Nobody reads to the bottom.",
+                    "clue": "Read a blog article to the end, no skipping."
+                },
+                "regular": {
+                    "name": "Regular",
+                    "description": "Three days, three visits. We know each other now.",
+                    "hint": "Come back. Not today.",
+                    "clue": "Visit on three different days."
+                },
+                "night-owl": {
+                    "name": "Night owl",
+                    "description": "You were here between midnight and 5 am. Go to bed.",
+                    "hint": "The best bugs come out at night.",
+                    "clue": "Drop by between midnight and 5 am."
+                },
+                "safe": {
+                    "name": "Safe",
+                    "description": "Four digits, four hiding places, one safe.",
+                    "hint": "Four digits are lying around. They’re numbered.",
+                    "clue": "The console, a hidden file in the terminal, the fake WordPress, /humans.txt. Type the code in the terminal."
+                },
+                "completionist": {
+                    "name": "Completionist",
+                    "description": "All of it. The terminal is yours: you are root.",
+                    "hint": "Everything else.",
+                    "clue": "Everything else. There is nothing more."
+                }
+            }
+        },
+        "honeypot": {
+            "title": "Log in",
+            "user": "Username or email address",
+            "password": "Password",
+            "remember": "Remember me",
+            "submit": "Log in",
+            "forgot": "Lost your password?",
+            "caughtTitle": "Gotcha.",
+            "caughtText": "There was never a WordPress here. This form only talks to your browser: nothing was sent.",
+            "back": "Back to the site",
+            "digit": "3/4: {digit}"
+        },
+        "terminal": {
+            "open": "Open the terminal",
+            "title": "Terminal",
+            "close": "Close the terminal",
+            "inputLabel": "Command",
+            "welcome": "Read-only shell. help lists the commands. The rest is yours to find.",
+            "secretLine": "[secret] {name}, {count}/{total}"
+        }
     }
 }

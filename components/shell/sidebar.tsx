@@ -24,6 +24,8 @@ const sections: NavSection[] = [
         items: [
             { href: '/admin/articles', label: 'Articles' },
             { href: '/admin/article-categories', label: 'Catégories' },
+            { href: '/admin/comments', label: 'Commentaires' },
+            { href: '/admin/readers', label: 'Lecteurs' },
         ],
     },
     {

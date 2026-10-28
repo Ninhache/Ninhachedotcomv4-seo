@@ -22,9 +22,14 @@ export function Banner({
     return (
         <section className="not-prose relative my-12 overflow-hidden rounded-2xl border border-border xl:-mx-16">
             {image && (
+                // Purely decorative: the title and subtitle beside it are real
+                // text, so an alt would make a screen reader announce the same
+                // thing twice. `aria-hidden` states that on purpose rather than
+                // leaving an empty alt to look like an oversight.
                 <img
                     src={mediaSrc(image)}
                     alt=""
+                    aria-hidden="true"
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover"
                 />

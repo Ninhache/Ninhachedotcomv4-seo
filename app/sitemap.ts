@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { type Locale, locales } from '@/config';
-import { getArticles } from '@/lib/blog';
+import { articleSlug, getArticles } from '@/lib/blog';
+import { LEGAL_SLUGS } from '@/lib/legal';
 import { getProfile } from '@/lib/portfolio';
 import { absoluteUrl, localePath, xDefaultLocale } from '@/lib/seo/site';
 
@@ -29,22 +30,29 @@ export const revalidate = 86400;
 /**
  * hreflang map for one path, plus `x-default`.
  *
+ * `pathFor` returns the path in a given locale. Most routes ignore the argument
+ * and return the same string; articles return that locale's translated slug, so
+ * the pairing points at the URL each page is actually served at rather than at
+ * one that would redirect.
+ *
  * `available` narrows the map to the locales the page actually exists in — an
  * article translated only into French must not advertise an English twin.
  */
 function alternates(
-    path = '',
+    pathFor: (locale: Locale) => string = () => '',
     available: readonly Locale[] = locales
 ): MetadataRoute.Sitemap[number]['alternates'] {
     const languages: Record<string, string> = {};
     for (const locale of available) {
-        languages[locale] = absoluteUrl(localePath(locale, path));
+        languages[locale] = absoluteUrl(localePath(locale, pathFor(locale)));
     }
     const fallback = available.includes(xDefaultLocale)
         ? xDefaultLocale
         : available[0];
     if (fallback) {
-        languages['x-default'] = absoluteUrl(localePath(fallback, path));
+        languages['x-default'] = absoluteUrl(
+            localePath(fallback, pathFor(fallback))
+        );
     }
     return { languages };
 }
@@ -86,9 +94,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: latestUpdate(articles),
             changeFrequency: 'weekly' as const,
             priority: 0.8,
-            alternates: alternates('/blog'),
+            alternates: alternates(() => '/blog'),
         },
     ]);
+
+    // The legal pages are the same URL in both languages and change only when
+    // the policy itself does, hence git's own history rather than a stamp: with
+    // nothing better to declare, the build date is the honest answer.
+    const legalEntries: MetadataRoute.Sitemap = locales.flatMap(locale =>
+        LEGAL_SLUGS.map(slug => ({
+            url: absoluteUrl(localePath(locale, `/legal/${slug}`)),
+            changeFrequency: 'yearly' as const,
+            priority: 0.2,
+            alternates: alternates(() => `/legal/${slug}`),
+        }))
+    );
 
     const articleEntries: MetadataRoute.Sitemap = articles.flatMap(article => {
         // An article only exists in the locales it was translated into;
@@ -96,17 +116,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const available = locales.filter(locale =>
             article.translations.some(t => t.locale === locale)
         );
-        const path = `/blog/${article.slug}`;
+        // Each locale lists its own translated slug, so the 26 article URLs
+        // are 26 distinct addresses rather than 13 slugs served twice.
+        const pathFor = (locale: Locale) =>
+            `/blog/${articleSlug(article, locale)}`;
         return available.map(locale => ({
-            url: absoluteUrl(localePath(locale, path)),
+            url: absoluteUrl(localePath(locale, pathFor(locale))),
             lastModified: new Date(
                 article.updatedAt ?? article.publishedAt ?? article.createdAt
             ),
             changeFrequency: 'monthly' as const,
             priority: 0.7,
-            alternates: alternates(path, available),
+            alternates: alternates(pathFor, available),
         }));
     });
 
-    return [...staticEntries, ...articleEntries];
+    return [...staticEntries, ...legalEntries, ...articleEntries];
 }

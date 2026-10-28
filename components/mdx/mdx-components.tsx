@@ -17,6 +17,7 @@ import { Arrow, Mark, U } from './Inline';
 import { Lead } from './Lead';
 import { Pre } from './Pre';
 import { Punchcard } from './Punchcard';
+import { Repo } from './Repo';
 import { Reveal } from './Reveal';
 import { Center, SectionHeader } from './SectionHeader';
 import { Sidenote } from './Sidenote';
@@ -58,8 +59,8 @@ function withFadeIn<P extends object>(Component: ComponentType<P>) {
  * inline marks are never wrapped (a div would break flow).
  *
  * Element overrides: `pre` (copy button + language badge), `table` (horizontal
- * scroll), `a` (external links open in a new tab with an icon; `#slug`/relative
- * stay plain). Shared by the server render (`lib/markdown/render-article.tsx`)
+ * scroll), `a` (external links open in a new tab with an icon, the GitHub mark
+ * on github.com URLs; `#slug`/relative stay plain). Shared by the server render (`lib/markdown/render-article.tsx`)
  * and the admin client preview (`components/articles/article-preview.tsx`), so
  * every entry must be client-safe.
  */
@@ -86,6 +87,7 @@ export const mdxComponents = {
     Flow: withFadeIn(Flow),
     Punchcard: withFadeIn(Punchcard),
     CommitHeatmap: withFadeIn(CommitHeatmap),
+    Repo: withFadeIn(Repo),
     // block, no fade (children of the above, or layout containers)
     Step,
     Side,

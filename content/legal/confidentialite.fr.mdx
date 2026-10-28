@@ -1,0 +1,138 @@
+Dernière mise à jour : 27 août 2026.
+
+Cette page décrit exactement ce que ninhache.fr fait de vos données. Elle est
+écrite à partir du code du site, et non d'un modèle : ce qui est décrit ici est
+ce qui est réellement enregistré.
+
+## Ce qui est collecté, et quand
+
+**Si vous vous contentez de lire le site, rien n'est collecté.** Pas de compte,
+pas de cookie, pas de mesure d'audience.
+
+Les données ci-dessous n'existent qu'à partir du moment où vous créez un compte
+lecteur en vous connectant avec Google, GitHub ou Discord.
+
+| Donnée | Origine | Pourquoi |
+| --- | --- | --- |
+| Identifiant de compte chez le fournisseur | Google, GitHub ou Discord | Vous reconnaître à la connexion suivante |
+| Nom renvoyé par le fournisseur | idem | Vous proposer un nom de départ, et reconnaître un compte lors de la modération. Jamais publié |
+| Adresse email | idem | Identifier le compte de manière fiable. Jamais publiée, jamais utilisée pour vous écrire |
+| Image de profil | idem | Affichée à côté de vos commentaires |
+| Nom d'affichage | choisi par vous | Le seul nom publié sous vos commentaires |
+| Date de création du compte | le site | Modération et suivi du compte |
+| Vos commentaires et vos réactions | écrits par vous | Les afficher sous les articles |
+
+Aucun mot de passe n'est demandé ni stocké : l'authentification est faite par le
+fournisseur que vous choisissez.
+
+## Bases légales
+
+- **Consentement** pour la création du compte, la publication de vos
+  commentaires et de vos réactions. Vous le donnez en vous connectant, et vous
+  le retirez en supprimant votre compte.
+- **Intérêt légitime** pour la modération : conserver le nom renvoyé par le
+  fournisseur et l'adresse email permet de reconnaître un compte qui revient
+  après une exclusion, ce qu'un nom d'affichage modifiable ne permet pas.
+
+## Cookies
+
+Le site pose deux cookies, et seulement deux :
+
+- `ninhache_reader` : votre session de lecteur, posée à la connexion, valable
+  30 jours, inaccessible au JavaScript de la page. Elle disparaît quand vous
+  vous déconnectez.
+- `ninhache_oauth_state` : un cookie éphémère posé le temps d'un aller-retour
+  vers votre fournisseur, qui sert à vérifier que la réponse reçue correspond
+  bien à la demande envoyée. Il est effacé aussitôt après.
+
+Ces deux cookies sont strictement nécessaires au service que vous demandez en
+vous connectant. Il n'y a **aucune mesure d'audience, aucun traceur publicitaire
+et aucun cookie tiers**. C'est la raison pour laquelle aucun bandeau de
+consentement ne vous est présenté : la loi n'en exige pas pour des cookies
+strictement nécessaires. Le jour où une mesure d'audience serait ajoutée, cette
+page changerait et un bandeau apparaîtrait.
+
+## Stockage local
+
+Les jeux du site (le casse-briques des pages 404, les secrets, le terminal)
+gardent leur progression dans le stockage local de votre navigateur
+(`localStorage`). Ces données **restent sur votre appareil** : elles ne sont
+jamais envoyées au serveur ni à personne, et le site ne les lit que pour vous
+les afficher.
+
+| Clé | Contenu |
+| --- | --- |
+| `ninhache:secrets` | la liste des secrets que vous avez trouvés |
+| `ninhache:fun:progress` | les langues dans lesquelles vous avez lu le site et les jours de vos trois dernières visites, pour les secrets qui en dépendent |
+| `ninhache:breakout:best:<code>` | votre meilleur temps sur chaque niveau du casse-briques |
+| `ninhache:breakout:unlocked` | le dernier niveau débloqué |
+
+Pour tout effacer, videz les données du site dans votre navigateur. La
+navigation privée n'en garde rien après la fermeture de la fenêtre.
+
+## Qui reçoit vos données
+
+Personne. Les données ne sont ni vendues, ni louées, ni transmises à des tiers
+à des fins commerciales.
+
+Deux acteurs les voient techniquement :
+
+- votre fournisseur d'identité (Google, GitHub ou Discord), qui sait que vous
+  vous êtes connecté à ce site, puisque c'est lui qui vous authentifie ;
+- OVH, l'hébergeur du serveur, dont les coordonnées figurent dans les
+  [mentions légales](/legal/mentions-legales), et qui héberge la base de
+  données sans y accéder.
+
+Les données sont hébergées en France.
+
+## Combien de temps
+
+Tant que votre compte existe. Vous le supprimez, elles disparaissent, sans
+délai de carence.
+
+Vos commentaires font exception, et c'est un choix assumé : lorsque vous
+supprimez votre compte, ils restent en ligne mais sont **détachés de vous**.
+Votre nom, votre email, votre image et votre identifiant de fournisseur sont
+effacés de la base ; les commentaires apparaissent alors signés
+« Compte supprimé ». Cela évite de trouer des fils de discussion où d'autres
+personnes vous ont répondu. Si vous voulez que vos commentaires disparaissent
+aussi, supprimez-les avant de supprimer votre compte : la page
+[Mon compte](/compte) vous permet de faire les deux.
+
+Les sauvegardes de la base sont écrasées au fil de leur rotation ; une donnée
+supprimée peut y subsister quelques jours au maximum.
+
+## Vos droits, et comment les exercer
+
+Tout se fait depuis la page [Mon compte](/compte), sans demande à formuler et
+sans attendre de réponse :
+
+- **Accès** : la page liste ce qui est enregistré à votre sujet.
+- **Portabilité** : un bouton télécharge l'intégralité de vos données, compte,
+  commentaires et réactions, dans un fichier JSON.
+- **Rectification** : vous modifiez votre nom d'affichage quand vous voulez.
+- **Effacement** : un bouton supprime votre compte, définitivement et
+  immédiatement.
+- **Retrait du consentement** : c'est le même bouton.
+
+Pour toute demande que cette page ne couvre pas, écrivez à
+neo.almeida2706@gmail.com. Vous pouvez également introduire une
+réclamation auprès de la CNIL.
+
+## Sécurité
+
+Les échanges avec le site et son API se font en HTTPS. La session de lecteur est
+un jeton signé, inaccessible au JavaScript de la page, et distinct du jeton
+d'administration du site : une session de lecteur ne peut en aucun cas servir à
+accéder à l'administration.
+
+## Mineurs
+
+Le site ne s'adresse pas aux personnes de moins de 15 ans et ne collecte pas
+sciemment leurs données. Si un compte de ce type est signalé, il est supprimé.
+
+## Modification de cette politique
+
+Cette page évolue avec le site. Son historique complet est public, dans le dépôt
+de code, ce qui permet de savoir ce qu'elle disait le jour où vous avez créé
+votre compte.
