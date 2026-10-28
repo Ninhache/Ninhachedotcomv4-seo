@@ -189,6 +189,8 @@ export type ProfileDTO = {
     id: string;
     name: string;
     imageUrl?: string | null; // "Who am I?" portrait; editable in the back-office
+    altImageUrls?: string[]; // other faces of the portrait, in click order
+    hiddenImageUrl?: string | null; // revealed when the portrait blows up
     updatedAt: string;
     translations: ProfileTranslationDTO[];
 };
