@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { proximaNovaBold } from '@/app/fonts';
+import { FunButtons } from '@/components/fun/FunButtons';
 import { Link } from '@/navigation';
 
 /**
@@ -78,6 +79,7 @@ export function BlogFooter() {
                         </Link>
                     ))}
                 </nav>
+                <FunButtons />
             </div>
         </footer>
     );

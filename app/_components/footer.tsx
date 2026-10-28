@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { proximaNovaBold } from '@/app/fonts';
+import { FunButtons } from '@/components/fun/FunButtons';
 import styles from '@/styles/footer.module.css';
 
 export default function Footer() {
@@ -71,6 +72,11 @@ export default function Footer() {
                             {link.label}
                         </a>
                     ))}
+                </div>
+                <div
+                    className={`${styles.footer_content} ${styles.footer_legal}`}
+                >
+                    <FunButtons />
                 </div>
             </div>
         </footer>

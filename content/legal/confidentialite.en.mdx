@@ -50,6 +50,23 @@ That is why no consent banner is shown to you: the law does not require one for
 strictly necessary cookies. The day analytics were added, this page would change
 and a banner would appear.
 
+## Local storage
+
+The site's games (the brick breaker on 404 pages, the secrets, the terminal)
+keep their progress in your browser's local storage (`localStorage`). This
+data **stays on your device**: it is never sent to the server or to anyone,
+and the site only reads it to show it back to you.
+
+| Key | Content |
+| --- | --- |
+| `ninhache:secrets` | the list of secrets you have found |
+| `ninhache:fun:progress` | the languages you read the site in and the days of your last three visits, for the secrets that depend on them |
+| `ninhache:breakout:best:<code>` | your best time on each brick breaker level |
+| `ninhache:breakout:unlocked` | the last level unlocked |
+
+To erase it all, clear the site's data in your browser. A private window keeps
+none of it once closed.
+
 ## Who receives your data
 
 Nobody. The data is not sold, rented, or passed to third parties for commercial

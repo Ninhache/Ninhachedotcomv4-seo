@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { JsonLd } from '@/app/_components/seo/JsonLd';
 import { calibreSemibold } from '@/app/fonts';
+import { FunRoot } from '@/components/fun/FunRoot';
 import { type Locale, locales } from '@/config';
 import { getContacts, getProfile, getSkillCategories } from '@/lib/portfolio';
 import {
@@ -73,10 +74,11 @@ export default async function RootLayout(props: {
     // Site-wide structured data. Rendered here so the Person and WebSite nodes
     // exist on every public page, letting each page's own graph reference them
     // by `@id` instead of restating them.
-    const [profile, contacts, categories] = await Promise.all([
+    const [profile, contacts, categories, messages] = await Promise.all([
         getProfile(),
         getContacts(),
         getSkillCategories(),
+        getMessages(),
     ]);
 
     return (
@@ -106,6 +108,10 @@ export default async function RootLayout(props: {
                     ])}
                 />
                 {children}
+                <FunRoot
+                    locale={typedLocale}
+                    messages={{ fun: messages.fun }}
+                />
             </body>
         </html>
     );

@@ -188,5 +188,198 @@
         "cguDescription": "Les règles d'utilisation du site ninhache.fr, des commentaires et des comptes lecteur.",
         "mentionsDescription": "Éditeur, directeur de publication, hébergeur et contact du site ninhache.fr.",
         "privacyDescription": "Quelles données ninhache.fr collecte, pourquoi, combien de temps, et comment les effacer."
+    },
+    "fun": {
+        "notFound": {
+            "title": "404. Rien ici.",
+            "text": "La page n’existe pas. Les briques, si.",
+            "home": "Retour à l'accueil",
+            "blog": "Lire le blog"
+        },
+        "game": {
+            "launch": "Espace, clic ou toucher pour lancer",
+            "controls": "← → ou souris pour bouger · Espace pour lancer · P pour la pause",
+            "paused": "Pause",
+            "resume": "Espace pour reprendre",
+            "won": "Code {code} cassé.",
+            "wonTime": "Temps : {time}",
+            "newBest": "Nouveau record",
+            "next": "Niveau suivant",
+            "replay": "Rejouer",
+            "lost": "Plus de vies.",
+            "retry": "Encore",
+            "lives": "Vies",
+            "time": "Temps",
+            "best": "Record",
+            "levels": "Niveaux",
+            "locked": "Verrouillé : finissez le niveau précédent",
+            "canvasLabel": "Casse-briques : les briques forment le code {code}",
+            "hints": {
+                "404": "Des briques. Rien d’autre.",
+                "500": "Ça clignote. Ça tient quand même.",
+                "403": "De l’acier dessous. Deux passages.",
+                "429": "Trop de requêtes. Deux coups chacune.",
+                "418": "Je suis une théière. Elle bouge."
+            },
+            "nearMiss": "{gap} s de trop. Il se passe quelque chose sous les 45."
+        },
+        "secrets": {
+            "found": "Trouvé",
+            "tierDone": "{tier} : terminé",
+            "button": "Secrets {count}/{total}",
+            "title": "Secrets",
+            "intro": "{count}/{total}. Tout reste sur cet appareil.",
+            "introDone": "{total}/{total}. Il n’y a plus rien. Promis.",
+            "rule": "Finissez un palier : les indices du suivant deviennent clairs.",
+            "unknown": "???",
+            "close": "Fermer",
+            "tiers": {
+                "warmup": "Échauffement",
+                "digging": "Fouille",
+                "obsession": "Obsession"
+            },
+            "items": {
+                "curious": {
+                    "name": "Fouineur",
+                    "description": "Vous avez ouvert la liste. Celui-là était offert.",
+                    "hint": "Ouvrez la liste.",
+                    "clue": "Ouvrez la liste."
+                },
+                "shell": {
+                    "name": "Terminal",
+                    "description": "Vous avez ouvert le terminal. Il ne mord pas.",
+                    "hint": "La touche sous Échap.",
+                    "clue": "La touche sous Échap, ou le bouton >_ en bas de page."
+                },
+                "lost": {
+                    "name": "Perdu",
+                    "description": "Vous êtes allé là où il n’y avait rien.",
+                    "hint": "Tapez n’importe quoi après le /.",
+                    "clue": "Tapez n’importe quoi après le /."
+                },
+                "polyglot": {
+                    "name": "Bilingue",
+                    "description": "Vous avez lu le site dans les deux langues.",
+                    "hint": "FR, EN. En haut.",
+                    "clue": "Changez de langue, en haut de page."
+                },
+                "breaker": {
+                    "name": "Casseur",
+                    "description": "Le 404 est tombé. La page manque toujours.",
+                    "hint": "Une page qui manque, ça se casse.",
+                    "clue": "Finissez le premier niveau de la page 404."
+                },
+                "poke": {
+                    "name": "Insistant",
+                    "description": "Cinq clics sur ma tête. Ça va, j’ai compris.",
+                    "hint": "Il a une bonne tête. Insistez.",
+                    "clue": "Cliquez sur la photo de l’accueil. Vite, plusieurs fois."
+                },
+                "konami": {
+                    "name": "Vieille école",
+                    "description": "↑ ↑ ↓ ↓ ← → ← → B A. Vous avez de la bouteille.",
+                    "hint": "Trente vies, à l’époque.",
+                    "clue": "Haut, haut, bas, bas…"
+                },
+                "xyzzy": {
+                    "name": "Source",
+                    "description": "Vous lisez le code source pour le plaisir.",
+                    "hint": "Tout n’est pas à l’écran.",
+                    "clue": "Il y a un commentaire HTML. Faites ce qu’il dit."
+                },
+                "hired": {
+                    "name": "RH",
+                    "description": "ninhache.hire(). Je prends ça pour un oui.",
+                    "hint": "Les devs ouvrent F12 partout.",
+                    "clue": "Lisez la console, puis répondez-lui."
+                },
+                "honeypot": {
+                    "name": "Script kiddie",
+                    "description": "Vous avez essayé /wp-admin. Il n’y a jamais eu de WordPress.",
+                    "hint": "Tout le monde essaie la même porte.",
+                    "clue": "Les bots cherchent toujours /wp-admin."
+                },
+                "root": {
+                    "name": "Root",
+                    "description": "Vous avez demandé les droits. Refusé, et noté.",
+                    "hint": "Demandez poliment. Ou pas.",
+                    "clue": "Dans le terminal : sudo."
+                },
+                "red-pill": {
+                    "name": "Pilule rouge",
+                    "description": "Vous avez pris la rouge.",
+                    "hint": "Suivez le lapin blanc.",
+                    "clue": "Dans le terminal, choisissez une pilule."
+                },
+                "teapot": {
+                    "name": "Théière",
+                    "description": "Cinq niveaux. Le dernier était une théière.",
+                    "hint": "Le dernier code n’est pas une erreur. C’est une boisson.",
+                    "clue": "Finissez le niveau 418."
+                },
+                "flawless": {
+                    "name": "Sans faute",
+                    "description": "Un niveau, zéro vie perdue.",
+                    "hint": "Trois vies, c’est deux de trop.",
+                    "clue": "Finissez un niveau sans perdre une seule vie."
+                },
+                "speedrun": {
+                    "name": "Speedrun",
+                    "description": "Le 404 en moins de 45 secondes.",
+                    "hint": "Plus vite.",
+                    "clue": "Le premier niveau, en moins de 45 s."
+                },
+                "bookworm": {
+                    "name": "Lecteur",
+                    "description": "Un article lu jusqu’au bout. Pour de vrai.",
+                    "hint": "Personne ne lit jusqu’en bas.",
+                    "clue": "Lisez un article du blog jusqu’à la fin, sans sauter."
+                },
+                "regular": {
+                    "name": "Habitué",
+                    "description": "Trois jours, trois visites. On se connaît, maintenant.",
+                    "hint": "Revenez. Pas aujourd’hui.",
+                    "clue": "Passez trois jours différents."
+                },
+                "night-owl": {
+                    "name": "Oiseau de nuit",
+                    "description": "Vous étiez là entre minuit et 5 h. Allez dormir.",
+                    "hint": "Les meilleurs bugs sortent la nuit.",
+                    "clue": "Passez entre minuit et 5 h."
+                },
+                "safe": {
+                    "name": "Coffre",
+                    "description": "Quatre chiffres, quatre cachettes, un coffre.",
+                    "hint": "Quatre chiffres traînent. Ils sont numérotés.",
+                    "clue": "La console, un fichier caché du terminal, le faux WordPress, /humans.txt. Tapez le code dans le terminal."
+                },
+                "completionist": {
+                    "name": "Complétionniste",
+                    "description": "Tout. Le terminal est à vous : vous êtes root.",
+                    "hint": "Tout le reste.",
+                    "clue": "Tout le reste. Il n’y a rien d’autre."
+                }
+            }
+        },
+        "honeypot": {
+            "title": "Connexion",
+            "user": "Identifiant ou adresse e-mail",
+            "password": "Mot de passe",
+            "remember": "Se souvenir de moi",
+            "submit": "Se connecter",
+            "forgot": "Mot de passe oublié ?",
+            "caughtTitle": "Raté.",
+            "caughtText": "Il n’y a jamais eu de WordPress ici. Ce formulaire ne parle qu’à votre navigateur : rien n’est parti.",
+            "back": "Retour au site",
+            "digit": "3/4 : {digit}"
+        },
+        "terminal": {
+            "open": "Ouvrir le terminal",
+            "title": "Terminal",
+            "close": "Fermer le terminal",
+            "inputLabel": "Commande",
+            "welcome": "Shell en lecture seule. help liste les commandes. Le reste, c’est à vous de trouver.",
+            "secretLine": "[secret] {name}, {count}/{total}"
+        }
     }
 }

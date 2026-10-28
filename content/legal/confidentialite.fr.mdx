@@ -52,6 +52,24 @@ consentement ne vous est présenté : la loi n'en exige pas pour des cookies
 strictement nécessaires. Le jour où une mesure d'audience serait ajoutée, cette
 page changerait et un bandeau apparaîtrait.
 
+## Stockage local
+
+Les jeux du site (le casse-briques des pages 404, les secrets, le terminal)
+gardent leur progression dans le stockage local de votre navigateur
+(`localStorage`). Ces données **restent sur votre appareil** : elles ne sont
+jamais envoyées au serveur ni à personne, et le site ne les lit que pour vous
+les afficher.
+
+| Clé | Contenu |
+| --- | --- |
+| `ninhache:secrets` | la liste des secrets que vous avez trouvés |
+| `ninhache:fun:progress` | les langues dans lesquelles vous avez lu le site et les jours de vos trois dernières visites, pour les secrets qui en dépendent |
+| `ninhache:breakout:best:<code>` | votre meilleur temps sur chaque niveau du casse-briques |
+| `ninhache:breakout:unlocked` | le dernier niveau débloqué |
+
+Pour tout effacer, videz les données du site dans votre navigateur. La
+navigation privée n'en garde rien après la fermeture de la fenêtre.
+
 ## Qui reçoit vos données
 
 Personne. Les données ne sont ni vendues, ni louées, ni transmises à des tiers
