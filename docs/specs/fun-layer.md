@@ -69,7 +69,11 @@ Monde logique de 480x640, mis à l'échelle du conteneur (DPR compris).
 
 **Commandes**
 - Clavier : flèches ou A/D, Espace pour lancer, P ou Échap pour la pause.
-- Souris : la raquette suit le pointeur.
+- Souris : la raquette suit le pointeur. Un clic sur le plateau verrouille le
+  curseur (Pointer Lock) tant que la balle peut bouger : la raquette avance
+  alors au déplacement relatif et le curseur ne sort plus de la fenêtre. Échap
+  le rend (règle du navigateur) et met en pause ; pause, victoire et défaite le
+  rendent aussi. Si le navigateur refuse le verrou, on joue curseur libre.
 - Tactile : glisser pour bouger, toucher pour lancer.
 
 **Pause automatique** quand l'onglet est masqué (`visibilitychange`).

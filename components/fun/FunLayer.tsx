@@ -75,7 +75,7 @@ function setupConsole() {
     if (consoleReady) return;
     consoleReady = true;
     console.log(
-        '%cninhache.fr%c\nVous lisez la console. Bon signe.\nReading the console. Good sign.\n\nninhache.help()',
+        '%cninhache.fr%c\nVous lisez la console. Bon signe.\nReading the console. Good sign.\n\nTapez / type ninhache.help()',
         'color:#56dcfc;font:700 20px ui-monospace,monospace',
         'color:#8ea3c0;font:13px ui-monospace,monospace'
     );
@@ -246,11 +246,11 @@ export function FunLayer() {
 
     return (
         <>
-            {/* For whoever reads the source: a word to type, and a digit. */}
+            {/* For whoever reads the source: a word to type. */}
             <div
                 hidden
                 dangerouslySetInnerHTML={{
-                    __html: '<!-- Vous lisez la source pour le plaisir. Tapez xyzzy, n’importe où. / You read source for fun. Type xyzzy, anywhere. -->',
+                    __html: '<!-- Vous lisez la source pour le plaisir. Tapez xyzzy, n’importe où. / You read the source for fun. Type xyzzy, anywhere. -->',
                 }}
             />
 
@@ -309,6 +309,7 @@ export function FunLayer() {
                                     : t('intro', {
                                           count: found.length,
                                           total,
+                                          left: total - found.length,
                                       })}
                             </p>
                         </div>

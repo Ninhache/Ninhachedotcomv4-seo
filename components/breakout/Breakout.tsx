@@ -52,6 +52,26 @@ function isEditable(target: EventTarget | null): boolean {
     );
 }
 
+/**
+ * Grabs the mouse so the paddle can be pushed past the window edge without the
+ * cursor leaving the page. The browser may refuse (no gesture, Escape pressed
+ * a moment ago, no support): the game then plays with a free cursor.
+ */
+function lockPointer(canvas: HTMLCanvasElement | null) {
+    if (!canvas || document.pointerLockElement === canvas) return;
+    try {
+        Promise.resolve(canvas.requestPointerLock()).catch(() => {});
+    } catch {
+        // Older engines throw instead of rejecting.
+    }
+}
+
+function releasePointer(canvas: HTMLCanvasElement | null) {
+    if (canvas && document.pointerLockElement === canvas) {
+        document.exitPointerLock();
+    }
+}
+
 function reducedMotion(): boolean {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
@@ -263,10 +283,58 @@ export function Breakout({ code, onClear, onNext }: Props) {
         };
     }, [launchOrResume, togglePause, setPhase]);
 
+    // The mouse is only held while the ball can move. Escape gives it back
+    // (the browser's rule, not ours), which pauses the game.
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (phase === 'paused' || phase === 'won' || phase === 'lost') {
+            releasePointer(canvas);
+        }
+    }, [phase]);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const onChange = () => {
+            if (
+                document.pointerLockElement !== canvas &&
+                phaseRef.current === 'playing'
+            ) {
+                setPhase('paused');
+            }
+        };
+        document.addEventListener('pointerlockchange', onChange);
+        return () => {
+            document.removeEventListener('pointerlockchange', onChange);
+            releasePointer(canvas);
+        };
+    }, [setPhase]);
+
     const pointerToWorld = (event: React.PointerEvent<HTMLCanvasElement>) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        inputRef.current.pointerX =
-            ((event.clientX - rect.left) / rect.width) * WORLD_W;
+        const canvas = event.currentTarget;
+        const rect = canvas.getBoundingClientRect();
+        const input = inputRef.current;
+        if (document.pointerLockElement === canvas) {
+            // Locked, the cursor no longer has a position: only deltas.
+            const game = gameRef.current;
+            const from =
+                input.pointerX ??
+                (game ? game.paddle.x + game.paddle.w / 2 : WORLD_W / 2);
+            const to = from + (event.movementX / rect.width) * WORLD_W;
+            input.pointerX = Math.min(WORLD_W, Math.max(0, to));
+            return;
+        }
+        input.pointerX = ((event.clientX - rect.left) / rect.width) * WORLD_W;
+    };
+
+    const grabAndPlay = (event: React.PointerEvent<HTMLCanvasElement>) => {
+        pointerToWorld(event);
+        // Touch has no cursor to lose, and a finished game must keep it free
+        // for the buttons of its card.
+        const live = phaseRef.current !== 'won' && phaseRef.current !== 'lost';
+        if (live && event.pointerType === 'mouse') {
+            lockPointer(event.currentTarget);
+        }
+        launchOrResume();
     };
 
     const lifeSquares = Array.from({ length: Math.max(lives, 0) }, (_, i) => i);
@@ -302,10 +370,7 @@ export function Breakout({ code, onClear, onNext }: Props) {
                     role="img"
                     aria-label={t('canvasLabel', { code })}
                     onPointerMove={pointerToWorld}
-                    onPointerDown={event => {
-                        pointerToWorld(event);
-                        launchOrResume();
-                    }}
+                    onPointerDown={grabAndPlay}
                 />
 
                 <div className={styles.overlayLayer} aria-live="polite">
@@ -316,7 +381,14 @@ export function Breakout({ code, onClear, onNext }: Props) {
                         <button
                             type="button"
                             className={styles.card}
-                            onClick={() => setPhase('playing')}
+                            onClick={event => {
+                                // detail is 0 when the card is pressed from
+                                // the keyboard: no mouse to hold then.
+                                if (event.detail > 0) {
+                                    lockPointer(canvasRef.current);
+                                }
+                                setPhase('playing');
+                            }}
                         >
                             <span className={styles.cardTitle}>
                                 {t('paused')}
