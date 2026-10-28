@@ -33,7 +33,10 @@
         "employmentSeeking": "Actuellement en poste, je reste toujours curieux et ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour échanger !",
         "additionalInfo": "Vous voulez peut-être plus d'informations sur moi ?",
         "resumeLink": "Ouvrir mon CV",
-        "altLink": "Icone représentant un lien externe"
+        "altLink": "Icone représentant un lien externe",
+        "photoAlt": "Photo de Néo",
+        "photoSwap": "Changer de photo",
+        "photoBroken": "Cassé. Rechargez la page."
     },
     "projects": {
         "anchor": "projets",
@@ -271,9 +274,9 @@
                 },
                 "poke": {
                     "name": "Insistant",
-                    "description": "Cinq clics sur ma tête. Ça va, j’ai compris.",
+                    "description": "Vous avez fait sauter ma tête. Ça va, j’ai compris.",
                     "hint": "Il a une bonne tête. Insistez.",
-                    "clue": "Cliquez sur la photo de l’accueil. Vite, plusieurs fois."
+                    "clue": "Cliquez sur la photo de l’accueil. Vite, sans vous arrêter."
                 },
                 "konami": {
                     "name": "Vieille école",

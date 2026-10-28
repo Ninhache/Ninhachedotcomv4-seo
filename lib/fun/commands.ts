@@ -125,6 +125,7 @@ const COPY = {
         ],
         wipeEnd: 'Rien n’a bougé. Ce shell n’a accès à rien.',
         matrix: 'Le lapin est passé par ici.',
+        pill: 'Rouge ou bleue ?',
         bluePill:
             'Vous vous réveillez dans votre lit. Le site est toujours là.',
         xyzzy: 'Rien ne se passe. Enfin, presque.',
@@ -184,6 +185,7 @@ const COPY = {
         ],
         wipeEnd: 'Nothing moved. This shell has access to nothing.',
         matrix: 'The rabbit went this way.',
+        pill: 'Red or blue?',
         bluePill: 'You wake up in your bed. The site is still here.',
         xyzzy: 'Nothing happens. Almost.',
         hire: 'Not here. The real console: F12.',
@@ -195,7 +197,32 @@ const COPY = {
     },
 } as const;
 
-const RED_PILL = ['matrix', 'red pill', 'redpill', 'follow the white rabbit'];
+// Both languages either way: the clue says « choisissez une pilule », and a
+// French visitor answers in French.
+const RED_PILL = [
+    'matrix',
+    'red',
+    'red pill',
+    'redpill',
+    'follow the white rabbit',
+    'rouge',
+    'pilule rouge',
+    'la pilule rouge',
+    'la rouge',
+    'suivre le lapin blanc',
+    'suis le lapin blanc',
+];
+const BLUE_PILL = [
+    'blue',
+    'blue pill',
+    'bluepill',
+    'bleue',
+    'bleu',
+    'pilule bleue',
+    'la pilule bleue',
+    'la bleue',
+];
+const PILL = ['pill', 'pills', 'pilule', 'pilules', 'une pilule'];
 
 /** The pause between two lines of the fake wipe, ms. */
 const WIPE_STEP = 450;
@@ -270,9 +297,10 @@ export function run(input: string, ctx: CommandContext): CommandResult {
             ['red-pill']
         );
     }
-    if (lower === 'blue pill' || lower === 'bluepill') {
+    if (BLUE_PILL.includes(lower)) {
         return result(text([c.bluePill], 'muted'));
     }
+    if (PILL.includes(lower)) return result(text([c.pill], 'accent'));
 
     switch (cmd.toLowerCase()) {
         case 'help':

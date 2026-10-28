@@ -69,9 +69,6 @@ export const SPEEDRUN_NEAR_MS = 75_000;
  * screen and `public/humans.txt` (a static file: change it by hand).
  */
 export const SAFE_CODE = '7319';
-/** Clicks on the profile picture, each within POKE_GAP_MS of the last. */
-export const POKE_CLICKS = 5;
-export const POKE_GAP_MS = 1500;
 /** Distinct days of visit for the `regular` secret. */
 export const REGULAR_DAYS = 3;
 /** Night owl: a visit before this hour, local time, that lasts a little. */

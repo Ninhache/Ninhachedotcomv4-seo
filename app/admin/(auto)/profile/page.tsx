@@ -1,6 +1,14 @@
 'use client';
 
-import { ImageIcon, RefreshCcw, Save } from 'lucide-react';
+import {
+    ArrowDown,
+    ArrowUp,
+    ImageIcon,
+    Plus,
+    RefreshCcw,
+    Save,
+    Trash2,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
     AdminCard,
@@ -29,6 +37,8 @@ type LocaleData = {
 type FormState = {
     name: string;
     imageUrl: string;
+    altImageUrls: string[];
+    hiddenImageUrl: string;
     fr: LocaleData;
     en: LocaleData;
 };
@@ -55,6 +65,8 @@ function toFormState(p: ProfileDTO): FormState {
     return {
         name: p.name,
         imageUrl: p.imageUrl ?? '',
+        altImageUrls: p.altImageUrls ?? [],
+        hiddenImageUrl: p.hiddenImageUrl ?? '',
         fr: get('fr'),
         en: get('en'),
     };
@@ -64,6 +76,8 @@ export default function ProfilePage() {
     const [form, setForm] = useState<FormState>({
         name: '',
         imageUrl: '',
+        altImageUrls: [],
+        hiddenImageUrl: '',
         fr: empty(),
         en: empty(),
     });
@@ -94,12 +108,27 @@ export default function ProfilePage() {
         setSaved(false);
     };
 
+    const setAlts = (update: (alts: string[]) => string[]) => {
+        setForm(p => ({ ...p, altImageUrls: update(p.altImageUrls) }));
+        setSaved(false);
+    };
+
+    /** Swaps the alternate face at `i` with its neighbour `i + by`. */
+    const moveAlt = (i: number, by: -1 | 1) =>
+        setAlts(alts => {
+            const next = [...alts];
+            [next[i], next[i + by]] = [next[i + by], next[i]];
+            return next;
+        });
+
     const handleSave = async () => {
         setSaving(true);
         try {
             await ProfileApi.update({
                 name: form.name,
                 imageUrl: form.imageUrl,
+                altImageUrls: form.altImageUrls,
+                hiddenImageUrl: form.hiddenImageUrl,
                 translations: LOCALES.map(loc => ({
                     locale: loc,
                     greeting: form[loc].greeting,
@@ -170,6 +199,101 @@ export default function ProfilePage() {
                             value={form.imageUrl}
                             onChange={url => {
                                 setForm(p => ({ ...p, imageUrl: url }));
+                                setSaved(false);
+                            }}
+                        />
+                    </FormSection>
+
+                    {/* The home portrait swaps on click and blows up when
+                        spammed: these are its other faces. */}
+                    <FormSection
+                        icon={ImageIcon}
+                        title="Photos alternatives"
+                        description="Un clic sur la photo de l’accueil passe à la suivante, dans cet ordre, puis revient à la photo principale."
+                    >
+                        <div className="flex flex-col gap-4">
+                            {form.altImageUrls.map((url, i) => (
+                                <div key={i} className="flex items-start gap-2">
+                                    <div className="min-w-0 flex-1">
+                                        <MediaUploadField
+                                            ariaLabel={`Photo alternative ${i + 1}`}
+                                            value={url}
+                                            onChange={next =>
+                                                setAlts(alts =>
+                                                    alts.map((u, j) =>
+                                                        j === i ? next : u
+                                                    )
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            aria-label="Monter"
+                                            disabled={i === 0}
+                                            onClick={() => moveAlt(i, -1)}
+                                        >
+                                            <ArrowUp className="h-4 w-4" />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            aria-label="Descendre"
+                                            disabled={
+                                                i ===
+                                                form.altImageUrls.length - 1
+                                            }
+                                            onClick={() => moveAlt(i, 1)}
+                                        >
+                                            <ArrowDown className="h-4 w-4" />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            aria-label="Retirer"
+                                            onClick={() =>
+                                                setAlts(alts =>
+                                                    alts.filter(
+                                                        (_, j) => j !== i
+                                                    )
+                                                )
+                                            }
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="self-start"
+                                onClick={() => setAlts(alts => [...alts, ''])}
+                            >
+                                <Plus className="mr-1 h-4 w-4" />
+                                Ajouter une photo
+                            </Button>
+                            {form.altImageUrls.length === 0 && (
+                                <p className="text-xs text-muted-foreground">
+                                    Aucune : le site utilise la photo de secours
+                                    livrée avec le front.
+                                </p>
+                            )}
+                        </div>
+                    </FormSection>
+
+                    <FormSection
+                        icon={ImageIcon}
+                        title="Photo cachée"
+                        description="Apparaît quand un visiteur spamme la photo jusqu’à la faire sauter (20 clics en moins de 5 s). Elle reste jusqu’au rechargement de la page."
+                    >
+                        <MediaUploadField
+                            ariaLabel="Photo cachée"
+                            value={form.hiddenImageUrl}
+                            onChange={url => {
+                                setForm(p => ({ ...p, hiddenImageUrl: url }));
                                 setSaved(false);
                             }}
                         />
